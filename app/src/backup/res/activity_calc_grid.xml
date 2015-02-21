@@ -1,0 +1,207 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".CalcActivity"
+    android:columnCount="5"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="fill_vertical"
+    android:useDefaultMargins="true"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_gravity="fill_horizontal|center_vertical"
+        android:text="1"
+        android:id="@+id/firstOperand"
+        style="@style/KeypadButton"
+        android:layout_column="0"
+        android:layout_row="0" />
+
+    <TextView
+        android:text="+"
+        android:id="@+id/operator"
+        style="@style/KeypadFunctionButton"
+        android:layout_column="1"
+        android:layout_row="0"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        />
+
+    <TextView
+        android:text="1"
+        android:id="@+id/secondOperand"
+        style="@style/KeypadButton"
+        android:layout_column="2"
+        android:layout_row="0"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        />
+
+    <TextView
+        android:text="="
+        android:id="@+id/equalView"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadFunctionButton"
+        android:layout_column="3"
+        android:layout_row="0" />
+
+    <TextView
+        android:text="2"
+        android:id="@+id/resultView"
+        style="@style/KeypadButton"
+        android:layout_column="4"
+        android:layout_row="0"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        android:onClick=""
+        android:layout_row="1"
+        android:layout_columnSpan="4"
+        android:layout_column="0" />
+
+    <ImageView
+        android:id="@+id/progressImage"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        android:src="@drawable/ic_action_cat"
+        android:layout_row="1"
+        android:layout_column="4" />
+
+    <LinearLayout
+        android:layout_gravity="fill_horizontal|center_vertical"
+        android:orientation="vertical"
+        android:layout_row="2"
+        android:layout_rowSpan="4"
+        android:layout_column="4">
+        <Button
+            android:text="←"
+            android:id="@+id/buttonBackspace"
+            style="@style/KeypadFunctionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="+"
+            android:id="@+id/buttonPlus"
+            style="@style/KeypadFunctionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="-"
+            android:id="@+id/buttonMinus"
+            style="@style/KeypadFunctionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="*"
+            android:id="@+id/buttonMultiply"
+            style="@style/KeypadFunctionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="/"
+            android:id="@+id/buttonDivide"
+            style="@style/KeypadFunctionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <Button
+        android:text="7"
+        android:id="@+id/digit7"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_row="2"
+        android:layout_column="0" />
+
+    <Button
+        android:text="8"
+        android:id="@+id/digit8"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_column="1"
+        android:layout_row="2" />
+
+    <Button
+        android:text="9"
+        android:id="@+id/digit9"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_column="2"
+        android:layout_row="2" />
+
+    <Button
+        android:text="4"
+        android:id="@+id/digit4"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_row="3"
+        android:layout_column="0" />
+
+    <Button
+        android:text="5"
+        android:id="@+id/digit5"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_column="1"
+        android:layout_row="3" />
+
+    <Button
+        android:text="6"
+        android:id="@+id/digit6"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_column="2"
+        android:layout_row="3" />
+
+    <Button
+        android:text="1"
+        android:id="@+id/digit1"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_row="4"
+        android:layout_column="0" />
+
+    <Button
+        android:text="2"
+        android:id="@+id/digit2"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_column="1"
+        android:layout_row="4" />
+
+    <Button
+        android:text="3"
+        android:id="@+id/digit3"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_column="2"
+        android:layout_row="4" />
+
+    <Button
+        android:text=","
+        android:id="@+id/buttonComma"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_row="5"
+        android:layout_column="0" />
+
+    <Button
+        android:text="0"
+        android:id="@+id/digit0"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadButton"
+        android:layout_column="1"
+        android:layout_row="5" />
+
+    <Button
+        android:text="="
+        android:id="@+id/buttonResult"
+        android:layout_gravity="fill_horizontal|center_vertical"
+        style="@style/KeypadFunctionButton"
+        android:layout_column="2"
+        android:layout_row="5" />
+
+</GridLayout>

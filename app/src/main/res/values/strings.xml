@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Leli Math</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_pause">Pauza</string>
+    <string name="action_progress_fast">Fast</string>
+    <string name="action_about">O aplikaci</string>
+    <string name="decimalSeparator">,</string>
+
+</resources>

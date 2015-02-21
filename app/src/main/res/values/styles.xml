@@ -1,0 +1,34 @@
+<resources>
+
+    <style name="Formula">
+        <!--<item name="android:background">@color/gray_215</item>-->
+    </style>
+
+    <style name="KeypadButton" parent="@android:style/Widget.Button">
+        <item name="android:textSize">@dimen/keypad_button_text</item>
+        <item name="android:textColor">@color/gray_79</item>
+        <item name="android:background">@drawable/keypad_button_bg</item>
+        <item name="android:padding">0.0dip</item>
+    </style>
+
+    <style name="KeypadFunctionButton" parent="@style/KeypadButton">
+        <item name="android:textColor">@color/gray_35</item>
+    </style>
+
+    <style name="FormulaValue" parent="@style/KeypadButton">
+    </style>
+
+    <style name="FormulaUnknownValue" parent="@style/FormulaValue">
+        <item name="android:background">@drawable/unknown_box</item>
+    </style>
+
+    <style name="FormulaOperator" parent="@style/KeypadButton">
+    </style>
+
+    <style name="FormulaUnknownOperator" parent="@style/FormulaValue">
+    </style>
+
+    <style name="FormulaEqualSign" parent="@style/KeypadButton">
+    </style>
+
+</resources>

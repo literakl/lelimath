@@ -1,0 +1,224 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".CalcActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    >
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:text="1"
+        android:id="@+id/firstOperand"
+        style="@style/KeypadButton" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/firstOperand"
+        android:text="+"
+        android:id="@+id/operator"
+        style="@style/KeypadFunctionButton" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/operator"
+        android:text="1"
+        android:id="@+id/secondOperand"
+        style="@style/KeypadButton" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/secondOperand"
+        android:text="="
+        android:id="@+id/equalView"
+        style="@style/KeypadFunctionButton" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/equalView"
+        android:text="2"
+        android:id="@+id/resultView"
+        style="@style/KeypadButton" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/firstOperand"
+        android:id="@+id/seekBar"
+        android:layout_gravity="center_vertical"
+        android:onClick=""
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/firstOperand"
+        android:layout_toRightOf="@id/seekBar"
+        android:id="@+id/progressImage"
+        android:src="@drawable/ic_action_cat"
+        android:layout_gravity="center"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/progressImage"
+        android:layout_alignParentRight="true"
+        android:text="←"
+        android:id="@+id/buttonBackspace"
+        style="@style/KeypadFunctionButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/seekBar"
+        android:text="7"
+        android:id="@+id/digit7"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/seekBar"
+        android:layout_toRightOf="@id/digit7"
+        android:text="8"
+        android:id="@+id/digit8"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/seekBar"
+        android:layout_toRightOf="@id/digit8"
+        android:text="9"
+        android:id="@+id/digit9"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/buttonBackspace"
+        android:text="+"
+        android:id="@+id/buttonPlus"
+        style="@style/KeypadFunctionButton"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/digit7"
+        android:text="4"
+        android:id="@+id/digit4"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/digit7"
+        android:layout_toRightOf="@id/digit4"
+        android:text="5"
+        android:id="@+id/digit5"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/digit7"
+        android:layout_toRightOf="@id/digit5"
+        android:text="6"
+        android:id="@+id/digit6"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/buttonPlus"
+        android:text="-"
+        android:id="@+id/buttonMinus"
+        style="@style/KeypadFunctionButton"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/digit4"
+        android:text="1"
+        android:id="@+id/digit1"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/digit4"
+        android:layout_toRightOf="@id/digit1"
+        android:text="2"
+        android:id="@+id/digit2"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/digit4"
+        android:layout_toRightOf="@id/digit2"
+        android:text="3"
+        android:id="@+id/digit3"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/buttonMinus"
+        android:text="*"
+        android:id="@+id/buttonMultiply"
+        style="@style/KeypadFunctionButton"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/digit1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text=","
+        android:id="@+id/buttonComma"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/digit1"
+        android:layout_toRightOf="@id/buttonComma"
+        android:text="0"
+        android:id="@+id/digit0"
+        style="@style/KeypadButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/digit1"
+        android:layout_toRightOf="@id/digit0"
+        android:text="="
+        android:id="@+id/buttonResult"
+        style="@style/KeypadFunctionButton" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/buttonMultiply"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="/"
+        android:id="@+id/buttonDivide"
+        style="@style/KeypadFunctionButton" />
+
+</RelativeLayout>
