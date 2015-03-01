@@ -20,6 +20,7 @@
 
     <style name="FormulaUnknownValue" parent="@style/FormulaValue">
         <item name="android:background">@drawable/unknown_box</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="FormulaOperator" parent="@style/KeypadButton">

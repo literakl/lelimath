@@ -26,7 +26,7 @@
             style="@style/FormulaValue" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/operator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="101"
-            style="@style/FormulaUnknownValue" />
+            style="@style/FormulaValue" />
 
         <Space
             android:layout_weight="1"
@@ -203,10 +203,9 @@
                     android:id="@+id/decimalSeparator"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/decimalSeparator"
+                    android:text=" "
                     android:layout_weight="1"
-                    style="@style/KeypadButton"
-                    android:onClick="decimalSeparatorClicked"/>
+                    style="@style/KeypadButton"/>
 
                 <Button
                     android:id="@+id/digit0"

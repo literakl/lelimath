@@ -1,18 +1,18 @@
 package lelisoft.com.lelimath.data;
 
-import java.math.BigDecimal;
+import lelisoft.com.lelimath.logic.Solver;
 
 /**
+ * Data holder for one equation
  * Created by Leoš on 4. 2. 2015.
  */
 public class Formula {
-    BigDecimal firstOperand, secondOperand, result;
+    Integer firstOperand, secondOperand, result;
     Operator operator;
-    Unknown unknown;
+    FormulaPart unknown;
     StringBuilder sb = new StringBuilder(5);
-    boolean decimalPointSet;
 
-    public Formula(BigDecimal firstOperand, BigDecimal secondOperand, BigDecimal result, Operator operator, Unknown unknown) {
+    public Formula(Integer firstOperand, Integer secondOperand, Integer result, Operator operator, FormulaPart unknown) {
         this.firstOperand = firstOperand;
         this.secondOperand = secondOperand;
         this.result = result;
@@ -23,91 +23,110 @@ public class Formula {
     public Formula() {
     }
 
+    /**
+     * Add character that user typed
+     * @param entry character
+     */
     public void append(char entry) {
-        if (entry == ',') { // TODO localization
-            if (decimalPointSet) {
-                return;
-            }
-            decimalPointSet = true;
-        }
         sb.append(entry);
     }
 
-    public void removeLastChar() {
+    /**
+     * Add character that user typed
+     * @param entry character
+     */
+    public void append(CharSequence entry) {
+        sb.append(entry);
+    }
+
+    /**
+     * Remove the last character that was appended
+     */
+    public void undoAppend() {
         int length = sb.length();
         if (length > 0) {
-            if (sb.charAt(length - 1) == ',') { // TODO localization
-                decimalPointSet = false;
-            }
             sb.setLength(length - 1);
         }
     }
 
-    public String getEntry() {
+    /**
+     * @return content that user typed
+     */
+    public String getUserEntry() {
         return sb.toString();
+    }
+
+    /**
+     * @return value of unknown formula part
+     */
+    public String getUnknownValue() {
+        switch (unknown){
+            case OPERATOR:
+                return operator.toString();
+            case RESULT:
+                return result.toString();
+            case FIRST_OPERAND:
+                return firstOperand.toString();
+            case SECOND_OPERAND:
+                return secondOperand.toString();
+        }
+        return "";
+    }
+
+    /**
+     * @return true if user solved the formula correctly
+     */
+    public boolean isEntryCorrect() {
+        return getUnknownValue().equals(getUserEntry());
     }
 
     public String solve() {
         switch (unknown){
             case OPERATOR: {
-                if (result.equals(firstOperand.add(secondOperand))) {
+                if (result.equals(firstOperand + secondOperand)) {
                     return Operator.PLUS.toString();
                 }
-                if (result.equals(firstOperand.divide(secondOperand))) {
+                if (result.equals(firstOperand / secondOperand)) {
                     return Operator.DIVIDE.toString();
                 }
-                if (result.equals(firstOperand.multiply(secondOperand))) {
+                if (result.equals(firstOperand * secondOperand)) {
                     return Operator.MULTIPLY.toString();
                 }
-                if (result.equals(firstOperand.subtract(secondOperand))) {
+                if (result.equals(firstOperand - secondOperand)) {
                     return Operator.MINUS.toString();
                 }
             }
             case RESULT:
-                return evaluate(firstOperand, operator, secondOperand).toString();
+                return Solver.evaluate(firstOperand, operator, secondOperand).toString();
             case FIRST_OPERAND:
-                return evaluate(result, operator.negate(), secondOperand).toString();
+                return Solver.evaluate(result, operator.negate(), secondOperand).toString();
             case SECOND_OPERAND:
-                return evaluate(result, operator.negate(), firstOperand).toString();
+                return Solver.evaluate(result, operator.negate(), firstOperand).toString();
         }
         return "";
     }
 
-    private BigDecimal evaluate(BigDecimal first, Operator operator, BigDecimal second) {
-        switch (operator) {
-            case PLUS:
-                return first.add(second);
-            case MINUS:
-                return first.subtract(second);
-            case MULTIPLY:
-                return first.multiply(second);
-            case DIVIDE:
-                return first.divide(second);
-        }
-        return null;
-    }
-
-    public BigDecimal getFirstOperand() {
+    public Integer getFirstOperand() {
         return firstOperand;
     }
 
-    public void setFirstOperand(BigDecimal firstOperand) {
+    public void setFirstOperand(Integer firstOperand) {
         this.firstOperand = firstOperand;
     }
 
-    public BigDecimal getSecondOperand() {
+    public Integer getSecondOperand() {
         return secondOperand;
     }
 
-    public void setSecondOperand(BigDecimal secondOperand) {
+    public void setSecondOperand(Integer secondOperand) {
         this.secondOperand = secondOperand;
     }
 
-    public BigDecimal getResult() {
+    public Integer getResult() {
         return result;
     }
 
-    public void setResult(BigDecimal result) {
+    public void setResult(Integer result) {
         this.result = result;
     }
 
@@ -119,11 +138,11 @@ public class Formula {
         this.operator = operator;
     }
 
-    public Unknown getUnknown() {
+    public FormulaPart getUnknown() {
         return unknown;
     }
 
-    public void setUnknown(Unknown unknown) {
+    public void setUnknown(FormulaPart unknown) {
         this.unknown = unknown;
     }
 }
