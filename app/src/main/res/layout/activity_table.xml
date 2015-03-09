@@ -14,46 +14,44 @@
         android:layout_weight="1">
 
         <TextView
+            android:id="@+id/operandFirst"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="1"
-            android:id="@+id/textView"
-            style="@style/KeypadButton"
-            android:layout_gravity="center_horizontal" />
+            android:text="50"
+            style="@style/FormulaValue" />
 
         <TextView
+            android:id="@+id/operator"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="+"
-            android:id="@+id/textView2"
-            style="@style/KeypadFunctionButton" />
+            style="@style/FormulaOperator" />
 
         <TextView
+            android:id="@+id/operandSecond"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="1"
-            android:id="@+id/textView3"
-            style="@style/KeypadButton" />
+            android:text="51"
+            style="@style/FormulaValue" />
 
         <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="="
             android:id="@+id/textView4"
-            style="@style/KeypadFunctionButton" />
-
-        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="2"
-            android:layout_span="2"
-            android:id="@+id/textView5"
-            style="@style/KeypadButton" />
+            android:text="="
+            style="@style/FormulaEqualSign" />
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="101"
+                style="@style/FormulaValue" />
+        </ScrollView>
     </TableRow>
 
     <TableRow
@@ -65,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/seekBar"
-            android:layout_span="2"
+            android:layout_span="4"
             android:layout_gravity="center_vertical"
             android:onClick=""
             />
@@ -76,186 +74,177 @@
             android:id="@+id/progressImage"
             android:src="@drawable/ic_action_cat"
             android:layout_gravity="center" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/digit7"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="7"
+            android:layout_weight="1"
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
+
+        <Button
+            android:id="@+id/digit8"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="8"
+            android:layout_weight="1"
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
+
+        <Button
+            android:id="@+id/digit9"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="9"
+            android:layout_weight="1"
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
 
         <Space
             android:layout_width="20px"
-            android:layout_height="20px"
-            android:layout_span="2" />
+            android:layout_height="20px" />
+
+        <Button
+            android:id="@+id/buttonPlus"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="+"
+            style="@style/KeypadFunctionButton"
+            android:onClick="operatorClicked"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/digit4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="4"
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
+
+        <Button
+            android:id="@+id/digit5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="5"
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
+
+        <Button
+            android:id="@+id/digit6"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="6"
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px" />
+
+        <Button
+            android:id="@+id/buttonMinus"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="-"
+            style="@style/KeypadFunctionButton"
+            android:onClick="operatorClicked" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/digit1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="1"
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
+
+        <Button
+            android:id="@+id/digit2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="2"
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
+
+        <Button
+            android:id="@+id/digit3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="3"
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px" />
+
+        <Button
+            android:id="@+id/buttonMultiply"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="*"
+            style="@style/KeypadFunctionButton"
+            android:onClick="operatorClicked" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <Button
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="←"
             android:id="@+id/buttonBackspace"
-            style="@style/KeypadFunctionButton" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+            style="@style/KeypadFunctionButton"
+            android:onClick="deleteClicked" />
 
         <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="7"
-            android:id="@+id/button2"
-            style="@style/KeypadButton" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="8"
-            android:id="@+id/button3"
-            style="@style/KeypadButton" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="9"
-            android:id="@+id/button4"
-            style="@style/KeypadButton" />
-
-        <Space
-            android:layout_width="20px"
-            android:layout_height="20px" />
-
-        <Space
-            android:layout_width="20px"
-            android:layout_height="20px" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="+"
-            android:id="@+id/buttonPlus"
-            style="@style/KeypadFunctionButton" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="4"
-            android:id="@+id/button6"
-            style="@style/KeypadButton" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="5"
-            android:id="@+id/button7"
-            style="@style/KeypadButton" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="6"
-            android:id="@+id/button8"
-            style="@style/KeypadButton" />
-
-        <Space
-            android:layout_width="20px"
-            android:layout_height="20px" />
-
-        <Space
-            android:layout_width="20px"
-            android:layout_height="20px" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="-"
-            android:id="@+id/buttonMinus"
-            style="@style/KeypadFunctionButton" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="1"
-            android:id="@+id/button10"
-            style="@style/KeypadButton" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="2"
-            android:id="@+id/button11"
-            style="@style/KeypadButton" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="3"
-            android:id="@+id/button12"
-            style="@style/KeypadButton" />
-
-        <Space
-            android:layout_width="20px"
-            android:layout_height="20px" />
-
-        <Space
-            android:layout_width="20px"
-            android:layout_height="20px" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="*"
-            android:id="@+id/buttonMultiply"
-            style="@style/KeypadFunctionButton" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text=","
-            android:id="@+id/button14"
-            style="@style/KeypadButton" />
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:id="@+id/digit0"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:text="0"
-            android:id="@+id/button15"
-            style="@style/KeypadButton" />
+            style="@style/KeypadButton"
+            android:onClick="digitClicked" />
 
         <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:text="="
-            android:id="@+id/buttonResult"
-            style="@style/KeypadFunctionButton" />
-
-        <Space
-            android:layout_width="20px"
-            android:layout_height="20px" />
+            style="@style/KeypadButton"
+            android:onClick="resultClicked" />
 
         <Space
             android:layout_width="20px"
             android:layout_height="20px" />
 
         <Button
+            android:id="@+id/buttonDivide"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="/"
-            android:id="@+id/buttonDivide"
-            style="@style/KeypadFunctionButton" />
+            style="@style/KeypadFunctionButton"
+            android:onClick="operatorClicked" />
     </TableRow>
 
 </TableLayout>

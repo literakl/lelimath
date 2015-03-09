@@ -11,6 +11,6 @@
         android:color="@color/gray_215" />
     <stroke
         android:width="1px"
-        android:color="#FFFFFF" />
+        android:color="#F00000" />
 
 </shape>

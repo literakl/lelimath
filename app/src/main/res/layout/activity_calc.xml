@@ -14,36 +14,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="5"
+        android:weightSum="4"
         style="@style/Formula">
 
         <TextView
             android:id="@+id/operandFirst"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:singleLine="true"
             android:text="50"
             style="@style/FormulaValue" />
 
         <TextView
             android:id="@+id/operator"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:singleLine="true"
             android:text="+"
             style="@style/FormulaOperator" />
 
         <TextView
             android:id="@+id/operandSecond"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:singleLine="true"
             android:text="51"
             style="@style/FormulaValue" />
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="="
@@ -51,16 +54,12 @@
 
         <TextView
             android:id="@+id/result"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:singleLine="true"
             android:text="101"
-            style="@style/FormulaValue" />
-
-        <Space
-            android:layout_weight="1"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+            style="@style/FormulaUnknownValue" />
     </LinearLayout>
 
     <LinearLayout
@@ -200,12 +199,13 @@
                 android:layout_weight="1">
 
                 <Button
-                    android:id="@+id/decimalSeparator"
+                    android:id="@+id/buttonBackspace"
+                    style="@style/KeypadFunctionButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text=" "
+                    android:text="←"
                     android:layout_weight="1"
-                    style="@style/KeypadButton"/>
+                    android:onClick="deleteClicked" />
 
                 <Button
                     android:id="@+id/digit0"
@@ -234,22 +234,13 @@
             android:orientation="vertical" >
 
             <Button
-                android:id="@+id/buttonBackspace"
-                style="@style/KeypadFunctionButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="←"
-                android:layout_weight="1"
-                android:onClick="deleteClicked" />
-
-            <Button
                 android:id="@+id/buttonPlus"
                 style="@style/KeypadFunctionButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="+"
                 android:layout_weight="1"
-                android:onClick="operandClicked" />
+                android:onClick="operatorClicked" />
 
             <Button
                 android:id="@+id/buttonMinus"
@@ -258,16 +249,7 @@
                 android:layout_height="match_parent"
                 android:text="-"
                 android:layout_weight="1"
-                android:onClick="operandClicked" />
-
-            <Button
-                android:id="@+id/buttonDivide"
-                style="@style/KeypadFunctionButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="/"
-                android:layout_weight="1"
-                android:onClick="operandClicked" />
+                android:onClick="operatorClicked" />
 
             <Button
                 android:id="@+id/buttonMultiply"
@@ -276,7 +258,16 @@
                 android:layout_height="match_parent"
                 android:text="*"
                 android:layout_weight="1"
-                android:onClick="operandClicked" />
+                android:onClick="operatorClicked" />
+
+            <Button
+                android:id="@+id/buttonDivide"
+                style="@style/KeypadFunctionButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="/"
+                android:layout_weight="1"
+                android:onClick="operatorClicked" />
         </LinearLayout>
     </LinearLayout>
 
