@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import lelisoft.com.lelimath.R;
@@ -55,15 +56,44 @@ public class CalcActivity extends Activity {
 
     private void prepareNewFormula() {
         formula = FormulaGenerator.generateRandomFormula(definition);
+
+        TextView view = getUnknownWidget(formula);
+        LinearLayout parent = (LinearLayout) view.getParent();
+        if (unknown == null) {
+            replaceView((TextView) parent.getChildAt(4), R.layout.template_value, parent);
+        } else if (unknown.getId() != view.getId()) {
+            replaceView(unknown, R.layout.template_value, parent);
+        }
+        unknown = replaceView(view, R.layout.template_unknown_value, parent);
+
         ((TextView)findViewById(R.id.operandFirst)).setText(formula.getFirstOperand().toString());
         ((TextView)findViewById(R.id.operator)).setText(formula.getOperator().toString());
         ((TextView)findViewById(R.id.operandSecond)).setText(formula.getSecondOperand().toString());
         ((TextView)findViewById(R.id.result)).setText(formula.getResult().toString());
+    }
 
-        unknown = getUnknownWidget(formula);
-        unknown.setText("");
-        unknown.setTextAppearance(this, R.style.FormulaUnknownValue);
-//        unknown.setBackgroundColor(Color.rgb(0, 255, 0));
+    private TextView replaceView(TextView view, int template, LinearLayout parent) {
+        parent.removeView(view);
+        TextView textView = (TextView)getLayoutInflater().inflate(template, null);
+        textView.setId(view.getId());
+        int index = getWidgetPosition(view.getId());
+        parent.addView(textView, index, view.getLayoutParams());
+        return textView;
+    }
+
+    private int getWidgetPosition(int rid) {
+        switch (rid) {
+            case R.id.operandFirst:
+                return 0;
+            case R.id.operator:
+                return 1;
+            case R.id.operandSecond:
+                return 2;
+            case R.id.result:
+                return 4;
+            default:
+                return -1;
+        }
     }
 
     private TextView getUnknownWidget(Formula formula) {
@@ -78,7 +108,6 @@ public class CalcActivity extends Activity {
                 return (TextView)findViewById(R.id.result);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -115,7 +144,7 @@ public class CalcActivity extends Activity {
         definition.setRightOperand(left);
         definition.setResult(left);
         definition.addOperator(Operator.PLUS);
-        definition.addUnknown(FormulaPart.RESULT);
+        definition.addUnknown(FormulaPart.FIRST_OPERAND);
 
         return definition;
     }

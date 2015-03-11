@@ -33,7 +33,7 @@
             android:layout_weight="0.5"
             android:singleLine="true"
             android:text="+"
-            style="@style/FormulaOperator" />
+            style="@style/FormulaValue" />
 
         <TextView
             android:id="@+id/operandSecond"

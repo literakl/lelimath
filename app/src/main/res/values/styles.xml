@@ -22,12 +22,6 @@
         <item name="android:background">@drawable/unknown_box</item>
     </style>
 
-    <style name="FormulaOperator" parent="@style/KeypadButton">
-    </style>
-
-    <style name="FormulaUnknownOperator" parent="@style/FormulaValue">
-    </style>
-
     <style name="FormulaEqualSign" parent="@style/KeypadButton">
     </style>
 
