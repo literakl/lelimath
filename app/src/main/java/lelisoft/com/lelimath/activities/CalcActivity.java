@@ -70,6 +70,7 @@ public class CalcActivity extends Activity {
         ((TextView)findViewById(R.id.operator)).setText(formula.getOperator().toString());
         ((TextView)findViewById(R.id.operandSecond)).setText(formula.getSecondOperand().toString());
         ((TextView)findViewById(R.id.result)).setText(formula.getResult().toString());
+        unknown.setText("");
     }
 
     private TextView replaceView(TextView view, int template, LinearLayout parent) {
