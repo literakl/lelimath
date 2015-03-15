@@ -1,12 +1,15 @@
 package lelisoft.com.lelimath.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import lelisoft.com.lelimath.logic.Solver;
 
 /**
  * Data holder for one equation
  * Created by Leoš on 4. 2. 2015.
  */
-public class Formula {
+public class Formula implements Parcelable {
     Integer firstOperand, secondOperand, result;
     Operator operator;
     FormulaPart unknown;
@@ -145,4 +148,40 @@ public class Formula {
     public void setUnknown(FormulaPart unknown) {
         this.unknown = unknown;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.firstOperand);
+        dest.writeValue(this.secondOperand);
+        dest.writeValue(this.result);
+        dest.writeInt(this.operator == null ? -1 : this.operator.ordinal());
+        dest.writeInt(this.unknown == null ? -1 : this.unknown.ordinal());
+        dest.writeSerializable(this.sb);
+    }
+
+    private Formula(Parcel in) {
+        this.firstOperand = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.secondOperand = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.result = (Integer) in.readValue(Integer.class.getClassLoader());
+        int tmpOperator = in.readInt();
+        this.operator = tmpOperator == -1 ? null : Operator.values()[tmpOperator];
+        int tmpUnknown = in.readInt();
+        this.unknown = tmpUnknown == -1 ? null : FormulaPart.values()[tmpUnknown];
+        this.sb = (StringBuilder) in.readSerializable();
+    }
+
+    public static final Parcelable.Creator<Formula> CREATOR = new Parcelable.Creator<Formula>() {
+        public Formula createFromParcel(Parcel source) {
+            return new Formula(source);
+        }
+
+        public Formula[] newArray(int size) {
+            return new Formula[size];
+        }
+    };
 }

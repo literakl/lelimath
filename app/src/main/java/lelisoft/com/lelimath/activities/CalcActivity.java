@@ -2,6 +2,7 @@ package lelisoft.com.lelimath.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,6 @@ public class CalcActivity extends Activity {
     Formula formula;
     FormulaDefinition definition = getFormulaDefinition();
     TextView unknown;
-
 
     public void digitClicked(View view) {
         CharSequence digit = ((TextView)view).getText();
@@ -45,17 +45,32 @@ public class CalcActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(getClass().getSimpleName(), "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calc);
-        if (formula == null) {
+        if (formula == null && savedInstanceState == null) {
             prepareNewFormula();
         }
-//        SharedPreferences mPrefs = getSharedPreferences();
-//        mCurViewMode = mPrefs.getInt("view_mode", DAY_VIEW_MODE);
     }
 
-    private void prepareNewFormula() {
-        formula = FormulaGenerator.generateRandomFormula(definition);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(getClass().getSimpleName(), "onSaveInstanceState()");
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("formula", formula);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        Log.d(getClass().getSimpleName(), "onRestoreInstanceState()");
+        super.onRestoreInstanceState(state);
+        formula = state.getParcelable("formula");
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(getClass().getSimpleName(), "onResume()");
+        super.onResume();
 
         TextView view = getUnknownWidget(formula);
         LinearLayout parent = (LinearLayout) view.getParent();
@@ -64,13 +79,26 @@ public class CalcActivity extends Activity {
         } else if (unknown.getId() != view.getId()) {
             replaceView(unknown, R.layout.template_value, parent);
         }
-        unknown = replaceView(view, R.layout.template_unknown_value, parent);
 
-        ((TextView)findViewById(R.id.operandFirst)).setText(formula.getFirstOperand().toString());
-        ((TextView)findViewById(R.id.operator)).setText(formula.getOperator().toString());
-        ((TextView)findViewById(R.id.operandSecond)).setText(formula.getSecondOperand().toString());
-        ((TextView)findViewById(R.id.result)).setText(formula.getResult().toString());
-        unknown.setText("");
+        unknown = replaceView(view, R.layout.template_unknown_value, parent);
+        unknown.setText(formula.getUserEntry());
+
+        if (unknown.getId() != R.id.operandFirst) {
+            ((TextView)findViewById(R.id.operandFirst)).setText(formula.getFirstOperand().toString());
+        }
+        if (unknown.getId() != R.id.operator) {
+            ((TextView)findViewById(R.id.operator)).setText(formula.getOperator().toString());
+        }
+        if (unknown.getId() != R.id.operandSecond) {
+            ((TextView)findViewById(R.id.operandSecond)).setText(formula.getSecondOperand().toString());
+        }
+        if (unknown.getId() != R.id.result) {
+            ((TextView)findViewById(R.id.result)).setText(formula.getResult().toString());
+        }
+    }
+
+    private void prepareNewFormula() {
+        formula = FormulaGenerator.generateRandomFormula(definition);
     }
 
     private TextView replaceView(TextView view, int template, LinearLayout parent) {
@@ -112,6 +140,7 @@ public class CalcActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(getClass().getSimpleName(), "onCreateOptionsMenu()");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_calc, menu);
 //        ActionBar actionBar = getActionBar();
@@ -122,6 +151,7 @@ public class CalcActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(getClass().getSimpleName(), "onOptionsItemSelected()");
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -133,6 +163,36 @@ public class CalcActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d(getClass().getSimpleName(), "onStart()");
+        super.onStart();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d(getClass().getSimpleName(), "onRestart()");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(getClass().getSimpleName(), "onPause()");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(getClass().getSimpleName(), "onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(getClass().getSimpleName(), "onDestroy()");
+        super.onDestroy();
     }
 
     public FormulaDefinition getFormulaDefinition() {
