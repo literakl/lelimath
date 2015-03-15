@@ -1,0 +1,46 @@
+http://eigo.co.uk/labs/managing-state-in-an-android-activity/
+
+start aplikace
+
+03-15 11:21:09.020  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onCreate()
+03-15 11:21:09.119  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onStart()
+03-15 11:21:09.120  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onResume()
+03-15 11:21:09.329  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onCreateOptionsMenu()
+03-15 11:21:09.414      552-580/? I/ActivityManager﹕ Displayed lelisoft.com.lelimath/.activities.CalcActivity: +2s415ms
+
+otoceni displeje
+
+03-15 11:21:41.313  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onPause()
+03-15 11:21:41.313  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onSaveInstanceState()
+03-15 11:21:41.316  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onStop()
+03-15 11:21:41.316  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onDestroy()
+03-15 11:21:41.347  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onCreate()
+03-15 11:21:41.397  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onStart()
+03-15 11:21:41.397  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onRestoreInstanceState()
+03-15 11:21:41.398  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onCreateOptionsMenu()
+03-15 11:21:41.405  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onResume()
+03-15 11:21:41.515      552-580/? I/WindowManager﹕ Screen frozen for +359ms due to Window{3b8a6545 u0 lelisoft.com.lelimath/lelisoft.com.lelimath.activities.CalcActivity}
+
+prepnuti na seznam aplikaci
+
+03-15 11:22:07.988  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onPause()
+03-15 11:22:08.011  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onSaveInstanceState()
+03-15 11:22:08.012  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onStop()
+
+vraceni zpatky
+
+03-15 11:22:14.303  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onRestart()
+03-15 11:22:14.311  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onStart()
+03-15 11:22:14.311  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onResume()
+
+home screen
+
+03-15 11:24:15.013  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onPause()
+03-15 11:24:15.295  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onSaveInstanceState()
+03-15 11:24:15.301  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onStop()
+
+vraceni zpatky
+
+03-15 11:24:54.134  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onRestart()
+03-15 11:24:54.136  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onStart()
+03-15 11:24:54.136  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onResume()

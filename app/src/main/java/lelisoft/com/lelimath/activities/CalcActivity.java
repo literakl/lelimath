@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,63 +20,118 @@ import lelisoft.com.lelimath.logic.FormulaGenerator;
 
 
 public class CalcActivity extends Activity {
+    private static final String logTag = CalcActivity.class.getSimpleName();
+    private static final int SPEED_FAST = 5;
+    private static final int SPEED_SLOW = 10;
+    private static final int SPEED_MAX = 20000;
+
     Formula formula;
     FormulaDefinition definition = getFormulaDefinition();
     TextView unknown;
+    long started, stopped, totalTimeSpent;
+    int count;
 
     public void digitClicked(View view) {
-        CharSequence digit = ((TextView)view).getText();
-        formula.append(digit);
-        unknown.append(digit);
-    }
-
-    public void resultClicked(View view) {
-        if (formula.isEntryCorrect()) {
-            prepareNewFormula();
-            displayFormula();
+        Log.d(logTag, "digitClicked()");
+        if (started == 0) { started = System.currentTimeMillis(); }
+        if (formula.getUnknown() != FormulaPart.OPERATOR) {
+            CharSequence digit = ((TextView)view).getText();
+            formula.append(digit);
+            unknown.append(digit);
         }
     }
 
     public void deleteClicked(View view) {
+        Log.d(logTag, "deleteClicked()");
         formula.undoAppend();
         unknown.setText(formula.getUserEntry());
     }
 
     public void operatorClicked(View view) {
-        // in future there may be mapping based on component's id
-        CharSequence operator = ((TextView)view).getText();
-        formula.setUserEntry(operator);
-        unknown.setText(operator);
+        Log.d(logTag, "operatorClicked()");
+        if (started == 0) { started = System.currentTimeMillis(); }
+        if (formula.getUnknown() == FormulaPart.OPERATOR) {
+            // in future there may be mapping based on component's id
+            CharSequence operator = ((TextView)view).getText();
+            formula.setUserEntry(operator);
+            unknown.setText(operator);
+        }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.d(getClass().getSimpleName(), "onCreate()");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calc);
-        if (formula == null && savedInstanceState == null) {
+    public void resultClicked(View view) {
+        Log.d(logTag, "resultClicked()");
+        if (formula.isEntryCorrect()) {
             prepareNewFormula();
+            displayFormula();
+            updateSpeedIndicator();
+        }
+    }
+
+    private void updateSpeedIndicator() {
+        long now = System.currentTimeMillis();
+        long spent = now - started;
+        if (spent > SPEED_MAX) {
+            spent = SPEED_MAX;
+        }
+        totalTimeSpent += spent;
+        formula.setTimeSpent(spent);
+        started = now;
+        count++;
+
+        long averageTime = (totalTimeSpent) / (1000 * count);
+        if (averageTime < SPEED_FAST) {
+            ((ImageView)findViewById(R.id.speedIndicator)).setImageResource(R.drawable.ic_action_running_rabbit);
+        } else if (averageTime > SPEED_SLOW) {
+            ((ImageView)findViewById(R.id.speedIndicator)).setImageResource(R.drawable.ic_action_turtle);
+        } else {
+            ((ImageView)findViewById(R.id.speedIndicator)).setImageResource(R.drawable.ic_action_cat);
         }
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        Log.d(getClass().getSimpleName(), "onSaveInstanceState()");
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("formula", formula);
+    protected void onSaveInstanceState(Bundle state) {
+        Log.d(logTag, "onSaveInstanceState()");
+        super.onSaveInstanceState(state);
+        state.putParcelable("formula", formula);
+        state.putLong("started", started);
+        state.putLong("stopped", stopped);
+        state.putLong("timeSpent", totalTimeSpent);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle state) {
-        Log.d(getClass().getSimpleName(), "onRestoreInstanceState()");
-        super.onRestoreInstanceState(state);
-        formula = state.getParcelable("formula");
+    protected void onCreate(Bundle state) {
+        Log.d(logTag, "onCreate()");
+        super.onCreate(state);
+
+        setContentView(R.layout.activity_calc);
+
+        if (formula == null && state == null) {
+            prepareNewFormula();
+        }
+
+        if (state != null) {
+            formula = state.getParcelable("formula");
+            started = state.getLong("started");
+            stopped = state.getLong("stopped");
+            totalTimeSpent = state.getLong("timeSpent");
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(logTag, "onPause()");
+        stopped = System.currentTimeMillis();
+        super.onPause();
     }
 
     @Override
     protected void onResume() {
-        Log.d(getClass().getSimpleName(), "onResume()");
+        Log.d(logTag, "onResume()");
         super.onResume();
+        if (started > 0 && stopped > 0) {
+            started = System.currentTimeMillis() - (stopped - started);
+            stopped = 0;
+        }
         displayFormula();
     }
 
@@ -148,7 +204,7 @@ public class CalcActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(getClass().getSimpleName(), "onCreateOptionsMenu()");
+        Log.d(logTag, "onCreateOptionsMenu()");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_calc, menu);
 //        ActionBar actionBar = getActionBar();
@@ -159,7 +215,7 @@ public class CalcActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(getClass().getSimpleName(), "onOptionsItemSelected()");
+        Log.d(logTag, "onOptionsItemSelected()");
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -175,31 +231,31 @@ public class CalcActivity extends Activity {
 
     @Override
     protected void onStart() {
-        Log.d(getClass().getSimpleName(), "onStart()");
+        Log.d(logTag, "onStart()");
         super.onStart();
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        Log.d(logTag, "onRestoreInstanceState()");
+        super.onRestoreInstanceState(state);
+    }
+
+    @Override
     protected void onRestart() {
-        Log.d(getClass().getSimpleName(), "onRestart()");
+        Log.d(logTag, "onRestart()");
         super.onRestart();
     }
 
     @Override
-    protected void onPause() {
-        Log.d(getClass().getSimpleName(), "onPause()");
-        super.onPause();
-    }
-
-    @Override
     protected void onStop() {
-        Log.d(getClass().getSimpleName(), "onStop()");
+        Log.d(logTag, "onStop()");
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(getClass().getSimpleName(), "onDestroy()");
+        Log.d(logTag, "onDestroy()");
         super.onDestroy();
     }
 

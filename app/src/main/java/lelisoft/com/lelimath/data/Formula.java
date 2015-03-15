@@ -13,6 +13,7 @@ public class Formula implements Parcelable {
     Integer firstOperand, secondOperand, result;
     Operator operator;
     FormulaPart unknown;
+    long timeSpent;
     StringBuilder sb = new StringBuilder(5);
 
     public Formula(Integer firstOperand, Integer secondOperand, Integer result, Operator operator, FormulaPart unknown) {
@@ -65,6 +66,17 @@ public class Formula implements Parcelable {
     }
 
     /**
+     * @return amount of milliseconds that user spent solving this formula
+     */
+    public long getTimeSpent() {
+        return timeSpent;
+    }
+
+    public void setTimeSpent(long timeSpent) {
+        this.timeSpent = timeSpent;
+    }
+
+    /**
      * @return value of unknown formula part
      */
     public String getUnknownValue() {
@@ -85,6 +97,7 @@ public class Formula implements Parcelable {
      * @return true if user solved the formula correctly
      */
     public boolean isEntryCorrect() {
+        // todo handle unknown operator, 30 +- 0 = 30
         return getUnknownValue().equals(getUserEntry());
     }
 
@@ -166,6 +179,7 @@ public class Formula implements Parcelable {
         dest.writeValue(this.result);
         dest.writeInt(this.operator == null ? -1 : this.operator.ordinal());
         dest.writeInt(this.unknown == null ? -1 : this.unknown.ordinal());
+        dest.writeValue(this.timeSpent);
         dest.writeSerializable(this.sb);
     }
 
@@ -177,6 +191,7 @@ public class Formula implements Parcelable {
         this.operator = tmpOperator == -1 ? null : Operator.values()[tmpOperator];
         int tmpUnknown = in.readInt();
         this.unknown = tmpUnknown == -1 ? null : FormulaPart.values()[tmpUnknown];
+        this.timeSpent = (Long) in.readValue(Long.class.getClassLoader());
         this.sb = (StringBuilder) in.readSerializable();
     }
 
