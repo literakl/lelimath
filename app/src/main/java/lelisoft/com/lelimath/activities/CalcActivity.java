@@ -32,6 +32,7 @@ public class CalcActivity extends Activity {
     public void resultClicked(View view) {
         if (formula.isEntryCorrect()) {
             prepareNewFormula();
+            displayFormula();
         }
     }
 
@@ -41,6 +42,10 @@ public class CalcActivity extends Activity {
     }
 
     public void operatorClicked(View view) {
+        // in future there may be mapping based on component's id
+        CharSequence operator = ((TextView)view).getText();
+        formula.append(operator);
+        unknown.append(operator);
     }
 
     @Override
@@ -71,7 +76,10 @@ public class CalcActivity extends Activity {
     protected void onResume() {
         Log.d(getClass().getSimpleName(), "onResume()");
         super.onResume();
+        displayFormula();
+    }
 
+    protected void displayFormula() {
         TextView view = getUnknownWidget(formula);
         LinearLayout parent = (LinearLayout) view.getParent();
         if (unknown == null) {
@@ -205,7 +213,10 @@ public class CalcActivity extends Activity {
         definition.setRightOperand(left);
         definition.setResult(left);
         definition.addOperator(Operator.PLUS);
+        definition.addOperator(Operator.MINUS);
         definition.addUnknown(FormulaPart.FIRST_OPERAND);
+        definition.addUnknown(FormulaPart.SECOND_OPERAND);
+        definition.addUnknown(FormulaPart.RESULT);
 
         return definition;
     }
