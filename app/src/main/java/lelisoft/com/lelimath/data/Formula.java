@@ -59,6 +59,11 @@ public class Formula implements Parcelable {
         return sb.toString();
     }
 
+    public void setUserEntry(CharSequence entry) {
+        sb.setLength(0);
+        sb.append(entry);
+    }
+
     /**
      * @return value of unknown formula part
      */

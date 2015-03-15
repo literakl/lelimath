@@ -44,8 +44,8 @@ public class CalcActivity extends Activity {
     public void operatorClicked(View view) {
         // in future there may be mapping based on component's id
         CharSequence operator = ((TextView)view).getText();
-        formula.append(operator);
-        unknown.append(operator);
+        formula.setUserEntry(operator);
+        unknown.setText(operator);
     }
 
     @Override
@@ -215,6 +215,7 @@ public class CalcActivity extends Activity {
         definition.addOperator(Operator.PLUS);
         definition.addOperator(Operator.MINUS);
         definition.addUnknown(FormulaPart.FIRST_OPERAND);
+        definition.addUnknown(FormulaPart.OPERATOR);
         definition.addUnknown(FormulaPart.SECOND_OPERAND);
         definition.addUnknown(FormulaPart.RESULT);
 
