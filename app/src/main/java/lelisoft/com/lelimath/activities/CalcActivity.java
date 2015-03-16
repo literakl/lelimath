@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ public class CalcActivity extends Activity {
     Formula formula;
     FormulaDefinition definition = getFormulaDefinition();
     TextView unknown;
+    Animation shake;
     long started, stopped, totalTimeSpent;
     int count;
 
@@ -64,6 +67,9 @@ public class CalcActivity extends Activity {
             prepareNewFormula();
             displayFormula();
             updateSpeedIndicator();
+        } else {
+            unknown.startAnimation(shake);
+            unknown.setText("");
         }
     }
 
@@ -104,6 +110,7 @@ public class CalcActivity extends Activity {
         super.onCreate(state);
 
         setContentView(R.layout.activity_calc);
+        shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
 
         if (formula == null && state == null) {
             prepareNewFormula();
