@@ -21,7 +21,11 @@ public class PuzzleActivity extends Activity {
 
     public void tileClicked(View view) {
         Log.d(logTag, "tileClicked()");
-        view.setAlpha(0);
+        if (view.getAlpha() > 0) {
+            view.setAlpha(0);
+        } else {
+            view.setAlpha(1);
+        }
     }
 
     @Override

@@ -5,10 +5,10 @@ android {
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId "lelisoft.com.lelimath"
-        minSdkVersion 15
-        targetSdkVersion 16
-        versionCode 100
-        versionName "1.0"
+        minSdkVersion 16
+        targetSdkVersion 21
+        versionCode 101
+        versionName "1.0.1"
     }
     buildTypes {
         release {
