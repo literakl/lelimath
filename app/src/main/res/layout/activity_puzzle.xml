@@ -5,21 +5,14 @@ android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/hidddenPictureArea">
 
-        <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/puzzlePicture"
-        android:src="@drawable/pic_cat_kitten"
-        android:scaleType="fitCenter"
-        android:clickable="false" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/overlayPicture"
-            android:src="@drawable/pic_koalas_on_tree" />
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/imageButton"
+            android:onClick="tileClicked" />
     </RelativeLayout>
 
     <LinearLayout

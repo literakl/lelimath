@@ -17,55 +17,12 @@ import lelisoft.com.lelimath.R;
  */
 public class PuzzleActivity extends Activity {
     private static final String logTag = CalcActivity.class.getSimpleName();
-    private Bitmap bg;
-    private Bitmap photo;
-    ImageView imgView;
+    View hiddenPicture;
 
-    private int bg_width;
-    private int bg_height;
-
-    private final View.OnTouchListener changeColorListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(final View v, MotionEvent event) {
-            Bitmap bmp = Bitmap.createBitmap(v.getDrawingCache());
-            int color = 0;
-            try {
-                color = bmp.getPixel((int) event.getX(), (int) event.getY());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (color == Color.TRANSPARENT) {
-                Log.d(logTag, "onTouch() transparent");
-                return false;
-            } else {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        Log.d(logTag, "onTouch() down");
-                        break;
-                    case MotionEvent.ACTION_OUTSIDE:
-                        Log.d(logTag, "onTouch() outside");
-                        break;
-                    case MotionEvent.ACTION_CANCEL:
-                        Log.d(logTag, "onTouch() cancel");
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        Log.d(logTag, "onTouch() move");
-                        break;
-                    case MotionEvent.ACTION_SCROLL:
-                        Log.d(logTag, "onTouch() scroll");
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        Log.d(logTag, "onTouch() up");
-                        Bitmap drawingCache = imgView.getDrawingCache();
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-
-            }
-        }
-    };
+    public void tileClicked(View view) {
+        Log.d(logTag, "tileClicked()");
+        view.setAlpha(0);
+    }
 
     @Override
     protected void onCreate(Bundle state) {
@@ -73,37 +30,11 @@ public class PuzzleActivity extends Activity {
         super.onCreate(state);
 
         setContentView(R.layout.activity_puzzle);
-        imgView = (ImageView) findViewById(R.id.overlayPicture);
-        if (imgView == null) {
-            Log.d(logTag, "onCreate() imgView not ready");
+        hiddenPicture = findViewById(R.id.hidddenPictureArea);
+        if (hiddenPicture == null) {
+            Log.d(logTag, "onCreate() hiddenPicture not ready");
             return;
         }
-        imgView.setDrawingCacheEnabled(true);
-        imgView.setOnTouchListener(changeColorListener);
-    }
-
-    private void scaleImage(){
-        if (photo != null) {
-
-            int width = photo.getWidth();
-            int height = photo.getHeight();
-
-            int new_width = 0;
-            int new_height = 0;
-
-            if (width != height) {
-                if (width > height) {
-                    new_height = bg_height;
-                    new_width = width * new_height / height;
-                } else {
-                    new_width = bg_width;
-                    new_height = height * new_width / width;
-                }
-            } else {
-                new_width = bg_width;
-                new_height = bg_height;
-            }
-            photo = Bitmap.createScaledBitmap(photo, new_width, new_height, true);
-        }
+        hiddenPicture.setBackgroundResource(R.drawable.pic_cute_girl);
     }
 }
