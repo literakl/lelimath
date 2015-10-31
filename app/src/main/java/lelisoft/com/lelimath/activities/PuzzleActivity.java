@@ -39,6 +39,6 @@ public class PuzzleActivity extends Activity {
             Log.d(logTag, "onCreate() hiddenPicture not ready");
             return;
         }
-        hiddenPicture.setBackgroundResource(R.drawable.pic_cute_girl);
+//        hiddenPicture.setBackgroundResource(R.drawable.pic_cute_girl);
     }
 }
