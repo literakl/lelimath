@@ -1,11 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".CalcActivity">
+<!--
     <item
         android:id="@+id/action_pause"
         android:title="@string/action_pause"
         android:icon="@drawable/ic_action_pause"
         android:orderInCategory="10"
         android:showAsAction="always" />
+-->
+    <item
+        android:id="@+id/action_elapsed"
+        android:title=""
+        android:orderInCategory="10"
+        android:showAsAction="withText" />
     <item
         android:id="@+id/action_medal"
         android:title="@string/action_pause"
