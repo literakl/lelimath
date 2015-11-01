@@ -179,7 +179,7 @@ public class TileGroupLayout extends ViewGroup {
         super.onDraw(canvas);
 
         getDrawingRect(layoutRect);
-        Misc.calcCenter(layoutRect.width(), layoutRect.height(), mCustomImage.getMinimumWidth(), mCustomImage.getMinimumHeight(), layoutRect);
+        Misc.centerHorizontally(layoutRect.width(), layoutRect.height(), mCustomImage.getMinimumWidth(), mCustomImage.getMinimumHeight(), layoutRect);
         mCustomImage.setBounds(layoutRect);
         mCustomImage.draw(canvas);
     }
