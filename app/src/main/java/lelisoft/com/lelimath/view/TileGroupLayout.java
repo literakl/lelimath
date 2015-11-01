@@ -2,7 +2,9 @@ package lelisoft.com.lelimath.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -30,6 +32,8 @@ public class TileGroupLayout extends ViewGroup {
     /** These are used for computing child frames based on their gravity. */
     private final Rect mTmpContainerRect = new Rect();
     private final Rect mTmpChildRect = new Rect();
+    private Drawable mCustomImage;
+    Rect layoutRect = new Rect(), pictureRect;
 
     public TileGroupLayout(Context context) {
         super(context);
@@ -41,6 +45,12 @@ public class TileGroupLayout extends ViewGroup {
 
     public TileGroupLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    public void setPictureResource(int resourceId) {
+        mCustomImage = getResources().getDrawable(resourceId);
+        pictureRect = mCustomImage.getBounds();
+        setWillNotDraw(false);
     }
 
     /**
@@ -162,6 +172,16 @@ public class TileGroupLayout extends ViewGroup {
                         mTmpChildRect.right, mTmpChildRect.bottom);
             }
         }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        getDrawingRect(layoutRect);
+        Misc.calcCenter(layoutRect.width(), layoutRect.height(), mCustomImage.getMinimumWidth(), mCustomImage.getMinimumHeight(), layoutRect);
+        mCustomImage.setBounds(layoutRect);
+        mCustomImage.draw(canvas);
     }
 
     // ----------------------------------------------------------------------

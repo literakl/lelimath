@@ -3,24 +3,27 @@
 android:orientation="vertical" android:layout_width="match_parent"
 android:layout_height="match_parent">
 
-    <lelisoft.com.lelimath.view.TileGridLayout
+    <lelisoft.com.lelimath.view.TileGroupLayout
+        xmlns:app="http://schemas.android.com/apk/res/lelisoft.com.lelimath"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="2"
         android:id="@+id/hidddenPictureArea">
 
         <ImageButton
+            app:layout_position="left"
             android:layout_width="50dp"
             android:layout_height="48dp"
             android:id="@+id/imageButton"
             android:onClick="tileClicked" />
 
         <ImageButton
+            app:layout_position="right"
             android:layout_width="50dp"
             android:layout_height="48dp"
             android:id="@+id/imageButton2"
             android:onClick="tileClicked" />
-    </lelisoft.com.lelimath.view.TileGridLayout>
+    </lelisoft.com.lelimath.view.TileGroupLayout>
 
     <LinearLayout
     android:orientation="horizontal"
