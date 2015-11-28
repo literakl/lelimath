@@ -3,25 +3,11 @@
 android:orientation="vertical" android:layout_width="match_parent"
 android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/hidddenPictureArea">
-
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/puzzlePicture"-->
-        <!--android:src="@drawable/pic_cat_kitten"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--android:clickable="false" />-->
-
-        <lelisoft.com.lelimath.view.TilesView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tiles"
-            android:onClick="tileClicked" />
-    </RelativeLayout>
+    <lelisoft.com.lelimath.view.TilesView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tiles"
+        android:onClick="tileClicked" />
 
     <LinearLayout
         android:orientation="horizontal"

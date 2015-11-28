@@ -10,6 +10,7 @@ import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.view.TilesView;
 
 /**
  * Guess picture type of activity
@@ -17,7 +18,7 @@ import lelisoft.com.lelimath.data.Values;
  */
 public class PuzzleActivity extends Activity {
     private static final String logTag = CalcActivity.class.getSimpleName();
-    View hiddenPicture;
+    TilesView tilesView;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -25,11 +26,11 @@ public class PuzzleActivity extends Activity {
         super.onCreate(state);
 
         setContentView(R.layout.activity_puzzle);
-        hiddenPicture = findViewById(R.id.hidddenPictureArea);
-        hiddenPicture.setBackgroundResource(R.drawable.pic_cute_girl);
+        tilesView = (TilesView) findViewById(R.id.tiles);
+        tilesView.setBackgroundPicture(R.drawable.pic_cute_girl);
+//        Formula formula = FormulaGenerator.generateRandomFormula(getFormulaDefinition());
     }
 
-//        Formula formula = FormulaGenerator.generateRandomFormula(getFormulaDefinition());
 
     public void tileClicked(View view) {
         Log.d(logTag, "tileClicked()");
