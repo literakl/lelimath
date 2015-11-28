@@ -31,7 +31,6 @@ public class PuzzleActivity extends Activity {
 //        Formula formula = FormulaGenerator.generateRandomFormula(getFormulaDefinition());
     }
 
-
     public void tileClicked(View view) {
         Log.d(logTag, "tileClicked()");
     }

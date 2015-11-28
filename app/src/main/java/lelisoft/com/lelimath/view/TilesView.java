@@ -7,14 +7,15 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
-import lelisoft.com.lelimath.R;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Interactive view that displays set of tiles that are erased when user selects correct answer.
@@ -24,11 +25,11 @@ public class TilesView extends View {
     private static final String logTag = TilesView.class.getSimpleName();
 
     Paint eraserPaint, veilPaint;
-    float xpad, ypad, w, h, ww, hh, posX, posY;
+    float xpad, ypad, w, h, ww, hh;
+    List<Pair<Float, Float>> points = new LinkedList<>();
 
     public TilesView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.d(logTag, "constructor()");
         setFocusable(true);
         eraserPaint = new Paint();
         eraserPaint.setColor(0xFFFFFFFF);
@@ -60,13 +61,15 @@ public class TilesView extends View {
         Log.d(logTag, "onDraw()");
         super.onDraw(canvas);
         canvas.drawRect(0, 0, w, h, veilPaint);
-        canvas.drawCircle(posX, posY, 250, eraserPaint);
+        for (Pair point : points) {
+            canvas.drawCircle((float) point.first, (float) point.second, 250, eraserPaint);
+        }
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_MOVE) {
-            posX = event.getX();
-            posY = event.getY();
+        Log.d(logTag, "onTouchEvent()");
+        if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            points.add(new Pair<>(event.getX(), event.getY()));
             invalidate();
         }
         return true;
