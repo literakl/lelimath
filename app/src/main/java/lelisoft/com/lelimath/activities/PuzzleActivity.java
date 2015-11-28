@@ -4,16 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.Values;
-import lelisoft.com.lelimath.logic.FormulaGenerator;
-import lelisoft.com.lelimath.view.TileGroupLayout;
 
 /**
  * Guess picture type of activity
@@ -21,7 +17,7 @@ import lelisoft.com.lelimath.view.TileGroupLayout;
  */
 public class PuzzleActivity extends Activity {
     private static final String logTag = CalcActivity.class.getSimpleName();
-    TileGroupLayout hiddenPicture;
+    View hiddenPicture;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -29,28 +25,15 @@ public class PuzzleActivity extends Activity {
         super.onCreate(state);
 
         setContentView(R.layout.activity_puzzle);
-        hiddenPicture = (TileGroupLayout) findViewById(R.id.hidddenPictureArea);
-        hiddenPicture.setPictureResource(R.drawable.pic_cute_girl);
-        appendTile();
-        appendTile();
-//        appendTile();
+        hiddenPicture = findViewById(R.id.hidddenPictureArea);
+        hiddenPicture.setBackgroundResource(R.drawable.pic_cute_girl);
     }
 
-    private void appendTile() {
-        Button view = (Button) getLayoutInflater().inflate(R.layout.template_tile, hiddenPicture, false);
-        view.setId(View.generateViewId());
-        view.setOnClickListener(tileListener);
-        Formula formula = FormulaGenerator.generateRandomFormula(getFormulaDefinition());
-        view.setText(formula.toString());
-        hiddenPicture.addView(view, view.getLayoutParams());
-    }
+//        Formula formula = FormulaGenerator.generateRandomFormula(getFormulaDefinition());
 
-    private View.OnClickListener tileListener = new View.OnClickListener() {
-        public void onClick(View view) {
-            Log.d(logTag, "tileClicked()");
-            hiddenPicture.removeView(view);
-        }
-    };
+    public void tileClicked(View view) {
+        Log.d(logTag, "tileClicked()");
+    }
 
     public FormulaDefinition getFormulaDefinition() {
         Values twoDigitsNumbers = new Values(0, 99);
