@@ -18,7 +18,7 @@ import lelisoft.com.lelimath.R;
  * layout manager that is relatively general, handling all layout cases.  You
  * can simplify it for more specific cases.
  *
- * Created by leos.literak on 31.10.2015.
+ * Modified by leos.literak on 31.10.2015.
  */
 
 @RemoteViews.RemoteView

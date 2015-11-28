@@ -127,6 +127,17 @@ public class Formula implements Parcelable {
         return "";
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append((unknown == FormulaPart.FIRST_OPERAND) ? "?": firstOperand);
+        sb.append(" ").append((unknown == FormulaPart.OPERATOR) ? "?" : operator).append(" ");
+        sb.append((unknown == FormulaPart.SECOND_OPERAND) ? "?": secondOperand);
+        sb.append(" = ");
+        sb.append((unknown == FormulaPart.RESULT) ? "?": result);
+        return sb.toString();
+    }
+
     public Integer getFirstOperand() {
         return firstOperand;
     }
