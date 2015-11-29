@@ -3,11 +3,11 @@ package lelisoft.com.lelimath.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Shader;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
@@ -24,18 +24,25 @@ import java.util.List;
 public class TilesView extends View {
     private static final String logTag = TilesView.class.getSimpleName();
 
-    Paint eraserPaint, veilPaint;
+    Canvas drawCanvas;
+    Bitmap canvasBitmap, fillBitmap;
+    Paint canvasPaint, eraserPaint, veilPaint;
     float xpad, ypad, w, h, ww, hh;
     List<Pair<Float, Float>> points = new LinkedList<>();
 
     public TilesView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setFocusable(true);
+        setupDrawing();
+    }
+
+    private void setupDrawing() {
         eraserPaint = new Paint();
-        eraserPaint.setColor(0xFFFFFFFF);
-        eraserPaint.setStyle(Paint.Style.FILL);
+        eraserPaint.setColor(Color.TRANSPARENT);
+        eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         veilPaint = new Paint();
         veilPaint.setColor(Color.GREEN);
+        canvasPaint = new Paint(Paint.DITHER_FLAG);
     }
 
     // http://developer.android.com/training/custom-views/custom-drawing.html
@@ -43,6 +50,10 @@ public class TilesView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         Log.d(logTag, "onSizeChanged()");
         super.onSizeChanged(w, h, oldw, oldh);
+        canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        drawCanvas = new Canvas(canvasBitmap);
+        drawCanvas.drawRect(0, 0, w, h, veilPaint);
+
         this.w = w;
         this.h = h;
 
@@ -59,17 +70,21 @@ public class TilesView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         Log.d(logTag, "onDraw()");
-        super.onDraw(canvas);
-        canvas.drawRect(0, 0, w, h, veilPaint);
-        for (Pair point : points) {
-            canvas.drawCircle((float) point.first, (float) point.second, 250, eraserPaint);
-        }
+        canvas.drawBitmap(fillBitmap, 0, 0, canvasPaint);
+        canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
+
+//        super.onDraw(canvas);
+//        canvas.drawRect(0, 0, w, h, veilPaint);
+//        for (Pair point : points) {
+//            canvas.drawCircle((float) point.first, (float) point.second, 250, eraserPaint);
+//        }
     }
 
     public boolean onTouchEvent(MotionEvent event) {
         Log.d(logTag, "onTouchEvent()");
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            points.add(new Pair<>(event.getX(), event.getY()));
+            drawCanvas.drawCircle(event.getX(), event.getY(), 150, eraserPaint);
+//            points.add(new Pair<>(event.getX(), event.getY()));
             invalidate();
         }
         return true;
@@ -77,8 +92,8 @@ public class TilesView extends View {
 
     public void setBackgroundPicture(int backgroundPicture) {
         Log.d(logTag, "setBackgroundPicture()");
-        Bitmap fillBMP = BitmapFactory.decodeResource(getContext().getResources(), backgroundPicture);
-        BitmapShader fillBmpShader = new BitmapShader(fillBMP, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        eraserPaint.setShader(fillBmpShader);
+//        InputStream is = context.getResources().openRawResource(backgroundPicture);
+//        mBitmap = BitmapFactory.decodeStream(is);
+        fillBitmap = BitmapFactory.decodeResource(getContext().getResources(), backgroundPicture);
     }
 }
