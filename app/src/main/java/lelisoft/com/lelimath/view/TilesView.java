@@ -8,14 +8,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Interactive view that displays set of tiles that are erased when user selects correct answer.
@@ -27,8 +24,8 @@ public class TilesView extends View {
     Canvas drawCanvas;
     Bitmap canvasBitmap, fillBitmap;
     Paint canvasPaint, eraserPaint, veilPaint;
+    Rect scaledPictureRect = new Rect(), origPictureRect;
     float xpad, ypad, w, h, ww, hh;
-    List<Pair<Float, Float>> points = new LinkedList<>();
 
     public TilesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -50,6 +47,12 @@ public class TilesView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         Log.d(logTag, "onSizeChanged()");
         super.onSizeChanged(w, h, oldw, oldh);
+
+        origPictureRect = new Rect(0, 0, fillBitmap.getWidth(), fillBitmap.getHeight());
+        getDrawingRect(scaledPictureRect);
+        Misc.centerHorizontally(scaledPictureRect.width(), scaledPictureRect.height(),
+                fillBitmap.getWidth(), fillBitmap.getHeight(), scaledPictureRect);
+
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
         drawCanvas.drawRect(0, 0, w, h, veilPaint);
@@ -70,14 +73,10 @@ public class TilesView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         Log.d(logTag, "onDraw()");
-        canvas.drawBitmap(fillBitmap, 0, 0, canvasPaint);
+//        mCustomImage.setBounds(scaledPictureRect);
+//        mCustomImage.draw(canvas);
+        canvas.drawBitmap(fillBitmap, origPictureRect, scaledPictureRect, canvasPaint);
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
-
-//        super.onDraw(canvas);
-//        canvas.drawRect(0, 0, w, h, veilPaint);
-//        for (Pair point : points) {
-//            canvas.drawCircle((float) point.first, (float) point.second, 250, eraserPaint);
-//        }
     }
 
     public boolean onTouchEvent(MotionEvent event) {
