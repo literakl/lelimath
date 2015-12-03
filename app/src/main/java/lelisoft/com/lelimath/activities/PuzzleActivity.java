@@ -1,8 +1,12 @@
 package lelisoft.com.lelimath.activities;
 
 import android.app.Activity;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
+import android.view.Menu;
 import android.view.View;
 
 import lelisoft.com.lelimath.R;
@@ -26,10 +30,38 @@ public class PuzzleActivity extends Activity {
         super.onCreate(state);
 
         setContentView(R.layout.activity_puzzle);
+        View puzzleView = findViewById(R.id.puzzleScreen);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        int widthdp = (int) (width / getResources().getDisplayMetrics().density);
+        int height = display.getHeight();
+        int heightdp = (int) (height / getResources().getDisplayMetrics().density);
+        Log.d(logTag, width + ", " + height);
+        Log.d(logTag, widthdp + ", " + heightdp);
+
+        TypedValue tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            int actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+            Log.d(logTag, "actionBarHeight " + actionBarHeight + ", height = " + (height - actionBarHeight));
+            Log.d(logTag, "actionBarHeight " + actionBarHeight + ", heightdp = " + (heightdp - actionBarHeight));
+        }
+
+        if (getTheme().resolveAttribute(android.R.attr.windowTitleSize, tv, true)) {
+            int actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+            Log.d(logTag, "windowTitleSize " + actionBarHeight + ", height = " + (height - actionBarHeight));
+            Log.d(logTag, "windowTitleSize " + actionBarHeight + ", heightdp = " + (heightdp - actionBarHeight));
+        }
+
         tilesView = (TilesView) findViewById(R.id.tiles);
         tilesView.setBackgroundPicture(R.drawable.pic_cute_girl);
 //        Formula formula = FormulaGenerator.generateRandomFormula(getFormulaDefinition());
     }
+
+    /*
+    int textAppearance = android.R.attr.textAppearanceLarge;
+    myTextView.setTextAppearance(context, textAppearance);
+     */
 
     public void tileClicked(View view) {
         Log.d(logTag, "tileClicked()");

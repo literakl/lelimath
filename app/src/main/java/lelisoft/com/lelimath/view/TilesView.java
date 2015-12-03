@@ -42,16 +42,42 @@ public class TilesView extends View {
         canvasPaint = new Paint(Paint.DITHER_FLAG);
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.d(logTag, "onMeasure(" + MeasureSpec.toString(widthMeasureSpec) + ", " + MeasureSpec.toString(heightMeasureSpec) + ")");
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        if (fillBitmap == null) {
+//            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        } else {
+//            setMeasuredDimension(MeasureSpec.makeMeasureSpec(fillBitmap.getWidth(), MeasureSpec.AT_MOST),
+//                    MeasureSpec.makeMeasureSpec(fillBitmap.getHeight(), MeasureSpec.AT_MOST));
+//        }
+/*
+        // Try for a width based on our minimum
+        int minw = getPaddingLeft() + getPaddingRight() + getSuggestedMinimumWidth();
+        int w = resolveSizeAndState(minw, widthMeasureSpec, 1);
+
+        // Whatever the width ends up being, ask for a height that would let the pie
+        // get as big as it can
+        int minh = MeasureSpec.getSize(w) - (int)mTextWidth + getPaddingBottom() + getPaddingTop();
+        int h = resolveSizeAndState(MeasureSpec.getSize(w) - (int)mTextWidth, heightMeasureSpec, 0);
+
+        setMeasuredDimension(w, h);
+*/
+    }
+
     // http://developer.android.com/training/custom-views/custom-drawing.html
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        Log.d(logTag, "onSizeChanged()");
+        Log.d(logTag, "onSizeChanged(" + w + ", " + h + ", " + oldh + ", " + oldw + ")");
         super.onSizeChanged(w, h, oldw, oldh);
 
-        origPictureRect = new Rect(0, 0, fillBitmap.getWidth(), fillBitmap.getHeight());
         getDrawingRect(scaledPictureRect);
-        Misc.centerHorizontally(scaledPictureRect.width(), scaledPictureRect.height(),
-                fillBitmap.getWidth(), fillBitmap.getHeight(), scaledPictureRect);
+        if (fillBitmap != null) {
+            origPictureRect = new Rect(0, 0, fillBitmap.getWidth(), fillBitmap.getHeight());
+            Misc.centerHorizontally(scaledPictureRect.width(), scaledPictureRect.height(),
+                    fillBitmap.getWidth(), fillBitmap.getHeight(), scaledPictureRect);
+        }
 
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
@@ -73,9 +99,9 @@ public class TilesView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         Log.d(logTag, "onDraw()");
-//        mCustomImage.setBounds(scaledPictureRect);
-//        mCustomImage.draw(canvas);
-        canvas.drawBitmap(fillBitmap, origPictureRect, scaledPictureRect, canvasPaint);
+        if (fillBitmap != null) {
+            canvas.drawBitmap(fillBitmap, origPictureRect, scaledPictureRect, canvasPaint);
+        }
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
     }
 
