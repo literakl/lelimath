@@ -1,6 +1,7 @@
 package lelisoft.com.lelimath.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,6 +24,10 @@ public class Values {
 
     public Values(List<Integer> listing) {
         this.listing = listing;
+    }
+
+    public Values(Integer[] listing) {
+        this.listing = Arrays.asList(listing);
     }
 
     public Values() {

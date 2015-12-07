@@ -1,19 +1,16 @@
 package lelisoft.com.lelimath.activities;
 
 import android.app.Activity;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Display;
-import android.view.Menu;
-import android.view.View;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.logic.PuzzleLogic;
+import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
 import lelisoft.com.lelimath.view.TilesView;
 
 /**
@@ -21,8 +18,9 @@ import lelisoft.com.lelimath.view.TilesView;
  * Author leos.literak on 18.10.2015.
  */
 public class PuzzleActivity extends Activity {
-    private static final String logTag = CalcActivity.class.getSimpleName();
+    private static final String logTag = PuzzleActivity.class.getSimpleName();
     TilesView tilesView;
+    PuzzleLogic logic = new PuzzleLogicImpl();
 
     @Override
     protected void onCreate(Bundle state) {
@@ -30,41 +28,61 @@ public class PuzzleActivity extends Activity {
         super.onCreate(state);
 
         setContentView(R.layout.activity_puzzle);
-        View puzzleView = findViewById(R.id.puzzleScreen);
-
-        Display display = getWindowManager().getDefaultDisplay();
-        int width = display.getWidth();
-        int widthdp = (int) (width / getResources().getDisplayMetrics().density);
-        int height = display.getHeight();
-        int heightdp = (int) (height / getResources().getDisplayMetrics().density);
-        Log.d(logTag, width + ", " + height);
-        Log.d(logTag, widthdp + ", " + heightdp);
-
-        TypedValue tv = new TypedValue();
-        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            int actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-            Log.d(logTag, "actionBarHeight " + actionBarHeight + ", height = " + (height - actionBarHeight));
-            Log.d(logTag, "actionBarHeight " + actionBarHeight + ", heightdp = " + (heightdp - actionBarHeight));
-        }
-
-        if (getTheme().resolveAttribute(android.R.attr.windowTitleSize, tv, true)) {
-            int actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-            Log.d(logTag, "windowTitleSize " + actionBarHeight + ", height = " + (height - actionBarHeight));
-            Log.d(logTag, "windowTitleSize " + actionBarHeight + ", heightdp = " + (heightdp - actionBarHeight));
-        }
-
         tilesView = (TilesView) findViewById(R.id.tiles);
         tilesView.setBackgroundPicture(R.drawable.pic_cute_girl);
-//        Formula formula = FormulaGenerator.generateRandomFormula(getFormulaDefinition());
+
+        logic.setFormulaDefinition(getFormulaDefinition());
+        logic.setLevel(PuzzleLogic.Level.EASY);
+        tilesView.setLogic(logic);
     }
 
-    /*
-    int textAppearance = android.R.attr.textAppearanceLarge;
-    myTextView.setTextAppearance(context, textAppearance);
-     */
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        Log.d(logTag, "onSaveInstanceState()");
+        super.onSaveInstanceState(state);
+//        state.putParcelable("formula", formula);
+    }
 
-    public void tileClicked(View view) {
-        Log.d(logTag, "tileClicked()");
+    @Override
+    protected void onPause() {
+        Log.d(logTag, "onPause()");
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(logTag, "onResume()");
+        super.onResume();
+    }
+    @Override
+    protected void onStart() {
+        Log.d(logTag, "onStart()");
+        super.onStart();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        Log.d(logTag, "onRestoreInstanceState()");
+        super.onRestoreInstanceState(state);
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d(logTag, "onRestart()");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(logTag, "onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(logTag, "onDestroy()");
+        tilesView.setLogic(null);// todo find proper place
+        super.onDestroy();
     }
 
     public FormulaDefinition getFormulaDefinition() {

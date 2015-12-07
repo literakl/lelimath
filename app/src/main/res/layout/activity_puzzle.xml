@@ -6,25 +6,7 @@
     tools:context=".activities.PuzzleActivity">
 
     <lelisoft.com.lelimath.view.TilesView
-        android:layout_width="wrap_content"
-        android:layout_height="0px"
-        android:layout_weight="1"
-        android:id="@+id/tiles"
-        android:onClick="tileClicked" />
-
-    <!--<LinearLayout-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/choices">-->
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="6"/>-->
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="23"/>-->
-    <!--</LinearLayout>-->
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tiles"/>
 </LinearLayout>

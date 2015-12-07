@@ -170,6 +170,52 @@ public class FormulaDefinition {
         this.unknowns = unknowns;
     }
 
+    /**
+     * Calculates number of characters neccessary for most long equation.
+     * @return maximum length
+     */
+    public int getMaximumFormulaLength() {
+        int length = 6;
+        length += getMaximumValueLength(leftOperand);
+        length += getMaximumValueLength(rightOperand);
+        length += getMaximumValueLength(result);
+        return length;
+    }
+
+    private int getMaximumValueLength(Values values) {
+        if (values == null) {
+            return 0;
+        }
+
+        if (values.listing != null && values.listing.size() > 0) {
+            int max = 0, size;
+            for (Integer number : values.listing) {
+                size = getNumberLength(number);
+                if (size > max) {
+                    max = size;
+                }
+            }
+            return max;
+        } else {
+            int a = getNumberLength(values.minValue);
+            int b = getNumberLength(values.maxValue);
+            return Math.max(a, b);
+        }
+    }
+
+    private int getNumberLength(int number) {
+        if (number == 0) {
+            return 1;
+        }
+        int size = 0;
+        if (number < 0) {
+            size += 1;
+            number *= -1;
+        }
+        size += (int)(Math.log10(number) + 1);
+        return size;
+    }
+
     public String toString() {
         return "FormulaDefinition{" +
                 "unknowns=" + unknowns +
