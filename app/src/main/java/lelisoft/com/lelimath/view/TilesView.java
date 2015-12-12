@@ -28,9 +28,9 @@ public class TilesView extends View {
     PuzzleLogic logic;
     Canvas drawCanvas;
     Bitmap canvasBitmap, fillBitmap;
-    Paint canvasPaint, eraserPaint, veilPaint, pencilPaint;
+    Paint canvasPaint, eraserPaint, veilPaint, pencilPaint, tilePaint;
     Rect scaledPictureRect = new Rect(), origPictureRect;
-    float xpad, ypad, w, h, ww, hh;
+    float w, h;
 
     public TilesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,7 +43,9 @@ public class TilesView extends View {
         eraserPaint.setColor(Color.TRANSPARENT);
         eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         veilPaint = new Paint();
-        veilPaint.setColor(Color.GREEN);
+        veilPaint.setColor(Color.DKGRAY);
+        tilePaint = new Paint();
+        tilePaint.setColor(Color.LTGRAY);
         canvasPaint = new Paint(Paint.DITHER_FLAG);
         pencilPaint = new TextPaint();
         pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xxlarge));
@@ -72,35 +74,14 @@ public class TilesView extends View {
         drawCanvas = new Canvas(canvasBitmap);
         drawCanvas.drawRect(0, 0, w, h, veilPaint);
 
-        calculateFormulaDimensions(5, eraserPaint);
-        pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xxsmall));
-        drawCanvas.drawText("xxsmall: 1 + 44 = 45", 100, 100, pencilPaint);
-        pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xsmall));
-        drawCanvas.drawText("xsmall: 1 + 44 = 45", 100, 150, pencilPaint);
-        pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_small));
-        drawCanvas.drawText("small: 1 + 44 = 45", 100, 200, pencilPaint);
-        pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_normal));
-        drawCanvas.drawText("normal: 1 + 44 = 45", 100, 250, pencilPaint);
-        pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_large));
-        drawCanvas.drawText("large: 1 + 44 = 45", 100, 300, pencilPaint);
-        pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xlarge));
-        drawCanvas.drawText("xlarge: 1 + 44 = 45", 100, 350, pencilPaint);
-        pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xxlarge));
-        drawCanvas.drawText("xxlarge: 1 + 44 = 45", 100, 400, pencilPaint);
-        pencilPaint.setTextSize(getResources().getDimension(R.dimen.tile_size));
-        drawCanvas.drawText("tile: 1 + 44 = 45", 100, 480, pencilPaint);
-
         this.w = w;
         this.h = h;
+//        float xpad = (float)(getPaddingLeft() + getPaddingRight());
+//        float ypad = (float)(getPaddingTop() + getPaddingBottom());
+//        ww = (float)w - xpad;
+//        hh = (float)h - ypad;
 
-        // Account for padding
-        xpad = (float)(getPaddingLeft() + getPaddingRight());
-        ypad = (float)(getPaddingTop() + getPaddingBottom());
-
-        // Account for the label
-//        if (mShowText) xpad += mTextWidth;
-        ww = (float)w - xpad;
-        hh = (float)h - ypad;
+        generateTiles();
     }
 
     @Override
@@ -122,19 +103,52 @@ public class TilesView extends View {
         return true;
     }
 
-    // https://chris.banes.me/2014/03/27/measuring-text/
-    private Rect calculateFormulaDimensions(int length, Paint paint) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i< length; i++) sb.append("9");
-        String mText = sb.toString();
+    private void generateTiles() {
+        float minTileSize = getResources().getDimension(R.dimen.tile_size);
+        float tilePadding = getResources().getDimension(R.dimen.tile_padding);
+        Rect maxFormulaSize = calculateFormulaDimension();
+        float tileWidth = Math.max(minTileSize, maxFormulaSize.width() + tilePadding);
+        float tileHeight = Math.max(minTileSize, maxFormulaSize.height() + tilePadding);
+        int maxTilesVertical = (int) Math.floor(h / tileHeight);
+        tileHeight = h / maxTilesVertical;
+        int maxTilesHorizontal = (int) Math.floor(w / tileWidth);
+        tileWidth = w / maxTilesHorizontal;
 
-        Rect textBounds = new Rect();
-        paint.getTextBounds(mText, 0, mText.length(), textBounds);
-        int width = (int) paint.measureText(mText);
-        int height = textBounds.height();
-        Log.d(logTag, "calculateFormulaDimensions()" + textBounds.width() + " " + width);
-        Log.d(logTag, "calculateFormulaDimensions()" + textBounds.height() + " " + height);
-        return textBounds;
+        float pointer = 0;
+        for (int i = 0; i < maxTilesHorizontal; i++) {
+            drawCanvas.drawLine(pointer, 0, pointer, h, tilePaint);
+            pointer += tileWidth;
+        }
+
+        pointer = 0;
+        for (int i = 0; i < maxTilesVertical; i++) {
+            drawCanvas.drawLine(0, pointer, w, pointer, tilePaint);
+            pointer += tileHeight;
+        }
+    }
+
+    /**
+     * Calculates minimum size of longest formula.
+     * https://chris.banes.me/2014/03/27/measuring-text/
+     * @return Rect having no padding
+     */
+    private Rect calculateFormulaDimension() {
+        String mText = getSampleFormula();
+        Rect rect = new Rect();
+        pencilPaint.getTextBounds(mText, 0, mText.length(), rect);
+        int textWidth = (int) pencilPaint.measureText(mText);
+        int textHeight = rect.height();
+        Log.d(logTag, "calculateFormulaDimensions()" + rect.width() + " " + textWidth);
+        Log.d(logTag, "calculateFormulaDimensions()" + rect.height() + " " + textHeight);
+        return rect;
+    }
+
+    private String getSampleFormula() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < logic.getFirstOperandMaximumLength(); i++) sb.append("3");
+        sb.append(" + ");
+        for (int i = 0; i < logic.getSecondOperandMaximumLength(); i++) sb.append("3");
+        return sb.toString();
     }
 
     public void setBackgroundPicture(int backgroundPicture) {

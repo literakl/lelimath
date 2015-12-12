@@ -17,6 +17,18 @@ public class PuzzleLogicImpl implements PuzzleLogic {
         this.definition = definition;
     }
 
+    public int getFirstOperandMaximumLength() {
+        return definition.getValuesMaximumLength(definition.getFirstOperand());
+    }
+
+    public int getSecondOperandMaximumLength() {
+        return definition.getValuesMaximumLength(definition.getSecondOperand());
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
     public void setLevel(Level level) {
         this.level = level;
     }

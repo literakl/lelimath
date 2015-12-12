@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.view;
 
+import android.content.Context;
 import android.graphics.Rect;
 
 /**
@@ -7,6 +8,21 @@ import android.graphics.Rect;
  * Created by leos.literak on 31.10.2015.
  */
 public class Misc {
+    static Float density = null;
+
+    public static float dpFromPx(final Context context, final float px) {
+        if (density == null) {
+            density = context.getResources().getDisplayMetrics().density;
+        }
+        return px / density;
+    }
+
+    public static float pxFromDp(final Context context, final float dp) {
+        if (density == null) {
+            density = context.getResources().getDisplayMetrics().density;
+        }
+        return dp * density;
+    }
 
     /**
      * Calculate the bounds of an image to fit inside a view after scaling and keeping the aspect ratio.

@@ -174,15 +174,15 @@ public class FormulaDefinition {
      * Calculates number of characters neccessary for most long equation.
      * @return maximum length
      */
-    public int getMaximumFormulaLength() {
+    public int getFormulaMaximumLength() {
         int length = 6;
-        length += getMaximumValueLength(leftOperand);
-        length += getMaximumValueLength(rightOperand);
-        length += getMaximumValueLength(result);
+        length += getValuesMaximumLength(leftOperand);
+        length += getValuesMaximumLength(rightOperand);
+        length += getValuesMaximumLength(result);
         return length;
     }
 
-    private int getMaximumValueLength(Values values) {
+    public int getValuesMaximumLength(Values values) {
         if (values == null) {
             return 0;
         }
