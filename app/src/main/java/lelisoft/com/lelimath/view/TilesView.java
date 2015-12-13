@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.Tile;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 
 /**
@@ -26,11 +27,13 @@ public class TilesView extends View {
     private static final String logTag = TilesView.class.getSimpleName();
 
     PuzzleLogic logic;
+    Tile[][] tiles;
     Canvas drawCanvas;
     Bitmap canvasBitmap, fillBitmap;
     Paint canvasPaint, eraserPaint, veilPaint, pencilPaint, tilePaint;
     Rect scaledPictureRect = new Rect(), origPictureRect;
-    float w, h;
+    TileRenderer tileRenderer;
+    float w, h, tileHeight, tileWidth, minTileSize, tilePadding;
 
     public TilesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,6 +42,8 @@ public class TilesView extends View {
     }
 
     private void setupDrawing() {
+        minTileSize = getResources().getDimension(R.dimen.tile_size);
+        tilePadding = getResources().getDimension(R.dimen.tile_padding);
         eraserPaint = new Paint();
         eraserPaint.setColor(Color.TRANSPARENT);
         eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -48,6 +53,7 @@ public class TilesView extends View {
         tilePaint.setColor(Color.LTGRAY);
         canvasPaint = new Paint(Paint.DITHER_FLAG);
         pencilPaint = new TextPaint();
+        pencilPaint.setColor(Color.YELLOW);
         pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xxlarge));
     }
 
@@ -73,6 +79,7 @@ public class TilesView extends View {
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
         drawCanvas.drawRect(0, 0, w, h, veilPaint);
+        tileRenderer = new TileRenderer(drawCanvas, pencilPaint, tilePaint);
 
         this.w = w;
         this.h = h;
@@ -104,43 +111,48 @@ public class TilesView extends View {
     }
 
     private void generateTiles() {
-        float minTileSize = getResources().getDimension(R.dimen.tile_size);
-        float tilePadding = getResources().getDimension(R.dimen.tile_padding);
-        Rect maxFormulaSize = calculateFormulaDimension();
-        float tileWidth = Math.max(minTileSize, maxFormulaSize.width() + tilePadding);
-        float tileHeight = Math.max(minTileSize, maxFormulaSize.height() + tilePadding);
+        Log.d(logTag, "generateTiles()");
+        String mText = getSampleFormula();
+        Rect rect = new Rect();
+        pencilPaint.getTextBounds(mText, 0, mText.length(), rect);
+        int maxWidth = (int) pencilPaint.measureText(mText);
+
+        tileWidth = Math.max(minTileSize, maxWidth + tilePadding);
+        tileHeight = Math.max(minTileSize, rect.height() + tilePadding);
         int maxTilesVertical = (int) Math.floor(h / tileHeight);
         tileHeight = h / maxTilesVertical;
         int maxTilesHorizontal = (int) Math.floor(w / tileWidth);
         tileWidth = w / maxTilesHorizontal;
 
-        float pointer = 0;
-        for (int i = 0; i < maxTilesHorizontal; i++) {
-            drawCanvas.drawLine(pointer, 0, pointer, h, tilePaint);
-            pointer += tileWidth;
-        }
-
-        pointer = 0;
+        long start = System.currentTimeMillis();
+        tiles = new Tile[maxTilesVertical][maxTilesHorizontal];
+        float pointerX, pointerY = 0;
         for (int i = 0; i < maxTilesVertical; i++) {
-            drawCanvas.drawLine(0, pointer, w, pointer, tilePaint);
-            pointer += tileHeight;
+            pointerX = 0;
+            for (int j = 0; j < maxTilesHorizontal; j++) {
+                tiles[i][j] = new Tile(pointerX, pointerY, pointerX + tileWidth, pointerY + tileHeight);
+                if (i == 0) {
+                    tiles[i][j].setTop(true);
+                    tiles[i][j].setY(1);
+                }
+                if (j == 0) {
+                    tiles[i][j].setLeft(true);
+                }
+                if (i == (maxTilesVertical - 1)) {
+                    tiles[i][j].setBottom(true);
+                    tiles[i][j].setYy(h - 1);
+                }
+                if (j == (maxTilesHorizontal - 1)) {
+                    tiles[i][j].setRight(true);
+                    tiles[i][j].setXx(w - 1);
+                }
+                tileRenderer.render(tiles[i][j]);
+                pointerX += tileWidth;
+            }
+            pointerY += tileHeight;
         }
-    }
 
-    /**
-     * Calculates minimum size of longest formula.
-     * https://chris.banes.me/2014/03/27/measuring-text/
-     * @return Rect having no padding
-     */
-    private Rect calculateFormulaDimension() {
-        String mText = getSampleFormula();
-        Rect rect = new Rect();
-        pencilPaint.getTextBounds(mText, 0, mText.length(), rect);
-        int textWidth = (int) pencilPaint.measureText(mText);
-        int textHeight = rect.height();
-        Log.d(logTag, "calculateFormulaDimensions()" + rect.width() + " " + textWidth);
-        Log.d(logTag, "calculateFormulaDimensions()" + rect.height() + " " + textHeight);
-        return rect;
+        Log.d(logTag, "draw " + (System.currentTimeMillis() - start));
     }
 
     private String getSampleFormula() {
