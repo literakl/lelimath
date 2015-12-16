@@ -13,15 +13,20 @@ import lelisoft.com.lelimath.data.Tile;
  */
 public class TileRenderer {
     Canvas canvas;
-    Paint pencilPaint, borderPaint;
+    Paint pencilPaint, borderPaint, eraserPaint;
 
-    public TileRenderer(Canvas canvas, Paint pencilPaint, Paint borderPaint) {
+    public TileRenderer(Canvas canvas, Paint pencilPaint, Paint borderPaint, Paint eraserPaint) {
         this.canvas = canvas;
         this.pencilPaint = pencilPaint;
         this.borderPaint = borderPaint;
+        this.eraserPaint = eraserPaint;
     }
 
     public void render(Tile tile) {
+        if (tile.isUncovered()) {
+            canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), eraserPaint);
+            return;
+        }
         // top line
         canvas.drawLine(tile.getX(), tile.getY(), tile.getXx(), tile.getY(), borderPaint);
         // left line

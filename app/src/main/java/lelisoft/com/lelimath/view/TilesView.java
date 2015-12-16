@@ -33,7 +33,8 @@ public class TilesView extends View {
     Paint canvasPaint, eraserPaint, veilPaint, pencilPaint, tilePaint;
     Rect scaledPictureRect = new Rect(), origPictureRect;
     TileRenderer tileRenderer;
-    float w, h, tileHeight, tileWidth, minTileSize, tilePadding;
+    float w, h, tileHeight, tileWidth, minTileSize, tilePadding, tileTouchMargin;
+    int maxTilesHorizontal, maxTilesVertical;
 
     public TilesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -44,6 +45,7 @@ public class TilesView extends View {
     private void setupDrawing() {
         minTileSize = getResources().getDimension(R.dimen.tile_size);
         tilePadding = getResources().getDimension(R.dimen.tile_padding);
+        tileTouchMargin = getResources().getDimension(R.dimen.tile_touch_margin);
         eraserPaint = new Paint();
         eraserPaint.setColor(Color.TRANSPARENT);
         eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -79,15 +81,10 @@ public class TilesView extends View {
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
         drawCanvas.drawRect(0, 0, w, h, veilPaint);
-        tileRenderer = new TileRenderer(drawCanvas, pencilPaint, tilePaint);
+        tileRenderer = new TileRenderer(drawCanvas, pencilPaint, tilePaint, eraserPaint);
 
         this.w = w;
         this.h = h;
-//        float xpad = (float)(getPaddingLeft() + getPaddingRight());
-//        float ypad = (float)(getPaddingTop() + getPaddingBottom());
-//        ww = (float)w - xpad;
-//        hh = (float)h - ypad;
-
         generateTiles();
     }
 
@@ -101,11 +98,24 @@ public class TilesView extends View {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d(logTag, "onTouchEvent()");
-        if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            drawCanvas.drawCircle(event.getX(), event.getY(), 150, eraserPaint);
-//            points.add(new Pair<>(event.getX(), event.getY()));
-            invalidate();
+        Log.d(logTag, "onTouchEvent(" + event.getX() + " " + event.getY() + " " + event.getSize() + ")");
+
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            int i = (int) (event.getY() / tileHeight);
+            int j = (int) (event.getX() / tileWidth);
+            if (i >= maxTilesVertical || j >= maxTilesHorizontal) {
+                Log.d(logTag, "onTouchEvent() - touch out of box");
+                return true;
+            }
+
+            if (tiles[i][j].isInside(event.getX(), event.getY(), tileTouchMargin)) {
+                tiles[i][j].setUncovered(true);
+                tileRenderer.render(tiles[i][j]);
+                invalidate();
+            } else {
+                Log.d(logTag, "onTouchEvent() - touch inactive area");
+
+            }
         }
         return true;
     }
@@ -119,9 +129,9 @@ public class TilesView extends View {
 
         tileWidth = Math.max(minTileSize, maxWidth + tilePadding);
         tileHeight = Math.max(minTileSize, rect.height() + tilePadding);
-        int maxTilesVertical = (int) Math.floor(h / tileHeight);
+        maxTilesVertical = (int) Math.floor(h / tileHeight);
         tileHeight = h / maxTilesVertical;
-        int maxTilesHorizontal = (int) Math.floor(w / tileWidth);
+        maxTilesHorizontal = (int) Math.floor(w / tileWidth);
         tileWidth = w / maxTilesHorizontal;
 
         long start = System.currentTimeMillis();

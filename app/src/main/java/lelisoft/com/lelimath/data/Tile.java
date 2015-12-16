@@ -76,8 +76,15 @@ public class Tile {
         this.bottom = bottom;
     }
 
-    public boolean isInside(float pointX, float pointY) {
-        return (x <= pointX && pointX <= xx && y <= pointY && pointY <= yy);
+    /**
+     * Verifies whether given point is inside this tile and outside of inactive touch margin area
+     * @param pointX pointer X position
+     * @param pointY pointer Y position
+     * @param margin size of inactive area around this tile
+     * @return true if point is within active area
+     */
+    public boolean isInside(float pointX, float pointY, float margin) {
+        return (x + margin <= pointX && pointX <= xx - margin && y + margin <= pointY && pointY <= yy - margin);
     }
 
     public float getX() {
