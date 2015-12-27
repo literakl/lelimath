@@ -13,20 +13,26 @@ import lelisoft.com.lelimath.data.Tile;
  */
 public class TileRenderer {
     Canvas canvas;
-    Paint pencilPaint, borderPaint, eraserPaint;
+    Paint pencilPaint, borderPaint, eraserPaint, veilPaint, highlightPaint;
 
-    public TileRenderer(Canvas canvas, Paint pencilPaint, Paint borderPaint, Paint eraserPaint) {
+    public TileRenderer(Canvas canvas, Paint pencilPaint, Paint borderPaint, Paint eraserPaint, Paint veilPaint, Paint highlightPaint) {
         this.canvas = canvas;
         this.pencilPaint = pencilPaint;
         this.borderPaint = borderPaint;
         this.eraserPaint = eraserPaint;
+        this.veilPaint = veilPaint;
+        this.highlightPaint = highlightPaint;
     }
 
     public void render(Tile tile) {
         if (tile.isUncovered()) {
             canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), eraserPaint);
             return;
+        } else if (tile.isSelected()) {
+            canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), highlightPaint);
+            return;
         }
+        canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), veilPaint);
         // top line
         canvas.drawLine(tile.getX(), tile.getY(), tile.getXx(), tile.getY(), borderPaint);
         // left line
@@ -40,12 +46,7 @@ public class TileRenderer {
             canvas.drawLine(tile.getX(), tile.getYy(), tile.getXx(), tile.getYy(), borderPaint);
         }
 
-        StringBuilder sb = new StringBuilder();
-        if (tile.isLeft()) sb.append("L");
-        if (tile.isRight()) sb.append("R");
-        if (tile.isTop()) sb.append("T");
-        if (tile.isBottom()) sb.append("B");
-        if (tile.isMiddle()) sb.append("Middle");
+        StringBuilder sb = new StringBuilder("23 + 36");
         String mText = sb.toString();
 
 //        Formula formula = tile.getFormula();

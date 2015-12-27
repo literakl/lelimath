@@ -28,9 +28,10 @@ public class TilesView extends View {
 
     PuzzleLogic logic;
     Tile[][] tiles;
+    Tile selectedTile;
     Canvas drawCanvas;
     Bitmap canvasBitmap, fillBitmap;
-    Paint canvasPaint, eraserPaint, veilPaint, pencilPaint, tilePaint;
+    Paint canvasPaint, eraserPaint, veilPaint, pencilPaint, tilePaint, highlightPaint;
     Rect scaledPictureRect = new Rect(), origPictureRect;
     TileRenderer tileRenderer;
     float w, h, tileHeight, tileWidth, minTileSize, tilePadding, tileTouchMargin;
@@ -51,6 +52,8 @@ public class TilesView extends View {
         eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         veilPaint = new Paint();
         veilPaint.setColor(Color.DKGRAY);
+        highlightPaint = new Paint();
+        highlightPaint.setColor(Color.YELLOW);
         tilePaint = new Paint();
         tilePaint.setColor(Color.LTGRAY);
         canvasPaint = new Paint(Paint.DITHER_FLAG);
@@ -81,7 +84,7 @@ public class TilesView extends View {
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
         drawCanvas.drawRect(0, 0, w, h, veilPaint);
-        tileRenderer = new TileRenderer(drawCanvas, pencilPaint, tilePaint, eraserPaint);
+        tileRenderer = new TileRenderer(drawCanvas, pencilPaint, tilePaint, eraserPaint, veilPaint, highlightPaint);
 
         this.w = w;
         this.h = h;
@@ -104,13 +107,25 @@ public class TilesView extends View {
             int i = (int) (event.getY() / tileHeight);
             int j = (int) (event.getX() / tileWidth);
             if (i >= maxTilesVertical || j >= maxTilesHorizontal) {
-                Log.d(logTag, "onTouchEvent() - touch out of box");
+                Log.e(logTag, "onTouchEvent() - touch out of box");
                 return true;
             }
 
-            if (tiles[i][j].isInside(event.getX(), event.getY(), tileTouchMargin)) {
-                tiles[i][j].setUncovered(true);
-                tileRenderer.render(tiles[i][j]);
+            Tile tile = tiles[i][j];
+            if (tile.isInside(event.getX(), event.getY(), tileTouchMargin)) {
+                if (tile == selectedTile) {
+                    tile.setSelected(false);
+                    selectedTile = null;
+                } else {
+                    if (selectedTile != null) {
+                        selectedTile.setSelected(false);
+                        tileRenderer.render(selectedTile);
+                    }
+                    tile.setSelected(true);
+                    selectedTile = tile;
+                }
+
+                tileRenderer.render(tile);
                 invalidate();
             } else {
                 Log.d(logTag, "onTouchEvent() - touch inactive area");
