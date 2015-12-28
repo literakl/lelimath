@@ -31,10 +31,12 @@ public class TilesView extends View {
     Tile selectedTile;
     Canvas drawCanvas;
     Bitmap canvasBitmap, fillBitmap;
-    Paint canvasPaint, eraserPaint, veilPaint, pencilPaint, tilePaint, highlightPaint;
-    Rect scaledPictureRect = new Rect(), origPictureRect;
+    Paint canvasPaint, eraserPaint, bgPaint, tileBgPaint, tileTextPaint, tileBorderPaint, selectedTileBgPaint;
+    Rect tilesCardRect = new Rect();
+    Rect origPictureRect, scaledPictureRect = new Rect();
     TileRenderer tileRenderer;
-    float w, h, tileHeight, tileWidth, minTileSize, tilePadding, tileTouchMargin;
+    float w, h, tileHeight, tileWidth, minTileSize;
+    int padding, tilePadding, tileTouchMargin;
     int maxTilesHorizontal, maxTilesVertical;
 
     public TilesView(Context context, AttributeSet attrs) {
@@ -44,22 +46,26 @@ public class TilesView extends View {
     }
 
     private void setupDrawing() {
+        padding = (int) getResources().getDimension(R.dimen.tiles_view_padding);
         minTileSize = getResources().getDimension(R.dimen.tile_size);
-        tilePadding = getResources().getDimension(R.dimen.tile_padding);
-        tileTouchMargin = getResources().getDimension(R.dimen.tile_touch_margin);
+        tilePadding = (int) getResources().getDimension(R.dimen.tile_padding);
+        tileTouchMargin = (int) getResources().getDimension(R.dimen.tile_touch_margin);
+
         eraserPaint = new Paint();
         eraserPaint.setColor(Color.TRANSPARENT);
         eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        veilPaint = new Paint();
-        veilPaint.setColor(Color.DKGRAY);
-        highlightPaint = new Paint();
-        highlightPaint.setColor(Color.YELLOW);
-        tilePaint = new Paint();
-        tilePaint.setColor(Color.LTGRAY);
+        bgPaint = new Paint();
+        bgPaint.setColor(Color.WHITE);
+        tileBgPaint = new Paint();
+        tileBgPaint.setColor(Color.LTGRAY);
+        selectedTileBgPaint = new Paint();
+        selectedTileBgPaint.setColor(Color.YELLOW);
+        tileBorderPaint = new Paint();
+        tileBorderPaint.setColor(Color.DKGRAY);
         canvasPaint = new Paint(Paint.DITHER_FLAG);
-        pencilPaint = new TextPaint();
-        pencilPaint.setColor(Color.YELLOW);
-        pencilPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xxlarge));
+        tileTextPaint = new TextPaint();
+        tileTextPaint.setColor(Color.YELLOW);
+        tileTextPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xxlarge));
     }
 
     @Override
@@ -74,20 +80,24 @@ public class TilesView extends View {
         Log.d(logTag, "onSizeChanged(" + w + ", " + h + ", " + oldh + ", " + oldw + ")");
         super.onSizeChanged(w, h, oldw, oldh);
 
-        getDrawingRect(scaledPictureRect);
-        if (fillBitmap != null) {
-            origPictureRect = new Rect(0, 0, fillBitmap.getWidth(), fillBitmap.getHeight());
-            Misc.centerHorizontally(scaledPictureRect.width(), scaledPictureRect.height(),
-                    fillBitmap.getWidth(), fillBitmap.getHeight(), scaledPictureRect);
+        this.w = w;
+        this.h = h;
+        tilesCardRect.set(padding, padding, w - padding, h - padding);
+
+        if (fillBitmap == null) {
+            Log.e(logTag, "picture bitmap is empty!");
+            return;
         }
+
+        origPictureRect = new Rect(0, 0, fillBitmap.getWidth(), fillBitmap.getHeight());
+        Misc.centerHorizontally(tilesCardRect.width(), tilesCardRect.height(),
+                                fillBitmap.getWidth(), fillBitmap.getHeight(), scaledPictureRect);
 
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
-        drawCanvas.drawRect(0, 0, w, h, veilPaint);
-        tileRenderer = new TileRenderer(drawCanvas, pencilPaint, tilePaint, eraserPaint, veilPaint, highlightPaint);
+        drawCanvas.drawRect(0, 0, w, h, bgPaint);
+        tileRenderer = new TileRenderer(drawCanvas, tileTextPaint, tileBorderPaint, tileBgPaint, selectedTileBgPaint, eraserPaint);
 
-        this.w = w;
-        this.h = h;
         generateTiles();
     }
 
@@ -104,8 +114,11 @@ public class TilesView extends View {
         Log.d(logTag, "onTouchEvent(" + event.getX() + " " + event.getY() + " " + event.getSize() + ")");
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            int i = (int) (event.getY() / tileHeight);
-            int j = (int) (event.getX() / tileWidth);
+            if (! tilesCardRect.contains((int) event.getX(), (int) event.getY())) {
+                return true;
+            }
+            int i = (int) ((event.getY() - padding) / tileHeight);
+            int j = (int) ((event.getX() - padding) / tileWidth);
             if (i >= maxTilesVertical || j >= maxTilesHorizontal) {
                 Log.e(logTag, "onTouchEvent() - touch out of box");
                 return true;
@@ -128,7 +141,7 @@ public class TilesView extends View {
                 tileRenderer.render(tile);
                 invalidate();
             } else {
-                Log.d(logTag, "onTouchEvent() - touch inactive area");
+                Log.d(logTag, "onTouchEvent() - inactive area touched " + tile);
 
             }
         }
@@ -137,39 +150,39 @@ public class TilesView extends View {
 
     private void generateTiles() {
         Log.d(logTag, "generateTiles()");
+        long start = System.currentTimeMillis();
         String mText = getSampleFormula();
         Rect rect = new Rect();
-        pencilPaint.getTextBounds(mText, 0, mText.length(), rect);
-        int maxWidth = (int) pencilPaint.measureText(mText);
+        tileTextPaint.getTextBounds(mText, 0, mText.length(), rect);
+        int maxWidth = (int) tileTextPaint.measureText(mText);
 
         tileWidth = Math.max(minTileSize, maxWidth + tilePadding);
         tileHeight = Math.max(minTileSize, rect.height() + tilePadding);
-        maxTilesVertical = (int) Math.floor(h / tileHeight);
-        tileHeight = h / maxTilesVertical;
-        maxTilesHorizontal = (int) Math.floor(w / tileWidth);
-        tileWidth = w / maxTilesHorizontal;
+        maxTilesVertical = (int) Math.floor(tilesCardRect.height() / tileHeight);
+        tileHeight = tilesCardRect.height() / maxTilesVertical;
+        maxTilesHorizontal = (int) Math.floor(tilesCardRect.width() / tileWidth);
+        tileWidth = tilesCardRect.width() / maxTilesHorizontal;
 
-        long start = System.currentTimeMillis();
         tiles = new Tile[maxTilesVertical][maxTilesHorizontal];
-        float pointerX, pointerY = 0;
+        float pointerX, pointerY = tilesCardRect.top;
         for (int i = 0; i < maxTilesVertical; i++) {
-            pointerX = 0;
+            pointerX = tilesCardRect.left;
             for (int j = 0; j < maxTilesHorizontal; j++) {
                 tiles[i][j] = new Tile(pointerX, pointerY, pointerX + tileWidth, pointerY + tileHeight);
                 if (i == 0) {
                     tiles[i][j].setTop(true);
-                    tiles[i][j].setY(1);
+                    tiles[i][j].setY(tiles[i][j].getY() + 1);
                 }
                 if (j == 0) {
                     tiles[i][j].setLeft(true);
                 }
                 if (i == (maxTilesVertical - 1)) {
                     tiles[i][j].setBottom(true);
-                    tiles[i][j].setYy(h - 1);
+                    tiles[i][j].setYy(tiles[i][j].getYy() - 1);
                 }
                 if (j == (maxTilesHorizontal - 1)) {
                     tiles[i][j].setRight(true);
-                    tiles[i][j].setXx(w - 1);
+                    tiles[i][j].setXx(tiles[i][j].getXx() - 1);
                 }
                 tileRenderer.render(tiles[i][j]);
                 pointerX += tileWidth;

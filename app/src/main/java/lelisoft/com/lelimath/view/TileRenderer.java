@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.Tile;
 
 /**
@@ -13,15 +12,15 @@ import lelisoft.com.lelimath.data.Tile;
  */
 public class TileRenderer {
     Canvas canvas;
-    Paint pencilPaint, borderPaint, eraserPaint, veilPaint, highlightPaint;
+    Paint textPaint, borderPaint, eraserPaint, bgPaint, selectedBgPaint;
 
-    public TileRenderer(Canvas canvas, Paint pencilPaint, Paint borderPaint, Paint eraserPaint, Paint veilPaint, Paint highlightPaint) {
+    public TileRenderer(Canvas canvas, Paint textPaint, Paint borderPaint, Paint bgPaint, Paint selectedBgPaint, Paint eraserPaint) {
         this.canvas = canvas;
-        this.pencilPaint = pencilPaint;
+        this.textPaint = textPaint;
         this.borderPaint = borderPaint;
         this.eraserPaint = eraserPaint;
-        this.veilPaint = veilPaint;
-        this.highlightPaint = highlightPaint;
+        this.bgPaint = bgPaint;
+        this.selectedBgPaint = selectedBgPaint;
     }
 
     public void render(Tile tile) {
@@ -29,10 +28,10 @@ public class TileRenderer {
             canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), eraserPaint);
             return;
         } else if (tile.isSelected()) {
-            canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), highlightPaint);
+            canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), selectedBgPaint);
             return;
         }
-        canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), veilPaint);
+        canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), bgPaint);
         // top line
         canvas.drawLine(tile.getX(), tile.getY(), tile.getXx(), tile.getY(), borderPaint);
         // left line
@@ -54,14 +53,14 @@ public class TileRenderer {
 //                .append(" ").append(formula.getSecondOperand());
 
         Rect rect = new Rect();
-        pencilPaint.getTextBounds(mText, 0, mText.length(), rect);
-        int textWidth = (int) pencilPaint.measureText(mText);
+        textPaint.getTextBounds(mText, 0, mText.length(), rect);
+        int textWidth = (int) textPaint.measureText(mText);
         int textHeight = rect.height();
 
         canvas.drawText(mText,
                 tile.getX() + (tile.getXx() - tile.getX() - textWidth) / 2f,
                 tile.getYy() - (tile.getYy() - tile.getY() - textHeight) / 2f,
-                pencilPaint
+                textPaint
         );
     }
 }

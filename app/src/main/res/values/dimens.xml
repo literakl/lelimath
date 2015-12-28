@@ -11,6 +11,7 @@
     <dimen name="text_size_xlarge">22sp</dimen>
     <dimen name="text_size_xxlarge">24sp</dimen>
     <!-- https://www.google.com/design/spec/layout/metrics-keylines.html#metrics-keylines-touch-target-size -->
+    <dimen name="tiles_view_padding">12dp</dimen>
     <dimen name="tile_size">72dp</dimen>
     <dimen name="tile_padding">8dp</dimen>
     <dimen name="tile_touch_margin">10dp</dimen>
