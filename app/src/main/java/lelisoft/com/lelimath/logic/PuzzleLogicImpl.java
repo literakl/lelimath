@@ -25,6 +25,11 @@ public class PuzzleLogicImpl implements PuzzleLogic {
         return definition.getValuesMaximumLength(definition.getSecondOperand());
     }
 
+    @Override
+    public int getResultMaximumLength() {
+        return definition.getValuesMaximumLength(definition.getResult());
+    }
+
     public Level getLevel() {
         return level;
     }

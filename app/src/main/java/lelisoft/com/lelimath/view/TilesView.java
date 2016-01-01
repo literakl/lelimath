@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -16,6 +17,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.Formula;
+import lelisoft.com.lelimath.data.FormulaPart;
+import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.Tile;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 
@@ -32,12 +36,11 @@ public class TilesView extends View {
     Canvas drawCanvas;
     Bitmap canvasBitmap, fillBitmap;
     Paint canvasPaint, eraserPaint, bgPaint, tileBgPaint, tileTextPaint, tileBorderPaint, selectedTileBgPaint;
-    Rect tilesCardRect = new Rect();
+    Rect tilesCardRect = new Rect(), slatesCardRect = new Rect();
     Rect origPictureRect, scaledPictureRect = new Rect();
     TileRenderer tileRenderer;
-    float w, h, tileHeight, tileWidth, minTileSize;
-    int padding, tilePadding, tileTouchMargin;
-    int maxTilesHorizontal, maxTilesVertical;
+    float w, h, tileHeight, tileWidth, slateHeight, slateWidth, roundRect;
+    int padding, tilePadding, minTileSize, tileTouchMargin, slatePadding, slateMargin, minSlateSize;
 
     public TilesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,9 +50,13 @@ public class TilesView extends View {
 
     private void setupDrawing() {
         padding = (int) getResources().getDimension(R.dimen.tiles_view_padding);
-        minTileSize = getResources().getDimension(R.dimen.tile_size);
+        minTileSize = (int) getResources().getDimension(R.dimen.tile_size);
         tilePadding = (int) getResources().getDimension(R.dimen.tile_padding);
         tileTouchMargin = (int) getResources().getDimension(R.dimen.tile_touch_margin);
+        minSlateSize = (int) getResources().getDimension(R.dimen.slate_size);
+        slatePadding = (int) getResources().getDimension(R.dimen.slate_padding);
+        slateMargin = (int) getResources().getDimension(R.dimen.slate_margin);
+        roundRect = (int) getResources().getDimension(R.dimen.card_round_rect);
 
         eraserPaint = new Paint();
         eraserPaint.setColor(Color.TRANSPARENT);
@@ -61,11 +68,11 @@ public class TilesView extends View {
         selectedTileBgPaint = new Paint();
         selectedTileBgPaint.setColor(Color.YELLOW);
         tileBorderPaint = new Paint();
-        tileBorderPaint.setColor(Color.DKGRAY);
+        tileBorderPaint.setColor(Color.GRAY);
         canvasPaint = new Paint(Paint.DITHER_FLAG);
         tileTextPaint = new TextPaint();
-        tileTextPaint.setColor(Color.YELLOW);
-        tileTextPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xxlarge));
+        tileTextPaint.setColor(Color.BLACK);
+        tileTextPaint.setTextSize(getResources().getDimension(R.dimen.text_size_xlarge));
     }
 
     @Override
@@ -79,10 +86,14 @@ public class TilesView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         Log.d(logTag, "onSizeChanged(" + w + ", " + h + ", " + oldh + ", " + oldw + ")");
         super.onSizeChanged(w, h, oldw, oldh);
-
         this.w = w;
         this.h = h;
-        tilesCardRect.set(padding, padding, w - padding, h - padding);
+
+        calculateTileRequestedDimensions();
+
+        int slatesHeight = (int) (2 * (slateHeight + slateMargin));
+        slatesCardRect.set(padding, h - padding - slatesHeight, w - padding, h - padding);
+        tilesCardRect.set(padding, padding, w - padding, slatesCardRect.top - padding);
 
         if (fillBitmap == null) {
             Log.e(logTag, "picture bitmap is empty!");
@@ -96,6 +107,8 @@ public class TilesView extends View {
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
         drawCanvas.drawRect(0, 0, w, h, bgPaint);
+        drawCanvas.drawRoundRect(new RectF(tilesCardRect), roundRect, roundRect, tileBgPaint);
+        drawCanvas.drawRoundRect(new RectF(slatesCardRect), roundRect, roundRect, tileBgPaint);
         tileRenderer = new TileRenderer(drawCanvas, tileTextPaint, tileBorderPaint, tileBgPaint, selectedTileBgPaint, eraserPaint);
 
         generateTiles();
@@ -119,8 +132,8 @@ public class TilesView extends View {
             }
             int i = (int) ((event.getY() - padding) / tileHeight);
             int j = (int) ((event.getX() - padding) / tileWidth);
-            if (i >= maxTilesVertical || j >= maxTilesHorizontal) {
-                Log.e(logTag, "onTouchEvent() - touch out of box");
+            if (i >= tiles.length || j >= tiles[0].length) {
+                Log.e(logTag, "onTouchEvent() - touch out of box!");
                 return true;
             }
 
@@ -151,24 +164,23 @@ public class TilesView extends View {
     private void generateTiles() {
         Log.d(logTag, "generateTiles()");
         long start = System.currentTimeMillis();
-        String mText = getSampleFormula();
-        Rect rect = new Rect();
-        tileTextPaint.getTextBounds(mText, 0, mText.length(), rect);
-        int maxWidth = (int) tileTextPaint.measureText(mText);
 
-        tileWidth = Math.max(minTileSize, maxWidth + tilePadding);
-        tileHeight = Math.max(minTileSize, rect.height() + tilePadding);
-        maxTilesVertical = (int) Math.floor(tilesCardRect.height() / tileHeight);
-        tileHeight = tilesCardRect.height() / maxTilesVertical;
-        maxTilesHorizontal = (int) Math.floor(tilesCardRect.width() / tileWidth);
-        tileWidth = tilesCardRect.width() / maxTilesHorizontal;
 
-        tiles = new Tile[maxTilesVertical][maxTilesHorizontal];
+        int maxVerticalTiles = (int) Math.floor(tilesCardRect.height() / tileHeight);
+        int maxHorizontalTiles = (int) Math.floor(tilesCardRect.width() / tileWidth);
+
+        tileHeight = tilesCardRect.height() / maxVerticalTiles;
+        tileWidth = tilesCardRect.width() / maxHorizontalTiles;
+
+        int horizontalTilesCount, verticalTilesCount, horizontalSlatesCount, verticalSlatesCount;
+
+        tiles = new Tile[maxVerticalTiles][maxHorizontalTiles];
         float pointerX, pointerY = tilesCardRect.top;
-        for (int i = 0; i < maxTilesVertical; i++) {
+        for (int i = 0; i < maxVerticalTiles; i++) {
             pointerX = tilesCardRect.left;
-            for (int j = 0; j < maxTilesHorizontal; j++) {
+            for (int j = 0; j < maxHorizontalTiles; j++) {
                 tiles[i][j] = new Tile(pointerX, pointerY, pointerX + tileWidth, pointerY + tileHeight);
+                tiles[i][j].setFormula(new Formula(23, 36, 59, Operator.PLUS, FormulaPart.RESULT));
                 if (i == 0) {
                     tiles[i][j].setTop(true);
                     tiles[i][j].setY(tiles[i][j].getY() + 1);
@@ -176,11 +188,11 @@ public class TilesView extends View {
                 if (j == 0) {
                     tiles[i][j].setLeft(true);
                 }
-                if (i == (maxTilesVertical - 1)) {
+                if (i == (maxVerticalTiles - 1)) {
                     tiles[i][j].setBottom(true);
                     tiles[i][j].setYy(tiles[i][j].getYy() - 1);
                 }
-                if (j == (maxTilesHorizontal - 1)) {
+                if (j == (maxHorizontalTiles - 1)) {
                     tiles[i][j].setRight(true);
                     tiles[i][j].setXx(tiles[i][j].getXx() - 1);
                 }
@@ -193,11 +205,33 @@ public class TilesView extends View {
         Log.d(logTag, "draw " + (System.currentTimeMillis() - start));
     }
 
+    /**
+     * Finds neccessary space for tile/slate having longest possible formula including padding
+     */
+    private void calculateTileRequestedDimensions() {
+        Rect rect = new Rect();
+        String mText = getSampleFormula();
+        tileTextPaint.getTextBounds(mText, 0, mText.length(), rect);
+        int maxWidth = (int) tileTextPaint.measureText(mText);
+        tileWidth = Math.max(minTileSize, maxWidth + tilePadding);
+        tileHeight = slateHeight = Math.max(minTileSize, rect.height() + tilePadding);
+
+        mText = getSampleResult();
+        maxWidth = (int) tileTextPaint.measureText(mText);
+        slateWidth = Math.max(minSlateSize, maxWidth + slatePadding);
+    }
+
     private String getSampleFormula() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < logic.getFirstOperandMaximumLength(); i++) sb.append("3");
         sb.append(" + ");
         for (int i = 0; i < logic.getSecondOperandMaximumLength(); i++) sb.append("3");
+        return sb.toString();
+    }
+
+    private String getSampleResult() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < logic.getResultMaximumLength(); i++) sb.append("3");
         return sb.toString();
     }
 

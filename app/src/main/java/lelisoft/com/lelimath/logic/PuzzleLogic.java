@@ -17,6 +17,8 @@ public interface PuzzleLogic {
 
     public int getSecondOperandMaximumLength();
 
+    public int getResultMaximumLength();
+
     public Level getLevel();
 
     public void setLevel(Level level);
