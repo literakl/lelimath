@@ -1,9 +1,16 @@
 package lelisoft.com.lelimath.view;
 
+import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.text.TextPaint;
 
+import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Tile;
 
 /**
@@ -13,14 +20,27 @@ import lelisoft.com.lelimath.data.Tile;
 public class TileRenderer {
     Canvas canvas;
     Paint textPaint, borderPaint, eraserPaint, bgPaint, selectedBgPaint;
+    float roundRadius;
 
-    public TileRenderer(Canvas canvas, Paint textPaint, Paint borderPaint, Paint bgPaint, Paint selectedBgPaint, Paint eraserPaint) {
+    public TileRenderer(Context context, Canvas canvas) {
         this.canvas = canvas;
-        this.textPaint = textPaint;
-        this.borderPaint = borderPaint;
-        this.eraserPaint = eraserPaint;
-        this.bgPaint = bgPaint;
-        this.selectedBgPaint = selectedBgPaint;
+        bgPaint = new Paint();
+        bgPaint.setAntiAlias(true);
+        bgPaint.setStyle(Paint.Style.FILL);
+        bgPaint.setColor(Color.LTGRAY);
+        borderPaint = new Paint();
+        borderPaint.setAntiAlias(true);
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setColor(Color.DKGRAY);
+        selectedBgPaint = new Paint();
+        selectedBgPaint.setColor(Color.YELLOW);
+        eraserPaint = new Paint();
+        eraserPaint.setColor(Color.TRANSPARENT);
+        eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        textPaint = new TextPaint();
+        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size_xlarge));
+        roundRadius = context.getResources().getDimension(R.dimen.tile_round_rect);
     }
 
     public void render(Tile tile) {
@@ -28,21 +48,13 @@ public class TileRenderer {
             canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), eraserPaint);
             return;
         } else if (tile.isSelected()) {
-            canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), selectedBgPaint);
-            return;
-        }
-        canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), bgPaint);
-        // top line
-        canvas.drawLine(tile.getX(), tile.getY(), tile.getXx(), tile.getY(), borderPaint);
-        // left line
-        canvas.drawLine(tile.getX(), tile.getY(), tile.getX(), tile.getYy(), borderPaint);
-        // right line
-        if (tile.isRight()) {
-            canvas.drawLine(tile.getXx(), tile.getY(), tile.getXx(), tile.getYy(), borderPaint);
-        }
-        // bottom line
-        if (tile.isBottom()) {
-            canvas.drawLine(tile.getX(), tile.getYy(), tile.getXx(), tile.getYy(), borderPaint);
+            canvas.drawRoundRect(new RectF(tile.getX() + 1, tile.getY() + 1, tile.getXx() - 1, tile.getYy() - 1),
+                    roundRadius, roundRadius, selectedBgPaint);
+        } else {
+            canvas.drawRoundRect(new RectF(tile.getX() + 1, tile.getY() + 1, tile.getXx() - 1, tile.getYy() - 1),
+                    roundRadius, roundRadius, borderPaint);
+            canvas.drawRoundRect(new RectF(tile.getX() + 1, tile.getY() + 1, tile.getXx() - 1, tile.getYy() - 1),
+                    roundRadius, roundRadius, bgPaint);
         }
 
         StringBuilder sb = new StringBuilder("23 + 36");
@@ -52,15 +64,19 @@ public class TileRenderer {
 //        sb.append(formula.getFirstOperand()).append(" ").append(formula.getOperator())
 //                .append(" ").append(formula.getSecondOperand());
 
-        Rect rect = new Rect();
-        textPaint.getTextBounds(mText, 0, mText.length(), rect);
-        int textWidth = (int) textPaint.measureText(mText);
-        int textHeight = rect.height();
-
+        Rect rect = measureText(mText);
         canvas.drawText(mText,
-                tile.getX() + (tile.getXx() - tile.getX() - textWidth) / 2f,
-                tile.getYy() - (tile.getYy() - tile.getY() - textHeight) / 2f,
+                tile.getX() + (tile.getXx() - tile.getX() - rect.width()) / 2f,
+                tile.getYy() - (tile.getYy() - tile.getY() - rect.height()) / 2f,
                 textPaint
         );
+    }
+
+    public Rect measureText(String mText) {
+        Rect rect = new Rect();
+        textPaint.getTextBounds(mText, 0, mText.length(), rect);
+        int maxWidth = (int) textPaint.measureText(mText);
+        rect.right = rect.left + maxWidth;
+        return rect;
     }
 }
