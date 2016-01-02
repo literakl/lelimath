@@ -3,12 +3,15 @@ package lelisoft.com.lelimath.view;
 import android.content.Context;
 import android.graphics.Rect;
 
+import java.util.Random;
+
 /**
  * Various view methods
  * Created by leos.literak on 31.10.2015.
  */
 public class Misc {
     static Float density = null;
+    static Random random = new Random(System.currentTimeMillis());
 
     public static float dpFromPx(final Context context, final float px) {
         if (density == null) {
@@ -57,5 +60,9 @@ public class Misc {
         int w = (int) (scale * iw);
         int x = ((vw - w) >> 1);
         out.set(x, 0, x + w, h);
+    }
+
+    public static Random getRandom() {
+        return random;
     }
 }

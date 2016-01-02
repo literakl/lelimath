@@ -1,9 +1,13 @@
 package lelisoft.com.lelimath.logic;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
+import lelisoft.com.lelimath.view.FormulaResultPair;
+import lelisoft.com.lelimath.view.Misc;
 
 /**
  * Implementation for handling all Puzzle calculations
@@ -38,9 +42,24 @@ public class PuzzleLogicImpl implements PuzzleLogic {
         this.level = level;
     }
 
-    @Override
-    public List<Formula> generateFormulas() {
-//        Formula formula = FormulaGenerator.generateRandomFormula(getFormulaDefinition());
-        return null;
+    public List<FormulaResultPair> generateFormulaResultPairs(int tiles) {
+        List<FormulaResultPair> pairs;
+        Formula formula;
+
+        int formulas = tiles / 2;
+        if (tiles % 2 > 0) {
+            pairs = new ArrayList<>(tiles - 1);
+        } else {
+            pairs = new ArrayList<>(tiles);
+        }
+
+        for (int i = 0; i < formulas; i++) {
+            formula = FormulaGenerator.generateRandomFormula(definition);
+            pairs.add(new FormulaResultPair(formula));
+            pairs.add(new FormulaResultPair(formula.getResult()));
+        }
+
+        Collections.shuffle(pairs, Misc.getRandom());
+        return pairs;
     }
 }

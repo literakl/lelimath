@@ -8,7 +8,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Region;
 import android.text.TextPaint;
 
 import lelisoft.com.lelimath.R;
@@ -67,13 +66,7 @@ public class TileRenderer {
                     roundRadius, roundRadius, bgPaint);
         }
 
-        StringBuilder sb = new StringBuilder("23 + 36");
-        String mText = sb.toString();
-
-//        Formula formula = tile.getFormula();
-//        sb.append(formula.getFirstOperand()).append(" ").append(formula.getOperator())
-//                .append(" ").append(formula.getSecondOperand());
-
+        String mText = tile.getText();
         Rect rect = measureText(mText);
         canvas.drawText(mText,
                 tile.getX() + (tile.getXx() - tile.getX() - rect.width()) / 2f,

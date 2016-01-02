@@ -2,8 +2,8 @@ package lelisoft.com.lelimath.logic;
 
 import java.util.List;
 
-import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
+import lelisoft.com.lelimath.view.FormulaResultPair;
 
 /**
  * Puzzle calculations
@@ -23,7 +23,7 @@ public interface PuzzleLogic {
 
     public void setLevel(Level level);
 
-    public List<Formula> generateFormulas();
+    public List<FormulaResultPair> generateFormulaResultPairs(int tiles);
 
     /**
      * Game complexity

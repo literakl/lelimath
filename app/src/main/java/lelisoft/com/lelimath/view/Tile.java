@@ -8,7 +8,7 @@ import lelisoft.com.lelimath.data.Formula;
  */
 public class Tile {
     boolean selected, uncovered;
-    Formula formula;
+    FormulaResultPair pair;
     float x, y, xx, yy;
 
     public Tile(float x, float y, float xx, float yy) {
@@ -19,11 +19,27 @@ public class Tile {
     }
 
     public Formula getFormula() {
-        return formula;
+        return pair.formula;
     }
 
-    public void setFormula(Formula formula) {
-        this.formula = formula;
+    public Integer getResult() {
+        return pair.result;
+    }
+
+    public String getText() {
+        if (pair.formula != null) {
+            Formula formula = pair.formula;
+            StringBuilder sb = new StringBuilder();
+            sb.append(formula.getFirstOperand()).append(" ").append(formula.getOperator())
+                    .append(" ").append(formula.getSecondOperand());
+            return sb.toString();
+        } else {
+            return pair.result.toString();
+        }
+    }
+
+    public void setFormulaResultPair(FormulaResultPair formula) {
+        this.pair = formula;
     }
 
     public boolean isSelected() {
@@ -50,7 +66,7 @@ public class Tile {
      * @return true if point is within active area
      */
     public boolean isInside(float pointX, float pointY, float margin) {
-        return (x + margin <= pointX && pointX <= xx - margin && y + margin <= pointY && pointY <= yy - margin);
+        return ! uncovered && (x + margin <= pointX && pointX <= xx - margin && y + margin <= pointY && pointY <= yy - margin);
     }
 
     public float getX() {

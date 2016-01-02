@@ -12,10 +12,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Iterator;
+import java.util.List;
+
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.Formula;
-import lelisoft.com.lelimath.data.FormulaPart;
-import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 
 /**
@@ -149,13 +149,21 @@ public class TilesView extends View {
         tileHeight = tilesRect.height() / maxVerticalTiles;
         tileWidth = tilesRect.width() / maxHorizontalTiles;
 
+        List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
+        Iterator<FormulaResultPair> iterator = tilesValues.iterator();
+
         tiles = new Tile[maxVerticalTiles][maxHorizontalTiles];
         float pointerX, pointerY = tilesRect.top;
         for (int i = 0; i < maxVerticalTiles; i++) {
             pointerX = tilesRect.left;
             for (int j = 0; j < maxHorizontalTiles; j++) {
                 tiles[i][j] = new Tile(pointerX, pointerY, pointerX + tileWidth, pointerY + tileHeight);
-                tiles[i][j].setFormula(new Formula(23, 36, 59, Operator.PLUS, FormulaPart.RESULT));
+                if (iterator.hasNext()) {
+                    tiles[i][j].setFormulaResultPair(iterator.next());
+                } else {
+                    tiles[i][j].setUncovered(true);
+                }
+
                 if (i == 0) {
                     tiles[i][j].setY(tiles[i][j].getY() + 1);
                 }
