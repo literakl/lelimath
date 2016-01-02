@@ -16,7 +16,6 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
-import lelisoft.com.lelimath.data.Tile;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 
 /**
@@ -107,6 +106,7 @@ public class TilesView extends View {
                 return true;
             }
 
+            long start = System.currentTimeMillis();
             Tile tile = tiles[i][j];
             if (tile.isInside(event.getX(), event.getY(), tileTouchMargin)) {
                 if (tile == selectedTile) {
@@ -122,6 +122,14 @@ public class TilesView extends View {
                 }
 
                 tileRenderer.render(tile);
+
+//                for (int k = 0; k < tiles.length; k++) {
+//                    Tile[] tilesRow = tiles[k];
+//                    for (int l = 0; l < tilesRow.length; l++) {
+//                        tileRenderer.render(tilesRow[l]);
+//                    }
+//                }
+                Log.d(logTag, "draw " + (System.currentTimeMillis() - start));
                 invalidate();
             } else {
                 Log.d(logTag, "onTouchEvent() - inactive area touched " + tile);
@@ -150,18 +158,12 @@ public class TilesView extends View {
                 tiles[i][j] = new Tile(pointerX, pointerY, pointerX + tileWidth, pointerY + tileHeight);
                 tiles[i][j].setFormula(new Formula(23, 36, 59, Operator.PLUS, FormulaPart.RESULT));
                 if (i == 0) {
-                    tiles[i][j].setTop(true);
                     tiles[i][j].setY(tiles[i][j].getY() + 1);
                 }
-                if (j == 0) {
-                    tiles[i][j].setLeft(true);
-                }
                 if (i == (maxVerticalTiles - 1)) {
-                    tiles[i][j].setBottom(true);
                     tiles[i][j].setYy(tiles[i][j].getYy() - 1);
                 }
                 if (j == (maxHorizontalTiles - 1)) {
-                    tiles[i][j].setRight(true);
                     tiles[i][j].setXx(tiles[i][j].getXx() - 1);
                 }
                 tileRenderer.render(tiles[i][j]);

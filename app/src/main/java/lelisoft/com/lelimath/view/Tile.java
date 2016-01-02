@@ -1,11 +1,13 @@
-package lelisoft.com.lelimath.data;
+package lelisoft.com.lelimath.view;
+
+import lelisoft.com.lelimath.data.Formula;
 
 /**
  * Tile contains formula and visual attributes
  * Created by Leoš on 12.12.2015.
  */
 public class Tile {
-    boolean selected, uncovered, left, right, top, bottom;
+    boolean selected, uncovered;
     Formula formula;
     float x, y, xx, yy;
 
@@ -24,10 +26,6 @@ public class Tile {
         this.formula = formula;
     }
 
-    public boolean isMiddle() {
-        return ! (left || right || top || bottom);
-    }
-
     public boolean isSelected() {
         return selected;
     }
@@ -42,38 +40,6 @@ public class Tile {
 
     public void setUncovered(boolean uncovered) {
         this.uncovered = uncovered;
-    }
-
-    public boolean isLeft() {
-        return left;
-    }
-
-    public boolean isRight() {
-        return right;
-    }
-
-    public boolean isTop() {
-        return top;
-    }
-
-    public boolean isBottom() {
-        return bottom;
-    }
-
-    public void setLeft(boolean left) {
-        this.left = left;
-    }
-
-    public void setRight(boolean right) {
-        this.right = right;
-    }
-
-    public void setTop(boolean top) {
-        this.top = top;
-    }
-
-    public void setBottom(boolean bottom) {
-        this.bottom = bottom;
     }
 
     /**

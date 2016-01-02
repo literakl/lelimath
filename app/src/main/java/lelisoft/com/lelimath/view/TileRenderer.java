@@ -8,10 +8,10 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.text.TextPaint;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.Tile;
 
 /**
  * Renderer for a tile.
@@ -24,35 +24,45 @@ public class TileRenderer {
 
     public TileRenderer(Context context, Canvas canvas) {
         this.canvas = canvas;
+        roundRadius = context.getResources().getDimension(R.dimen.tile_round_rect);
+
         bgPaint = new Paint();
         bgPaint.setAntiAlias(true);
         bgPaint.setStyle(Paint.Style.FILL);
         bgPaint.setColor(Color.LTGRAY);
+
         borderPaint = new Paint();
         borderPaint.setAntiAlias(true);
         borderPaint.setStyle(Paint.Style.STROKE);
         borderPaint.setColor(Color.DKGRAY);
+
         selectedBgPaint = new Paint();
+        selectedBgPaint.setAntiAlias(true);
+        selectedBgPaint.setStyle(Paint.Style.FILL);
         selectedBgPaint.setColor(Color.YELLOW);
+
         eraserPaint = new Paint();
         eraserPaint.setColor(Color.TRANSPARENT);
         eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+
         textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size_xlarge));
-        roundRadius = context.getResources().getDimension(R.dimen.tile_round_rect);
     }
 
     public void render(Tile tile) {
         if (tile.isUncovered()) {
             canvas.drawRect(tile.getX(), tile.getY(), tile.getXx(), tile.getYy(), eraserPaint);
             return;
-        } else if (tile.isSelected()) {
+        }
+
+        canvas.drawRoundRect(new RectF(tile.getX() + 1, tile.getY() + 1, tile.getXx() - 1, tile.getYy() - 1),
+                roundRadius, roundRadius, borderPaint);
+
+        if (tile.isSelected()) {
             canvas.drawRoundRect(new RectF(tile.getX() + 1, tile.getY() + 1, tile.getXx() - 1, tile.getYy() - 1),
                     roundRadius, roundRadius, selectedBgPaint);
         } else {
-            canvas.drawRoundRect(new RectF(tile.getX() + 1, tile.getY() + 1, tile.getXx() - 1, tile.getYy() - 1),
-                    roundRadius, roundRadius, borderPaint);
             canvas.drawRoundRect(new RectF(tile.getX() + 1, tile.getY() + 1, tile.getXx() - 1, tile.getYy() - 1),
                     roundRadius, roundRadius, bgPaint);
         }

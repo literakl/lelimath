@@ -2,6 +2,8 @@ package lelisoft.com.lelimath.data;
 
 import junit.framework.TestCase;
 
+import lelisoft.com.lelimath.view.Tile;
+
 /**
  * Created by Leoš on 28.12.2015.
  */
