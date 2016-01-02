@@ -115,20 +115,19 @@ public class TilesView extends View {
                 } else {
                     if (selectedTile != null) {
                         selectedTile.setSelected(false);
-                        tileRenderer.render(selectedTile);
                     }
                     tile.setSelected(true);
                     selectedTile = tile;
                 }
 
-                tileRenderer.render(tile);
-
-//                for (int k = 0; k < tiles.length; k++) {
-//                    Tile[] tilesRow = tiles[k];
-//                    for (int l = 0; l < tilesRow.length; l++) {
-//                        tileRenderer.render(tilesRow[l]);
-//                    }
-//                }
+                // work around for antialiasing issue
+                drawCanvas.drawColor(Color.WHITE);
+                for (int k = 0; k < tiles.length; k++) {
+                    Tile[] tilesRow = tiles[k];
+                    for (int l = 0; l < tilesRow.length; l++) {
+                        tileRenderer.render(tilesRow[l]);
+                    }
+                }
                 Log.d(logTag, "draw " + (System.currentTimeMillis() - start));
                 invalidate();
             } else {
