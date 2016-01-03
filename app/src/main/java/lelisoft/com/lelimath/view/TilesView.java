@@ -114,10 +114,19 @@ public class TilesView extends View {
                     selectedTile = null;
                 } else {
                     if (selectedTile != null) {
-                        selectedTile.setSelected(false);
+                        if (selectedTile.matches(tile)) {
+                            tile.setUncovered(true);
+                            selectedTile.setUncovered(true);
+                            selectedTile.setSelected(false);
+                            selectedTile = null;
+                        } else {
+                            selectedTile.setSelected(false);
+                            selectedTile = null;
+                        }
+                    } else {
+                        tile.setSelected(true);
+                        selectedTile = tile;
                     }
-                    tile.setSelected(true);
-                    selectedTile = tile;
                 }
 
                 // work around for antialiasing issue
@@ -145,6 +154,8 @@ public class TilesView extends View {
         calculateTileRequestedDimensions();
         int maxVerticalTiles = (int) Math.floor(tilesRect.height() / tileHeight);
         int maxHorizontalTiles = (int) Math.floor(tilesRect.width() / tileWidth);
+
+        maxVerticalTiles = 4;
 
         tileHeight = tilesRect.height() / maxVerticalTiles;
         tileWidth = tilesRect.width() / maxHorizontalTiles;

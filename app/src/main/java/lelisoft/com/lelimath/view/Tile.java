@@ -29,10 +29,7 @@ public class Tile {
     public String getText() {
         if (pair.formula != null) {
             Formula formula = pair.formula;
-            StringBuilder sb = new StringBuilder();
-            sb.append(formula.getFirstOperand()).append(" ").append(formula.getOperator())
-                    .append(" ").append(formula.getSecondOperand());
-            return sb.toString();
+            return String.valueOf(formula.getFirstOperand()) + " " + formula.getOperator() + " " + formula.getSecondOperand();
         } else {
             return pair.result.toString();
         }
@@ -67,6 +64,19 @@ public class Tile {
      */
     public boolean isInside(float pointX, float pointY, float margin) {
         return ! uncovered && (x + margin <= pointX && pointX <= xx - margin && y + margin <= pointY && pointY <= yy - margin);
+    }
+
+    public boolean matches(Tile tile) {
+        if (pair.formula != null) {
+            if (tile.pair.result != null) {
+                return (pair.formula.getResult().equals(tile.pair.result));
+            }
+        } else if (pair.result != null) {
+            if (tile.pair.formula != null) {
+                return (tile.pair.formula.getResult().equals(pair.result));
+            }
+        }
+        return false;
     }
 
     public float getX() {
