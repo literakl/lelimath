@@ -155,7 +155,7 @@ public class TilesView extends View {
         int maxVerticalTiles = (int) Math.floor(tilesRect.height() / tileHeight);
         int maxHorizontalTiles = (int) Math.floor(tilesRect.width() / tileWidth);
 
-        maxVerticalTiles = 4;
+        maxVerticalTiles = 5;
 
         tileHeight = tilesRect.height() / maxVerticalTiles;
         tileWidth = tilesRect.width() / maxHorizontalTiles;

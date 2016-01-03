@@ -11,6 +11,7 @@ import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
+import lelisoft.com.lelimath.view.Misc;
 import lelisoft.com.lelimath.view.TilesView;
 
 /**
@@ -22,6 +23,17 @@ public class PuzzleActivity extends Activity {
     TilesView tilesView;
     PuzzleLogic logic = new PuzzleLogicImpl();
 
+    static int[] pictures = new int[] {
+            R.drawable.pic_cat_kitten,
+            R.drawable.pic_child_ball_on_head,
+            R.drawable.pic_cute_girl,
+            R.drawable.pic_girl_teddy_bear,
+            R.drawable.pic_green_snake,
+            R.drawable.pic_kid_airplane,
+            R.drawable.pic_koalas_on_tree,
+            R.drawable.pic_owl
+    };
+
     @Override
     protected void onCreate(Bundle state) {
         Log.d(logTag, "onCreate()");
@@ -29,11 +41,15 @@ public class PuzzleActivity extends Activity {
 
         setContentView(R.layout.activity_puzzle);
         tilesView = (TilesView) findViewById(R.id.tiles);
-        tilesView.setBackgroundPicture(R.drawable.pic_cute_girl);
+        tilesView.setBackgroundPicture(getPicture());
 
         logic.setFormulaDefinition(getFormulaDefinition());
         logic.setLevel(PuzzleLogic.Level.EASY);
         tilesView.setLogic(logic);
+    }
+
+    private int getPicture() {
+        return pictures[Misc.getRandom().nextInt(pictures.length)];
     }
 
     @Override
