@@ -34,7 +34,7 @@ public class TilesView extends View {
     Rect tilesRect = new Rect(), origPictureRect, scaledPictureRect = new Rect();
     TileRenderer tileRenderer;
     float w, h, tileHeight, tileWidth;
-    int padding, tilePadding, minTileSize, tileTouchMargin;
+    int tilePadding, minTileSize, tileTouchMargin;
 
     public TilesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,7 +43,6 @@ public class TilesView extends View {
     }
 
     private void setupDrawing() {
-        padding = (int) getResources().getDimension(R.dimen.tiles_view_padding);
         minTileSize = (int) getResources().getDimension(R.dimen.tile_size);
         tilePadding = (int) getResources().getDimension(R.dimen.tile_padding);
         tileTouchMargin = (int) getResources().getDimension(R.dimen.tile_touch_margin);
@@ -70,7 +69,7 @@ public class TilesView extends View {
         this.w = w;
         this.h = h;
 
-        tilesRect.set(padding, padding, w - padding, h - padding);
+        tilesRect.set(0, 0, w, h);
         origPictureRect = new Rect(0, 0, fillBitmap.getWidth(), fillBitmap.getHeight());
         Misc.centerHorizontally(tilesRect.width(), tilesRect.height(),
                 fillBitmap.getWidth(), fillBitmap.getHeight(), scaledPictureRect);
@@ -99,8 +98,8 @@ public class TilesView extends View {
             if (! tilesRect.contains((int) event.getX(), (int) event.getY())) {
                 return true;
             }
-            int i = (int) ((event.getY() - padding) / tileHeight);
-            int j = (int) ((event.getX() - padding) / tileWidth);
+            int i = (int) (event.getY() / tileHeight);
+            int j = (int) (event.getX() / tileWidth);
             if (i >= tiles.length || j >= tiles[0].length) {
                 Log.e(logTag, "onTouchEvent() - touch out of box!");
                 return true;
@@ -131,10 +130,9 @@ public class TilesView extends View {
 
                 // work around for antialiasing issue
                 drawCanvas.drawColor(Color.WHITE);
-                for (int k = 0; k < tiles.length; k++) {
-                    Tile[] tilesRow = tiles[k];
-                    for (int l = 0; l < tilesRow.length; l++) {
-                        tileRenderer.render(tilesRow[l]);
+                for (Tile[] tilesRow : tiles) {
+                    for (Tile aTilesRow : tilesRow) {
+                        tileRenderer.render(aTilesRow);
                     }
                 }
                 Log.d(logTag, "draw " + (System.currentTimeMillis() - start));
@@ -152,10 +150,8 @@ public class TilesView extends View {
         long start = System.currentTimeMillis();
 
         calculateTileRequestedDimensions();
-        int maxVerticalTiles = (int) Math.floor(tilesRect.height() / tileHeight);
         int maxHorizontalTiles = (int) Math.floor(tilesRect.width() / tileWidth);
-
-        maxVerticalTiles = 5;
+        int maxVerticalTiles = 5;
 
         tileHeight = tilesRect.height() / maxVerticalTiles;
         tileWidth = tilesRect.width() / maxHorizontalTiles;

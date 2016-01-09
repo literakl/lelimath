@@ -7,5 +7,6 @@
     <string name="action_pause">Pauza</string>
     <string name="action_progress_fast">Fast</string>
     <string name="action_about">O aplikaci</string>
-
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>
