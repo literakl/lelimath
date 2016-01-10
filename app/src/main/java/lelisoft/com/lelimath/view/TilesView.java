@@ -161,9 +161,8 @@ public class TilesView extends View {
         long start = System.currentTimeMillis();
 
         calculateTileRequestedDimensions();
-        int maxHorizontalTiles = (int) Math.floor(tilesRect.width() / tileWidth);
-        int maxVerticalTiles = 5;
-
+        int maxHorizontalTiles = Math.min((int) Math.floor(tilesRect.width() / tileWidth), logic.getLevel().x);
+        int maxVerticalTiles = logic.getLevel().y;
         tileHeight = tilesRect.height() / maxVerticalTiles;
         tileWidth = tilesRect.width() / maxHorizontalTiles;
 

@@ -1,9 +1,11 @@
 package lelisoft.com.lelimath.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
@@ -82,10 +84,7 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        switch (id) {
+        switch (item.getItemId()) {
             case R.id.nav_level_A10: {
                 Values values = new Values(0, 10);
                 FormulaDefinition definition = new FormulaDefinition(values, values, values)
@@ -188,9 +187,10 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
                         .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
                         .addUnknown(FormulaPart.RESULT);
                 restartGame(definition);
+                break;
             }
             default: {
-                Toast.makeText(this, "Chybi handler!", Toast.LENGTH_LONG);
+                Toast.makeText(this, "Chybi handler!", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -200,7 +200,9 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
     }
 
     private void restartGame(FormulaDefinition definition) {
-        logic.setFormulaDefinition(definition);
+        if (definition != null) {
+            logic.setFormulaDefinition(definition);
+        }
         tilesView.setBackgroundPicture(getPicture());
         tilesView.setupGame(true);
     }
@@ -209,6 +211,46 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.action_settings: {
+                Toast.makeText(this, "Settings!", Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.action_level: {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Zvolte složitost");
+                builder.setItems(new String[] {"Lehká", "Běžná", "Těžká"}, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        PuzzleLogic.Level level = null;
+                        if (item == 0) {
+                            level = PuzzleLogic.Level.EASY;
+                        } else if (item == 1) {
+                            level = PuzzleLogic.Level.NORMAL;
+                        } else if (item == 2) {
+                            level = PuzzleLogic.Level.HARD;
+                        }
+                        if (! logic.getLevel().equals(level)) {
+                            logic.setLevel(level);
+                            restartGame(null);
+                        }
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+                break;
+            }
+            default: {
+                Toast.makeText(this, "Default", Toast.LENGTH_LONG).show();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private int getPicture() {
@@ -266,15 +308,10 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
     }
 
     public FormulaDefinition getDefaultFormulaDefinition() {
-        Values twoDigitsNumbers = new Values(0, 99);
-        FormulaDefinition definition = new FormulaDefinition();
-        definition.setLeftOperand(twoDigitsNumbers);
-        definition.setRightOperand(twoDigitsNumbers);
-        definition.setResult(twoDigitsNumbers);
-        definition.addOperator(Operator.PLUS);
-        definition.addOperator(Operator.MINUS);
-        definition.addUnknown(FormulaPart.RESULT);
-
-        return definition;
+        Values values = new Values(0, 30);
+        return new FormulaDefinition(values, values, values)
+                .addOperator(Operator.PLUS).addOperator(Operator.MINUS)
+                .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
+                .addUnknown(FormulaPart.RESULT);
     }
 }
