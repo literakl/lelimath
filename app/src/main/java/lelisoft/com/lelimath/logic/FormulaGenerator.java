@@ -34,6 +34,9 @@ public class FormulaGenerator {
                 for (int k = 0; k < 10; k++) {
                     int valueB = getValue(definition, partB);
                     Formula found = Solver.solve(operator, partA, valueA, partB, valueB);
+                    if (found == null) {
+                        continue;
+                    }
                     boolean valid = checkSolution(found, partA, partB, definition);
                     if (debug) {
                         System.err.println(System.currentTimeMillis() + " " + valid + " " +
