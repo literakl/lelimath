@@ -20,6 +20,9 @@ public class Solver {
             case MULTIPLY:
                 return first * second;
             case DIVIDE: {
+                if (second == 0) {
+                    return Integer.MAX_VALUE;
+                }
                 if (first % second != 0) {
                     return null; // only whole numbers are allowed, e.g. 13/4
                 } else {
