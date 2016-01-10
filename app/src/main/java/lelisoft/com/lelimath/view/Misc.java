@@ -34,7 +34,7 @@ public class Misc {
      * @param vh container view height
      * @param iw image width
      * @param ih image height
-     * @param out Rect that is provided to receive the result. If <code>null</code> then a new rect will be created
+     * @param out Rect that is provided to receive the result
      */
     public static void calcCenter(int vw, int vh, int iw, int ih, Rect out) {
         double scale = Math.min((double) vw / (double) iw, (double) vh / (double) ih);
@@ -52,14 +52,16 @@ public class Misc {
      * @param vh container view height
      * @param iw image width
      * @param ih image height
-     * @param out Rect that is provided to receive the result. If <code>null</code> then a new rect will be created
+     * @return  that is provided to receive the result
      */
-    public static void centerHorizontally(int vw, int vh, int iw, int ih, Rect out) {
+    public static Rect centerHorizontally(int vw, int vh, int iw, int ih) {
+        Rect out = new Rect();
         double scale = Math.min((double) vw / (double) iw, (double) vh / (double) ih);
         int h = (int) (scale * ih);
         int w = (int) (scale * iw);
         int x = ((vw - w) >> 1);
         out.set(x, 0, x + w, h);
+        return out;
     }
 
     public static Random getRandom() {

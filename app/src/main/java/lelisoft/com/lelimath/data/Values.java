@@ -33,6 +33,11 @@ public class Values {
     public Values() {
     }
 
+    public Values(int value) {
+        minValue = value;
+        maxValue = value;
+    }
+
     /**
      * Compares argument with this Values set.
      * @param value argument

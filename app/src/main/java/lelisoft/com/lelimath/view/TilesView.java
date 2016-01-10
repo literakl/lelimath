@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +32,7 @@ public class TilesView extends View {
     Canvas drawCanvas;
     Bitmap canvasBitmap, fillBitmap;
     Paint canvasPaint;
-    Rect tilesRect = new Rect(), origPictureRect, scaledPictureRect = new Rect();
+    Rect tilesRect = new Rect(), origPictureRect, scaledPictureRect;
     TileRenderer tileRenderer;
     float w, h, tileHeight, tileWidth;
     int tilePadding, minTileSize, tileTouchMargin;
@@ -40,6 +41,18 @@ public class TilesView extends View {
         super(context, attrs);
         setFocusable(true);
         setupDrawing();
+    }
+
+    /**
+     * Generates new game.
+     * @param invalidateView it will invalidate view so it will be redrawn
+     */
+    public void setupGame(boolean invalidateView) {
+        scaledPictureRect = Misc.centerHorizontally(tilesRect.width(), tilesRect.height(), fillBitmap.getWidth(), fillBitmap.getHeight());
+        generateTiles();
+        if (invalidateView) {
+            invalidate();
+        }
     }
 
     private void setupDrawing() {
@@ -63,23 +76,21 @@ public class TilesView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         if (fillBitmap == null) {
             Log.e(logTag, "Picture bitmap is empty!");
+            Toast.makeText(getContext(), "Picture bitmap is empty!", Toast.LENGTH_LONG).show();
             return;
         }
 
         this.w = w;
         this.h = h;
-
         tilesRect.set(0, 0, w, h);
         origPictureRect = new Rect(0, 0, fillBitmap.getWidth(), fillBitmap.getHeight());
-        Misc.centerHorizontally(tilesRect.width(), tilesRect.height(),
-                fillBitmap.getWidth(), fillBitmap.getHeight(), scaledPictureRect);
 
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
         drawCanvas.drawColor(Color.WHITE);
         tileRenderer = new TileRenderer(getContext(), drawCanvas);
 
-        generateTiles();
+        setupGame(false);
     }
 
     @Override

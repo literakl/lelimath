@@ -36,6 +36,15 @@ public class FormulaDefinition {
     /** allowed formula's unknowns. If unset RESULT will be used */
     List<FormulaPart> unknowns;
 
+    public FormulaDefinition() {
+    }
+
+    public FormulaDefinition(Values leftOperand, Values rightOperand, Values result) {
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
+        this.result = result;
+    }
+
     public String getId() {
         return id;
     }
@@ -120,23 +129,25 @@ public class FormulaDefinition {
         return result;
     }
 
-    public void setResult(Values result) {
+    public FormulaDefinition setResult(Values result) {
         this.result = result;
+        return this;
     }
 
-    public void addOperator(Operator operator) {
+    public FormulaDefinition addOperator(Operator operator) {
         if (operators == null) {
             operators = Collections.singletonList(operator);
-            return;
+            return this;
         }
         if (operators.size() == 1) {
             List<Operator> list = new ArrayList<Operator>(3);
             list.add(operators.get(0));
             list.add(operator);
             operators = list;
-            return;
+            return this;
         }
         operators.add(operator);
+        return this;
     }
 
     public List<Operator> getOperators() {
@@ -151,19 +162,20 @@ public class FormulaDefinition {
         return unknowns;
     }
 
-    public void addUnknown(FormulaPart unknown) {
+    public FormulaDefinition addUnknown(FormulaPart unknown) {
         if (unknowns == null) {
             unknowns = Collections.singletonList(unknown);
-            return;
+            return this;
         }
         if (unknowns.size() == 1) {
             List<FormulaPart> list = new ArrayList<FormulaPart>(3);
             list.add(unknowns.get(0));
             list.add(unknown);
             unknowns = list;
-            return;
+            return this;
         }
         unknowns.add(unknown);
+        return this;
     }
 
     public void setUnknowns(List<FormulaPart> unknowns) {

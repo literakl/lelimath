@@ -10,7 +10,6 @@ import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import lelisoft.com.lelimath.R;
@@ -62,7 +61,7 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        logic.setFormulaDefinition(getFormulaDefinition());
+        logic.setFormulaDefinition(getDefaultFormulaDefinition());
         logic.setLevel(PuzzleLogic.Level.EASY);
 
         tilesView = (TilesView) findViewById(R.id.tiles);
@@ -86,13 +85,124 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_level_trivial) {
-            Toast.makeText(PuzzleActivity.this, "trivial!", Toast.LENGTH_SHORT).show();
+        switch (id) {
+            case R.id.nav_level_A10: {
+                Values values = new Values(0, 10);
+                FormulaDefinition definition = new FormulaDefinition(values, values, values)
+                        .addOperator(Operator.PLUS)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_S10: {
+                Values values = new Values(0, 10);
+                FormulaDefinition definition = new FormulaDefinition(values, values, values)
+                        .addOperator(Operator.MINUS)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_A20: {
+                Values values = new Values(0, 20);
+                FormulaDefinition definition = new FormulaDefinition(values, values, values)
+                        .addOperator(Operator.PLUS)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_S20: {
+                Values values = new Values(0, 20);
+                FormulaDefinition definition = new FormulaDefinition(values, values, values)
+                        .addOperator(Operator.MINUS)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_AS50: {
+                Values values = new Values(0, 50);
+                FormulaDefinition definition = new FormulaDefinition(values, values, values)
+                        .addOperator(Operator.PLUS).addOperator(Operator.MINUS)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_AS100: {
+                Values values = new Values(0, 100);
+                FormulaDefinition definition = new FormulaDefinition(values, values, values)
+                        .addOperator(Operator.PLUS).addOperator(Operator.MINUS)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_M3: {
+                Values left = new Values(3), right = new Values(0, 10), result = new Values(0, 30);
+                FormulaDefinition definition = new FormulaDefinition(left, right, result)
+                        .addOperator(Operator.MULTIPLY)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_M4: {
+                Values left = new Values(4), right = new Values(0, 10), result = new Values(0, 40);
+                FormulaDefinition definition = new FormulaDefinition(left, right, result)
+                        .addOperator(Operator.MULTIPLY)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_MD5: {
+                Values left = new Values(5), right = new Values(0, 10), result = new Values(0, 50);
+                FormulaDefinition definition = new FormulaDefinition(left, right, result)
+                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_MD6: {
+                Values left = new Values(6), right = new Values(0, 10), result = new Values(0, 60);
+                FormulaDefinition definition = new FormulaDefinition(left, right, result)
+                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_MD7: {
+                Values left = new Values(7), right = new Values(0, 10), result = new Values(0, 70);
+                FormulaDefinition definition = new FormulaDefinition(left, right, result)
+                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_MD8: {
+                Values left = new Values(8), right = new Values(0, 10), result = new Values(0, 80);
+                FormulaDefinition definition = new FormulaDefinition(left, right, result)
+                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+                break;
+            }
+            case R.id.nav_level_MD9: {
+                Values left = new Values(9), right = new Values(0, 10), result = new Values(0, 90);
+                FormulaDefinition definition = new FormulaDefinition(left, right, result)
+                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
+                        .addUnknown(FormulaPart.RESULT);
+                restartGame(definition);
+            }
+            default: {
+                Toast.makeText(this, "Chybi handler!", Toast.LENGTH_LONG);
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void restartGame(FormulaDefinition definition) {
+        logic.setFormulaDefinition(definition);
+        tilesView.setBackgroundPicture(getPicture());
+        tilesView.setupGame(true);
     }
 
     @Override
@@ -155,7 +265,7 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
         super.onDestroy();
     }
 
-    public FormulaDefinition getFormulaDefinition() {
+    public FormulaDefinition getDefaultFormulaDefinition() {
         Values twoDigitsNumbers = new Values(0, 99);
         FormulaDefinition definition = new FormulaDefinition();
         definition.setLeftOperand(twoDigitsNumbers);
@@ -163,9 +273,6 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
         definition.setResult(twoDigitsNumbers);
         definition.addOperator(Operator.PLUS);
         definition.addOperator(Operator.MINUS);
-        definition.addUnknown(FormulaPart.FIRST_OPERAND);
-        definition.addUnknown(FormulaPart.OPERATOR);
-        definition.addUnknown(FormulaPart.SECOND_OPERAND);
         definition.addUnknown(FormulaPart.RESULT);
 
         return definition;
