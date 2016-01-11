@@ -5,7 +5,7 @@ package lelisoft.com.lelimath.data;
  */
 public enum Operator {
 
-    PLUS("+"), MINUS("-"), MULTIPLY("*"), DIVIDE("/");
+    PLUS("+"), MINUS("-"), MULTIPLY("\u22C5"), DIVIDE(":");
 
     String value;
 
