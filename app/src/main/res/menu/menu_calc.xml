@@ -1,5 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".CalcActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CalcActivity">
 <!--
     <item
         android:id="@+id/action_pause"
@@ -12,21 +14,21 @@
         android:id="@+id/action_elapsed"
         android:title=""
         android:orderInCategory="10"
-        android:showAsAction="withText" />
+        app:showAsAction="withText" />
     <item
         android:id="@+id/action_medal"
         android:title="@string/action_pause"
         android:icon="@drawable/ic_action_diploma1"
         android:orderInCategory="30"
-        android:showAsAction="always" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_about"
         android:title="@string/action_about"
         android:orderInCategory="110"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
 </menu>

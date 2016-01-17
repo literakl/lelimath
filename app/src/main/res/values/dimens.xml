@@ -19,6 +19,6 @@
     <!-- https://www.google.com/design/spec/layout/metrics-keylines.html#metrics-keylines-touch-target-size -->
     <dimen name="tile_size">72dp</dimen>
     <dimen name="tile_round_rect">4dp</dimen>
-    <dimen name="tile_padding">8dp</dimen>
+    <dimen name="tile_padding">0dp</dimen>
     <dimen name="tile_touch_margin">4dp</dimen>
 </resources>

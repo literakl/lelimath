@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--android:icon="@drawable/ic_currency_48_black"-->
+
+
+    <ListPreference
+        android:key="prefGameComplexity"
+        android:title="@string/action_level"
+        android:summary="@string/action_about"
+        android:dialogTitle="@string/action_pause"
+        android:entries="@array/pref_complexity_entries"
+        android:entryValues="@array/pref_complexity_entries_values"
+        android:defaultValue="EASY"
+        />
+
+</PreferenceScreen>

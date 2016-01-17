@@ -1,7 +1,10 @@
 package lelisoft.com.lelimath.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -63,8 +66,11 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String complexityPref = sharedPref.getString(GamePreferenceActivity.KEY_COMPLEXITY, "EASY");
+
         logic.setFormulaDefinition(getDefaultFormulaDefinition());
-        logic.setLevel(PuzzleLogic.Level.EASY);
+        logic.setLevel(PuzzleLogic.Level.valueOf(complexityPref));
 
         tilesView = (TilesView) findViewById(R.id.tiles);
         tilesView.setBackgroundPicture(getPicture());
@@ -224,27 +230,17 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
                 break;
             }
             case R.id.action_level: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Zvolte složitost");
-                builder.setItems(new String[] {"Lehká", "Běžná", "Těžká"}, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        PuzzleLogic.Level level = null;
-                        if (item == 0) {
-                            level = PuzzleLogic.Level.EASY;
-                        } else if (item == 1) {
-                            level = PuzzleLogic.Level.NORMAL;
-                        } else if (item == 2) {
-                            level = PuzzleLogic.Level.HARD;
-                        }
-                        if (! logic.getLevel().equals(level)) {
-                            logic.setLevel(level);
-                            restartGame(null);
-                        }
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
+                Intent intent = new Intent();
+                intent.setClass(this, GamePreferenceActivity.class);
+                startActivity(intent);
+                return true;
+/*
+                if (! logic.getLevel().equals(level)) {
+                    logic.setLevel(level);
+                    restartGame(null);
+                }
                 break;
+*/
             }
             default: {
                 Toast.makeText(this, "Default", Toast.LENGTH_LONG).show();

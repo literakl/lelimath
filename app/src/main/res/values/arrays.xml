@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_complexity_entries">
+        <item>Lehká</item>
+        <item>Běžná</item>
+        <item>Náročná</item>
+        <item>Těžká</item>
+        <item>Strašná</item>
+    </string-array>
+    <string-array name="pref_complexity_entries_values">
+        <item>TRIVIAL</item>
+        <item>EASY</item>
+        <item>NORMAL</item>
+        <item>HARD</item>
+        <item>GENIUS</item>
+    </string-array>
+</resources>
