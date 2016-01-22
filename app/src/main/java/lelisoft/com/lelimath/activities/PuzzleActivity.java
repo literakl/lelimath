@@ -1,6 +1,5 @@
 package lelisoft.com.lelimath.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
@@ -31,7 +29,8 @@ import lelisoft.com.lelimath.view.TilesView;
  * Guess picture type of activity
  * Author leos.literak on 18.10.2015.
  */
-public class PuzzleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class PuzzleActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String logTag = PuzzleActivity.class.getSimpleName();
     TilesView tilesView;
     PuzzleLogic logic = new PuzzleLogicImpl();
@@ -66,10 +65,10 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        logic.setFormulaDefinition(getDefaultFormulaDefinition());
+
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String complexityPref = sharedPref.getString(GamePreferenceActivity.KEY_COMPLEXITY, "EASY");
-
-        logic.setFormulaDefinition(getDefaultFormulaDefinition());
         logic.setLevel(PuzzleLogic.Level.valueOf(complexityPref));
 
         tilesView = (TilesView) findViewById(R.id.tiles);
@@ -205,6 +204,19 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
+    /**
+     * Called when a shared preference is changed, added, or removed. This
+     * may be called even if a preference is set to its existing value.
+     */
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(GamePreferenceActivity.KEY_COMPLEXITY)) {
+            String value = sharedPreferences.getString(key, "EASY");
+            logic.setLevel(PuzzleLogic.Level.valueOf(value));
+            restartGame(null);
+        }
+    }
+
     private void restartGame(FormulaDefinition definition) {
         if (definition != null) {
             logic.setFormulaDefinition(definition);
@@ -250,6 +262,7 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
     }
 
     private int getPicture() {
+//        return R.drawable.pstros_500;
         return pictures[Misc.getRandom().nextInt(pictures.length)];
     }
 
@@ -264,12 +277,17 @@ public class PuzzleActivity extends AppCompatActivity implements NavigationView.
     protected void onPause() {
         Log.d(logTag, "onPause()");
         super.onPause();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.unregisterOnSharedPreferenceChangeListener(this);
+
     }
 
     @Override
     protected void onResume() {
         Log.d(logTag, "onResume()");
         super.onResume();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
