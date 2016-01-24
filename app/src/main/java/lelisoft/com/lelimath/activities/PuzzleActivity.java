@@ -64,7 +64,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.puzzle_toolbar, menu);
         return true;
     }
 
@@ -80,7 +80,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
             }
             case R.id.action_level: {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(android.R.id.content, new GamePreferenceFragment());
+                transaction.replace(R.id.fragment_container, new GamePreferenceFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -93,8 +93,8 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.puzzle_drawer_layout);
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();

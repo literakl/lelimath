@@ -51,15 +51,15 @@ public class PuzzleFragment extends Fragment implements NavigationView.OnNavigat
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.puzzle_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.puzzle_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        tilesView = (TilesView) getActivity().findViewById(R.id.tiles);
+        tilesView = (TilesView) getActivity().findViewById(R.id.puzzle_tiles);
         tilesView.setBackgroundPicture(callback.getPicture());
         tilesView.setLogic(callback.getLogic());
     }
@@ -184,7 +184,7 @@ public class PuzzleFragment extends Fragment implements NavigationView.OnNavigat
             tilesView.setupGame(true);
         }
 
-        DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.puzzle_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
