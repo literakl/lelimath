@@ -21,6 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_puzzle" />
+    <include layout="@layout/fragment_puzzle_content" />
 
 </android.support.design.widget.CoordinatorLayout>

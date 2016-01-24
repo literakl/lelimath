@@ -1,6 +1,7 @@
 package lelisoft.com.lelimath.activities;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -19,9 +20,10 @@ public class GamePreferenceActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // Display the fragment as the main content.
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new GamePreferenceFragment())
-                .commit();
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        transaction.replace(android.R.id.content, new GamePreferenceFragment());
+//        transaction.addToBackStack(null);
+//        transaction.commit();
 
         PreferenceManager.setDefaultValues(this, R.xml.game_prefs, false);
     }

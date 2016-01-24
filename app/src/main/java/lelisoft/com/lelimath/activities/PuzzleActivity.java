@@ -1,15 +1,10 @@
 package lelisoft.com.lelimath.activities;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,20 +15,20 @@ import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.fragment.GamePreferenceFragment;
+import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
 import lelisoft.com.lelimath.view.Misc;
-import lelisoft.com.lelimath.view.TilesView;
 
 /**
  * Guess picture type of activity
  * Author leos.literak on 18.10.2015.
  */
-public class PuzzleActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.PuzzleBridge {
     private static final String logTag = PuzzleActivity.class.getSimpleName();
-    TilesView tilesView;
     PuzzleLogic logic = new PuzzleLogicImpl();
+    PuzzleFragment fragment;
 
     static int[] pictures = new int[] {
             R.drawable.pic_cat_kitten,
@@ -51,178 +46,20 @@ public class PuzzleActivity extends AppCompatActivity implements
         Log.d(logTag, "onCreate()");
         super.onCreate(state);
 
-        setContentView(R.layout.activity_puzzle);
+        setContentView(R.layout.activity_puzzle_fragments);
 
-        // Set a Toolbar to replace the ActionBar.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        fragment = new PuzzleFragment();
+        transaction.add(R.id.fragment_container, fragment);
+        transaction.commit();
 
         logic.setFormulaDefinition(getDefaultFormulaDefinition());
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String complexityPref = sharedPref.getString(GamePreferenceActivity.KEY_COMPLEXITY, "EASY");
-        logic.setLevel(PuzzleLogic.Level.valueOf(complexityPref));
-
-        tilesView = (TilesView) findViewById(R.id.tiles);
-        tilesView.setBackgroundPicture(getPicture());
-        tilesView.setLogic(logic);
+        logic.setLevel(PuzzleLogic.Level.EASY);
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_level_A10: {
-                Values values = new Values(0, 10);
-                FormulaDefinition definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.PLUS)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_S10: {
-                Values values = new Values(0, 10);
-                FormulaDefinition definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.MINUS)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_A20: {
-                Values values = new Values(0, 20);
-                FormulaDefinition definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.PLUS)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_S20: {
-                Values values = new Values(0, 20);
-                FormulaDefinition definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.MINUS)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_AS50: {
-                Values values = new Values(0, 50);
-                FormulaDefinition definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.PLUS).addOperator(Operator.MINUS)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_AS100: {
-                Values values = new Values(0, 100);
-                FormulaDefinition definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.PLUS).addOperator(Operator.MINUS)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_M3: {
-                Values left = new Values(3), right = new Values(0, 10), result = new Values(0, 30);
-                FormulaDefinition definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_M4: {
-                Values left = new Values(4), right = new Values(0, 10), result = new Values(0, 40);
-                FormulaDefinition definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_MD5: {
-                Values left = new Values(5), right = new Values(0, 10), result = new Values(0, 50);
-                FormulaDefinition definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_MD6: {
-                Values left = new Values(6), right = new Values(0, 10), result = new Values(0, 60);
-                FormulaDefinition definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_MD7: {
-                Values left = new Values(7), right = new Values(0, 10), result = new Values(0, 70);
-                FormulaDefinition definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_MD8: {
-                Values left = new Values(8), right = new Values(0, 10), result = new Values(0, 80);
-                FormulaDefinition definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            case R.id.nav_level_MD9: {
-                Values left = new Values(9), right = new Values(0, 10), result = new Values(0, 90);
-                FormulaDefinition definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                restartGame(definition);
-                break;
-            }
-            default: {
-                Toast.makeText(this, "Chybi handler!", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    /**
-     * Called when a shared preference is changed, added, or removed. This
-     * may be called even if a preference is set to its existing value.
-     */
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(GamePreferenceActivity.KEY_COMPLEXITY)) {
-            String value = sharedPreferences.getString(key, "EASY");
-            logic.setLevel(PuzzleLogic.Level.valueOf(value));
-            restartGame(null);
-        }
-    }
-
-    private void restartGame(FormulaDefinition definition) {
-        if (definition != null) {
-            logic.setFormulaDefinition(definition);
-        }
-        tilesView.setBackgroundPicture(getPicture());
-        tilesView.setupGame(true);
+    public PuzzleLogic getLogic() {
+        return logic;
     }
 
     @Override
@@ -242,17 +79,10 @@ public class PuzzleActivity extends AppCompatActivity implements
                 break;
             }
             case R.id.action_level: {
-                Intent intent = new Intent();
-                intent.setClass(this, GamePreferenceActivity.class);
-                startActivity(intent);
-                return true;
-/*
-                if (! logic.getLevel().equals(level)) {
-                    logic.setLevel(level);
-                    restartGame(null);
-                }
-                break;
-*/
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(android.R.id.content, new GamePreferenceFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
             default: {
                 Toast.makeText(this, "Default", Toast.LENGTH_LONG).show();
@@ -261,7 +91,17 @@ public class PuzzleActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    private int getPicture() {
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public int getPicture() {
 //        return R.drawable.pstros_500;
         return pictures[Misc.getRandom().nextInt(pictures.length)];
     }
@@ -277,8 +117,6 @@ public class PuzzleActivity extends AppCompatActivity implements
     protected void onPause() {
         Log.d(logTag, "onPause()");
         super.onPause();
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.unregisterOnSharedPreferenceChangeListener(this);
 
     }
 
@@ -286,8 +124,6 @@ public class PuzzleActivity extends AppCompatActivity implements
     protected void onResume() {
         Log.d(logTag, "onResume()");
         super.onResume();
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -317,7 +153,7 @@ public class PuzzleActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         Log.d(logTag, "onDestroy()");
-        tilesView.setLogic(null);// todo find proper place
+//        tilesView.setLogic(null);// todo find proper place
         super.onDestroy();
     }
 
