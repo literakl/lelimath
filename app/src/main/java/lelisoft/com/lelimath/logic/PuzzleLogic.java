@@ -45,9 +45,5 @@ public interface PuzzleLogic {
             this.x = x;
             this.y = y;
         }
-
-        public int getMaxTiles() {
-            return x * y;
-        }
     }
 }

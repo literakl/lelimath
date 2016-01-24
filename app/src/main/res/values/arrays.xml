@@ -14,4 +14,16 @@
         <item>HARD</item>
         <item>GENIUS</item>
     </string-array>
+    <string-array name="pref_operations_entries">
+        <item>Sčítání</item>
+        <item>Odečítání</item>
+        <item>Násobení</item>
+        <item>Dělení</item>
+    </string-array>
+    <string-array name="pref_operations_entries_values">
+        <item>PLUS</item>
+        <item>MINUS</item>
+        <item>MULTIPLY</item>
+        <item>DIVIDE</item>
+    </string-array>
 </resources>

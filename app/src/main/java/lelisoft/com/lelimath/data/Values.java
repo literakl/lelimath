@@ -3,6 +3,7 @@ package lelisoft.com.lelimath.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Holder for allowed values. You can either define both minimum and maximum, or set of values.
@@ -30,12 +31,46 @@ public class Values {
         this.listing = Arrays.asList(listing);
     }
 
-    public Values() {
-    }
-
     public Values(int value) {
         minValue = value;
         maxValue = value;
+    }
+
+    public Values() {
+    }
+
+    /**
+     * Parses string containing requested numbers. It can be either range (0-9) or list (1,2,3)
+     * @param sequence string
+     * @return Values initialized using given parameter
+     * @throws IllegalArgumentException parsing error
+     */
+    public static Values parse(CharSequence sequence) throws IllegalArgumentException {
+        if (sequence == null) {
+            throw new IllegalArgumentException("Null is prohibited");
+        }
+        String data = sequence.toString().trim();
+        if (data.length() == 0) {
+            throw new IllegalArgumentException("No data specified!");
+        }
+
+        Values values = new Values();
+        int position = data.indexOf('-');
+        if (position != -1) {
+            String sFirst = data.substring(0, position);
+            String sSecond = data.substring(position + 1);
+            values.minValue = Integer.parseInt(sFirst.trim());
+            values.maxValue = Integer.parseInt(sSecond.trim());
+        } else {
+            StringTokenizer stk = new StringTokenizer(data, ",");
+            while(stk.hasMoreElements()) {
+                String s = stk.nextToken().trim();
+                if (s.length() > 0) {
+                    values.add(Integer.parseInt(s));
+                }
+            }
+        }
+        return values;
     }
 
     /**

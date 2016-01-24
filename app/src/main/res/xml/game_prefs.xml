@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--android:icon="@drawable/ic_currency_48_black"-->
-
-
     <ListPreference
-        android:key="prefGameComplexity"
-        android:title="@string/action_level"
-        android:summary="@string/action_about"
-        android:dialogTitle="@string/action_pause"
+        android:key="pref_game_complexity"
+        android:title="Složitost"
+        android:summary="%s"
         android:entries="@array/pref_complexity_entries"
         android:entryValues="@array/pref_complexity_entries_values"
         android:defaultValue="EASY"
         />
 
+    <MultiSelectListPreference
+        android:key="pref_game_operations"
+        android:title="Operace"
+        android:entries="@array/pref_operations_entries"
+        android:entryValues="@array/pref_operations_entries_values"
+        android:defaultValue="@array/pref_operations_entries_values"
+        />
+
+    <PreferenceCategory
+        android:title="Rozsah hodnot"
+        android:key="pref_game_values"
+        android:summary="Hodnoty zadávejte rozsahem nebo výčtem odděleným čárkami"
+        >
+
+        <EditTextPreference
+            android:key="pref_game_first_operand"
+            android:title="První argument"
+            android:defaultValue="0-30"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_second_operand"
+            android:title="Druhý argument"
+            android:defaultValue="0-30"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_result"
+            android:title="Výsledek"
+            android:defaultValue="0-30"
+            />
+    </PreferenceCategory>
 </PreferenceScreen>

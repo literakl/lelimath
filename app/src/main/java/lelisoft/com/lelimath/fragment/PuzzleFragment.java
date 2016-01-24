@@ -35,7 +35,6 @@ public class PuzzleFragment extends Fragment implements NavigationView.OnNavigat
 
     public interface PuzzleBridge {
         int getPicture();
-        FormulaDefinition getDefaultFormulaDefinition();
         PuzzleLogic getLogic();
     }
 
@@ -62,6 +61,11 @@ public class PuzzleFragment extends Fragment implements NavigationView.OnNavigat
         tilesView = (TilesView) getActivity().findViewById(R.id.puzzle_tiles);
         tilesView.setBackgroundPicture(callback.getPicture());
         tilesView.setLogic(callback.getLogic());
+    }
+
+    public void restartGame() {
+        tilesView.setBackgroundPicture(callback.getPicture());
+        tilesView.setupGame(true);
     }
 
     @Override
@@ -180,8 +184,7 @@ public class PuzzleFragment extends Fragment implements NavigationView.OnNavigat
 
         if (definition != null) {
             callback.getLogic().setFormulaDefinition(definition);
-            tilesView.setBackgroundPicture(callback.getPicture());
-            tilesView.setupGame(true);
+            restartGame();
         }
 
         DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.puzzle_drawer_layout);
