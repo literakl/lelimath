@@ -87,7 +87,6 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
             case R.id.action_level: {
                 Intent intent = new Intent();
                 intent.setClass(this, GamePreferenceActivity.class);
-//                startActivity(intent);
                 startActivityForResult(intent, 1);
                 return true;
             }

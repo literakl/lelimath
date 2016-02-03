@@ -29,6 +29,9 @@
         <activity
             android:name=".activities.GamePreferenceActivity"
             android:label="Preferences">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.PuzzleActivity" />
         </activity>
     </application>
 

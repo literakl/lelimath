@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import lelisoft.com.lelimath.R;
@@ -13,7 +14,7 @@ import lelisoft.com.lelimath.fragment.GamePreferenceFragment;
  * Preference for a game
  * Created by Leoš on 17.01.2016.
  */
-public class GamePreferenceActivity extends Activity {
+public class GamePreferenceActivity extends AppCompatActivity {
     private static final String logTag = GamePreferenceActivity.class.getSimpleName();
 
     public static final String KEY_COMPLEXITY = "pref_game_complexity";
