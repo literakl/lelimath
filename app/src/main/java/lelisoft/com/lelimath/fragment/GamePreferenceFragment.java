@@ -2,12 +2,18 @@ package lelisoft.com.lelimath.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
+import android.text.InputFilter;
 import android.util.Log;
+import android.widget.EditText;
 
 import lelisoft.com.lelimath.R;
+import static lelisoft.com.lelimath.activities.GamePreferenceActivity.*;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
+import lelisoft.com.lelimath.helpers.ValuesInputFilter;
 
 /**
  * Preference for a game
@@ -25,6 +31,14 @@ public class GamePreferenceFragment extends PreferenceFragment implements Shared
         addPreferencesFromResource(R.xml.game_prefs);
 
         preferenceScreenHelper = new PreferenceHelper(getPreferenceScreen());
+
+        InputFilter[] filters = {new ValuesInputFilter()};
+        EditText editText = ((EditTextPreference) findPreference(KEY_FIRST_OPERAND)).getEditText();
+        editText.setFilters(filters);
+        editText = ((EditTextPreference) findPreference(KEY_SECOND_OPERAND)).getEditText();
+        editText.setFilters(filters);
+        editText = ((EditTextPreference) findPreference(KEY_RESULT)).getEditText();
+        editText.setFilters(filters);
     }
 
     @Override
@@ -46,5 +60,15 @@ public class GamePreferenceFragment extends PreferenceFragment implements Shared
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         updatePreferenceSummary(findPreference(key));
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        /* move cursor to end of line in EditText preferences */
+        if (preference instanceof EditTextPreference) {
+            EditText prefEt = ((EditTextPreference) preference).getEditText();
+            prefEt.setSelection(prefEt.length());
+        }
+        return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 }

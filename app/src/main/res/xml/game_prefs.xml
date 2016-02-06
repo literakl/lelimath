@@ -12,7 +12,7 @@
     <EditTextPreference
         android:key="pref_game_first_operand"
         android:title="První argument"
-        android:singleLine="true"
+        android:dialogMessage="@string/pref_enter_values"
         android:summary="%s"
         android:defaultValue="0-30"
     />
@@ -28,7 +28,7 @@
     <EditTextPreference
         android:key="pref_game_second_operand"
         android:title="Druhý argument"
-        android:singleLine="true"
+        android:dialogMessage="@string/pref_enter_values"
         android:summary="%s"
         android:defaultValue="0-30"
     />
@@ -36,7 +36,8 @@
     <EditTextPreference
         android:key="pref_game_result"
         android:title="Výsledek"
-        android:singleLine="true"
+        android:dialogMessage="@string/pref_enter_values"
+        android:inputType="numberDecimal"
         android:summary="%s"
         android:defaultValue="0-30"
     />
