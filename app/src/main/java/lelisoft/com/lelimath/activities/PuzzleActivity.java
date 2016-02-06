@@ -23,7 +23,7 @@ import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
-import lelisoft.com.lelimath.view.Misc;
+import lelisoft.com.lelimath.helpers.Misc;
 
 /**
  * Guess picture type of activity

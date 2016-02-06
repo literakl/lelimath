@@ -7,7 +7,15 @@
         android:entries="@array/pref_complexity_entries"
         android:entryValues="@array/pref_complexity_entries_values"
         android:defaultValue="EASY"
-        />
+    />
+
+    <EditTextPreference
+        android:key="pref_game_first_operand"
+        android:title="První argument"
+        android:singleLine="true"
+        android:summary="%s"
+        android:defaultValue="0-30"
+    />
 
     <MultiSelectListPreference
         android:key="pref_game_operations"
@@ -15,30 +23,21 @@
         android:entries="@array/pref_operations_entries"
         android:entryValues="@array/pref_operations_entries_values"
         android:defaultValue="@array/pref_operations_entries_values"
-        />
+    />
 
-    <PreferenceCategory
-        android:title="Rozsah hodnot"
-        android:key="pref_game_values"
-        android:summary="Hodnoty zadávejte rozsahem nebo výčtem odděleným čárkami"
-        >
+    <EditTextPreference
+        android:key="pref_game_second_operand"
+        android:title="Druhý argument"
+        android:singleLine="true"
+        android:summary="%s"
+        android:defaultValue="0-30"
+    />
 
-        <EditTextPreference
-            android:key="pref_game_first_operand"
-            android:title="První argument"
-            android:defaultValue="0-30"
-            />
-
-        <EditTextPreference
-            android:key="pref_game_second_operand"
-            android:title="Druhý argument"
-            android:defaultValue="0-30"
-            />
-
-        <EditTextPreference
-            android:key="pref_game_result"
-            android:title="Výsledek"
-            android:defaultValue="0-30"
-            />
-    </PreferenceCategory>
+    <EditTextPreference
+        android:key="pref_game_result"
+        android:title="Výsledek"
+        android:singleLine="true"
+        android:summary="%s"
+        android:defaultValue="0-30"
+    />
 </PreferenceScreen>

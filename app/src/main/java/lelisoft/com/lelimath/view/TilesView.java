@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 
 /**

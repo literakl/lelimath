@@ -1,4 +1,4 @@
-package lelisoft.com.lelimath.view;
+package lelisoft.com.lelimath.helpers;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -62,6 +62,33 @@ public class Misc {
         int x = ((vw - w) >> 1);
         out.set(x, 0, x + w, h);
         return out;
+    }
+
+    public static boolean isNullOrEmpty(CharSequence text) {
+        return text == null || text.length() == 0;
+    }
+
+    /**
+     * Get string from {@code text}.
+     * <ul>
+     * <li>If text is null and {@code allowNull} is true, null is returned
+     * <li>If text is null and {@code allowNull} is false, empty string ("") is returned
+     * <li>If text is not null, return value of {@code toString()} is returned
+     * </ul>
+     * @param text CharSequence to made string from
+     * @param allowNull if true null can be returned
+     *
+     * @return String that represents the CharSequence {@code text}
+     */
+    public static String toString(CharSequence text, boolean allowNull) {
+        if (text == null) {
+            if (allowNull) {
+                return null;
+            } else {
+                return "";
+            }
+        }
+        return text.toString();
     }
 
     public static Random getRandom() {

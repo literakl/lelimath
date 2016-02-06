@@ -7,7 +7,7 @@ import java.util.List;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.view.FormulaResultPair;
-import lelisoft.com.lelimath.view.Misc;
+import lelisoft.com.lelimath.helpers.Misc;
 
 /**
  * Implementation for handling all Puzzle calculations

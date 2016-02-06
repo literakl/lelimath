@@ -1,6 +1,5 @@
 package lelisoft.com.lelimath.activities;
 
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
