@@ -76,9 +76,6 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_settings: {
                 Toast.makeText(this, "Settings!", Toast.LENGTH_LONG).show();
@@ -120,11 +117,51 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
         return pictures[Misc.getRandom().nextInt(pictures.length)];
     }
 
+    protected void initializeLogic() {
+        String prefComplexity = sharedPref.getString(GamePreferenceActivity.KEY_COMPLEXITY, "EASY");
+        logic.setLevel(PuzzleLogic.Level.valueOf(prefComplexity));
+
+        Values defaultValues = new Values(0, 30), values = defaultValues;
+        FormulaDefinition definition = new FormulaDefinition().addUnknown(FormulaPart.RESULT);
+        logic.setFormulaDefinition(definition);
+
+        String sValues = sharedPref.getString(GamePreferenceActivity.KEY_FIRST_OPERAND, null);
+        if (sValues != null) {
+            values = Values.parse(sValues);
+        }
+        definition.setLeftOperand(values);
+
+        sValues = sharedPref.getString(GamePreferenceActivity.KEY_SECOND_OPERAND, null);
+        if (sValues != null) {
+            values = Values.parse(sValues);
+        } else {
+            values = defaultValues;
+        }
+        definition.setRightOperand(values);
+
+        sValues = sharedPref.getString(GamePreferenceActivity.KEY_RESULT, null);
+        if (sValues != null) {
+            values = Values.parse(sValues);
+        } else {
+            values = defaultValues;
+        }
+        definition.setResult(values);
+
+        Set<String> mValues = sharedPref.getStringSet(GamePreferenceActivity.KEY_OPERATIONS, null);
+        if (mValues != null) {
+            for (String value : mValues) {
+                definition.addOperator(Operator.valueOf(value));
+            }
+        } else {
+            definition.addOperator(Operator.PLUS).addOperator(Operator.MINUS);
+            definition.addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE);
+        }
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle state) {
         Log.d(logTag, "onSaveInstanceState()");
         super.onSaveInstanceState(state);
-//        state.putParcelable("formula", formula);
     }
 
     @Override
@@ -167,48 +204,6 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
     @Override
     protected void onDestroy() {
         Log.d(logTag, "onDestroy()");
-//        tilesView.setLogic(null);// todo find proper place
         super.onDestroy();
-    }
-
-    protected void initializeLogic() {
-        String prefComplexity = sharedPref.getString(GamePreferenceActivity.KEY_COMPLEXITY, "EASY");
-        logic.setLevel(PuzzleLogic.Level.valueOf(prefComplexity));
-
-        Values defaultValues = new Values(0, 30), values = defaultValues;
-        FormulaDefinition definition = new FormulaDefinition().addUnknown(FormulaPart.RESULT);
-        logic.setFormulaDefinition(definition);
-
-        String sValues = sharedPref.getString(GamePreferenceActivity.KEY_FIRST_OPERAND, null);
-        if (sValues != null) {
-            values = Values.parse(sValues);
-        }
-        definition.setLeftOperand(values);
-
-        sValues = sharedPref.getString(GamePreferenceActivity.KEY_SECOND_OPERAND, null);
-        if (sValues != null) {
-            values = Values.parse(sValues);
-        } else {
-            values = defaultValues;
-        }
-        definition.setRightOperand(values);
-
-        sValues = sharedPref.getString(GamePreferenceActivity.KEY_RESULT, null);
-        if (sValues != null) {
-            values = Values.parse(sValues);
-        } else {
-            values = defaultValues;
-        }
-        definition.setResult(values);
-
-        Set<String> mValues = sharedPref.getStringSet(GamePreferenceActivity.KEY_OPERATIONS, null);
-        if (mValues != null) {
-            for (String value : mValues) {
-                definition.addOperator(Operator.valueOf(value));
-            }
-        } else {
-            definition.addOperator(Operator.PLUS).addOperator(Operator.MINUS);
-            definition.addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE);
-        }
     }
 }
