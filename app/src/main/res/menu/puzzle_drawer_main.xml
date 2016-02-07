@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single" android:id="@+id/nav_courses_AS">
-        <item android:id="@+id/nav_level_A10" android:title="Sčítání do desítky" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_S10" android:title="Odečítání do desítky" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_A20" android:title="Sčítání do dvacítky" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_S20" android:title="Odečítání do dvacítky" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_AS50" android:title="Sčítání a odečítání do padesáti" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_AS100" android:title="Sčítání a odečítání do sta" android:icon="@drawable/ic_action_settings"/>
+        <item android:id="@+id/nav_level_A10" android:title="Sčítání do desítky" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_S10" android:title="Odečítání do desítky" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_A20" android:title="Sčítání do dvacítky" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_S20" android:title="Odečítání do dvacítky" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_AS50" android:title="Sčítání a odečítání do padesáti" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_AS100" android:title="Sčítání a odečítání do sta" android:icon="@drawable/ic_action_playlist_play"/>
     </group>
 
     <group android:checkableBehavior="single" android:id="@+id/nav_courses_MD">
-        <item android:id="@+id/nav_level_M3" android:title="Násobení trojky" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_M4" android:title="Násobení čtyřky" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_MD5" android:title="Násobilka pětky" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_MD6" android:title="Násobilka šestky" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_MD7" android:title="Násobilka sedmi" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_MD8" android:title="Násobilka osmi" android:icon="@drawable/ic_action_settings"/>
-        <item android:id="@+id/nav_level_MD9" android:title="Násobilka devítky" android:icon="@drawable/ic_action_settings"/>
+        <item android:id="@+id/nav_level_M3" android:title="Násobení trojky" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_M4" android:title="Násobení čtyřky" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_MD5" android:title="Násobilka pětky" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_MD6" android:title="Násobilka šestky" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_MD7" android:title="Násobilka sedmi" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_MD8" android:title="Násobilka osmi" android:icon="@drawable/ic_action_playlist_play"/>
+        <item android:id="@+id/nav_level_MD9" android:title="Násobilka devítky" android:icon="@drawable/ic_action_playlist_play"/>
     </group>
 
 </menu>

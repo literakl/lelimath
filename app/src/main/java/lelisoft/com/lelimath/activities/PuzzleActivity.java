@@ -77,8 +77,9 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings: {
-                Toast.makeText(this, "Settings!", Toast.LENGTH_LONG).show();
+            case R.id.action_new_game: {
+                initializeLogic();
+                fragment.restartGame();
                 break;
             }
             case R.id.action_level: {

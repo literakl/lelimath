@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Leli Math</string>
+    <string name="action_new_game">Nová hra</string>
     <string name="action_settings">Nastavení</string>
     <string name="action_pause">Pauza</string>
     <string name="action_progress_fast">Fast</string>
