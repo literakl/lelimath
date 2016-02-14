@@ -21,21 +21,3 @@
     </group>
 
 </menu>
-
-<!--
-<group android:checkableBehavior="all" android:id="@+id/nav_operations">
-<item android:id="@+id/nav_operations_plus" android:title="Sčítání" />
-<item android:id="@+id/nav_operations_minus" android:title="Odečítání" />
-<item android:id="@+id/nav_operations_multiply" android:title="Násobení" />
-<item android:id="@+id/nav_operations_divide" android:title="Dělení" />
-</group>
-
-<group android:checkableBehavior="single" android:id="@+id/nav_arguments">
-<item android:id="@+id/nav_arg_0_3" android:title="0 - 3" />
-<item android:id="@+id/nav_arg_4_6" android:title="4 - 6" />
-<item android:id="@+id/nav_arg_7_10" android:title="7 - 10" />
-<item android:id="@+id/nav_arg_11_20" android:title="11 - 20" />
-<item android:id="@+id/nav_arg_21_50" android:title="21 - 50" />
-<item android:id="@+id/nav_arg_51_99" android:title="51 - 99" />
-</group>
--->
