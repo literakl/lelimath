@@ -14,9 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import java.util.Set;
@@ -43,7 +40,6 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
     SharedPreferences sharedPref;
     PuzzleLogic logic = new PuzzleLogicImpl();
     PuzzleFragment fragment;
-    Animation shake;
 
     static int[] pictures = new int[] {
             R.drawable.pic_cat_kitten,
@@ -75,19 +71,20 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
         NavigationView navigationView = (NavigationView) findViewById(R.id.puzzle_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         fragment = new PuzzleFragment();
         transaction.add(R.id.puzzle_content, fragment);
         transaction.commit();
 
-//        initializeLogic();
+        initializeLogic();
+        fragment.setLogic(logic);
+        fragment.setPicture(pictures[Misc.getRandom().nextInt(pictures.length)]);
     }
 
     @Override
-    public PuzzleLogic getLogic() {
-        return logic;
+    public void puzzleFinished() {
+        fragment.setPicture(pictures[Misc.getRandom().nextInt(pictures.length)]);
+        fragment.restartGame();
     }
 
     @Override
@@ -245,14 +242,6 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
         } else {
             super.onBackPressed();
         }
-    }
-
-    public void shake(View view) {
-        view.startAnimation(shake);
-    }
-
-    public int getPicture() {
-        return pictures[Misc.getRandom().nextInt(pictures.length)];
     }
 
     protected void initializeLogic() {

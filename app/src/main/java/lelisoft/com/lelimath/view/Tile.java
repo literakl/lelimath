@@ -18,6 +18,10 @@ public class Tile {
         this.yy = yy;
     }
 
+    public Tile(FormulaResultPair pair) {
+        this.pair = pair;
+    }
+
     public Formula getFormula() {
         return pair.formula;
     }

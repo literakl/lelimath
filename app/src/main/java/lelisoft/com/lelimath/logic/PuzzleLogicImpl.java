@@ -34,6 +34,19 @@ public class PuzzleLogicImpl implements PuzzleLogic {
         return definition.getValuesMaximumLength(definition.getResult());
     }
 
+    @Override
+    public String getSampleFormula() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < getFirstOperandMaximumLength(); i++) {
+            sb.append("3");
+        }
+        sb.append(" + ");
+        for (int i = 0; i < getSecondOperandMaximumLength(); i++) {
+            sb.append("3");
+        }
+        return sb.toString();
+    }
+
     public Level getLevel() {
         return level;
     }

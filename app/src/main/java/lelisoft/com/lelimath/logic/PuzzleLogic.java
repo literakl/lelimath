@@ -19,6 +19,8 @@ public interface PuzzleLogic {
 
     public int getResultMaximumLength();
 
+    public String getSampleFormula();
+
     public Level getLevel();
 
     public void setLevel(Level level);
