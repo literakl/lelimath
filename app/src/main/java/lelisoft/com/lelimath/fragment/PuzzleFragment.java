@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import java.util.Iterator;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
@@ -29,6 +30,7 @@ public class PuzzleFragment extends Fragment {
     private static final String logTag = PuzzleFragment.class.getSimpleName();
     private PuzzleBridge callback;
     GridLayout puzzleGrid;
+    Tile selectedTile;
     Animation shake;
 
     PuzzleLogic logic;
@@ -59,12 +61,7 @@ public class PuzzleFragment extends Fragment {
     @NonNull
     private Button inflateButton() {
         Button button = (Button) getActivity().getLayoutInflater().inflate(R.layout.template_puzzle, puzzleGrid, false);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(shake);
-            }
-        });
+        button.setOnClickListener(new HandleClick());
         return button;
     }
 
@@ -91,16 +88,49 @@ public class PuzzleFragment extends Fragment {
         }
     }
 
+    public class HandleClick implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Tile tile = (Tile) view.getTag(R.id.button_tile);
+            if (tile == null) {
+                return;
+            }
+
+            if (tile == selectedTile) {
+                tile.setSelected(false);
+                selectedTile = null;
+            } else {
+                if (selectedTile != null) {
+                    if (selectedTile.matches(tile)) {
+                        tile.setUncovered(true);
+                        ((Button)view).setText("OK");
+                        // todo selected tile lookup
+                        selectedTile.setUncovered(true);
+                        selectedTile.setSelected(false);
+                        selectedTile = null;
+                    } else {
+                        selectedTile.setSelected(false);
+                        selectedTile = null;
+                        view.startAnimation(shake);
+                    }
+                } else {
+                    tile.setSelected(true);
+                    selectedTile = tile;
+                }
+            }
+        }
+    }
+
     public class CalculateDimensions implements ViewTreeObserver.OnGlobalLayoutListener {
         @Override
         public void onGlobalLayout() {
-            Log.d(logTag, "CalculateDimensions, height: " + puzzleGrid.getHeight() + " width: " + puzzleGrid.getWidth());
             puzzleGrid.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
             Button button = inflateButton();
             button.setText(logic.getSampleFormula());
             button.measure(500, 500);
             int tileWidth = button.getMeasuredWidth();
+            Log.d(logTag, "CalculateDimensions: height=" + puzzleGrid.getHeight() + " width=" + puzzleGrid.getWidth() + ", tile=" + tileWidth);
 
             int maxHorizontalTiles = Math.min((int) Math.floor(puzzleGrid.getWidth() / tileWidth), logic.getLevel().x);
             int maxVerticalTiles = logic.getLevel().y;
@@ -108,11 +138,18 @@ public class PuzzleFragment extends Fragment {
             puzzleGrid.setColumnCount(maxHorizontalTiles);
 
             List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
-            for (FormulaResultPair pair : tilesValues) {
-                button = inflateButton();
-                Tile tile = new Tile(pair);
-                button.setText(tile.getText());
-                puzzleGrid.addView(button);
+            Iterator<FormulaResultPair> iterator = tilesValues.iterator();
+
+            for (int i = 0; i < maxVerticalTiles; i++) {
+                for (int j = 0; j < maxHorizontalTiles; j++) {
+                    if (iterator.hasNext()) {
+                        Tile tile = new Tile(iterator.next());
+                        button = inflateButton();
+                        button.setText(tile.getText());
+                        button.setTag(R.id.button_tile, tile);
+                        puzzleGrid.addView(button);
+                    }
+                }
             }
         }
     }
