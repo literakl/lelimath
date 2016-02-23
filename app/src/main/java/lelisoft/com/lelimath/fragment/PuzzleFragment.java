@@ -1,14 +1,10 @@
 package lelisoft.com.lelimath.fragment;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayout;
-import android.text.TextPaint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +59,6 @@ public class PuzzleFragment extends Fragment {
     @NonNull
     private Button inflateButton() {
         Button button = (Button) getActivity().getLayoutInflater().inflate(R.layout.template_puzzle, puzzleGrid, false);
-        button.setText("38");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,27 +97,19 @@ public class PuzzleFragment extends Fragment {
             Log.d(logTag, "CalculateDimensions, height: " + puzzleGrid.getHeight() + " width: " + puzzleGrid.getWidth());
             puzzleGrid.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-            // http://stackoverflow.com/questions/13719103/how-to-retrieve-style-attributes-programatically-from-styles-xml
-            int[] attrs = {android.R.attr.textSize, android.R.attr.padding};
-            TypedArray ta = getActivity().obtainStyledAttributes(R.style.PuzzleTileButton, attrs);
-            int textSize = ta.getDimensionPixelSize(0, -1);
-            int tilePadding = ta.getDimensionPixelSize(1, 0);
-            ta.recycle();
+            Button button = inflateButton();
+            button.setText(logic.getSampleFormula());
+            button.measure(500, 500);
+            int tileWidth = button.getMeasuredWidth();
 
-            String sampleFormula = logic.getSampleFormula();
-            Paint textPaint = new TextPaint();
-            textPaint.setTextSize(textSize);
-
-            int tileWidth = (int) textPaint.measureText(sampleFormula) + tilePadding;
-            int maxHorizontalTiles = Math.min((int) Math.floor(puzzleGrid.getWidth() / tileWidth) - 2, logic.getLevel().x);
-            Log.d(logTag, "maxHorizontalTiles = " + maxHorizontalTiles);
+            int maxHorizontalTiles = Math.min((int) Math.floor(puzzleGrid.getWidth() / tileWidth), logic.getLevel().x);
             int maxVerticalTiles = logic.getLevel().y;
 
             puzzleGrid.setColumnCount(maxHorizontalTiles);
 
             List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
             for (FormulaResultPair pair : tilesValues) {
-                Button button = inflateButton();
+                button = inflateButton();
                 Tile tile = new Tile(pair);
                 button.setText(tile.getText());
                 puzzleGrid.addView(button);
