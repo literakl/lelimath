@@ -30,7 +30,7 @@ public class PuzzleFragment extends Fragment {
     private static final String logTag = PuzzleFragment.class.getSimpleName();
     private PuzzleBridge callback;
     GridLayout puzzleGrid;
-    Tile selectedTile;
+    Button selectedButton;
     Animation shake;
 
     PuzzleLogic logic;
@@ -91,31 +91,40 @@ public class PuzzleFragment extends Fragment {
     public class HandleClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Tile tile = (Tile) view.getTag(R.id.button_tile);
-            if (tile == null) {
+            Tile currentTile = (Tile) view.getTag(R.id.button_tile);
+            if (currentTile == null) {
                 return;
             }
 
-            if (tile == selectedTile) {
-                tile.setSelected(false);
-                selectedTile = null;
+            if (view == selectedButton) {
+                currentTile.setSelected(false);
+                view.setBackgroundColor(getResources().getColor(R.color.gray_215));
+                selectedButton = null;
             } else {
-                if (selectedTile != null) {
-                    if (selectedTile.matches(tile)) {
-                        tile.setUncovered(true);
-                        ((Button)view).setText("OK");
-                        // todo selected tile lookup
+                if (selectedButton != null) {
+                    Tile selectedTile = (Tile) selectedButton.getTag(R.id.button_tile);
+                    if (selectedTile.matches(currentTile)) {
+                        currentTile.setUncovered(true);
+                        ((Button)view).setText("");
+                        view.setBackgroundColor(getResources().getColor(R.color.green_215));
+                        view.setClickable(false);
                         selectedTile.setUncovered(true);
                         selectedTile.setSelected(false);
-                        selectedTile = null;
+                        selectedButton.setText("");
+                        selectedButton.setBackgroundColor(getResources().getColor(R.color.green_215));
+                        selectedButton.setClickable(false);
+                        selectedButton = null;
                     } else {
                         selectedTile.setSelected(false);
-                        selectedTile = null;
+                        selectedButton.setBackgroundColor(getResources().getColor(R.color.gray_215));
+                        selectedButton.startAnimation(shake);
+                        selectedButton = null;
                         view.startAnimation(shake);
                     }
                 } else {
-                    tile.setSelected(true);
-                    selectedTile = tile;
+                    currentTile.setSelected(true);
+                    selectedButton = (Button) view;
+                    selectedButton.setBackgroundColor(getResources().getColor(R.color.gray_79));
                 }
             }
         }

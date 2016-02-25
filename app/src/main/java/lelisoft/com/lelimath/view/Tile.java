@@ -118,7 +118,8 @@ public class Tile {
     @Override
     public String toString() {
         return "Tile{" +
-                "x=" + x +
+                getText() +
+                ", x=" + x +
                 ", y=" + y +
                 ", xx=" + xx +
                 ", yy=" + yy +
