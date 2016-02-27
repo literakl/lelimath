@@ -7,16 +7,7 @@ import lelisoft.com.lelimath.data.Formula;
  * Created by Leoš on 12.12.2015.
  */
 public class Tile {
-    boolean selected, uncovered;
     FormulaResultPair pair;
-    float x, y, xx, yy;
-
-    public Tile(float x, float y, float xx, float yy) {
-        this.x = x;
-        this.y = y;
-        this.xx = xx;
-        this.yy = yy;
-    }
 
     public Tile(FormulaResultPair pair) {
         this.pair = pair;
@@ -39,37 +30,6 @@ public class Tile {
         }
     }
 
-    public void setFormulaResultPair(FormulaResultPair formula) {
-        this.pair = formula;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public boolean isUncovered() {
-        return uncovered;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-    public void setUncovered(boolean uncovered) {
-        this.uncovered = uncovered;
-    }
-
-    /**
-     * Verifies whether given point is inside this tile and outside of inactive touch margin area
-     * @param pointX pointer X position
-     * @param pointY pointer Y position
-     * @param margin size of inactive area around this tile
-     * @return true if point is within active area
-     */
-    public boolean isInside(float pointX, float pointY, float margin) {
-        return ! uncovered && (x + margin <= pointX && pointX <= xx - margin && y + margin <= pointY && pointY <= yy - margin);
-    }
-
     public boolean matches(Tile tile) {
         if (pair.formula != null) {
             if (tile.pair.result != null) {
@@ -83,46 +43,10 @@ public class Tile {
         return false;
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public float getXx() {
-        return xx;
-    }
-
-    public float getYy() {
-        return yy;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public void setXx(float xx) {
-        this.xx = xx;
-    }
-
-    public void setYy(float yy) {
-        this.yy = yy;
-    }
-
     @Override
     public String toString() {
         return "Tile{" +
                 getText() +
-                ", x=" + x +
-                ", y=" + y +
-                ", xx=" + xx +
-                ", yy=" + yy +
                 '}';
     }
 }

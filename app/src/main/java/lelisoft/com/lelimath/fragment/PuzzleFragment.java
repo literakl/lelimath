@@ -108,33 +108,27 @@ public class PuzzleFragment extends Fragment {
             AppCompatButton currentButton = (AppCompatButton) view;
 
             if (view == selectedButton) {
-                currentTile.setSelected(false);
                 currentButton.setSupportBackgroundTintList(colorsNormal);
                 selectedButton = null;
             } else {
                 if (selectedButton != null) {
                     Tile selectedTile = (Tile) selectedButton.getTag(R.id.button_tile);
                     if (selectedTile.matches(currentTile)) {
-                        currentTile.setUncovered(true);
                         currentButton.setText("");
                         currentButton.setSupportBackgroundTintList(colorsSolved);
                         currentButton.setClickable(false);
-                        selectedTile.setUncovered(true);
-                        selectedTile.setSelected(false);
+
                         selectedButton.setText("");
                         selectedButton.setSupportBackgroundTintList(colorsSolved);
                         selectedButton.setClickable(false);
                         selectedButton = null;
                     } else {
-                        selectedTile.setSelected(false);
                         selectedButton.setSupportBackgroundTintList(colorsNormal);
-                        selectedButton.startAnimation(shake);
                         selectedButton.startAnimation(shake);
                         selectedButton = null;
                         currentButton.startAnimation(shake);
                     }
                 } else {
-                    currentTile.setSelected(true);
                     selectedButton = currentButton;
                     currentButton.setSupportBackgroundTintList(colorsSelected);
                 }
