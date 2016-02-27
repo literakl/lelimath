@@ -23,10 +23,11 @@ import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
-import lelisoft.com.lelimath.helpers.Misc;
 
 /**
  * Guess picture type of activity
@@ -39,7 +40,8 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
     SharedPreferences sharedPref;
     PuzzleLogic logic = new PuzzleLogicImpl();
-    PuzzleFragment fragment;
+    PuzzleFragment puzzleFragment;
+    PictureFragment pictureFragment;
 
     static int[] pictures = new int[] {
             R.drawable.pic_cat_kitten,
@@ -59,6 +61,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         setContentView(R.layout.activity_puzzle_navigation);
+        initializeLogic();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,19 +75,24 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        fragment = new PuzzleFragment();
-        transaction.add(R.id.puzzle_content, fragment);
+        puzzleFragment = new PuzzleFragment();
+        puzzleFragment.setLogic(logic);
+        transaction.add(R.id.puzzle_content, puzzleFragment);
         transaction.commit();
-
-        initializeLogic();
-        fragment.setLogic(logic);
-        fragment.setPicture(pictures[Misc.getRandom().nextInt(pictures.length)]);
     }
 
     @Override
     public void puzzleFinished() {
-        fragment.setPicture(pictures[Misc.getRandom().nextInt(pictures.length)]);
-        fragment.restartGame();
+        pictureFragment = new PictureFragment();
+        Bundle args = new Bundle();
+        args.putInt(PictureFragment.ARG_PICTURE, pictures[Misc.getRandom().nextInt(pictures.length)]);
+        pictureFragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.puzzle_content, pictureFragment);
+        transaction.commit();
+
+        puzzleFragment = null;
     }
 
     @Override
@@ -98,7 +106,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
         switch (item.getItemId()) {
             case R.id.action_new_game: {
                 initializeLogic();
-                fragment.restartGame();
+                restartGame();
                 break;
             }
             case R.id.action_level: {
@@ -217,7 +225,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
         if (definition != null) {
             logic.setFormulaDefinition(definition);
-            fragment.restartGame();
+            restartGame();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.puzzle_drawer_layout);
@@ -230,7 +238,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
         Log.d(logTag, "onActivityResult()");
         super.onActivityResult(requestCode, resultCode, data);
         initializeLogic();
-        fragment.restartGame();
+        restartGame();
     }
 
     @Override
@@ -241,6 +249,19 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    /**
+     * Restarts game. If PuzzleFragment is not displayed it will be restored.
+     */
+    private void restartGame() {
+        if (puzzleFragment == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            puzzleFragment = new PuzzleFragment();
+            puzzleFragment.setLogic(logic);
+            transaction.replace(R.id.puzzle_content, puzzleFragment);
+            transaction.commit();
         }
     }
 

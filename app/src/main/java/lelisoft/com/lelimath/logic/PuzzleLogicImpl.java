@@ -68,6 +68,9 @@ public class PuzzleLogicImpl implements PuzzleLogic {
 
         for (int i = 0; i < formulas; i++) {
             formula = FormulaGenerator.generateRandomFormula(definition);
+            if (formula == null) {
+                continue;
+            }
             pairs.add(new FormulaResultPair(formula));
             pairs.add(new FormulaResultPair(formula.getResult()));
         }
