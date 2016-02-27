@@ -89,6 +89,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
         pictureFragment.setArguments(args);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
         transaction.replace(R.id.puzzle_content, pictureFragment);
         transaction.commit();
 
