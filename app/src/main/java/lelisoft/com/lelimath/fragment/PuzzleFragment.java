@@ -34,6 +34,7 @@ public class PuzzleFragment extends Fragment {
     AppCompatButton selectedButton;
     HandleClick clickHandler;
     Animation shake;
+    int maxHorizontalTiles, maxVerticalTiles;
 
     PuzzleLogic logic;
     int picture;
@@ -58,7 +59,6 @@ public class PuzzleFragment extends Fragment {
 
         // http://stackoverflow.com/questions/3591784/getwidth-and-getheight-of-view-returns-0
         puzzleGrid.getViewTreeObserver().addOnGlobalLayoutListener(new CalculateDimensions());
-        restartGame();
     }
 
     @NonNull
@@ -71,6 +71,8 @@ public class PuzzleFragment extends Fragment {
     }
 
     public void restartGame() {
+        puzzleGrid.removeAllViews();
+        generateTiles();
     }
 
     public void setLogic(PuzzleLogic logic) {
@@ -148,24 +150,27 @@ public class PuzzleFragment extends Fragment {
             int tileWidth = button.getMeasuredWidth();
             Log.d(logTag, "CalculateDimensions: height=" + puzzleGrid.getHeight() + " width=" + puzzleGrid.getWidth() + ", tile=" + tileWidth);
 
-            int maxHorizontalTiles = Math.min((int) Math.floor(puzzleGrid.getWidth() / tileWidth), logic.getLevel().x);
-            int maxVerticalTiles = logic.getLevel().y;
+            maxHorizontalTiles = Math.min((int) Math.floor(puzzleGrid.getWidth() / tileWidth), logic.getLevel().x);
+            maxVerticalTiles = logic.getLevel().y;
 
             puzzleGrid.setColumnCount(maxHorizontalTiles);
+            generateTiles();
+        }
+    }
 
-            List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
-            Iterator<FormulaResultPair> iterator = tilesValues.iterator();
+    private void generateTiles() {
+        AppCompatButton button;List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
+        Iterator<FormulaResultPair> iterator = tilesValues.iterator();
 
-            for (int i = 0; i < maxVerticalTiles; i++) {
-                for (int j = 0; j < maxHorizontalTiles; j++) {
-                    if (iterator.hasNext()) {
-                        Tile tile = new Tile(iterator.next());
-                        button = inflateButton();
-                        button.setText(tile.getText());
+        for (int i = 0; i < maxVerticalTiles; i++) {
+            for (int j = 0; j < maxHorizontalTiles; j++) {
+                if (iterator.hasNext()) {
+                    Tile tile = new Tile(iterator.next());
+                    button = inflateButton();
+                    button.setText(tile.getText());
 //                        button.setText("A");
-                        button.setTag(R.id.button_tile, tile);
-                        puzzleGrid.addView(button);
-                    }
+                    button.setTag(R.id.button_tile, tile);
+                    puzzleGrid.addView(button);
                 }
             }
         }
