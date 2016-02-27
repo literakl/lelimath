@@ -1,9 +1,11 @@
 package lelisoft.com.lelimath.fragment;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +31,8 @@ public class PuzzleFragment extends Fragment {
     private static final String logTag = PuzzleFragment.class.getSimpleName();
     private PuzzleBridge callback;
     GridLayout puzzleGrid;
-    Button selectedButton;
+    AppCompatButton selectedButton;
+    HandleClick clickHandler;
     Animation shake;
 
     PuzzleLogic logic;
@@ -52,6 +54,7 @@ public class PuzzleFragment extends Fragment {
 
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
         puzzleGrid = (GridLayout) getActivity().findViewById(R.id.puzzle_grid);
+        clickHandler = new HandleClick();
 
         // http://stackoverflow.com/questions/3591784/getwidth-and-getheight-of-view-returns-0
         puzzleGrid.getViewTreeObserver().addOnGlobalLayoutListener(new CalculateDimensions());
@@ -59,9 +62,11 @@ public class PuzzleFragment extends Fragment {
     }
 
     @NonNull
-    private Button inflateButton() {
-        Button button = (Button) getActivity().getLayoutInflater().inflate(R.layout.template_puzzle, puzzleGrid, false);
-        button.setOnClickListener(new HandleClick());
+    private AppCompatButton inflateButton() {
+        AppCompatButton button = (AppCompatButton) getActivity().getLayoutInflater().inflate(R.layout.template_puzzle, puzzleGrid, false);
+        ColorStateList csl = new ColorStateList(new int[][]{new int[0]}, new int[]{0xffffcc00});
+        button.setSupportBackgroundTintList(csl);
+        button.setOnClickListener(clickHandler);
         return button;
     }
 
@@ -95,42 +100,38 @@ public class PuzzleFragment extends Fragment {
             if (currentTile == null) {
                 return;
             }
-//ViewCompat.setBackgroundTintList(view, colorList)
+            AppCompatButton currentButton = (AppCompatButton) view;
+
             if (view == selectedButton) {
                 currentTile.setSelected(false);
-                view.setBackground(getResources().getDrawable(R.drawable.unknown_box));
-//                ViewCompat.setBackgroundTintList(view, getResources().getColorStateList(R.color.gray_215));
+                currentButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xffffcc00));
                 selectedButton = null;
             } else {
                 if (selectedButton != null) {
                     Tile selectedTile = (Tile) selectedButton.getTag(R.id.button_tile);
                     if (selectedTile.matches(currentTile)) {
                         currentTile.setUncovered(true);
-                        ((Button)view).setText("");
-                        view.setBackground(getResources().getDrawable(R.drawable.solved_tile));
-//                        ViewCompat.setBackgroundTintList(view, getResources().getColorStateList(R.color.green_215));
-                        view.setClickable(false);
+                        currentButton.setText("");
+                        currentButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xff00ff00));
+                        currentButton.setClickable(false);
                         selectedTile.setUncovered(true);
                         selectedTile.setSelected(false);
                         selectedButton.setText("");
-                        selectedButton.setBackground(getResources().getDrawable(R.drawable.solved_tile));
-//                        ViewCompat.setBackgroundTintList(selectedButton, getResources().getColorStateList(R.color.green_215));
+                        selectedButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xff00ff00));
                         selectedButton.setClickable(false);
                         selectedButton = null;
                     } else {
                         selectedTile.setSelected(false);
-                        selectedButton.setBackground(getResources().getDrawable(R.drawable.unknown_box));
+                        selectedButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xffffcc00));
                         selectedButton.startAnimation(shake);
-//                        ViewCompat.setBackgroundTintList(selectedButton, getResources().getColorStateList(R.color.gray_215));
                         selectedButton.startAnimation(shake);
                         selectedButton = null;
-                        view.startAnimation(shake);
+                        currentButton.startAnimation(shake);
                     }
                 } else {
                     currentTile.setSelected(true);
-                    selectedButton = (Button) view;
-                    view.setBackground(getResources().getDrawable(R.drawable.selected_tile));
-//                    ViewCompat.setBackgroundTintList(selectedButton, getResources().getColorStateList(R.color.colorAccent));
+                    selectedButton = currentButton;
+                    currentButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xffffee00));
                 }
             }
         }
@@ -141,7 +142,7 @@ public class PuzzleFragment extends Fragment {
         public void onGlobalLayout() {
             puzzleGrid.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-            Button button = inflateButton();
+            AppCompatButton button = inflateButton();
             button.setText(logic.getSampleFormula());
             button.measure(500, 500);
             int tileWidth = button.getMeasuredWidth();
