@@ -35,6 +35,7 @@ public class PuzzleFragment extends Fragment {
     HandleClick clickHandler;
     Animation shake;
     int maxHorizontalTiles, maxVerticalTiles;
+    ColorStateList colorsNormal, colorsSelected, colorsSolved;
 
     PuzzleLogic logic;
     int picture;
@@ -56,6 +57,9 @@ public class PuzzleFragment extends Fragment {
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
         puzzleGrid = (GridLayout) getActivity().findViewById(R.id.puzzle_grid);
         clickHandler = new HandleClick();
+        colorsNormal = ColorStateList.valueOf(getResources().getColor(R.color.tile_normal));
+        colorsSelected = ColorStateList.valueOf(getResources().getColor(R.color.tile_selected));
+        colorsSolved = ColorStateList.valueOf(getResources().getColor(R.color.tile_solved));
 
         // http://stackoverflow.com/questions/3591784/getwidth-and-getheight-of-view-returns-0
         puzzleGrid.getViewTreeObserver().addOnGlobalLayoutListener(new CalculateDimensions());
@@ -64,8 +68,7 @@ public class PuzzleFragment extends Fragment {
     @NonNull
     private AppCompatButton inflateButton() {
         AppCompatButton button = (AppCompatButton) getActivity().getLayoutInflater().inflate(R.layout.template_puzzle, puzzleGrid, false);
-        ColorStateList csl = new ColorStateList(new int[][]{new int[0]}, new int[]{0xffffcc00});
-        button.setSupportBackgroundTintList(csl);
+        button.setSupportBackgroundTintList(colorsNormal);
         button.setOnClickListener(clickHandler);
         return button;
     }
@@ -106,7 +109,7 @@ public class PuzzleFragment extends Fragment {
 
             if (view == selectedButton) {
                 currentTile.setSelected(false);
-                currentButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xffffcc00));
+                currentButton.setSupportBackgroundTintList(colorsNormal);
                 selectedButton = null;
             } else {
                 if (selectedButton != null) {
@@ -114,17 +117,17 @@ public class PuzzleFragment extends Fragment {
                     if (selectedTile.matches(currentTile)) {
                         currentTile.setUncovered(true);
                         currentButton.setText("");
-                        currentButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xff00ff00));
+                        currentButton.setSupportBackgroundTintList(colorsSolved);
                         currentButton.setClickable(false);
                         selectedTile.setUncovered(true);
                         selectedTile.setSelected(false);
                         selectedButton.setText("");
-                        selectedButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xff00ff00));
+                        selectedButton.setSupportBackgroundTintList(colorsSolved);
                         selectedButton.setClickable(false);
                         selectedButton = null;
                     } else {
                         selectedTile.setSelected(false);
-                        selectedButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xffffcc00));
+                        selectedButton.setSupportBackgroundTintList(colorsNormal);
                         selectedButton.startAnimation(shake);
                         selectedButton.startAnimation(shake);
                         selectedButton = null;
@@ -133,7 +136,7 @@ public class PuzzleFragment extends Fragment {
                 } else {
                     currentTile.setSelected(true);
                     selectedButton = currentButton;
-                    currentButton.setSupportBackgroundTintList(ColorStateList.valueOf(0xffffee00));
+                    currentButton.setSupportBackgroundTintList(colorsSelected);
                 }
             }
         }
