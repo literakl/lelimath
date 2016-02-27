@@ -1,43 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:key="pref_game_complexity"
-        android:title="Složitost"
-        android:summary="%s"
-        android:entries="@array/pref_complexity_entries"
-        android:entryValues="@array/pref_complexity_entries_values"
-        android:defaultValue="EASY"
-    />
+    <PreferenceCategory android:title="Hra">
+        <ListPreference
+            android:key="pref_game_complexity"
+            android:title="Složitost"
+            android:summary="%s"
+            android:entries="@array/pref_complexity_entries"
+            android:entryValues="@array/pref_complexity_entries_values"
+            android:defaultValue="EASY"
+        />
 
-    <EditTextPreference
-        android:key="pref_game_first_operand"
-        android:title="První argument"
-        android:dialogMessage="@string/pref_enter_values"
-        android:summary="%s"
-        android:defaultValue="0-30"
-    />
+        <EditTextPreference
+            android:key="pref_game_first_operand"
+            android:title="První argument"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:defaultValue="0-30"
+        />
 
-    <MultiSelectListPreference
-        android:key="pref_game_operations"
-        android:title="Operace"
-        android:entries="@array/pref_operations_entries"
-        android:entryValues="@array/pref_operations_entries_values"
-        android:defaultValue="@array/pref_operations_entries_values"
-    />
+        <MultiSelectListPreference
+            android:key="pref_game_operations"
+            android:title="Operace"
+            android:entries="@array/pref_operations_entries"
+            android:entryValues="@array/pref_operations_entries_values"
+            android:defaultValue="@array/pref_operations_entries_values"
+        />
 
-    <EditTextPreference
-        android:key="pref_game_second_operand"
-        android:title="Druhý argument"
-        android:dialogMessage="@string/pref_enter_values"
-        android:summary="%s"
-        android:defaultValue="0-30"
-    />
+        <EditTextPreference
+            android:key="pref_game_second_operand"
+            android:title="Druhý argument"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:defaultValue="0-30"
+        />
 
-    <EditTextPreference
-        android:key="pref_game_result"
-        android:title="Výsledek"
-        android:dialogMessage="@string/pref_enter_values"
-        android:summary="%s"
-        android:defaultValue="0-30"
-    />
+        <EditTextPreference
+            android:key="pref_game_result"
+            android:title="Výsledek"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:defaultValue="0-30"
+        />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="O aplikaci">
+        <Preference
+            android:key="prefVersion"
+            android:persistent="false"
+            android:title="Verze"
+            android:summary="@string/app_version"/>
+        <Preference
+            android:key="prefBuildNumber"
+            android:persistent="false"
+            android:title="Sestavení"
+            android:summary="@string/app_build_number" />
+    </PreferenceCategory>
 </PreferenceScreen>

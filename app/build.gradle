@@ -9,8 +9,10 @@ android {
         applicationId "lelisoft.com.lelimath"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 102
-        versionName '1.0.2'
+        versionCode 110
+        versionName '1.1.0'
+        resValue "string", "app_build_number", getDate();
+        resValue "string", "app_version", versionName;
     }
     buildTypes {
         release {
@@ -20,6 +22,11 @@ android {
     }
     productFlavors {
     }
+}
+
+def getDate() {
+    def date = new Date()
+    return date.toTimestamp().toString()
 }
 
 dependencies {
