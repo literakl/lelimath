@@ -95,10 +95,11 @@ public class PuzzleFragment extends Fragment {
             if (currentTile == null) {
                 return;
             }
-
+//ViewCompat.setBackgroundTintList(view, colorList)
             if (view == selectedButton) {
                 currentTile.setSelected(false);
-                view.setBackgroundColor(getResources().getColor(R.color.gray_215));
+                view.setBackground(getResources().getDrawable(R.drawable.unknown_box));
+//                ViewCompat.setBackgroundTintList(view, getResources().getColorStateList(R.color.gray_215));
                 selectedButton = null;
             } else {
                 if (selectedButton != null) {
@@ -106,17 +107,21 @@ public class PuzzleFragment extends Fragment {
                     if (selectedTile.matches(currentTile)) {
                         currentTile.setUncovered(true);
                         ((Button)view).setText("");
-                        view.setBackgroundColor(getResources().getColor(R.color.green_215));
+                        view.setBackground(getResources().getDrawable(R.drawable.solved_tile));
+//                        ViewCompat.setBackgroundTintList(view, getResources().getColorStateList(R.color.green_215));
                         view.setClickable(false);
                         selectedTile.setUncovered(true);
                         selectedTile.setSelected(false);
                         selectedButton.setText("");
-                        selectedButton.setBackgroundColor(getResources().getColor(R.color.green_215));
+                        selectedButton.setBackground(getResources().getDrawable(R.drawable.solved_tile));
+//                        ViewCompat.setBackgroundTintList(selectedButton, getResources().getColorStateList(R.color.green_215));
                         selectedButton.setClickable(false);
                         selectedButton = null;
                     } else {
                         selectedTile.setSelected(false);
-                        selectedButton.setBackgroundColor(getResources().getColor(R.color.gray_215));
+                        selectedButton.setBackground(getResources().getDrawable(R.drawable.unknown_box));
+                        selectedButton.startAnimation(shake);
+//                        ViewCompat.setBackgroundTintList(selectedButton, getResources().getColorStateList(R.color.gray_215));
                         selectedButton.startAnimation(shake);
                         selectedButton = null;
                         view.startAnimation(shake);
@@ -124,7 +129,8 @@ public class PuzzleFragment extends Fragment {
                 } else {
                     currentTile.setSelected(true);
                     selectedButton = (Button) view;
-                    selectedButton.setBackgroundColor(getResources().getColor(R.color.gray_79));
+                    view.setBackground(getResources().getDrawable(R.drawable.selected_tile));
+//                    ViewCompat.setBackgroundTintList(selectedButton, getResources().getColorStateList(R.color.colorAccent));
                 }
             }
         }
@@ -155,6 +161,7 @@ public class PuzzleFragment extends Fragment {
                         Tile tile = new Tile(iterator.next());
                         button = inflateButton();
                         button.setText(tile.getText());
+//                        button.setText("A");
                         button.setTag(R.id.button_tile, tile);
                         puzzleGrid.addView(button);
                     }

@@ -20,11 +20,11 @@
         <!--<item name="android:background">@color/gray_215</item>-->
     </style>
 
-    <style name="PuzzleTileButton" parent="Widget.AppCompat.Button.Colored">
+    <style name="PuzzleTileButton" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:textSize">@dimen/text_size_xlarge</item>
         <item name="android:textColor">@color/gray_79</item>
-        <item name="colorButtonNormal">@color/gray_215</item>
-        <!--<item name="android:background">@color/gray_215</item>-->
+        <item name="android:background">@drawable/normal_tile</item>
+        <!--<item name="android:colorPrimary">@color/gray_79</item> API 21 required -->
     </style>
 
     <style name="KeypadButton" parent="@android:style/Widget.Button">
