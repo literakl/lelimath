@@ -7,8 +7,10 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.text.InputFilter;
-import android.util.Log;
 import android.widget.EditText;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lelisoft.com.lelimath.R;
 import static lelisoft.com.lelimath.activities.GamePreferenceActivity.*;
@@ -20,13 +22,13 @@ import lelisoft.com.lelimath.helpers.ValuesInputFilter;
  * Created by Leoš on 17.01.2016.
  */
 public class GamePreferenceFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final String logTag = GamePreferenceFragment.class.getSimpleName();
+    private static final Logger log = LoggerFactory.getLogger(GamePreferenceFragment.class);
 
     PreferenceHelper preferenceScreenHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(logTag, "onCreate()");
+        log.debug("onCreate()");
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.game_prefs);
 

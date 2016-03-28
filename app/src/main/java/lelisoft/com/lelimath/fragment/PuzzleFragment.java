@@ -7,13 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +30,7 @@ import lelisoft.com.lelimath.view.Tile;
  * Created by Leoš on 23.01.2016.
  */
 public class PuzzleFragment extends Fragment {
-    private static final String logTag = PuzzleFragment.class.getSimpleName();
+    private static final Logger log = LoggerFactory.getLogger(PuzzleFragment.class);
 
     private PuzzleBridge callback;
     GridLayout puzzleGrid;
@@ -44,13 +46,13 @@ public class PuzzleFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(logTag, "onCreateView()");
+        log.debug("onCreateView()");
         return inflater.inflate(R.layout.fragment_puzzle_views, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d(logTag, "onActivityCreated()");
+        log.debug("onActivityCreated()");
         super.onActivityCreated(savedInstanceState);
 
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
@@ -158,7 +160,7 @@ public class PuzzleFragment extends Fragment {
             button.setText(logic.getSampleFormula());
             button.measure(500, 500);
             int tileWidth = button.getMeasuredWidth();
-            Log.d(logTag, "CalculateDimensions: height=" + puzzleGrid.getHeight() + " width=" + puzzleGrid.getWidth() + ", tile=" + tileWidth);
+            log.debug("CalculateDimensions: height=" + puzzleGrid.getHeight() + " width=" + puzzleGrid.getWidth() + ", tile=" + tileWidth);
 
             maxHorizontalTiles = Math.min((int) Math.floor(puzzleGrid.getWidth() / tileWidth), logic.getLevel().x);
             maxVerticalTiles = logic.getLevel().y;

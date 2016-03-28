@@ -6,8 +6,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
@@ -15,7 +17,7 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.DeviceInfo;
 
 public class DeviceInfoUtils {
-    private static final String logTag = DeviceInfoUtils.class.getSimpleName();
+    private static final Logger log = LoggerFactory.getLogger(DeviceInfoUtils.class);
 
     public static DeviceInfo getDeviceInfo(Context c) {
         DeviceInfo.ApplicationInfo appInfo = null;
@@ -26,7 +28,7 @@ public class DeviceInfoUtils {
             String buildNumber = c.getString(R.string.app_build_number);
             appInfo = new DeviceInfo.ApplicationInfo(versionCode, versionName, buildNumber);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(logTag, "Unable to get package info for '" + c.getPackageName() + "'", e);
+            log.error("Unable to get package info for '" + c.getPackageName() + "'", e);
         }
 
 

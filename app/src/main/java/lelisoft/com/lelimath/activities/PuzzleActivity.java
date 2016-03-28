@@ -11,10 +11,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
@@ -36,7 +38,7 @@ import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
 public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.PuzzleBridge,
         NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String logTag = PuzzleActivity.class.getSimpleName();
+    private static final Logger log = LoggerFactory.getLogger(PuzzleActivity.class);
 
     SharedPreferences sharedPref;
     PuzzleLogic logic = new PuzzleLogicImpl();
@@ -56,7 +58,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
     @Override
     protected void onCreate(Bundle state) {
-        Log.d(logTag, "onCreate()");
+        log.debug("onCreate()");
         super.onCreate(state);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -236,7 +238,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(logTag, "onActivityResult()");
+        log.debug("onActivityResult()");
         super.onActivityResult(requestCode, resultCode, data);
         initializeLogic();
         restartGame();
@@ -244,7 +246,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
     @Override
     public void onBackPressed() {
-        Log.d(logTag, "onBackPressed()");
+        log.debug("onBackPressed()");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.puzzle_drawer_layout);
         if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -309,50 +311,50 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
     @Override
     protected void onSaveInstanceState(Bundle state) {
-        Log.d(logTag, "onSaveInstanceState()");
+        log.debug("onSaveInstanceState()");
         super.onSaveInstanceState(state);
     }
 
     @Override
     protected void onPause() {
-        Log.d(logTag, "onPause()");
+        log.debug("onPause()");
         super.onPause();
 
     }
 
     @Override
     protected void onResume() {
-        Log.d(logTag, "onResume()");
+        log.debug("onResume()");
         super.onResume();
     }
 
     @Override
     protected void onStart() {
-        Log.d(logTag, "onStart()");
+        log.debug("onStart()");
         super.onStart();
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle state) {
-        Log.d(logTag, "onRestoreInstanceState()");
+        log.debug("onRestoreInstanceState()");
         super.onRestoreInstanceState(state);
     }
 
     @Override
     protected void onRestart() {
-        Log.d(logTag, "onRestart()");
+        log.debug("onRestart()");
         super.onRestart();
     }
 
     @Override
     protected void onStop() {
-        Log.d(logTag, "onStop()");
+        log.debug("onStop()");
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(logTag, "onDestroy()");
+        log.debug("onDestroy()");
         super.onDestroy();
     }
 }

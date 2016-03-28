@@ -1,5 +1,8 @@
 package lelisoft.com.lelimath.logic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,15 +18,16 @@ import lelisoft.com.lelimath.data.Values;
  * Created by leos.literak on 26.2.2015.
  */
 public class FormulaGenerator {
+    private static final Logger log = LoggerFactory.getLogger(FormulaGenerator.class);
+
     static Random random = new Random(System.currentTimeMillis());
-    static boolean debug;
 
     public static Formula generateRandomFormula(FormulaDefinition definition) {
         Operator operator = getOperator(definition.getOperators());
         List<FormulaPart> parts = sortFormulaParts(definition);
 
-        if (debug) {
-            System.err.println(System.currentTimeMillis() + " starting search for formula using " + definition);
+        if (log.isTraceEnabled()) {
+            log.trace("Starting search for formula using " + definition);
         }
 
         for (int i = 0; i < 3; i++) {
@@ -41,8 +45,8 @@ public class FormulaGenerator {
                         continue;
                     }
                     boolean valid = checkSolution(found, partA, partB, definition);
-                    if (debug) {
-                        System.err.println(System.currentTimeMillis() + " " + valid + " " +
+                    if (log.isTraceEnabled()) {
+                        log.trace(valid + " " +
                         found.getFirstOperand() +  " " + found.getOperator() + " " +
                         found.getSecondOperand() + " = " + found.getResult());
                     }
@@ -54,9 +58,7 @@ public class FormulaGenerator {
             }
         }
 
-        if (debug) {
-            System.err.println(System.currentTimeMillis() + " no formula found");
-        }
+        log.warn("No formula found for " + definition);
         return null;
     }
 
@@ -173,13 +175,5 @@ public class FormulaGenerator {
      */
     public static void setRandom(Random random) {
         FormulaGenerator.random = random;
-    }
-
-    /**
-     * Sets debug mode - generated formulas will be printed to stderr.
-     * @param debug true - turn on debug mode
-     */
-    public static void setDebug(boolean debug) {
-        FormulaGenerator.debug = debug;
     }
 }

@@ -4,7 +4,9 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.fragment.GamePreferenceFragment;
@@ -14,7 +16,7 @@ import lelisoft.com.lelimath.fragment.GamePreferenceFragment;
  * Created by Leoš on 17.01.2016.
  */
 public class GamePreferenceActivity extends AppCompatActivity {
-    private static final String logTag = GamePreferenceActivity.class.getSimpleName();
+    private static final Logger log = LoggerFactory.getLogger(GamePreferenceActivity.class);
 
     public static final String KEY_COMPLEXITY = "pref_game_complexity";
     public static final String KEY_OPERATIONS = "pref_game_operations";
@@ -24,7 +26,7 @@ public class GamePreferenceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(logTag, "onCreate()");
+        log.debug("onCreate()");
         super.onCreate(savedInstanceState);
 
         // Display the fragment as the main content.

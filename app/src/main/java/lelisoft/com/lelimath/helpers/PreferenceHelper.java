@@ -10,7 +10,9 @@ import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
-import android.util.Log;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,16 +24,16 @@ import java.util.Set;
  * http://stackoverflow.com/questions/7017082/change-the-summary-of-a-listpreference-with-the-new-value-android/15329652#15329652
  */
 public class PreferenceHelper {
-    private static final String logTag = PreferenceHelper.class.getSimpleName();
+	private static final Logger log = LoggerFactory.getLogger(PreferenceHelper.class);
 
 	final Map<Preference, CharSequence> defaultSummaries = new HashMap<>();
 
 	public PreferenceHelper(PreferenceScreen preferenceScreen) {
-        Log.d(logTag, "started for screen " + preferenceScreen);
+        log.debug("started for screen " + preferenceScreen);
 		for (int i = 0; i < preferenceScreen.getPreferenceCount(); i++) {
 			initSummary(preferenceScreen.getPreference(i));
 		}
-        Log.d(logTag, "finished");
+        log.debug("finished");
 	}
 
 	private void initSummary(Preference p) {
