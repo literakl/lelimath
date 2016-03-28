@@ -259,13 +259,12 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
      * Restarts game. If PuzzleFragment is not displayed it will be restored.
      */
     private void restartGame() {
-        if (puzzleFragment == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            puzzleFragment = new PuzzleFragment();
-            puzzleFragment.setLogic(logic);
-            transaction.replace(R.id.puzzle_content, puzzleFragment);
-            transaction.commit();
-        }
+        log.debug("restartGame(), puzzleFragment " + ((puzzleFragment == null) ? "is not " : "is ") + "null");
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        puzzleFragment = new PuzzleFragment();
+        puzzleFragment.setLogic(logic);
+        transaction.replace(R.id.puzzle_content, puzzleFragment);
+        transaction.commit();
     }
 
     protected void initializeLogic() {
