@@ -17,7 +17,6 @@ import lelisoft.com.lelimath.data.Values;
 public class FormulaGeneratorTest extends TestCase {
 
     public void testRandomGenerator() {
-        FormulaGenerator.setDebug(true);
         Values left = new Values(0, 90);
         Values right = new Values(3, 60);
         Values result = new Values().add(10).add(11).add(12);
