@@ -65,8 +65,14 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         encoder2.setPattern("%msg%n");
         encoder2.start();
 
+        PatternLayoutEncoder encoder3 = new PatternLayoutEncoder();
+        encoder3.setContext(lc);
+        encoder3.setPattern("%logger{15}");
+        encoder3.start();
+
         LogcatAppender logcatAppender = new LogcatAppender();
         logcatAppender.setContext(lc);
+        logcatAppender.setTagEncoder(encoder3);
         logcatAppender.setEncoder(encoder2);
         logcatAppender.start();
 
