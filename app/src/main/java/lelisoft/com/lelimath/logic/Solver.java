@@ -3,7 +3,6 @@ package lelisoft.com.lelimath.logic;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
-import lelisoft.com.lelimath.data.Values;
 
 /**
  * Solver solves mathematical formulas.

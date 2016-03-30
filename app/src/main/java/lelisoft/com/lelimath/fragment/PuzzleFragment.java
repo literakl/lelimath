@@ -91,6 +91,7 @@ public class PuzzleFragment extends Fragment {
     }
 
     private void generateTiles() {
+        log.debug("generateTiles(horizontal = " + maxHorizontalTiles + ", vertical = " + maxVerticalTiles + ")");
         AppCompatButton button;List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
         tilesToBeSolved = tilesValues.size();
         Iterator<FormulaResultPair> iterator = tilesValues.iterator();
@@ -115,6 +116,7 @@ public class PuzzleFragment extends Fragment {
             if (currentTile == null) {
                 return;
             }
+            log.debug("onClick(" + currentTile + ")");
             AppCompatButton currentButton = (AppCompatButton) view;
 
             if (view == selectedButton) {
@@ -124,6 +126,7 @@ public class PuzzleFragment extends Fragment {
                 if (selectedButton != null) {
                     Tile selectedTile = (Tile) selectedButton.getTag(R.id.button_tile);
                     if (selectedTile.matches(currentTile)) {
+                        log.debug(currentTile + " matches " + selectedTile);
                         currentButton.setText("");
                         currentButton.setSupportBackgroundTintList(colorsSolved);
                         currentButton.setClickable(false);
@@ -138,6 +141,7 @@ public class PuzzleFragment extends Fragment {
                             callback.puzzleFinished();
                         }
                     } else {
+                        log.debug(currentTile + " does not match " + selectedTile);
                         selectedButton.setSupportBackgroundTintList(colorsNormal);
                         selectedButton.startAnimation(shake);
                         selectedButton = null;

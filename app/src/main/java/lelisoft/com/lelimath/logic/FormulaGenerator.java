@@ -23,12 +23,9 @@ public class FormulaGenerator {
     static Random random = new Random(System.currentTimeMillis());
 
     public static Formula generateRandomFormula(FormulaDefinition definition) {
+        log.trace("Starting search for formula using " + definition);
         Operator operator = getOperator(definition.getOperators());
         List<FormulaPart> parts = sortFormulaParts(definition);
-
-        if (log.isTraceEnabled()) {
-            log.trace("Starting search for formula using " + definition);
-        }
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -52,6 +49,7 @@ public class FormulaGenerator {
                     }
                     if (valid) {
                         found.setUnknown(getUnknown(definition.getUnknowns()));
+                        log.debug("Generated formula " + found);
                         return found;
                     }
                 }

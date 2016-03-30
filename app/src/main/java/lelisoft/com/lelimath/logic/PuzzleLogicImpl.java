@@ -1,5 +1,8 @@
 package lelisoft.com.lelimath.logic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +17,7 @@ import lelisoft.com.lelimath.helpers.Misc;
  * Created by Leoš on 03.12.2015.
  */
 public class PuzzleLogicImpl implements PuzzleLogic {
+    private static final Logger log = LoggerFactory.getLogger(PuzzleLogicImpl.class);
     FormulaDefinition definition;
     PuzzleLogic.Level level;
 
@@ -55,15 +59,16 @@ public class PuzzleLogicImpl implements PuzzleLogic {
         this.level = level;
     }
 
-    public List<FormulaResultPair> generateFormulaResultPairs(int tiles) {
+    public List<FormulaResultPair> generateFormulaResultPairs(int count) {
+        log.debug(definition + ", count = " + count);
         List<FormulaResultPair> pairs;
         Formula formula;
 
-        int formulas = tiles / 2;
-        if (tiles % 2 > 0) {
-            pairs = new ArrayList<>(tiles - 1);
+        int formulas = count / 2;
+        if (count % 2 > 0) {
+            pairs = new ArrayList<>(count - 1);
         } else {
-            pairs = new ArrayList<>(tiles);
+            pairs = new ArrayList<>(count);
         }
 
         for (int i = 0; i < formulas; i++) {

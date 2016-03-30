@@ -138,10 +138,15 @@ public class Values {
     }
 
     public String toString() {
-        return "Values{" +
-                "minValue=" + minValue +
-                ", maxValue=" + maxValue +
-                ", listing=" + listing +
-                '}';
+        if (listing != null) {
+            return "Values{" +
+                    "listing=" + listing +
+                    '}';
+        } else {
+            return "Values{" +
+                    "minValue=" + minValue +
+                    ", maxValue=" + maxValue +
+                    '}';
+        }
     }
 }

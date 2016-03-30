@@ -85,6 +85,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
     @Override
     public void puzzleFinished() {
+        log.debug("puzzleFinished()");
         pictureFragment = new PictureFragment();
         Bundle args = new Bundle();
         args.putInt(PictureFragment.ARG_PICTURE, pictures[Misc.getRandom().nextInt(pictures.length)]);
@@ -128,6 +129,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        log.debug("onNavigationItemSelected");
         FormulaDefinition definition = null;
         switch (item.getItemId()) {
             case R.id.nav_level_A10: {

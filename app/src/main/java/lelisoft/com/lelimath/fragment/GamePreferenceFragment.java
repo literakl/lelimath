@@ -56,11 +56,13 @@ public class GamePreferenceFragment extends PreferenceFragment implements Shared
     }
 
     private void updatePreferenceSummary(Preference p) {
+        log.debug("updatePreferenceSummary");
         preferenceScreenHelper.updatePreferenceSummary(p);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        log.debug("onSharedPreferenceChanged");
         updatePreferenceSummary(findPreference(key));
     }
 
