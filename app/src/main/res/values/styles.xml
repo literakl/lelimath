@@ -38,14 +38,12 @@
         <item name="android:textColor">@color/gray_35</item>
     </style>
 
-    <style name="FormulaValue" parent="@style/KeypadButton">
-    </style>
+    <style name="FormulaValue" parent="@style/KeypadButton"></style>
 
     <style name="FormulaUnknownValue" parent="@style/FormulaValue">
         <item name="android:background">@drawable/unknown_box</item>
     </style>
 
-    <style name="FormulaEqualSign" parent="@style/KeypadButton">
-    </style>
+    <style name="FormulaEqualSign" parent="@style/KeypadButton"></style>
 
 </resources>

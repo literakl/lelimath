@@ -228,13 +228,14 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
             }
         }
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.puzzle_drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
         if (definition != null) {
             logic.setFormulaDefinition(definition);
             restartGame();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.puzzle_drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

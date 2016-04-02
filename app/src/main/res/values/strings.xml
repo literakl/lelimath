@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Leli Math</string>
+    <string name="app_name">LeliMath</string>
     <string name="action_new_game">Nová hra</string>
     <string name="action_settings">Nastavení</string>
     <string name="action_pause">Pauza</string>
