@@ -5,6 +5,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import lelisoft.com.lelimath.R;
 
@@ -37,7 +38,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.main_button_calc:
-                CalcActivity.start(this);
+                Toast.makeText(this, "Již brzy", Toast.LENGTH_LONG).show();
+//                CalcActivity.start(this);
                 break;
 
             case R.id.main_button_settings:
