@@ -13,6 +13,7 @@
 
         <activity
             android:name=".activities.DashboardActivity"
+            android:parentActivityName=".activities.DashboardActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -28,12 +29,14 @@
         </activity>
         <activity
             android:name=".activities.PuzzleActivity"
+            android:parentActivityName=".activities.DashboardActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".activities.GamePreferenceActivity"
+            android:parentActivityName=".activities.DashboardActivity"
             android:screenOrientation="portrait"
             android:label="Preferences">
         </activity>

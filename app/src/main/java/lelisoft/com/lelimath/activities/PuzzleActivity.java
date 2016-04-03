@@ -5,16 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +33,7 @@ import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
  * Guess picture type of activity
  * Author leos.literak on 18.10.2015.
  */
-public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.PuzzleBridge,
-        NavigationView.OnNavigationItemSelectedListener {
+public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.PuzzleBridge {
 
     private static final Logger log = LoggerFactory.getLogger(PuzzleActivity.class);
 
@@ -68,14 +64,12 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.puzzle_drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.puzzle_nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavUtils.navigateUpFromSameTask(PuzzleActivity.this);
+            }
+        });
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         puzzleFragment = new PuzzleFragment();
@@ -114,130 +108,8 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
                 restartGame();
                 break;
             }
-            case R.id.action_level: {
-                Intent intent = new Intent();
-                intent.setClass(this, GamePreferenceActivity.class);
-                startActivityForResult(intent, 1);
-                return true;
-            }
-            default: {
-                Toast.makeText(this, "Default", Toast.LENGTH_LONG).show();
-            }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        log.debug("onNavigationItemSelected");
-        FormulaDefinition definition = null;
-        switch (item.getItemId()) {
-            case R.id.nav_level_A10: {
-                Values values = new Values(0, 10);
-                definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.PLUS)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_S10: {
-                Values values = new Values(0, 10);
-                definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.MINUS)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_A20: {
-                Values values = new Values(0, 20);
-                definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.PLUS)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_S20: {
-                Values values = new Values(0, 20);
-                definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.MINUS)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_AS50: {
-                Values values = new Values(0, 50);
-                definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.PLUS).addOperator(Operator.MINUS)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_AS100: {
-                Values values = new Values(0, 100);
-                definition = new FormulaDefinition(values, values, values)
-                        .addOperator(Operator.PLUS).addOperator(Operator.MINUS)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_M3: {
-                Values left = new Values(3), right = new Values(0, 10), result = new Values(0, 30);
-                definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_M4: {
-                Values left = new Values(4), right = new Values(0, 10), result = new Values(0, 40);
-                definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_MD5: {
-                Values left = new Values(5), right = new Values(0, 10), result = new Values(0, 50);
-                definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_MD6: {
-                Values left = new Values(6), right = new Values(0, 10), result = new Values(0, 60);
-                definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_MD7: {
-                Values left = new Values(7), right = new Values(0, 10), result = new Values(0, 70);
-                definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_MD8: {
-                Values left = new Values(8), right = new Values(0, 10), result = new Values(0, 80);
-                definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            case R.id.nav_level_MD9: {
-                Values left = new Values(9), right = new Values(0, 10), result = new Values(0, 90);
-                definition = new FormulaDefinition(left, right, result)
-                        .addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE)
-                        .addUnknown(FormulaPart.RESULT);
-                break;
-            }
-            default: {
-                Toast.makeText(this, "Chybi handler!", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.puzzle_drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
-        if (definition != null) {
-            logic.setFormulaDefinition(definition);
-            restartGame();
-        }
-
-        return true;
     }
 
     @Override
@@ -251,12 +123,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
     @Override
     public void onBackPressed() {
         log.debug("onBackPressed()");
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.puzzle_drawer_layout);
-        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     /**
