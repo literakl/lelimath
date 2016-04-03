@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -358,5 +359,9 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
     protected void onDestroy() {
         log.debug("onDestroy()");
         super.onDestroy();
+    }
+
+    public static void start(Context c) {
+        c.startActivity(new Intent(c, PuzzleActivity.class));
     }
 }

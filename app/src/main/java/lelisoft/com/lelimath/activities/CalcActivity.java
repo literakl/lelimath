@@ -1,6 +1,8 @@
 package lelisoft.com.lelimath.activities;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -286,5 +288,9 @@ public class CalcActivity extends Activity {
         definition.addUnknown(FormulaPart.RESULT);
 
         return definition;
+    }
+
+    public static void start(Context c) {
+        c.startActivity(new Intent(c, CalcActivity.class));
     }
 }

@@ -1,6 +1,8 @@
 package lelisoft.com.lelimath.activities;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -35,5 +37,9 @@ public class GamePreferenceActivity extends AppCompatActivity {
         transaction.commit();
 
         PreferenceManager.setDefaultValues(this, R.xml.game_prefs, false);
+    }
+
+    public static void start(Context c) {
+        c.startActivity(new Intent(c, GamePreferenceActivity.class));
     }
 }

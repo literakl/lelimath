@@ -7,10 +7,4 @@
         android:title="@string/action_new_game"
         android:icon="@drawable/ic_action_play_arrow"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_level"
-        android:orderInCategory="200"
-        android:title="@string/action_level"
-        android:icon="@drawable/ic_action_settings"
-        app:showAsAction="ifRoom" />
 </menu>
