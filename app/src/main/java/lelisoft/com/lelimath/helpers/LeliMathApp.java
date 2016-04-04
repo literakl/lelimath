@@ -79,6 +79,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         // add the newly created appenders to the root logger;
         // qualify Logger to disambiguate from org.slf4j.Logger
         ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+//        root.setLevel(Level.TRACE);
         root.addAppender(fileAppender);
         root.addAppender(logcatAppender);
     }

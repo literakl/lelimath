@@ -1,5 +1,8 @@
 package lelisoft.com.lelimath.logic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
@@ -9,6 +12,7 @@ import lelisoft.com.lelimath.data.Operator;
  * Created by leos.literak on 26.2.2015.
  */
 public class Solver {
+    private static final Logger log = LoggerFactory.getLogger(Solver.class);
 
     public static Integer evaluate(Integer first, Operator operator, Integer second) {
         switch (operator) {
@@ -20,13 +24,14 @@ public class Solver {
                 return first * second;
             case DIVIDE: {
                 if (second == 0) {
-                    return Integer.MAX_VALUE;
+                    log.trace("Division by zero");
+                    return null;
                 }
                 if (first % second != 0) {
+                    log.trace("Decimal result");
                     return null; // only whole numbers are allowed, e.g. 13/4
-                } else {
-                    return first / second; // e.g. 12/4
                 }
+                return first / second; // e.g. 12/4
             }
         }
         return null;
@@ -44,6 +49,9 @@ public class Solver {
      */
     public static Formula solve(Operator operator, FormulaPart partA, int valueA,
                                 FormulaPart partB, int valueB) {
+        if (log.isTraceEnabled()) {
+            log.trace("Operator " + operator + " " + partA + " = " + valueA + ", " + partB + " = " + valueB);
+        }
         Integer first = null, second = null, result = null;
         if (partA == FormulaPart.FIRST_OPERAND) {
             first = valueA;
@@ -77,6 +85,11 @@ public class Solver {
                     second = evaluate(first, operator, result);
                 }
             }
+        }
+
+        if (operator == Operator.DIVIDE && second != null && second == 0) {
+            log.trace("Division by zero detected");
+            second = null;
         }
 
         if (first != null && second != null && result != null) {

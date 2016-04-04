@@ -34,9 +34,6 @@ public class FormulaGenerator {
                 int valueA = getValue(definition, partA);
                 for (int k = 0; k < 10; k++) {
                     int valueB = getValue(definition, partB);
-                    if (valueB == 0 && operator == Operator.DIVIDE) {
-                        continue;
-                    }
                     Formula found = Solver.solve(operator, partA, valueA, partB, valueB);
                     if (found == null) {
                         continue;
