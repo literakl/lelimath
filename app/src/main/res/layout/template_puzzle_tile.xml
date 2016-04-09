@@ -7,8 +7,5 @@
     app:layout_columnWeight="1"
     app:layout_rowWeight="1"
     app:layout_gravity="fill"
-    style="@style/PuzzleTileButton"
+    style="@style/PuzzleTile"
 />
-<!--
-    android:backgroundTint="@color/gray_215"
--->

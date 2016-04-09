@@ -1,7 +1,6 @@
 package lelisoft.com.lelimath.fragment;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -38,7 +37,6 @@ public class PuzzleFragment extends Fragment {
     HandleClick clickHandler;
     Animation shake;
     int maxHorizontalTiles, maxVerticalTiles, tilesToBeSolved;
-    ColorStateList colorsNormal, colorsSelected, colorsSolved;
     PuzzleLogic logic;
 
     public interface PuzzleBridge {
@@ -58,36 +56,18 @@ public class PuzzleFragment extends Fragment {
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
         puzzleGrid = (GridLayout) getActivity().findViewById(R.id.puzzle_grid);
         clickHandler = new HandleClick();
-        colorsNormal = ColorStateList.valueOf(getResources().getColor(R.color.tile_normal));
-        colorsSelected = ColorStateList.valueOf(getResources().getColor(R.color.tile_selected));
-        // https://code.google.com/p/android/issues/detail?id=202012
-        colorsSolved = ColorStateList.valueOf(getResources().getColor(R.color.tile_solved));
 
         puzzleGrid.getViewTreeObserver().addOnGlobalLayoutListener(new CalculateDimensions());
     }
 
     @NonNull
-    private AppCompatButton inflateButton() {
-        AppCompatButton button = (AppCompatButton) getActivity().getLayoutInflater().inflate(R.layout.template_puzzle, puzzleGrid, false);
-        button.setSupportBackgroundTintList(colorsNormal);
+    private AppCompatButton inflateButton(Tile tile, LayoutInflater inflater) {
+        AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.template_puzzle_tile, puzzleGrid, false);
+        button.setBackgroundResource((tile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
         button.setOnClickListener(clickHandler);
+        button.setText(tile.getText());
+        button.setTag(R.id.button_tile, tile);
         return button;
-    }
-
-    public void setLogic(PuzzleLogic logic) {
-        this.logic = logic;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // This makes sure that the container activity has implemented the callback interface
-        try {
-            callback = (PuzzleBridge) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement PuzzleBridge");
-        }
     }
 
     private void generateTiles() {
@@ -100,9 +80,7 @@ public class PuzzleFragment extends Fragment {
             for (int j = 0; j < maxHorizontalTiles; j++) {
                 if (iterator.hasNext()) {
                     Tile tile = new Tile(iterator.next());
-                    button = inflateButton();
-                    button.setText(tile.getText());
-                    button.setTag(R.id.button_tile, tile);
+                    button = inflateButton(tile, getActivity().getLayoutInflater());
                     puzzleGrid.addView(button);
                 }
             }
@@ -120,7 +98,7 @@ public class PuzzleFragment extends Fragment {
             AppCompatButton currentButton = (AppCompatButton) view;
 
             if (view == selectedButton) {
-                currentButton.setSupportBackgroundTintList(colorsNormal);
+                currentButton.setBackgroundResource((currentTile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
                 selectedButton = null;
             } else {
                 if (selectedButton != null) {
@@ -128,11 +106,11 @@ public class PuzzleFragment extends Fragment {
                     if (selectedTile.matches(currentTile)) {
                         log.debug(currentTile + " matches " + selectedTile);
                         currentButton.setText("");
-                        currentButton.setSupportBackgroundTintList(colorsSolved);
+                        currentButton.setBackgroundResource(R.drawable.tile_solved);
                         currentButton.setClickable(false);
 
                         selectedButton.setText("");
-                        selectedButton.setSupportBackgroundTintList(colorsSolved);
+                        selectedButton.setBackgroundResource(R.drawable.tile_solved);
                         selectedButton.setClickable(false);
                         selectedButton = null;
 
@@ -142,14 +120,14 @@ public class PuzzleFragment extends Fragment {
                         }
                     } else {
                         log.debug(currentTile + " does not match " + selectedTile);
-                        selectedButton.setSupportBackgroundTintList(colorsNormal);
+                        selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
                         selectedButton.startAnimation(shake);
                         selectedButton = null;
                         currentButton.startAnimation(shake);
                     }
                 } else {
                     selectedButton = currentButton;
-                    currentButton.setSupportBackgroundTintList(colorsSelected);
+                    currentButton.setBackgroundResource(R.drawable.tile_selected);
                 }
             }
         }
@@ -160,7 +138,8 @@ public class PuzzleFragment extends Fragment {
         public void onGlobalLayout() {
             puzzleGrid.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-            AppCompatButton button = inflateButton();
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.template_puzzle_tile, puzzleGrid, false);
             button.setText(logic.getSampleFormula());
             button.measure(500, 500);
             int tileWidth = button.getMeasuredWidth();
@@ -171,6 +150,22 @@ public class PuzzleFragment extends Fragment {
 
             puzzleGrid.setColumnCount(maxHorizontalTiles);
             generateTiles();
+        }
+    }
+
+    public void setLogic(PuzzleLogic logic) {
+        this.logic = logic;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented the callback interface
+        try {
+            callback = (PuzzleBridge) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement PuzzleBridge");
         }
     }
 }
