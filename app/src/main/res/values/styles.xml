@@ -36,18 +36,21 @@
         <item name="android:textColor">@color/gray_79</item>
     </style>
 
-    <style name="FormulaValue" parent="@style/Widget.AppCompat.EditText">
+    <style name="FormulaValue" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/keypad_button_text</item>
+        <item name="android:textColor">@color/gray_79</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="FormulaUnknownValue" parent="@style/FormulaValue">
         <item name="android:background">@drawable/unknown_box</item>
     </style>
 
-    <style name="FormulaEqualSign" parent="@style/FormulaValue">
+    <style name="FormulaEqualSign" parent="FormulaValue">
     </style>
 
     <style name="TextAppearance" parent="TextAppearance.AppCompat"/>
+
     <style name="TextAppearance.Header">
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">sans-serif-medium</item>
