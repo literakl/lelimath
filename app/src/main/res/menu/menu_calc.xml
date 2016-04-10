@@ -11,8 +11,9 @@
         android:showAsAction="always" />
 -->
     <item
-        android:id="@+id/action_elapsed"
-        android:title=""
+        android:id="@+id/speedIndicator"
+        android:title="@string/action_speed"
+        android:icon="@drawable/ic_action_cat"
         android:orderInCategory="10"
         app:showAsAction="always" />
 </menu>

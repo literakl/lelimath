@@ -27,11 +27,13 @@
         <item>DIVIDE</item>
     </string-array>
     <string-array name="pref_calc_entries">
+        <item>Obrázek</item>
         <item>Stopky</item>
         <item>Odpočet</item>
         <item>Skrýt</item>
     </string-array>
     <string-array name="pref_calc_entries_values">
+        <item>PICTURE</item>
         <item>STOPWATCH</item>
         <item>COUNTDOWN</item>
         <item>NONE</item>

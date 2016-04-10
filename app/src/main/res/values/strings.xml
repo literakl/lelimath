@@ -5,6 +5,7 @@
     <string name="action_new_game">Nová hra</string>
     <string name="action_settings">Nastavení</string>
     <string name="action_pause">Pauza</string>
+    <string name="action_speed">Rychlost</string>
     <string name="action_progress_fast">Fast</string>
     <string name="action_about">O aplikaci</string>
     <string name="drawer_open">Open navigation drawer</string>

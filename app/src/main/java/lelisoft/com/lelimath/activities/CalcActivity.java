@@ -2,15 +2,16 @@ package lelisoft.com.lelimath.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,6 +41,44 @@ public class CalcActivity extends BaseGameActivity {
     Animation shake;
     long started, stopped, totalTimeSpent;
     int count, formulaPosition = 0;
+    Drawable iconSlow, iconNormal, iconFast;
+
+    @Override
+    protected void onCreate(Bundle state) {
+        log.debug("onCreate()");
+        super.onCreate(state);
+
+        setGameLogic(new CalcLogicImpl());
+        initializeGameLogic();
+        formulaResultPairs = gameLogic.generateFormulaResultPairs(10);
+
+        setContentView(R.layout.activity_calc);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavUtils.navigateUpFromSameTask(CalcActivity.this);
+            }
+        });
+
+        shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
+        iconSlow = getResources().getDrawable(R.drawable.ic_action_turtle);
+        iconNormal = getResources().getDrawable(R.drawable.ic_action_cat);
+        iconFast = getResources().getDrawable(R.drawable.ic_action_running_rabbit);
+
+        if (formula == null && state == null) {
+            prepareNewFormula();
+        }
+
+        if (state != null) {
+            formula = state.getParcelable("formula");
+            started = state.getLong("started");
+            stopped = state.getLong("stopped");
+            totalTimeSpent = state.getLong("timeSpent");
+        }
+    }
 
     public void digitClicked(View view) {
         log.debug("digitClicked()");
@@ -92,12 +131,13 @@ public class CalcActivity extends BaseGameActivity {
         count++;
 
         long averageTime = (totalTimeSpent) / (1000 * count);
+        View speedIndicator = findViewById(R.id.speedIndicator);
         if (averageTime < SPEED_FAST) {
-            ((ImageView)findViewById(R.id.speedIndicator)).setImageResource(R.drawable.ic_action_running_rabbit);
+            ((ActionMenuItemView) speedIndicator).setIcon(iconFast);
         } else if (averageTime > SPEED_SLOW) {
-            ((ImageView)findViewById(R.id.speedIndicator)).setImageResource(R.drawable.ic_action_turtle);
+            ((ActionMenuItemView) speedIndicator).setIcon(iconSlow);
         } else {
-            ((ImageView)findViewById(R.id.speedIndicator)).setImageResource(R.drawable.ic_action_cat);
+            ((ActionMenuItemView) speedIndicator).setIcon(iconNormal);
         }
     }
 
@@ -109,39 +149,6 @@ public class CalcActivity extends BaseGameActivity {
         state.putLong("started", started);
         state.putLong("stopped", stopped);
         state.putLong("timeSpent", totalTimeSpent);
-    }
-
-    @Override
-    protected void onCreate(Bundle state) {
-        log.debug("onCreate()");
-        super.onCreate(state);
-
-        setGameLogic(new CalcLogicImpl());
-        initializeGameLogic();
-        formulaResultPairs = gameLogic.generateFormulaResultPairs(10);
-
-        setContentView(R.layout.activity_calc);
-        shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavUtils.navigateUpFromSameTask(CalcActivity.this);
-            }
-        });
-
-        if (formula == null && state == null) {
-            prepareNewFormula();
-        }
-
-        if (state != null) {
-            formula = state.getParcelable("formula");
-            started = state.getLong("started");
-            stopped = state.getLong("stopped");
-            totalTimeSpent = state.getLong("timeSpent");
-        }
     }
 
     @Override
