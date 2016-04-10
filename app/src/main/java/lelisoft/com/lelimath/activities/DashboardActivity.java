@@ -38,8 +38,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.main_button_calc:
-                Toast.makeText(this, "Již brzy", Toast.LENGTH_LONG).show();
-//                CalcActivity.start(this);
+//                Toast.makeText(this, "Již brzy", Toast.LENGTH_LONG).show();
+                CalcActivity.start(this);
                 break;
 
             case R.id.main_button_settings:

@@ -2,12 +2,9 @@ package lelisoft.com.lelimath.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,13 +13,7 @@ import android.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Set;
-
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.FormulaDefinition;
-import lelisoft.com.lelimath.data.FormulaPart;
-import lelisoft.com.lelimath.data.Operator;
-import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.helpers.Misc;
@@ -33,12 +24,9 @@ import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
  * Guess picture type of activity
  * Author leos.literak on 18.10.2015.
  */
-public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.PuzzleBridge {
-
+public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.PuzzleBridge {
     private static final Logger log = LoggerFactory.getLogger(PuzzleActivity.class);
 
-    SharedPreferences sharedPref;
-    PuzzleLogic logic = new PuzzleLogicImpl();
     PuzzleFragment puzzleFragment;
     PictureFragment pictureFragment;
 
@@ -58,11 +46,11 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
         log.debug("onCreate()");
         super.onCreate(state);
 
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        setContentView(R.layout.activity_puzzle_navigation);
-        initializeLogic();
+        setGameLogic(new PuzzleLogicImpl());
+        initializeGameLogic();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_puzzle);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarPuzzle);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,11 +59,9 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
             }
         });
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         puzzleFragment = new PuzzleFragment();
-        puzzleFragment.setLogic(logic);
-        transaction.add(R.id.puzzle_content, puzzleFragment);
-        transaction.commit();
+        puzzleFragment.setLogic((PuzzleLogic) gameLogic);
+        initializePuzzleFragment(false);
     }
 
     @Override
@@ -94,6 +80,16 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
         puzzleFragment = null;
     }
 
+    private void initializePuzzleFragment(boolean replace) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (replace) {
+            transaction.replace(R.id.puzzle_content, puzzleFragment);
+        } else {
+            transaction.add(R.id.puzzle_content, puzzleFragment);
+        }
+        transaction.commit();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.puzzle_toolbar, menu);
@@ -104,7 +100,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_new_game: {
-                initializeLogic();
+                initializeGameLogic();
                 restartGame();
                 break;
             }
@@ -116,7 +112,7 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         log.debug("onActivityResult()");
         super.onActivityResult(requestCode, resultCode, data);
-        initializeLogic();
+        initializeGameLogic();
         restartGame();
     }
 
@@ -131,101 +127,9 @@ public class PuzzleActivity extends AppCompatActivity implements PuzzleFragment.
      */
     private void restartGame() {
         log.debug("restartGame(), puzzleFragment " + ((puzzleFragment == null) ? "is not " : "is ") + "null");
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         puzzleFragment = new PuzzleFragment();
-        puzzleFragment.setLogic(logic);
-        transaction.replace(R.id.puzzle_content, puzzleFragment);
-        transaction.commit();
-    }
-
-    protected void initializeLogic() {
-        String prefComplexity = sharedPref.getString(GamePreferenceActivity.KEY_COMPLEXITY, "EASY");
-        logic.setLevel(PuzzleLogic.Level.valueOf(prefComplexity));
-
-        Values defaultValues = new Values(0, 30), values = defaultValues;
-        FormulaDefinition definition = new FormulaDefinition().addUnknown(FormulaPart.RESULT);
-        logic.setFormulaDefinition(definition);
-
-        String sValues = sharedPref.getString(GamePreferenceActivity.KEY_FIRST_OPERAND, null);
-        if (sValues != null) {
-            values = Values.parse(sValues);
-        }
-        definition.setLeftOperand(values);
-
-        sValues = sharedPref.getString(GamePreferenceActivity.KEY_SECOND_OPERAND, null);
-        if (sValues != null) {
-            values = Values.parse(sValues);
-        } else {
-            values = defaultValues;
-        }
-        definition.setRightOperand(values);
-
-        sValues = sharedPref.getString(GamePreferenceActivity.KEY_RESULT, null);
-        if (sValues != null) {
-            values = Values.parse(sValues);
-        } else {
-            values = defaultValues;
-        }
-        definition.setResult(values);
-
-        Set<String> mValues = sharedPref.getStringSet(GamePreferenceActivity.KEY_OPERATIONS, null);
-        if (mValues != null) {
-            for (String value : mValues) {
-                definition.addOperator(Operator.valueOf(value));
-            }
-        } else {
-            definition.addOperator(Operator.PLUS).addOperator(Operator.MINUS);
-            definition.addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE);
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle state) {
-        log.debug("onSaveInstanceState()");
-        super.onSaveInstanceState(state);
-    }
-
-    @Override
-    protected void onPause() {
-        log.debug("onPause()");
-        super.onPause();
-
-    }
-
-    @Override
-    protected void onResume() {
-        log.debug("onResume()");
-        super.onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        log.debug("onStart()");
-        super.onStart();
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle state) {
-        log.debug("onRestoreInstanceState()");
-        super.onRestoreInstanceState(state);
-    }
-
-    @Override
-    protected void onRestart() {
-        log.debug("onRestart()");
-        super.onRestart();
-    }
-
-    @Override
-    protected void onStop() {
-        log.debug("onStop()");
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        log.debug("onDestroy()");
-        super.onDestroy();
+        puzzleFragment.setLogic((PuzzleLogic) gameLogic);
+        initializePuzzleFragment(true);
     }
 
     public static void start(Context c) {

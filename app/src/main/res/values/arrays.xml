@@ -26,4 +26,14 @@
         <item>MULTIPLY</item>
         <item>DIVIDE</item>
     </string-array>
+    <string-array name="pref_calc_entries">
+        <item>Stopky</item>
+        <item>Odpočet</item>
+        <item>Skrýt</item>
+    </string-array>
+    <string-array name="pref_calc_entries_values">
+        <item>STOPWATCH</item>
+        <item>COUNTDOWN</item>
+        <item>NONE</item>
+    </string-array>
 </resources>

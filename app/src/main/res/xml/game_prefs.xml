@@ -41,6 +41,14 @@
             android:summary="%s"
             android:defaultValue="0-30"
         />
+
+        <ListPreference
+            android:key="pref_game_calc"
+            android:title="Rychlé počty"
+            android:entries="@array/pref_calc_entries"
+            android:entryValues="@array/pref_calc_entries"
+            android:defaultValue="STOPWATCH"
+            />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="O aplikaci">

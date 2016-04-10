@@ -69,8 +69,8 @@
                 android:id="@+id/main.button.puzzle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Puzzle"
-                android:textAppearance="@style/TextAppearance.ItemExample"
+                android:text="Najdi výsledek"
+                android:textAppearance="@style/TextAppearance.Item"
                 android:drawableRight="@drawable/ic_arrow_forward_24dp"
                 style="@style/TextComponent.ItemRow.Selectable"/>
 
@@ -78,8 +78,8 @@
                 android:id="@+id/main.button.calc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Souboj s časem"
-                android:textAppearance="@style/TextAppearance.ItemExample"
+                android:text="Rychlé počty"
+                android:textAppearance="@style/TextAppearance.Item"
                 android:drawableRight="@drawable/ic_arrow_forward_24dp"
                 style="@style/TextComponent.ItemRow.Selectable"/>
 
@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nastavení"
-                android:textAppearance="@style/TextAppearance.ItemExample"
+                android:textAppearance="@style/TextAppearance.Item"
                 android:drawableRight="@drawable/ic_arrow_forward_24dp"
                 style="@style/TextComponent.ItemRow.Selectable"/>
 

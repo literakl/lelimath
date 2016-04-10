@@ -1,9 +1,10 @@
 package lelisoft.com.lelimath.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,28 +17,29 @@ import android.widget.TextView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Formula;
-import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
-import lelisoft.com.lelimath.data.Operator;
-import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.logic.CalcLogicImpl;
 import lelisoft.com.lelimath.logic.FormulaGenerator;
+import lelisoft.com.lelimath.view.FormulaResultPair;
 
 
-public class CalcActivity extends Activity {
+public class CalcActivity extends BaseGameActivity {
     private static final Logger log = LoggerFactory.getLogger(CalcActivity.class);
 
     private static final int SPEED_FAST = 5;
     private static final int SPEED_SLOW = 10;
     private static final int SPEED_MAX = 20000;
 
+    List<FormulaResultPair> formulaResultPairs;
     Formula formula;
-    FormulaDefinition definition = getFormulaDefinition();
     TextView unknown;
     Animation shake;
     long started, stopped, totalTimeSpent;
-    int count;
+    int count, formulaPosition = 0;
 
     public void digitClicked(View view) {
         log.debug("digitClicked()");
@@ -114,8 +116,21 @@ public class CalcActivity extends Activity {
         log.debug("onCreate()");
         super.onCreate(state);
 
+        setGameLogic(new CalcLogicImpl());
+        initializeGameLogic();
+        formulaResultPairs = gameLogic.generateFormulaResultPairs(10);
+
         setContentView(R.layout.activity_calc);
         shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavUtils.navigateUpFromSameTask(CalcActivity.this);
+            }
+        });
 
         if (formula == null && state == null) {
             prepareNewFormula();
@@ -174,7 +189,8 @@ public class CalcActivity extends Activity {
     }
 
     private void prepareNewFormula() {
-        formula = FormulaGenerator.generateRandomFormula(definition);
+//        formula = formulaResultPairs.get(formulaPosition++);
+        formula = FormulaGenerator.generateRandomFormula(gameLogic.getFormulaDefinition());
     }
 
     private TextView replaceView(TextView view, int template, LinearLayout parent) {
@@ -216,78 +232,13 @@ public class CalcActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        log.debug("onCreateOptionsMenu()");
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_calc, menu);
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setDisplayShowHomeEnabled(true);setHomeButtonEnabled(true)
-//        actionBar.setIcon(R.drawable.ic_launcher);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        log.debug("onOptionsItemSelected()");
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onStart() {
-        log.debug("onStart()");
-        super.onStart();
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle state) {
-        log.debug("onRestoreInstanceState()");
-        super.onRestoreInstanceState(state);
-    }
-
-    @Override
-    protected void onRestart() {
-        log.debug("onRestart()");
-        super.onRestart();
-    }
-
-    @Override
-    protected void onStop() {
-        log.debug("onStop()");
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        log.debug("onDestroy()");
-        super.onDestroy();
-    }
-
-    public FormulaDefinition getFormulaDefinition() {
-        Values left = new Values(0, 99);
-//        Values right = new Values(3, 60);
-//        Values result = new Values().add(10).add(11).add(12);
-
-        FormulaDefinition definition = new FormulaDefinition();
-        definition.setLeftOperand(left);
-        definition.setRightOperand(left);
-        definition.setResult(left);
-        definition.addOperator(Operator.PLUS);
-        definition.addOperator(Operator.MINUS);
-        definition.addUnknown(FormulaPart.FIRST_OPERAND);
-        definition.addUnknown(FormulaPart.OPERATOR);
-        definition.addUnknown(FormulaPart.SECOND_OPERAND);
-        definition.addUnknown(FormulaPart.RESULT);
-
-        return definition;
     }
 
     public static void start(Context c) {
