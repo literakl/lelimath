@@ -1,7 +1,9 @@
 package lelisoft.com.lelimath.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.view.FormulaResultPair;
 
@@ -20,6 +22,14 @@ public interface GameLogic {
     void setFormulaDefinition(FormulaDefinition definition);
 
     List<FormulaResultPair> generateFormulaResultPairs(int size);
+
+    /**
+     * Generates count formula using FormulaDefinition that has been already set.
+     * Generator may fail to generate some Formulas so the total number may be smaller.
+     * @param count requested number of formular
+     * @return valid formulas
+     */
+    ArrayList<Formula> generateFormulas(int count);
 
     /**
      * Game complexity

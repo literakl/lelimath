@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,19 +14,19 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.logic.CalcLogicImpl;
-import lelisoft.com.lelimath.logic.FormulaGenerator;
-import lelisoft.com.lelimath.view.FormulaResultPair;
 
 
 public class CalcActivity extends BaseGameActivity {
@@ -35,10 +36,11 @@ public class CalcActivity extends BaseGameActivity {
     private static final int SPEED_SLOW = 10;
     private static final int SPEED_MAX = 20000;
 
-    List<FormulaResultPair> formulaResultPairs;
+    ArrayList<Formula> formulas;
     Formula formula;
     TextView unknown;
     Animation shake;
+    ProgressBar mProgress;
     long started, stopped, totalTimeSpent;
     int count, formulaPosition = 0;
     Drawable iconSlow, iconNormal, iconFast;
@@ -50,9 +52,12 @@ public class CalcActivity extends BaseGameActivity {
 
         setGameLogic(new CalcLogicImpl());
         initializeGameLogic();
-        formulaResultPairs = gameLogic.generateFormulaResultPairs(10);
+        formulas = gameLogic.generateFormulas(10);
 
         setContentView(R.layout.activity_calc);
+        mProgress = (ProgressBar) findViewById(R.id.progressBar);
+        mProgress.setProgress(0);
+        mProgress.setMax(10);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
         setSupportActionBar(toolbar);
@@ -64,16 +69,18 @@ public class CalcActivity extends BaseGameActivity {
         });
 
         shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
-        iconSlow = getResources().getDrawable(R.drawable.ic_action_turtle);
-        iconNormal = getResources().getDrawable(R.drawable.ic_action_cat);
-        iconFast = getResources().getDrawable(R.drawable.ic_action_running_rabbit);
+        iconSlow = ContextCompat.getDrawable(this, R.drawable.ic_action_turtle);
+        iconNormal = ContextCompat.getDrawable(this, R.drawable.ic_action_cat);
+        iconFast = ContextCompat.getDrawable(this, R.drawable.ic_action_running_rabbit);
 
         if (formula == null && state == null) {
             prepareNewFormula();
         }
 
         if (state != null) {
-            formula = state.getParcelable("formula");
+            formulas = state.getParcelableArrayList("formulas");
+            formulaPosition = state.getInt("formulaPosition");
+            formula = formulas.get(formulaPosition);
             started = state.getLong("started");
             stopped = state.getLong("stopped");
             totalTimeSpent = state.getLong("timeSpent");
@@ -110,9 +117,15 @@ public class CalcActivity extends BaseGameActivity {
     public void resultClicked(View view) {
         log.debug("resultClicked()");
         if (formula.isEntryCorrect()) {
+            if (formulaPosition == formulas.size()) {
+                Toast.makeText(this, "Konec", Toast.LENGTH_LONG).show();
+                return;
+            }
+
             prepareNewFormula();
             displayFormula();
             updateSpeedIndicator();
+            mProgress.setProgress(formulaPosition);
         } else {
             unknown.startAnimation(shake);
             unknown.setText("");
@@ -145,7 +158,8 @@ public class CalcActivity extends BaseGameActivity {
     protected void onSaveInstanceState(Bundle state) {
         log.debug("onSaveInstanceState()");
         super.onSaveInstanceState(state);
-        state.putParcelable("formula", formula);
+        state.putParcelableArrayList("formulas", formulas);
+        state.putInt("formulaPosition", formulaPosition);
         state.putLong("started", started);
         state.putLong("stopped", stopped);
         state.putLong("timeSpent", totalTimeSpent);
@@ -196,8 +210,7 @@ public class CalcActivity extends BaseGameActivity {
     }
 
     private void prepareNewFormula() {
-//        formula = formulaResultPairs.get(formulaPosition++);
-        formula = FormulaGenerator.generateRandomFormula(gameLogic.getFormulaDefinition());
+        formula = formulas.get(formulaPosition++);
     }
 
     private TextView replaceView(TextView view, int template, LinearLayout parent) {

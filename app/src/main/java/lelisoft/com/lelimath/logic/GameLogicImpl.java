@@ -39,7 +39,7 @@ public class GameLogicImpl implements GameLogic {
     }
 
     public List<FormulaResultPair> generateFormulaResultPairs(int count) {
-        log.debug(definition + ", count = " + count);
+        log.debug("generateFormulaResultPairs: " + definition + ", count = " + count);
         List<FormulaResultPair> pairs;
         Formula formula;
 
@@ -63,4 +63,20 @@ public class GameLogicImpl implements GameLogic {
         return pairs;
     }
 
+    public ArrayList<Formula> generateFormulas(int count) {
+        log.debug("generateFormulas: " + definition + ", count = " + count);
+        ArrayList<Formula> list = new ArrayList<>(count + 1);
+        Formula formula;
+
+        for (int i = 0; i < count; i++) {
+            formula = FormulaGenerator.generateRandomFormula(definition);
+            if (formula == null) {
+                continue;
+            }
+            list.add(formula);
+        }
+
+        Collections.shuffle(list, Misc.getRandom());
+        return list;
+    }
 }
