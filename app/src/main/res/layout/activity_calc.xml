@@ -24,22 +24,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-<!--
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".CalcActivity"
-        android:id="@+id/puzzle_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="0dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:paddingTop="0dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </RelativeLayout>
--->
-
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -117,15 +101,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:indeterminate="false"
-                style="?android:attr/progressBarStyleHorizontal"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_gravity="center_vertical" />
-
-            <ImageView
-                android:id="@+id/speedIndicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_action_cat" />
         </LinearLayout>
 
         <LinearLayout
@@ -303,7 +280,7 @@
                     style="@style/KeypadFunctionButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="*"
+                    android:text="\u22C5"
                     android:layout_weight="1"
                     android:onClick="operatorClicked" />
 
@@ -312,7 +289,7 @@
                     style="@style/KeypadFunctionButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="/"
+                    android:text=":"
                     android:layout_weight="1"
                     android:onClick="operatorClicked" />
             </LinearLayout>
