@@ -18,6 +18,9 @@
             android:id="@+id/toolbarCalc"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:logo="@drawable/ic_launcher"
+            app:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
             app:navigationIcon="?homeAsUpIndicator"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
@@ -108,7 +111,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
             android:baselineAligned="false">
@@ -224,13 +227,12 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/buttonBackspace"
-                        style="@style/KeypadFunctionButton"
+                        android:id="@+id/buttonSubmit2"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="←"
+                        android:text=""
                         android:layout_weight="1"
-                        android:onClick="deleteClicked" />
+                        style="@style/KeypadButton"/>
 
                     <Button
                         android:id="@+id/digit0"
@@ -242,13 +244,13 @@
                         android:onClick="digitClicked" />
 
                     <Button
-                        android:id="@+id/buttonSubmit"
+                        android:id="@+id/buttonBackspace"
+                        style="@style/KeypadFunctionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="="
+                        android:text="←"
                         android:layout_weight="1"
-                        style="@style/KeypadButton"
-                        android:onClick="resultClicked" />
+                        android:onClick="deleteClicked" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -296,5 +298,19 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Další"
+                android:onClick="resultClicked" />
+        </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
