@@ -32,7 +32,9 @@ public class GamePreferenceFragment extends PreferenceFragment implements Shared
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.game_prefs);
 
-        preferenceScreenHelper = new PreferenceHelper(getPreferenceScreen());
+//        preferenceScreenHelper = new PreferenceHelper(getPreferenceScreen());
+//        Toolbar toolbar = (Toolbar) getActivity().findViewById(android.R.id.tool_bar);
+//        toolbar.setTitle(R.string.actionbar_title);
 
         InputFilter[] filters = {new ValuesInputFilter()};
         EditText editText = ((EditTextPreference) findPreference(KEY_FIRST_OPERAND)).getEditText();
