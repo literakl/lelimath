@@ -25,6 +25,7 @@ public class GamePreferenceActivity extends AppCompatActivity {
     public static final String KEY_FIRST_OPERAND = "pref_game_first_operand";
     public static final String KEY_SECOND_OPERAND = "pref_game_second_operand";
     public static final String KEY_RESULT = "pref_game_result";
+    public static final String KEY_UNKNOWN = "pref_game_calc_unknown";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

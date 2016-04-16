@@ -20,11 +20,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Formula;
+import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
+import lelisoft.com.lelimath.data.Operator;
+import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.logic.CalcLogicImpl;
+import lelisoft.com.lelimath.logic.PuzzleLogic;
 
 
 public class CalcActivity extends BaseGameActivity {
@@ -127,7 +132,8 @@ public class CalcActivity extends BaseGameActivity {
         }
     }
 
-    public void newGameClicked(View view) {
+    public void restartGameClicked(View view) {
+        log.debug("restartGameClicked()");
         formulaPosition = 0;
         formulas = gameLogic.generateFormulas();
         prepareNewFormula();
@@ -157,6 +163,21 @@ public class CalcActivity extends BaseGameActivity {
             ((ActionMenuItemView) speedIndicator).setIcon(iconNormal);
         }
 */
+    }
+
+    protected void initializeGameLogic() {
+        super.initializeGameLogic();
+        FormulaDefinition definition = gameLogic.getFormulaDefinition();
+        definition.setUnknowns(null);
+
+        Set<String> mValues = sharedPref.getStringSet(GamePreferenceActivity.KEY_UNKNOWN, null);
+        if (mValues != null) {
+            for (String value : mValues) {
+                definition.addUnknown(FormulaPart.valueOf(value));
+            }
+        } else {
+            definition.addUnknown(FormulaPart.RESULT);
+        }
     }
 
     @Override

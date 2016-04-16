@@ -100,26 +100,11 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_new_game: {
-                initializeGameLogic();
                 restartGame();
                 break;
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        log.debug("onActivityResult()");
-        super.onActivityResult(requestCode, resultCode, data);
-        initializeGameLogic();
-        restartGame();
-    }
-
-    @Override
-    public void onBackPressed() {
-        log.debug("onBackPressed()");
-        super.onBackPressed();
     }
 
     /**

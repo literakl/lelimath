@@ -41,13 +41,24 @@
             android:summary="%s"
             android:defaultValue="0-30"
         />
+    </PreferenceCategory>
 
+    <PreferenceCategory android:title="Rychlé počty">
+<!--
         <ListPreference
-            android:key="pref_game_calc"
-            android:title="Rychlé počty"
+            android:key="pref_game_calc_mode"
+            android:title=""
             android:entries="@array/pref_calc_entries"
             android:entryValues="@array/pref_calc_entries"
             android:defaultValue="STOPWATCH"
+            />
+-->
+
+        <MultiSelectListPreference
+            android:key="pref_game_calc_unknown"
+            android:title="Neznámá část"
+            android:entries="@array/pref_calc_unknown_entries"
+            android:entryValues="@array/pref_calc_unknown_entries_values"
             />
     </PreferenceCategory>
 
@@ -57,6 +68,7 @@
             android:persistent="false"
             android:title="Verze"
             android:summary="@string/app_version"/>
+
         <Preference
             android:key="prefBuildNumber"
             android:persistent="false"

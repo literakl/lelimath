@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:src="@drawable/ic_action_play_arrow"
-                android:onClick="newGameClicked" />
+                android:onClick="restartGameClicked" />
 
             <com.github.lzyzsd.circleprogress.DonutProgress
                 xmlns:custom="http://schemas.android.com/apk/res-auto"

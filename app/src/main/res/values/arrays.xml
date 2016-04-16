@@ -38,4 +38,16 @@
         <item>COUNTDOWN</item>
         <item>NONE</item>
     </string-array>
+    <string-array name="pref_calc_unknown_entries">
+        <item>První argument</item>
+        <item>Operace</item>
+        <item>Druhý argument</item>
+        <item>Výsledek</item>
+    </string-array>
+    <string-array name="pref_calc_unknown_entries_values">
+        <item>FIRST_OPERAND</item>
+        <item>OPERATOR</item>
+        <item>SECOND_OPERAND</item>
+        <item>RESULT</item>
+    </string-array>
 </resources>
