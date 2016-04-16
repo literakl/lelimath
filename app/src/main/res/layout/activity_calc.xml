@@ -15,15 +15,45 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbarCalc"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:logo="@drawable/ic_launcher"
-            app:contentInsetStart="0dp"
-            app:contentInsetLeft="0dp"
             app:navigationIcon="?homeAsUpIndicator"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <!--
+                    app:logo="@drawable/ic_launcher"
+                    app:contentInsetStart="0dp"
+                    app:contentInsetLeft="0dp"
+            -->
+            <com.github.lzyzsd.circleprogress.CircleProgress
+                android:layout_gravity="right"
+                android:id="@+id/progressBar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/colorPrimary"
+                custom:circle_unfinished_color="@color/tile_selected"
+                custom:circle_progress="20" />
+            <com.github.lzyzsd.circleprogress.ArcProgress
+                android:id="@+id/arc_progress"
+                android:background="@color/colorPrimary"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                custom:arc_text_size="10dp"
+                custom:arc_progress="20"/>
+            <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                app:cpb_progress="20"
+                app:cpb_background_progressbar_color="@color/colorAccent"
+                app:cpb_background_progressbar_width="10dp"
+                app:cpb_progressbar_color="@color/tile_normal"
+                app:cpb_progressbar_width="10dp" />
+        </android.support.v7.widget.Toolbar>
+
 
     </android.support.design.widget.AppBarLayout>
 
@@ -94,26 +124,62 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:weightSum="5"
             android:orientation="horizontal" >
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="0dp"
+            <Button
+                android:id="@+id/buttonPlus"
+                style="@style/KeypadFunctionButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="+"
+                android:layout_weight="1"
+                android:onClick="operatorClicked" />
+
+            <Button
+                android:id="@+id/buttonMinus"
+                style="@style/KeypadFunctionButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="-"
+                android:layout_weight="1"
+                android:onClick="operatorClicked" />
+
+            <Button
+                android:id="@+id/buttonMultiply"
+                style="@style/KeypadFunctionButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="\u22C5"
+                android:layout_weight="1"
+                android:onClick="operatorClicked" />
+
+            <Button
+                android:id="@+id/buttonDivide"
+                style="@style/KeypadFunctionButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=":"
+                android:layout_weight="1"
+                android:onClick="operatorClicked" />
+
+            <Button
+                android:id="@+id/buttonBackspace"
+                style="@style/KeypadFunctionButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:indeterminate="false"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="8dp" />
+                android:text="←"
+                android:layout_weight="1"
+                android:onClick="deleteClicked" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2"
+            android:weightSum="1"
             android:baselineAligned="false">
 
             <LinearLayout
@@ -244,58 +310,15 @@
                         android:onClick="digitClicked" />
 
                     <Button
-                        android:id="@+id/buttonBackspace"
-                        style="@style/KeypadFunctionButton"
+                        android:id="@+id/buttonSubmit3"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="←"
+                        android:text=""
                         android:layout_weight="1"
-                        android:onClick="deleteClicked" />
+                        style="@style/KeypadButton"/>
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-
-                <Button
-                    android:id="@+id/buttonPlus"
-                    style="@style/KeypadFunctionButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="+"
-                    android:layout_weight="1"
-                    android:onClick="operatorClicked" />
-
-                <Button
-                    android:id="@+id/buttonMinus"
-                    style="@style/KeypadFunctionButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="-"
-                    android:layout_weight="1"
-                    android:onClick="operatorClicked" />
-
-                <Button
-                    android:id="@+id/buttonMultiply"
-                    style="@style/KeypadFunctionButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="\u22C5"
-                    android:layout_weight="1"
-                    android:onClick="operatorClicked" />
-
-                <Button
-                    android:id="@+id/buttonDivide"
-                    style="@style/KeypadFunctionButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text=":"
-                    android:layout_weight="1"
-                    android:onClick="operatorClicked" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

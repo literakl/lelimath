@@ -41,4 +41,6 @@ dependencies {
         exclude module: 'android'
     }
     compile 'org.slf4j:slf4j-api:1.7.7'
+    compile 'com.github.lzyzsd:circleprogress:1.1.0@aar'
+    compile 'com.mikhaellopez:circularprogressbar:1.1.1'
 }

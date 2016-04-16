@@ -55,9 +55,9 @@ public class CalcActivity extends BaseGameActivity {
         formulas = gameLogic.generateFormulas(10);
 
         setContentView(R.layout.activity_calc);
-        mProgress = (ProgressBar) findViewById(R.id.progressBar);
-        mProgress.setProgress(0);
-        mProgress.setMax(10);
+//        mProgress = (ProgressBar) findViewById(R.id.progressBar);
+//        mProgress.setProgress(0);
+//        mProgress.setMax(10);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
         setSupportActionBar(toolbar);
@@ -125,7 +125,7 @@ public class CalcActivity extends BaseGameActivity {
             prepareNewFormula();
             displayFormula();
             updateSpeedIndicator();
-            mProgress.setProgress(formulaPosition);
+//            mProgress.setProgress(formulaPosition);
         } else {
             unknown.startAnimation(shake);
             unknown.setText("");
@@ -144,6 +144,7 @@ public class CalcActivity extends BaseGameActivity {
         count++;
 
         long averageTime = (totalTimeSpent) / (1000 * count);
+/*
         View speedIndicator = findViewById(R.id.speedIndicator);
         if (averageTime < SPEED_FAST) {
             ((ActionMenuItemView) speedIndicator).setIcon(iconFast);
@@ -152,6 +153,7 @@ public class CalcActivity extends BaseGameActivity {
         } else {
             ((ActionMenuItemView) speedIndicator).setIcon(iconNormal);
         }
+*/
     }
 
     @Override
@@ -252,7 +254,7 @@ public class CalcActivity extends BaseGameActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_calc, menu);
+//        getMenuInflater().inflate(R.menu.menu_calc, menu);
         return true;
     }
 
