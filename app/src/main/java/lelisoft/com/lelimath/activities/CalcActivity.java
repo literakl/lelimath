@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,9 +13,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +40,9 @@ public class CalcActivity extends BaseGameActivity {
     Formula formula;
     TextView unknown;
     Animation shake;
-    ProgressBar mProgress;
+    DonutProgress mProgress;
     long started, stopped, totalTimeSpent;
-    int count, formulaPosition = 0;
+    int formulaPosition = 0;
     Drawable iconSlow, iconNormal, iconFast;
 
     @Override
@@ -55,9 +55,9 @@ public class CalcActivity extends BaseGameActivity {
         formulas = gameLogic.generateFormulas(10);
 
         setContentView(R.layout.activity_calc);
-//        mProgress = (ProgressBar) findViewById(R.id.progressBar);
-//        mProgress.setProgress(0);
-//        mProgress.setMax(10);
+        mProgress = (DonutProgress) findViewById(R.id.progressBar);
+        mProgress.setMax(formulas.size());
+        mProgress.setProgress(1);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
         setSupportActionBar(toolbar);
@@ -125,7 +125,7 @@ public class CalcActivity extends BaseGameActivity {
             prepareNewFormula();
             displayFormula();
             updateSpeedIndicator();
-//            mProgress.setProgress(formulaPosition);
+            mProgress.setProgress(formulaPosition);
         } else {
             unknown.startAnimation(shake);
             unknown.setText("");
@@ -141,9 +141,8 @@ public class CalcActivity extends BaseGameActivity {
         totalTimeSpent += spent;
         formula.setTimeSpent(spent);
         started = now;
-        count++;
 
-        long averageTime = (totalTimeSpent) / (1000 * count);
+        long averageTime = (totalTimeSpent) / (1000 * formulaPosition);
 /*
         View speedIndicator = findViewById(R.id.speedIndicator);
         if (averageTime < SPEED_FAST) {
@@ -250,17 +249,6 @@ public class CalcActivity extends BaseGameActivity {
             default:
                 return (TextView)findViewById(R.id.result);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_calc, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     public static void start(Context c) {
