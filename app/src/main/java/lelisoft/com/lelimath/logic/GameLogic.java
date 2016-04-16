@@ -26,10 +26,9 @@ public interface GameLogic {
     /**
      * Generates count formula using FormulaDefinition that has been already set.
      * Generator may fail to generate some Formulas so the total number may be smaller.
-     * @param count requested number of formular
      * @return valid formulas
      */
-    ArrayList<Formula> generateFormulas(int count);
+    ArrayList<Formula> generateFormulas();
 
     /**
      * Game complexity

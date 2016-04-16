@@ -63,8 +63,17 @@ public class GameLogicImpl implements GameLogic {
         return pairs;
     }
 
-    public ArrayList<Formula> generateFormulas(int count) {
+    public ArrayList<Formula> generateFormulas() {
+        int count = 1;
+        switch (level) {
+            case TRIVIAL: count = 3; break;
+            case EASY: count = 5; break;
+            case NORMAL: count = 10; break;
+            case HARD: count = 20; break;
+            case GENIUS: count = 30; break;
+        }
         log.debug("generateFormulas: " + definition + ", count = " + count);
+
         ArrayList<Formula> list = new ArrayList<>(count + 1);
         Formula formula;
 

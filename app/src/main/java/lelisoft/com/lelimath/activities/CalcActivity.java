@@ -50,7 +50,7 @@ public class CalcActivity extends BaseGameActivity {
 
         setGameLogic(new CalcLogicImpl());
         initializeGameLogic();
-        formulas = gameLogic.generateFormulas(10);
+        formulas = gameLogic.generateFormulas();
 
         setContentView(R.layout.activity_calc);
         mProgress = (DonutProgress) findViewById(R.id.progressBar);
