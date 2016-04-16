@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -129,6 +127,7 @@ public class CalcActivity extends BaseGameActivity {
         } else {
             unknown.startAnimation(shake);
             unknown.setText("");
+            formula.clear();
         }
     }
 

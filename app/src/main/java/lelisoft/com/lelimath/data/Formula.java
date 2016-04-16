@@ -54,6 +54,13 @@ public class Formula implements Parcelable {
     }
 
     /**
+     * Clears all user input
+     */
+    public void clear() {
+        sb.setLength(0);
+    }
+
+    /**
      * @return content that user typed
      */
     public String getUserEntry() {
