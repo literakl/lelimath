@@ -48,14 +48,12 @@ public class CalcActivity extends BaseGameActivity {
         log.debug("onCreate()");
         super.onCreate(state);
 
-        setGameLogic(new CalcLogicImpl());
-        initializeGameLogic();
-        formulas = gameLogic.generateFormulas();
-
         setContentView(R.layout.activity_calc);
         mProgress = (DonutProgress) findViewById(R.id.progressBar);
-        mProgress.setMax(formulas.size());
-        mProgress.setProgress(1);
+        shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
+        iconSlow = ContextCompat.getDrawable(this, R.drawable.ic_action_turtle);
+        iconNormal = ContextCompat.getDrawable(this, R.drawable.ic_action_cat);
+        iconFast = ContextCompat.getDrawable(this, R.drawable.ic_action_running_rabbit);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
         setSupportActionBar(toolbar);
@@ -66,14 +64,12 @@ public class CalcActivity extends BaseGameActivity {
             }
         });
 
-        shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
-        iconSlow = ContextCompat.getDrawable(this, R.drawable.ic_action_turtle);
-        iconNormal = ContextCompat.getDrawable(this, R.drawable.ic_action_cat);
-        iconFast = ContextCompat.getDrawable(this, R.drawable.ic_action_running_rabbit);
-
-        if (formula == null && state == null) {
-            prepareNewFormula();
-        }
+        setGameLogic(new CalcLogicImpl());
+        initializeGameLogic();
+        formulas = gameLogic.generateFormulas();
+        prepareNewFormula();
+        mProgress.setMax(formulas.size());
+        mProgress.setProgress(1);
 
         if (state != null) {
             formulas = state.getParcelableArrayList("formulas");
@@ -129,6 +125,15 @@ public class CalcActivity extends BaseGameActivity {
             unknown.setText("");
             formula.clear();
         }
+    }
+
+    public void newGameClicked(View view) {
+        formulaPosition = 0;
+        formulas = gameLogic.generateFormulas();
+        prepareNewFormula();
+        displayFormula();
+        updateSpeedIndicator();
+        mProgress.setProgress(1);
     }
 
     private void updateSpeedIndicator() {

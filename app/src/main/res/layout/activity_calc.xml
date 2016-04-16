@@ -22,6 +22,15 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <ImageButton
+                android:id="@+id/action_new_game"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_action_play_arrow"
+                android:onClick="newGameClicked" />
+
             <com.github.lzyzsd.circleprogress.DonutProgress
                 xmlns:custom="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/progressBar"
@@ -36,6 +45,7 @@
                 custom:donut_text_size="10dp"
                 custom:donut_text_color="@color/colorAccent"
                 custom:donut_progress="25"/>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -307,7 +317,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             >
 
             <Button
