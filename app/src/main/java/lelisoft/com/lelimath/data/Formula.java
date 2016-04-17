@@ -65,7 +65,7 @@ public class Formula implements Parcelable {
     /**
      * @return content that user typed
      */
-    public String getUserEntry() {
+    public String getUserInput() {
         return sb.toString();
     }
 

@@ -27,9 +27,7 @@ import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
-import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.logic.CalcLogicImpl;
-import lelisoft.com.lelimath.logic.PuzzleLogic;
 
 
 public class CalcActivity extends BaseGameActivity {
@@ -99,7 +97,7 @@ public class CalcActivity extends BaseGameActivity {
     public void deleteClicked(View view) {
         log.debug("deleteClicked()");
         formula.undoAppend();
-        unknown.setText(formula.getUserEntry());
+        unknown.setText(formula.getUserInput());
     }
 
     public void operatorClicked(View view) {
@@ -119,7 +117,7 @@ public class CalcActivity extends BaseGameActivity {
     }
 
     public void resultClicked(View view) {
-        log.debug("resultClicked()");
+        log.debug("resultClicked(" + formula + ", ? = " + formula.getUserInput() + ")");
         if (formula.isEntryCorrect()) {
             if (formulaPosition == formulas.size()) {
                 Toast.makeText(this, "Konec", Toast.LENGTH_LONG).show();
@@ -224,7 +222,7 @@ public class CalcActivity extends BaseGameActivity {
         }
 
         unknown = replaceView(view, R.layout.template_unknown_value, parent);
-        unknown.setText(formula.getUserEntry());
+        unknown.setText(formula.getUserInput());
 
         if (unknown.getId() != R.id.operandFirst) {
             ((TextView)findViewById(R.id.operandFirst)).setText(formula.getFirstOperand().toString());

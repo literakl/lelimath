@@ -12,11 +12,11 @@ public class FormulaTest extends TestCase {
         Formula formula = new Formula(null, null, null, null, null);
         formula.append('1');
         formula.append('2');
-        assertEquals("12", formula.getUserEntry());
+        assertEquals("12", formula.getUserInput());
         formula.undoAppend();
         formula.undoAppend();
         formula.append('6');
-        assertEquals("6", formula.getUserEntry());
+        assertEquals("6", formula.getUserInput());
     }
 
     public void testSolve() {
