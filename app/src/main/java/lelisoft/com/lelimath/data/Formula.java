@@ -121,6 +121,15 @@ public class Formula implements Parcelable {
                 }
             }
         }
+
+        if (secondOperand == 1) {
+            if (unknown == FormulaPart.OPERATOR) {
+                if (Operator.MULTIPLY.equals(userInput)|| Operator.DIVIDE.equals(userInput)) {
+                    return result.equals(firstOperand); // x * 1 = x && x : 1 = x
+                }
+            }
+        }
+
         return getUnknownValue().equals(userInput);
     }
 

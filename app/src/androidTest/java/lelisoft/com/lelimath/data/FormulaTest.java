@@ -69,6 +69,16 @@ public class FormulaTest extends TestCase {
         formula.setUserEntry(Operator.DIVIDE.toString());
         assertFalse(formula.isEntryCorrect());
 
+        formula = new Formula(10, 1, 10, Operator.MULTIPLY, FormulaPart.OPERATOR);
+        formula.setUserEntry(Operator.PLUS.toString());
+        assertFalse(formula.isEntryCorrect());
+        formula.setUserEntry(Operator.MINUS.toString());
+        assertFalse(formula.isEntryCorrect());
+        formula.setUserEntry(Operator.MULTIPLY.toString());
+        assertTrue(formula.isEntryCorrect());
+        formula.setUserEntry(Operator.DIVIDE.toString());
+        assertTrue(formula.isEntryCorrect());
+
         // such formula shall never be generated
         formula = new Formula(3, 0, null, Operator.DIVIDE, FormulaPart.OPERATOR);
         formula.setUserEntry(Operator.DIVIDE.toString());
