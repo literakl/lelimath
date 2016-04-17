@@ -87,10 +87,10 @@ public class CalcActivity extends BaseGameActivity {
     }
 
     public void digitClicked(View view) {
-        log.debug("digitClicked()");
+        CharSequence digit = ((TextView)view).getText();
+        log.debug("digitClicked(" + digit + ")");
         if (started == 0) { started = System.currentTimeMillis(); }
         if (formula.getUnknown() != FormulaPart.OPERATOR) {
-            CharSequence digit = ((TextView)view).getText();
             formula.append(digit);
             unknown.append(digit);
         }
@@ -103,13 +103,18 @@ public class CalcActivity extends BaseGameActivity {
     }
 
     public void operatorClicked(View view) {
-        log.debug("operatorClicked()");
-        if (started == 0) { started = System.currentTimeMillis(); }
+        String operator = null;
         if (formula.getUnknown() == FormulaPart.OPERATOR) {
-            // in future there may be mapping based on component's id
-            CharSequence operator = ((TextView)view).getText();
+            switch (view.getId()) {
+                case R.id.buttonPlus: operator = Operator.PLUS.toString(); break;
+                case R.id.buttonMinus: operator = Operator.MINUS.toString(); break;
+                case R.id.buttonMultiply: operator = Operator.MULTIPLY.toString(); break;
+                case R.id.buttonDivide: operator = Operator.DIVIDE.toString(); break;
+            }
+            log.debug("operatorClicked(" + operator + ")");
             formula.setUserEntry(operator);
             unknown.setText(operator);
+            if (started == 0) { started = System.currentTimeMillis(); }
         }
     }
 
