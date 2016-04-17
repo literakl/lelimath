@@ -26,6 +26,10 @@ public enum Operator {
         }
     }
 
+    public boolean equals(String another) {
+        return value.equals(another);
+    }
+
     @Override
     public String toString() {
         return value;

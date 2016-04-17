@@ -3,6 +3,8 @@ package lelisoft.com.lelimath.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Objects;
+
 import lelisoft.com.lelimath.logic.Solver;
 
 /**
@@ -104,8 +106,22 @@ public class Formula implements Parcelable {
      * @return true if user solved the formula correctly
      */
     public boolean isEntryCorrect() {
-        // todo handle unknown operator, 30 +- 0 = 30
-        return getUnknownValue().equals(getUserEntry());
+        String userInput = sb.toString();
+        if (secondOperand == 0) {
+            if (unknown == FormulaPart.FIRST_OPERAND && result == 0) {
+                return true; // x * 0 = 0
+            }
+            if (unknown == FormulaPart.OPERATOR) {
+                if (Operator.PLUS.equals(userInput) || Operator.MINUS.equals(userInput)) {
+                    return result.equals(firstOperand); // x + 0 = x  && y - 0 = y
+                } else if (Operator.MULTIPLY.equals(userInput)) {
+                    return result == 0; // x * 0 = 0
+                } else {
+                    return false; // x : 0 = UNDEF
+                }
+            }
+        }
+        return getUnknownValue().equals(userInput);
     }
 
     public String solve() {
