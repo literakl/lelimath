@@ -30,7 +30,7 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
     PuzzleFragment puzzleFragment;
     PictureFragment pictureFragment;
 
-    static int[] pictures = new int[] {
+    public static int[] pictures = new int[] {
             R.drawable.pic_cat_kitten,
             R.drawable.pic_child_ball_on_head,
             R.drawable.pic_cute_girl,
@@ -46,18 +46,21 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
         log.debug("onCreate()");
         super.onCreate(state);
 
-        setGameLogic(new PuzzleLogicImpl());
-        initializeGameLogic();
-
         setContentView(R.layout.activity_puzzle);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarPuzzle);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavUtils.navigateUpFromSameTask(PuzzleActivity.this);
-            }
-        });
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NavUtils.navigateUpFromSameTask(PuzzleActivity.this);
+                }
+            });
+        }
+
+        setGameLogic(new PuzzleLogicImpl());
+        initializeGameLogic();
 
         puzzleFragment = new PuzzleFragment();
         puzzleFragment.setLogic((PuzzleLogic) gameLogic);
@@ -111,7 +114,7 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
      * Restarts game. If PuzzleFragment is not displayed it will be restored.
      */
     private void restartGame() {
-        log.debug("restartGame(), puzzleFragment " + ((puzzleFragment == null) ? "is not " : "is ") + "null");
+        log.debug("restartGame(), puzzleFragment " + ((puzzleFragment == null) ? "is not null" : "is null"));
         puzzleFragment = new PuzzleFragment();
         puzzleFragment.setLogic((PuzzleLogic) gameLogic);
         initializePuzzleFragment(true);

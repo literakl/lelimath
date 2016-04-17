@@ -31,10 +31,10 @@ import lelisoft.com.lelimath.view.Tile;
 public class PuzzleFragment extends Fragment {
     private static final Logger log = LoggerFactory.getLogger(PuzzleFragment.class);
 
-    private PuzzleBridge callback;
+    PuzzleBridge callback;
+    HandleClick clickHandler;
     GridLayout puzzleGrid;
     AppCompatButton selectedButton;
-    HandleClick clickHandler;
     Animation shake;
     int maxHorizontalTiles, maxVerticalTiles, tilesToBeSolved;
     PuzzleLogic logic;
@@ -45,7 +45,7 @@ public class PuzzleFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         log.debug("onCreateView()");
-        return inflater.inflate(R.layout.fragment_puzzle_views, container, false);
+        return inflater.inflate(R.layout.fragment_puzzle, container, false);
     }
 
     @Override
