@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_columnSpan="3"
-        app:layout_rowWeight="1"
+        app:layout_rowWeight="2"
         android:weightSum="4"
         style="@style/Formula">
 
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="+"
-        app:layout_rowWeight="1"
+        app:layout_rowWeight="0.5"
         app:layout_columnWeight="1"/>
 
     <Button
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="-"
-        app:layout_rowWeight="1"
+        app:layout_rowWeight="0.5"
         app:layout_columnWeight="1"/>
 
     <Button
@@ -93,7 +93,7 @@
         android:text="←"
         app:layout_gravity="fill_vertical"
         app:layout_rowSpan="2"
-        app:layout_rowWeight="1"
+        app:layout_rowWeight="0.5"
         app:layout_columnWeight="1"/>
 
     <Button
@@ -102,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\u22C5"
-        app:layout_rowWeight="1"
+        app:layout_rowWeight="0.5"
         app:layout_columnWeight="1" />
 
     <Button
@@ -111,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=":"
-        app:layout_rowWeight="1"
+        app:layout_rowWeight="0.5"
         app:layout_columnWeight="1"/>
 
     <Button
@@ -121,7 +121,7 @@
         android:text="7"
         android:layout_weight="1"
         style="@style/KeypadButton"
-        app:layout_rowWeight="1"
+        app:layout_rowWeight="0.5"
         app:layout_columnWeight="1" />
 
     <Button
@@ -221,7 +221,7 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_rowWeight="1"
+        app:layout_rowWeight="2"
         app:layout_columnWeight="1"
         app:layout_gravity="fill_horizontal"
         app:layout_columnSpan="3"/>

@@ -28,7 +28,7 @@
     <style name="KeypadButton" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:textSize">@dimen/keypad_button_text</item>
         <item name="android:textColor">@color/gray_79</item>
-        <item name="android:padding">10.0dip</item>
+        <!--<item name="android:padding">10.0dip</item>-->
     </style>
 
     <style name="KeypadFunctionButton" parent="@style/KeypadButton">
