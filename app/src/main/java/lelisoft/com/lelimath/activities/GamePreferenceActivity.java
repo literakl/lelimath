@@ -20,12 +20,8 @@ import lelisoft.com.lelimath.fragment.GamePreferenceFragment;
 public class GamePreferenceActivity extends AppCompatActivity {
     private static final Logger log = LoggerFactory.getLogger(GamePreferenceActivity.class);
 
+    public static final String KEY_CURRENT_VERSION = "pref_current_version";
     public static final String KEY_COMPLEXITY = "pref_game_complexity";
-    public static final String KEY_OPERATIONS = "pref_game_operations";
-    public static final String KEY_FIRST_OPERAND = "pref_game_first_operand";
-    public static final String KEY_SECOND_OPERAND = "pref_game_second_operand";
-    public static final String KEY_RESULT = "pref_game_result";
-    public static final String KEY_UNKNOWN = "pref_game_calc_unknown";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

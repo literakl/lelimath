@@ -13,4 +13,24 @@
     <string name="action_level">Složitost</string>
     <string name="pref_enter_values">Zadejte rozsah oddělený pomlčkou nebo výčet hodnot oddělených čárkou</string>
     <string name="settings_build_number_title">Build date</string>
+    <string name="operation_plus">Sčítání</string>
+    <string name="pref_title_operation_plus">Povolit sčítání</string>
+    <string name="pref_title_plus_first_arg">První sčítanec</string>
+    <string name="pref_title_plus_second_arg">Druhý sčítanec</string>
+    <string name="pref_title_plus_result">Součet</string>
+    <string name="operation_minus">Odečítání</string>
+    <string name="pref_title_operation_minus">Povolit odečítání</string>
+    <string name="pref_title_minus_first_arg">Menšenec</string>
+    <string name="pref_title_minus_second_arg">Menšitel</string>
+    <string name="pref_title_minus_result">Rozdíl</string>
+    <string name="operation_multiply">Násobení</string>
+    <string name="pref_title_operation_multiply">Povolit násobení</string>
+    <string name="pref_title_multiply_first_arg">První činitel</string>
+    <string name="pref_title_multiply_second_arg">Druhý činitel</string>
+    <string name="pref_title_multiply_result">Součin</string>
+    <string name="operation_divide">Dělení</string>
+    <string name="pref_title_operation_divide">Povolit dělení</string>
+    <string name="pref_title_divide_first_arg">Dělenec</string>
+    <string name="pref_title_divide_second_arg">Dělitel</string>
+    <string name="pref_title_divide_result">Podíl</string>
 </resources>

@@ -36,6 +36,7 @@ public class GamePreferenceFragment extends PreferenceFragment implements Shared
 //        Toolbar toolbar = (Toolbar) getActivity().findViewById(android.R.id.tool_bar);
 //        toolbar.setTitle(R.string.actionbar_title);
 
+/*
         InputFilter[] filters = {new ValuesInputFilter()};
         EditText editText = ((EditTextPreference) findPreference(KEY_FIRST_OPERAND)).getEditText();
         editText.setFilters(filters);
@@ -43,6 +44,7 @@ public class GamePreferenceFragment extends PreferenceFragment implements Shared
         editText.setFilters(filters);
         editText = ((EditTextPreference) findPreference(KEY_RESULT)).getEditText();
         editText.setFilters(filters);
+*/
     }
 
     @Override

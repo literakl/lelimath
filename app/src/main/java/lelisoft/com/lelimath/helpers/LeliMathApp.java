@@ -1,6 +1,11 @@
 package lelisoft.com.lelimath.helpers;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
+
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
@@ -11,6 +16,7 @@ import ch.qos.logback.classic.android.LogcatAppender;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
+import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 
 /**
  * Application handler
@@ -27,8 +33,35 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
 //        new File("/data/data/lelisoft.com.lelimath/files/log/").mkdirs();
         configureLogbackDirectly();
+        performUpgrade();
         androidExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
+    }
+
+    private void performUpgrade() {
+        try {
+            PackageInfo packageInfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+            log.info("Started version " + packageInfo.versionCode);
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = preferences.edit();
+            int version = preferences.getInt(GamePreferenceActivity.KEY_CURRENT_VERSION, 0);
+            if (version == 0) {
+                editor.putInt(GamePreferenceActivity.KEY_CURRENT_VERSION, packageInfo.versionCode);
+                editor.apply();
+                return; // new installation
+            }
+
+            if (version <= 141) {
+                log.info("Removing deprecated preferences from version 1.4.1 and older");
+                editor.remove("pref_game_operations");
+                editor.remove("pref_game_first_operand");
+                editor.remove("pref_game_second_operand");
+                editor.remove("pref_game_result");
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            log.warn("Package search failed!", e);
+        }
     }
 
     @Override
