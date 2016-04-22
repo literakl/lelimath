@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">LeliMath</string>
     <string name="action_new_game">Nová hra</string>
     <string name="action_settings">Nastavení</string>
@@ -8,29 +7,34 @@
     <string name="action_speed">Rychlost</string>
     <string name="action_progress_fast">Fast</string>
     <string name="action_about">O aplikaci</string>
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
     <string name="action_level">Složitost</string>
     <string name="pref_enter_values">Zadejte rozsah oddělený pomlčkou nebo výčet hodnot oddělených čárkou</string>
-    <string name="settings_build_number_title">Build date</string>
+    <string name="settings_build_number_title">Datum sestavení</string>
     <string name="operation_plus">Sčítání</string>
+    <string name="operation_minus">Odečítání</string>
+    <string name="operation_multiply">Násobení</string>
+    <string name="operation_divide">Dělení</string>
+    <string name="toolbar_title_preferences">Nastavení</string>
     <string name="pref_title_operation_plus">Povolit sčítání</string>
     <string name="pref_title_plus_first_arg">První sčítanec</string>
     <string name="pref_title_plus_second_arg">Druhý sčítanec</string>
     <string name="pref_title_plus_result">Součet</string>
-    <string name="operation_minus">Odečítání</string>
     <string name="pref_title_operation_minus">Povolit odečítání</string>
     <string name="pref_title_minus_first_arg">Menšenec</string>
     <string name="pref_title_minus_second_arg">Menšitel</string>
     <string name="pref_title_minus_result">Rozdíl</string>
-    <string name="operation_multiply">Násobení</string>
     <string name="pref_title_operation_multiply">Povolit násobení</string>
     <string name="pref_title_multiply_first_arg">První činitel</string>
     <string name="pref_title_multiply_second_arg">Druhý činitel</string>
     <string name="pref_title_multiply_result">Součin</string>
-    <string name="operation_divide">Dělení</string>
     <string name="pref_title_operation_divide">Povolit dělení</string>
     <string name="pref_title_divide_first_arg">Dělenec</string>
     <string name="pref_title_divide_second_arg">Dělitel</string>
     <string name="pref_title_divide_result">Podíl</string>
+    <string name="pref_title_operation_reuse">Použít hodnoty z</string>
+    <string name="pref_no_reuse">Vlastní hodnoty</string>
+    <string name="pref_app_version">Verze</string>
+    <string name="pref_build_time">Sestavení</string>
+    <string name="pref_operation_help_title">Nápověda</string>
+    <string name="pref_operation_help_content">Stačí zadat dva ze tří oborů hodnot.\nNeplatná konfigurace bude nahrazena demo hodnotami.</string>
 </resources>

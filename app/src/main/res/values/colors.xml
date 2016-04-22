@@ -6,6 +6,8 @@
     <color name="tile_border_result">#ffaa00</color>
     <color name="tile_solved">#00ff00</color>
 
+    <color name="colorTitleText">#ffffffff</color>
+
     <color name="gray_35">#ff232323</color>
     <color name="gray_46">#ff2e2e2e</color>
     <color name="gray_79">#ff4f4f4f</color>

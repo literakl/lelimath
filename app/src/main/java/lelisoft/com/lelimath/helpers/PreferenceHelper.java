@@ -102,10 +102,10 @@ public class PreferenceHelper {
 			summary = summary.substring(summary.indexOf('}') + 1);
 		}
         if (preference instanceof ListPreference) {
-            summary = currentValue == null ? "" : currentValue.toString();
+            summary = (currentValue == null) ? "" : currentValue.toString();
         }
         if (preference instanceof MultiSelectListPreference) {
-            summary = currentValue == null ? "" : currentValue.toString();
+            summary = (currentValue == null) ? "" : currentValue.toString();
         }
 		return summary;
 	}

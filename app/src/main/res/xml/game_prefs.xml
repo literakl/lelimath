@@ -21,8 +21,19 @@
                 android:defaultValue="false"
             />
 
+            <ListPreference
+                android:key="pref_game_plus_reuse"
+                android:dependency="pref_game_operation_plus"
+                android:title="@string/pref_title_operation_reuse"
+                android:summary="%s"
+                android:entries="@array/pref_reuse_entries"
+                android:entryValues="@array/pref_reuse_entries_values"
+                android:defaultValue="NONE"
+            />
+
             <EditTextPreference
                 android:key="pref_game_plus_first_arg"
+                android:dependency="pref_game_operation_plus"
                 android:title="@string/pref_title_plus_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
@@ -31,6 +42,7 @@
 
             <EditTextPreference
                 android:key="pref_game_plus_second_arg"
+                android:dependency="pref_game_operation_plus"
                 android:title="@string/pref_title_plus_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
@@ -39,11 +51,19 @@
 
             <EditTextPreference
                 android:key="pref_game_plus_result"
+                android:dependency="pref_game_operation_plus"
                 android:title="@string/pref_title_plus_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
                 android:defaultValue="0-30"
                 />
+
+            <Preference
+                android:key="pref_game_plus_help"
+                android:title="@string/pref_operation_help_title"
+                android:persistent="false"
+                android:selectable="false"
+                android:summary="@string/pref_operation_help_content"/>
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -57,8 +77,19 @@
                 android:defaultValue="false"
             />
 
+            <ListPreference
+                android:key="pref_game_minus_reuse"
+                android:dependency="pref_game_operation_minus"
+                android:title="@string/pref_title_operation_reuse"
+                android:summary="%s"
+                android:entries="@array/pref_reuse_entries"
+                android:entryValues="@array/pref_reuse_entries_values"
+                android:defaultValue="NONE"
+                />
+
             <EditTextPreference
                 android:key="pref_game_minus_first_arg"
+                android:dependency="pref_game_operation_minus"
                 android:title="@string/pref_title_minus_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
@@ -67,6 +98,7 @@
 
             <EditTextPreference
                 android:key="pref_game_minus_second_arg"
+                android:dependency="pref_game_operation_minus"
                 android:title="@string/pref_title_minus_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
@@ -75,11 +107,19 @@
 
             <EditTextPreference
                 android:key="pref_game_minus_result"
+                android:dependency="pref_game_operation_minus"
                 android:title="@string/pref_title_minus_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
                 android:defaultValue="0-30"
                 />
+
+            <Preference
+                android:key="pref_game_minus_help"
+                android:title="@string/pref_operation_help_title"
+                android:persistent="false"
+                android:selectable="false"
+                android:summary="@string/pref_operation_help_content"/>
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -93,8 +133,19 @@
                 android:defaultValue="false"
             />
 
+            <ListPreference
+                android:key="pref_game_multiply_reuse"
+                android:dependency="pref_game_operation_multiply"
+                android:title="@string/pref_title_operation_reuse"
+                android:summary="%s"
+                android:entries="@array/pref_reuse_entries"
+                android:entryValues="@array/pref_reuse_entries_values"
+                android:defaultValue="NONE"
+                />
+
             <EditTextPreference
                 android:key="pref_game_multiply_first_arg"
+                android:dependency="pref_game_operation_multiply"
                 android:title="@string/pref_title_multiply_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
@@ -103,6 +154,7 @@
 
             <EditTextPreference
                 android:key="pref_game_multiply_second_arg"
+                android:dependency="pref_game_operation_multiply"
                 android:title="@string/pref_title_multiply_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
@@ -111,11 +163,19 @@
 
             <EditTextPreference
                 android:key="pref_game_multiply_result"
+                android:dependency="pref_game_operation_multiply"
                 android:title="@string/pref_title_multiply_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
                 android:defaultValue="0-30"
                 />
+
+            <Preference
+                android:key="pref_game_multiply_help"
+                android:title="@string/pref_operation_help_title"
+                android:persistent="false"
+                android:selectable="false"
+                android:summary="@string/pref_operation_help_content"/>
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -129,8 +189,19 @@
                 android:defaultValue="false"
             />
 
+            <ListPreference
+                android:key="pref_game_divide_reuse"
+                android:dependency="pref_game_operation_divide"
+                android:title="@string/pref_title_operation_reuse"
+                android:summary="%s"
+                android:entries="@array/pref_reuse_entries"
+                android:entryValues="@array/pref_reuse_entries_values"
+                android:defaultValue="NONE"
+                />
+
             <EditTextPreference
                 android:key="pref_game_divide_first_arg"
+                android:dependency="pref_game_operation_divide"
                 android:title="@string/pref_title_divide_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
@@ -139,6 +210,7 @@
 
             <EditTextPreference
                 android:key="pref_game_divide_second_arg"
+                android:dependency="pref_game_operation_divide"
                 android:title="@string/pref_title_divide_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
@@ -147,11 +219,19 @@
 
             <EditTextPreference
                 android:key="pref_game_divide_result"
+                android:dependency="pref_game_operation_divide"
                 android:title="@string/pref_title_divide_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
                 android:defaultValue="0-30"
                 />
+
+            <Preference
+                android:key="pref_game_divide_help"
+                android:title="@string/pref_operation_help_title"
+                android:persistent="false"
+                android:selectable="false"
+                android:summary="@string/pref_operation_help_content"/>
         </PreferenceScreen>
 
     </PreferenceCategory>
@@ -177,15 +257,17 @@
 
     <PreferenceCategory android:title="O aplikaci">
         <Preference
-            android:key="prefVersion"
+            android:key="pref_version"
+            android:title="@string/pref_app_version"
             android:persistent="false"
-            android:title="Verze"
+            android:selectable="false"
             android:summary="@string/app_version"/>
 
         <Preference
-            android:key="prefBuildNumber"
+            android:key="pref_build_number"
+            android:title="@string/pref_build_time"
             android:persistent="false"
-            android:title="Sestavení"
+            android:selectable="false"
             android:summary="@string/app_build_number" />
     </PreferenceCategory>
 </PreferenceScreen>

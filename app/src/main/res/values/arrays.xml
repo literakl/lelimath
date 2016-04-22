@@ -50,4 +50,18 @@
         <item>SECOND_OPERAND</item>
         <item>RESULT</item>
     </string-array>
+    <string-array name="pref_reuse_entries">
+        <item>@string/pref_no_reuse</item>
+        <item>@string/operation_plus</item>
+        <item>@string/operation_minus</item>
+        <item>@string/operation_multiply</item>
+        <item>@string/operation_divide</item>
+    </string-array>
+    <string-array name="pref_reuse_entries_values">
+        <item>NONE</item>
+        <item>PLUS</item>
+        <item>MINUS</item>
+        <item>MULTIPLY</item>
+        <item>DIVIDE</item>
+    </string-array>
 </resources>

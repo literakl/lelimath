@@ -36,6 +36,7 @@ public class BaseGameActivity extends AppCompatActivity {
         Values defaultValues = new Values(0, 30), values = defaultValues;
         FormulaDefinition definition = new FormulaDefinition().addUnknown(FormulaPart.RESULT);
         gameLogic.setFormulaDefinition(definition);
+/*
 
         String sValues = sharedPref.getString(GamePreferenceActivity.KEY_FIRST_OPERAND, null);
         if (sValues != null) {
@@ -68,6 +69,7 @@ public class BaseGameActivity extends AppCompatActivity {
             definition.addOperator(Operator.PLUS).addOperator(Operator.MINUS);
             definition.addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE);
         }
+*/
     }
 
     public void setGameLogic(GameLogic gameLogic) {
