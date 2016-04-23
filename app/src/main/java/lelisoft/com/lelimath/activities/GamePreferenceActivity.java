@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
 
 /**
@@ -73,6 +72,10 @@ public class GamePreferenceActivity extends PreferenceActivity
         removeEntry((ListPreference) preferenceScreen.findPreference("pref_game_minus_reuse"), "MINUS");
         removeEntry((ListPreference) preferenceScreen.findPreference("pref_game_multiply_reuse"), "MULTIPLY");
         removeEntry((ListPreference) preferenceScreen.findPreference("pref_game_divide_reuse"), "DIVIDE");
+        changeDefinitionsState("plus", preferenceScreen);
+        changeDefinitionsState("minus", preferenceScreen);
+        changeDefinitionsState("multiply", preferenceScreen);
+        changeDefinitionsState("divide", preferenceScreen);
 
         preferenceScreenHelper = new PreferenceHelper(preferenceScreen);
 
@@ -81,34 +84,6 @@ public class GamePreferenceActivity extends PreferenceActivity
         EditText editText = ((EditTextPreference) findPreference(KEY_FIRST_OPERAND)).getEditText();
         editText.setFilters(filters);
 */
-    }
-
-    /**
-     * Finds key in List preference and removes it. The key must be present between entry values.
-     * @param pref List preference
-     * @param key key
-     */
-    private void removeEntry(ListPreference pref, String key) {
-        CharSequence[] entries = pref.getEntries(), copyEntries = new CharSequence[entries.length - 1];
-        CharSequence[] values = pref.getEntryValues(), copyValues = new CharSequence[values.length - 1];
-
-        int index = -1;
-        for (int i = 0, j = 0; i < values.length; i++) {
-            if (key.equals(values[i])) {
-                index = i;
-                continue;
-            }
-            copyValues[j++] = values[i];
-        }
-        pref.setEntryValues(copyValues);
-
-        for (int i = 0, j = 0; i < entries.length; i++) {
-            if (i == index) {
-                continue;
-            }
-            copyEntries[j++] = entries[i];
-        }
-        pref.setEntries(copyEntries);
     }
 
     @SuppressWarnings("deprecation")
@@ -142,43 +117,36 @@ public class GamePreferenceActivity extends PreferenceActivity
         PreferenceScreen preferenceScreen = getPreferenceScreen();
 
         if (key.equals("pref_game_plus_reuse")) {
-            String value = sharedPreferences.getString("pref_game_plus_reuse", "NONE");
-            boolean enabled = "NONE".equals(value);
-            preferenceScreen.findPreference("pref_game_plus_first_arg").setEnabled(enabled);
-            preferenceScreen.findPreference("pref_game_plus_second_arg").setEnabled(enabled);
-            preferenceScreen.findPreference("pref_game_plus_result").setEnabled(enabled);
+            changeDefinitionsState("plus", preferenceScreen);
             return;
         }
 
         if (key.equals("pref_game_minus_reuse")) {
-            String value = sharedPreferences.getString("pref_game_minus_reuse", "NONE");
-            boolean enabled = "NONE".equals(value);
-            preferenceScreen.findPreference("pref_game_minus_first_arg").setEnabled(enabled);
-            preferenceScreen.findPreference("pref_game_minus_second_arg").setEnabled(enabled);
-            preferenceScreen.findPreference("pref_game_minus_result").setEnabled(enabled);
+            changeDefinitionsState("minus", preferenceScreen);
             return;
         }
 
         if (key.equals("pref_game_multiply_reuse")) {
-            String value = sharedPreferences.getString("pref_game_multiply_reuse", "NONE");
-            boolean enabled = "NONE".equals(value);
-            preferenceScreen.findPreference("pref_game_multiply_first_arg").setEnabled(enabled);
-            preferenceScreen.findPreference("pref_game_multiply_second_arg").setEnabled(enabled);
-            preferenceScreen.findPreference("pref_game_multiply_result").setEnabled(enabled);
+            changeDefinitionsState("multiply", preferenceScreen);
             return;
         }
 
         if (key.equals("pref_game_divide_reuse")) {
-            String value = sharedPreferences.getString("pref_game_divide_reuse", "NONE");
-            boolean enabled = "NONE".equals(value);
-            preferenceScreen.findPreference("pref_game_divide_first_arg").setEnabled(enabled);
-            preferenceScreen.findPreference("pref_game_divide_second_arg").setEnabled(enabled);
-            preferenceScreen.findPreference("pref_game_divide_result").setEnabled(enabled);
+            changeDefinitionsState("divide", preferenceScreen);
             return;
         }
 
         //noinspection deprecation
         updatePreferenceSummary(findPreference(key));
+    }
+
+    private void changeDefinitionsState(String key, PreferenceScreen preferenceScreen) {
+        SharedPreferences sharedPreferences = preferenceScreen.getSharedPreferences();
+        String value = sharedPreferences.getString("pref_game_" + key + "_reuse", "NONE");
+        boolean enabled = "NONE".equals(value);
+        preferenceScreen.findPreference("pref_game_" + key + "_first_arg").setEnabled(enabled);
+        preferenceScreen.findPreference("pref_game_" + key + "_second_arg").setEnabled(enabled);
+        preferenceScreen.findPreference("pref_game_" + key + "_result").setEnabled(enabled);
     }
 
     private void updatePreferenceSummary(Preference p) {
@@ -237,6 +205,34 @@ public class GamePreferenceActivity extends PreferenceActivity
                 dialog.dismiss();
             }
         });
+    }
+
+    /**
+     * Finds key in List preference and removes it. The key must be present between entry values.
+     * @param pref List preference
+     * @param key key
+     */
+    private void removeEntry(ListPreference pref, String key) {
+        CharSequence[] entries = pref.getEntries(), copyEntries = new CharSequence[entries.length - 1];
+        CharSequence[] values = pref.getEntryValues(), copyValues = new CharSequence[values.length - 1];
+
+        int index = -1;
+        for (int i = 0, j = 0; i < values.length; i++) {
+            if (key.equals(values[i])) {
+                index = i;
+                continue;
+            }
+            copyValues[j++] = values[i];
+        }
+        pref.setEntryValues(copyValues);
+
+        for (int i = 0, j = 0; i < entries.length; i++) {
+            if (i == index) {
+                continue;
+            }
+            copyEntries[j++] = entries[i];
+        }
+        pref.setEntries(copyEntries);
     }
 
     @Override

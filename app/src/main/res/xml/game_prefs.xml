@@ -18,7 +18,7 @@
             <CheckBoxPreference
                 android:key="pref_game_operation_plus"
                 android:title="@string/pref_title_operation_plus"
-                android:defaultValue="false"
+                android:defaultValue="true"
             />
 
             <ListPreference
@@ -37,7 +37,7 @@
                 android:title="@string/pref_title_plus_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="0-10"
                 />
 
             <EditTextPreference
@@ -46,7 +46,7 @@
                 android:title="@string/pref_title_plus_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="0-10"
                 />
 
             <EditTextPreference
@@ -55,7 +55,7 @@
                 android:title="@string/pref_title_plus_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="0-20"
                 />
 
             <Preference
@@ -74,7 +74,7 @@
             <CheckBoxPreference
                 android:key="pref_game_operation_minus"
                 android:title="@string/pref_title_operation_minus"
-                android:defaultValue="false"
+                android:defaultValue="true"
             />
 
             <ListPreference
@@ -84,7 +84,7 @@
                 android:summary="%s"
                 android:entries="@array/pref_reuse_entries"
                 android:entryValues="@array/pref_reuse_entries_values"
-                android:defaultValue="NONE"
+                android:defaultValue="PLUS"
                 />
 
             <EditTextPreference
@@ -93,7 +93,7 @@
                 android:title="@string/pref_title_minus_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="0-20"
                 />
 
             <EditTextPreference
@@ -102,7 +102,7 @@
                 android:title="@string/pref_title_minus_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="0-10"
                 />
 
             <EditTextPreference
@@ -111,7 +111,7 @@
                 android:title="@string/pref_title_minus_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="0-10"
                 />
 
             <Preference
@@ -130,7 +130,7 @@
             <CheckBoxPreference
                 android:key="pref_game_operation_multiply"
                 android:title="@string/pref_title_operation_multiply"
-                android:defaultValue="false"
+                android:defaultValue="true"
             />
 
             <ListPreference
@@ -140,7 +140,7 @@
                 android:summary="%s"
                 android:entries="@array/pref_reuse_entries"
                 android:entryValues="@array/pref_reuse_entries_values"
-                android:defaultValue="NONE"
+                android:defaultValue="PLUS"
                 />
 
             <EditTextPreference
@@ -149,7 +149,7 @@
                 android:title="@string/pref_title_multiply_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="0-10"
                 />
 
             <EditTextPreference
@@ -158,7 +158,7 @@
                 android:title="@string/pref_title_multiply_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="0-10"
                 />
 
             <EditTextPreference
@@ -167,7 +167,7 @@
                 android:title="@string/pref_title_multiply_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue=""
                 />
 
             <Preference
@@ -186,7 +186,7 @@
             <CheckBoxPreference
                 android:key="pref_game_operation_divide"
                 android:title="@string/pref_title_operation_divide"
-                android:defaultValue="false"
+                android:defaultValue="true"
             />
 
             <ListPreference
@@ -205,7 +205,7 @@
                 android:title="@string/pref_title_divide_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="0-100"
                 />
 
             <EditTextPreference
@@ -214,7 +214,7 @@
                 android:title="@string/pref_title_divide_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue="1-10"
                 />
 
             <EditTextPreference
@@ -223,7 +223,7 @@
                 android:title="@string/pref_title_divide_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue="0-30"
+                android:defaultValue=""
                 />
 
             <Preference
