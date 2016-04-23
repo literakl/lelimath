@@ -37,8 +37,9 @@ import lelisoft.com.lelimath.helpers.PreferenceHelper;
  * Preferences for a game. Utilizes source code from https://github.com/davcpas1234/MaterialSettings.
  * Created by Leoš on 17.01.2016.
  */
-public class GamePreferenceActivity extends PreferenceActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class GamePreferenceActivity extends PreferenceActivity implements
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        Preference.OnPreferenceChangeListener {
     private static final Logger log = LoggerFactory.getLogger(GamePreferenceActivity.class);
 
     public static final String KEY_CURRENT_VERSION = "pref_current_version";
@@ -76,6 +77,9 @@ public class GamePreferenceActivity extends PreferenceActivity
         changeDefinitionsState("minus", preferenceScreen);
         changeDefinitionsState("multiply", preferenceScreen);
         changeDefinitionsState("divide", preferenceScreen);
+        preferenceScreen.findPreference("pref_game_plus_reuse").setOnPreferenceChangeListener(this);
+        preferenceScreen.findPreference("pref_game_operation_divide").setOnPreferenceChangeListener(this);
+        preferenceScreen.findPreference("pref_game_operation_plus").setOnPreferenceChangeListener(this);
 
         preferenceScreenHelper = new PreferenceHelper(preferenceScreen);
 
@@ -89,6 +93,7 @@ public class GamePreferenceActivity extends PreferenceActivity
     @SuppressWarnings("deprecation")
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        log.debug("onPreferenceTreeClick(" + preference.getKey() + ")");
         super.onPreferenceTreeClick(preferenceScreen, preference);
 
         if (preference instanceof PreferenceScreen) {
@@ -109,31 +114,83 @@ public class GamePreferenceActivity extends PreferenceActivity
 
         return false;
     }
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        log.debug("onPreferenceChange(" + preference.getKey() + ")");
+/*
+        //noinspection deprecation
+        PreferenceScreen preferencesRoot = getPreferenceScreen();
+        Preference category;
+        switch (preference.getKey()) {
+            case "pref_game_plus_reuse":
+                category = preferencesRoot.findPreference("pref_game_divide_category");
+                category.setSummary("tesr");
+                log.debug(category.getSummary().toString());
+                return true;
+
+            case "pref_game_operation_plus":
+                category = preferencesRoot.findPreference("pref_game_divide_category");
+                category.setSummary("pokus " + ((CheckBoxPreference)preference).isChecked());
+                log.debug(category.getSummary().toString());
+                return true;
+
+            case "pref_game_operation_divide":
+                category = preferencesRoot.findPreference("pref_game_plus_category");
+                category.setSummary("pokus2 " + ((CheckBoxPreference)preference).isChecked());
+                log.debug(category.getSummary().toString());
+                return true;
+        }
+*/
+
+        return true;
+    }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         log.debug("onSharedPreferenceChanged(" + key + ")");
         //noinspection deprecation
-        PreferenceScreen preferenceScreen = getPreferenceScreen();
+        PreferenceScreen preferencesRoot = getPreferenceScreen();
+        Preference preference;
+        switch (key) {
+            case "pref_game_plus_reuse":
+                changeDefinitionsState("plus", preferencesRoot);
+                return;
 
-        if (key.equals("pref_game_plus_reuse")) {
-            changeDefinitionsState("plus", preferenceScreen);
-            return;
-        }
+            case "pref_game_minus_reuse":
+                changeDefinitionsState("minus", preferencesRoot);
+                return;
 
-        if (key.equals("pref_game_minus_reuse")) {
-            changeDefinitionsState("minus", preferenceScreen);
-            return;
-        }
+            case "pref_game_multiply_reuse":
+                changeDefinitionsState("multiply", preferencesRoot);
+                return;
 
-        if (key.equals("pref_game_multiply_reuse")) {
-            changeDefinitionsState("multiply", preferenceScreen);
-            return;
-        }
+            case "pref_game_divide_reuse":
+                changeDefinitionsState("divide", preferencesRoot);
+                return;
+/*
 
-        if (key.equals("pref_game_divide_reuse")) {
-            changeDefinitionsState("divide", preferenceScreen);
-            return;
+            case "pref_game_operation_plus":
+//                preferenceScreenHelper.setScreenSummary("plus", preferencesRoot, sharedPreferences);
+                preference = preferencesRoot.findPreference("pref_game_divide_category");
+                preference.setSummary("pokus");
+                log.debug(preference.getSummary().toString());
+                return;
+
+            case "pref_game_operation_minus":
+                preferenceScreenHelper.setScreenSummary("minus", preferencesRoot, sharedPreferences);
+                return;
+
+            case "pref_game_operation_multiply":
+                preferenceScreenHelper.setScreenSummary("multiply", preferencesRoot, sharedPreferences);
+                return;
+
+            case "pref_game_operation_divide":
+                preference = preferencesRoot.findPreference("pref_game_plus_category");
+                preference.setSummary("pokus");
+                log.debug(preference.getSummary().toString());
+                preferenceScreenHelper.setScreenSummary("divide", preferencesRoot, sharedPreferences);
+                return;
+*/
         }
 
         //noinspection deprecation

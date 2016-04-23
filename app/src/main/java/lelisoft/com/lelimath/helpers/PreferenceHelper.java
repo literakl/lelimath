@@ -4,6 +4,7 @@
  */
 package lelisoft.com.lelimath.helpers;
 
+import android.content.SharedPreferences;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
@@ -19,6 +20,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import lelisoft.com.lelimath.R;
+
 /**
  * Workaround for Android bug that Summary is not generated for most types of Preferences
  * http://stackoverflow.com/questions/7017082/change-the-summary-of-a-listpreference-with-the-new-value-android/15329652#15329652
@@ -31,21 +34,52 @@ public class PreferenceHelper {
 	public PreferenceHelper(PreferenceScreen preferenceScreen) {
         log.debug("started for screen " + preferenceScreen);
 		for (int i = 0; i < preferenceScreen.getPreferenceCount(); i++) {
-			initSummary(preferenceScreen.getPreference(i));
+			initSummary(preferenceScreen.getPreference(i), preferenceScreen.getSharedPreferences());
 		}
         log.debug("finished");
 	}
 
-	private void initSummary(Preference p) {
-		if (p instanceof PreferenceGroup) {
-            PreferenceGroup pCat = (PreferenceGroup) p;
-			for (int i = 0; i < pCat.getPreferenceCount(); i++) {
-				initSummary(pCat.getPreference(i));
+	private void initSummary(Preference preference, SharedPreferences sharedPreferences) {
+		if (preference instanceof PreferenceGroup) {
+            PreferenceGroup group = (PreferenceGroup) preference;
+/*
+            if (group.getKey() != null) {
+                switch (preference.getKey()) {
+                    case "pref_game_plus_category":
+                        setScreenSummary("plus", group, sharedPreferences);
+                        break;
+                    case "pref_game_minus_category":
+                        setScreenSummary("minus", group, sharedPreferences);
+                        break;
+                    case "pref_game_multiply_category":
+                        setScreenSummary("multiply", group, sharedPreferences);
+                        break;
+                    case "pref_game_divide_category":
+                        setScreenSummary("divide", group, sharedPreferences);
+                        break;
+                }
+            }
+*/
+
+			for (int i = 0; i < group.getPreferenceCount(); i++) {
+				initSummary(group.getPreference(i), sharedPreferences);
 			}
         } else {
-			updatePreferenceSummary(p);
+			updatePreferenceSummary(preference);
 		}
 	}
+
+    public void setScreenSummary(String key, Preference preference, SharedPreferences sharedPreferences) {
+        boolean value = sharedPreferences.getBoolean("pref_game_operation_" + key, true);
+        preference.setSummary(value ? R.string.pref_operation_enabled : R.string.pref_operation_disabled);
+    }
+
+    public void setScreenSummary(String key, PreferenceScreen preferencesRoot, SharedPreferences sharedPreferences) {
+        boolean value = sharedPreferences.getBoolean("pref_game_operation_" + key, true);
+        PreferenceScreen preference = (PreferenceScreen) preferencesRoot.findPreference("pref_game_" + key + "_category");
+//        preference.setSummary(value ? R.string.pref_operation_enabled : R.string.pref_operation_disabled);
+//        preference.setSummary("trest");
+    }
 
     public void updatePreferenceSummary(Preference preference) {
 	    if (preference == null) {

@@ -33,6 +33,8 @@
     <string name="pref_title_divide_result">Podíl</string>
     <string name="pref_title_operation_reuse">Použít hodnoty z</string>
     <string name="pref_no_reuse">Vlastní hodnoty</string>
+    <string name="pref_operation_enabled">Povoleno</string>
+    <string name="pref_operation_disabled">Nepovoleno</string>
     <string name="pref_app_version">Verze</string>
     <string name="pref_build_time">Sestavení</string>
     <string name="pref_operation_help_title">Nápověda</string>
