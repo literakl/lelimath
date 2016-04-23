@@ -14,6 +14,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatCheckedTextView;
@@ -34,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.R;
@@ -159,20 +161,24 @@ public class GamePreferenceActivity extends PreferenceActivity implements
             case "pref_game_plus_reuse":
                 changeDefinitionsState("plus", preferencesRoot);
                 reuseMap.updateReuseList(preferencesRoot);
+                return;
 
             case "pref_game_minus_reuse":
                 changeDefinitionsState("minus", preferencesRoot);
                 reuseMap.updateReuseList(preferencesRoot);
+                return;
 
             case "pref_game_multiply_reuse":
                 changeDefinitionsState("multiply", preferencesRoot);
                 reuseMap.updateReuseList(preferencesRoot);
+                return;
 
             case "pref_game_divide_reuse":
                 changeDefinitionsState("divide", preferencesRoot);
                 reuseMap.updateReuseList(preferencesRoot);
-/*
+                return;
 
+/*
             case "pref_game_operation_plus":
 //                preferenceScreenHelper.setScreenSummary("plus", preferencesRoot, sharedPreferences);
                 preference = preferencesRoot.findPreference("pref_game_divide_category");
@@ -218,9 +224,9 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         preferenceScreen.findPreference("pref_game_" + key + "_result").setEnabled(enabled);
     }
 
-    private void updatePreferenceSummary(Preference p) {
-        log.debug("updatePreferenceSummary");
-        preferenceScreenHelper.updatePreferenceSummary(p);
+    private void updatePreferenceSummary(Preference preference) {
+        log.debug("updatePreferenceSummary(" + preference.getKey() + ")");
+        preferenceScreenHelper.updatePreferenceSummary(preference);
     }
 
     @Override
@@ -335,15 +341,26 @@ public class GamePreferenceActivity extends PreferenceActivity implements
             ArrayList<CharSequence> entries;
             ArrayList<CharSequence> values;
             for (String operation : operations.keySet()) {
-                ListPreference preference = (ListPreference) preferenceRoot.findPreference("pref_game_" + operation.toLowerCase() + "_reuse");
-                if (reuseMapping.containsValue(operation)) {
-                    preference.setEnabled(false); // dependency target must define its definitions
+                String prefOperation = operation.toLowerCase();
+                ListPreference preference = (ListPreference) preferenceRoot.findPreference("pref_game_" + prefOperation + "_reuse");
+                List<String> dependencies = getKeys(reuseMapping, operation);
+                if (! dependencies.isEmpty()) {
+                    preference.setEnabled(false); // dependency target must define definitions itself
+                    StringBuilder sb = new StringBuilder();
+                    String operationCaption = getOperationName(operation);
+                    sb.append(getString(R.string.pref_operation_reused, operationCaption));
+                    for (String dependency : dependencies) {
+                        sb.append(getOperationName(dependency));
+                        sb.append(", ");
+                    }
+                    sb.setLength(sb.length() - 2);
+                    preference.setSummary(sb);
                     continue;
                 } else {
                     preference.setEnabled(true);
+                    preferenceScreenHelper.updatePreferenceSummary(preference);
                 }
 
-                String prefOperation = operation.toLowerCase();
                 entries = new ArrayList<>(5); entries.add(noReuse);
                 values = new ArrayList<>(5); values.add("NONE");
 
@@ -365,11 +382,34 @@ public class GamePreferenceActivity extends PreferenceActivity implements
             }
         }
 
+        private String getOperationName(String operation) {
+            try {
+                int id = R.string.class.getField("operation_" + operation.toLowerCase()).getInt(null);
+                return getString(id);
+            } catch (IllegalAccessException e) {
+                log.warn("Cannot find resource: " + "operation_" + operation.toLowerCase(), e);
+            } catch (NoSuchFieldException e) {
+                log.warn("Cannot find resource:  " + "operation_" + operation.toLowerCase(), e);
+            }
+            return operation;
+        }
+
         public void setReuse(String key, String value) {
             reuseMapping.remove(key);
             if (! "NONE".equals(value)) {
                 reuseMapping.put(key, value);
             }
+        }
+
+        private List<String> getKeys(Map<String, String> map, @NonNull String value) {
+            List<String> result = new ArrayList<>(map.size());
+            for (String key : map.keySet()) {
+                String s = map.get(key);
+                if (value.equals(s)) {
+                    result.add(key);
+                }
+            }
+            return result;
         }
     }
 }

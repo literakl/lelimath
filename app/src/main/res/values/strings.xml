@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources  xmlns:xliff="rn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">LeliMath</string>
     <string name="action_new_game">Nová hra</string>
     <string name="action_settings">Nastavení</string>
@@ -33,6 +33,7 @@
     <string name="pref_title_divide_result">Podíl</string>
     <string name="pref_title_operation_reuse">Použít hodnoty z</string>
     <string name="pref_no_reuse">Vlastní hodnoty</string>
+    <string name="pref_operation_reused">Operaci <xliff:g id="operation" example="Sčítání" >%s</xliff:g> používá: </string>
     <string name="pref_operation_enabled">Povoleno</string>
     <string name="pref_operation_disabled">Nepovoleno</string>
     <string name="pref_app_version">Verze</string>
