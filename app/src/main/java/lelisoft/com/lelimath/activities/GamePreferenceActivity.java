@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,11 @@ import android.widget.LinearLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
 
@@ -47,6 +53,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     public static final String KEY_UNKNOWN = "pref_game_calc_unknown";
 
     private PreferenceHelper preferenceScreenHelper;
+    private ReuseMap reuseMap;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -68,20 +75,17 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         addPreferencesFromResource(R.xml.game_prefs);
         //noinspection deprecation
         PreferenceScreen preferenceScreen = getPreferenceScreen();
+        preferenceScreenHelper = new PreferenceHelper(preferenceScreen);
+        reuseMap = new ReuseMap(preferenceScreen.getSharedPreferences());
+        reuseMap.updateReuseList(preferenceScreen);
 
-        removeEntry((ListPreference) preferenceScreen.findPreference("pref_game_plus_reuse"), "PLUS");
-        removeEntry((ListPreference) preferenceScreen.findPreference("pref_game_minus_reuse"), "MINUS");
-        removeEntry((ListPreference) preferenceScreen.findPreference("pref_game_multiply_reuse"), "MULTIPLY");
-        removeEntry((ListPreference) preferenceScreen.findPreference("pref_game_divide_reuse"), "DIVIDE");
         changeDefinitionsState("plus", preferenceScreen);
         changeDefinitionsState("minus", preferenceScreen);
         changeDefinitionsState("multiply", preferenceScreen);
         changeDefinitionsState("divide", preferenceScreen);
-        preferenceScreen.findPreference("pref_game_plus_reuse").setOnPreferenceChangeListener(this);
-        preferenceScreen.findPreference("pref_game_operation_divide").setOnPreferenceChangeListener(this);
-        preferenceScreen.findPreference("pref_game_operation_plus").setOnPreferenceChangeListener(this);
-
-        preferenceScreenHelper = new PreferenceHelper(preferenceScreen);
+//        preferenceScreen.findPreference("pref_game_plus_reuse").setOnPreferenceChangeListener(this);
+//        preferenceScreen.findPreference("pref_game_operation_divide").setOnPreferenceChangeListener(this);
+//        preferenceScreen.findPreference("pref_game_operation_plus").setOnPreferenceChangeListener(this);
 
 /*
         InputFilter[] filters = {new ValuesInputFilter()};
@@ -154,19 +158,19 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         switch (key) {
             case "pref_game_plus_reuse":
                 changeDefinitionsState("plus", preferencesRoot);
-                return;
+                reuseMap.updateReuseList(preferencesRoot);
 
             case "pref_game_minus_reuse":
                 changeDefinitionsState("minus", preferencesRoot);
-                return;
+                reuseMap.updateReuseList(preferencesRoot);
 
             case "pref_game_multiply_reuse":
                 changeDefinitionsState("multiply", preferencesRoot);
-                return;
+                reuseMap.updateReuseList(preferencesRoot);
 
             case "pref_game_divide_reuse":
                 changeDefinitionsState("divide", preferencesRoot);
-                return;
+                reuseMap.updateReuseList(preferencesRoot);
 /*
 
             case "pref_game_operation_plus":
@@ -197,9 +201,17 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         updatePreferenceSummary(findPreference(key));
     }
 
+    /**
+     * Enables of disables definition preferences for specified operation.
+     * @param key operation key
+     * @param preferenceScreen root preferences
+     */
     private void changeDefinitionsState(String key, PreferenceScreen preferenceScreen) {
         SharedPreferences sharedPreferences = preferenceScreen.getSharedPreferences();
         String value = sharedPreferences.getString("pref_game_" + key + "_reuse", "NONE");
+        reuseMap.setReuse(key.toUpperCase(), value);
+        log.debug(key + " reuse is " + value);
+
         boolean enabled = "NONE".equals(value);
         preferenceScreen.findPreference("pref_game_" + key + "_first_arg").setEnabled(enabled);
         preferenceScreen.findPreference("pref_game_" + key + "_second_arg").setEnabled(enabled);
@@ -264,34 +276,6 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         });
     }
 
-    /**
-     * Finds key in List preference and removes it. The key must be present between entry values.
-     * @param pref List preference
-     * @param key key
-     */
-    private void removeEntry(ListPreference pref, String key) {
-        CharSequence[] entries = pref.getEntries(), copyEntries = new CharSequence[entries.length - 1];
-        CharSequence[] values = pref.getEntryValues(), copyValues = new CharSequence[values.length - 1];
-
-        int index = -1;
-        for (int i = 0, j = 0; i < values.length; i++) {
-            if (key.equals(values[i])) {
-                index = i;
-                continue;
-            }
-            copyValues[j++] = values[i];
-        }
-        pref.setEntryValues(copyValues);
-
-        for (int i = 0, j = 0; i < entries.length; i++) {
-            if (i == index) {
-                continue;
-            }
-            copyEntries[j++] = entries[i];
-        }
-        pref.setEntries(copyEntries);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -308,5 +292,84 @@ public class GamePreferenceActivity extends PreferenceActivity implements
 
     public static void start(Context c) {
         c.startActivity(new Intent(c, GamePreferenceActivity.class));
+    }
+
+    /**
+     * Handles dependency between operations
+     */
+    private class ReuseMap {
+        Map<String, String> operations = new LinkedHashMap<>(5, 1.0f);
+        Map<String, String> reuseMapping = new HashMap<>(5, 1.0f);
+        String noReuse;
+
+        public ReuseMap(SharedPreferences sharedPreferences) {
+            Resources resources = getResources();
+            noReuse = resources.getString(R.string.pref_no_reuse);
+            operations.put("PLUS", resources.getString(R.string.operation_plus));
+            operations.put("MINUS", resources.getString(R.string.operation_minus));
+            operations.put("MULTIPLY", resources.getString(R.string.operation_multiply));
+            operations.put("DIVIDE", resources.getString(R.string.operation_divide));
+
+            String value = sharedPreferences.getString("pref_game_plus_reuse", "NONE");
+            if (! "NONE".equals(value)) {
+                reuseMapping.put("PLUS", value);
+            }
+
+            value = sharedPreferences.getString("pref_game_minus_reuse", "NONE");
+            if (! "NONE".equals(value)) {
+                reuseMapping.put("MINUS", value);
+            }
+
+            value = sharedPreferences.getString("pref_game_multiply_reuse", "NONE");
+            if (! "NONE".equals(value)) {
+                reuseMapping.put("MULTIPLY", value);
+            }
+
+            value = sharedPreferences.getString("pref_game_divide_reuse", "NONE");
+            if (! "NONE".equals(value)) {
+                reuseMapping.put("DIVIDE", value);
+            }
+        }
+
+        public void updateReuseList(PreferenceScreen preferenceRoot) {
+            ArrayList<CharSequence> entries;
+            ArrayList<CharSequence> values;
+            for (String operation : operations.keySet()) {
+                ListPreference preference = (ListPreference) preferenceRoot.findPreference("pref_game_" + operation.toLowerCase() + "_reuse");
+                if (reuseMapping.containsValue(operation)) {
+                    preference.setEnabled(false); // dependency target must define its definitions
+                    continue;
+                } else {
+                    preference.setEnabled(true);
+                }
+
+                String prefOperation = operation.toLowerCase();
+                entries = new ArrayList<>(5); entries.add(noReuse);
+                values = new ArrayList<>(5); values.add("NONE");
+
+                for (String targetOperation : operations.keySet()) {
+                    if (operation.equals(targetOperation)) {
+                        continue; // canot create a dependency to self
+                    }
+                    if (reuseMapping.containsKey(targetOperation)) {
+                        continue; // cannot create a dependency to operation that already depends on some operation
+                    }
+
+                    values.add(targetOperation);
+                    entries.add(operations.get(targetOperation));
+                }
+
+                preference = (ListPreference) preferenceRoot.findPreference("pref_game_" + prefOperation + "_reuse");
+                preference.setEntries(entries.toArray(new CharSequence[entries.size()]));
+                preference.setEntryValues(values.toArray(new CharSequence[values.size()]));
+            }
+        }
+
+        public void setReuse(String key, String value) {
+            reuseMapping.remove(key);
+            if (! "NONE".equals(value)) {
+                reuseMapping.put(key, value);
+            }
+        }
     }
 }
