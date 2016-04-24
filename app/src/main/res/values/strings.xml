@@ -39,5 +39,4 @@
     <string name="pref_app_version">Verze</string>
     <string name="pref_build_time">Sestavení</string>
     <string name="pref_operation_help_title">Nápověda</string>
-    <string name="pref_operation_help_content">Stačí zadat dva ze tří oborů hodnot.\nNeplatná konfigurace bude nahrazena demo hodnotami.</string>
 </resources>

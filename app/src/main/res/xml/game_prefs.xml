@@ -57,13 +57,6 @@
                 android:summary="%s"
                 android:defaultValue="0-20"
                 />
-
-            <Preference
-                android:key="pref_game_plus_help"
-                android:title="@string/pref_operation_help_title"
-                android:persistent="false"
-                android:selectable="false"
-                android:summary="@string/pref_operation_help_content"/>
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -113,13 +106,6 @@
                 android:summary="%s"
                 android:defaultValue="0-10"
                 />
-
-            <Preference
-                android:key="pref_game_minus_help"
-                android:title="@string/pref_operation_help_title"
-                android:persistent="false"
-                android:selectable="false"
-                android:summary="@string/pref_operation_help_content"/>
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -167,15 +153,8 @@
                 android:title="@string/pref_title_multiply_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
-                android:defaultValue=""
+                android:defaultValue="0-100"
                 />
-
-            <Preference
-                android:key="pref_game_multiply_help"
-                android:title="@string/pref_operation_help_title"
-                android:persistent="false"
-                android:selectable="false"
-                android:summary="@string/pref_operation_help_content"/>
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -225,13 +204,6 @@
                 android:summary="%s"
                 android:defaultValue=""
                 />
-
-            <Preference
-                android:key="pref_game_divide_help"
-                android:title="@string/pref_operation_help_title"
-                android:persistent="false"
-                android:selectable="false"
-                android:summary="@string/pref_operation_help_content"/>
         </PreferenceScreen>
 
     </PreferenceCategory>
