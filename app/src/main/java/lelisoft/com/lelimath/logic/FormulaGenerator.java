@@ -11,6 +11,7 @@ import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.FormulaPart;
+import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
 
 /**
@@ -24,21 +25,21 @@ public class FormulaGenerator {
 
     public static Formula generateRandomFormula(FormulaDefinition definition) {
         log.trace("Starting search for formula using " + definition);
-        Operator operator = getOperator(definition.getOperators());
-        List<FormulaPart> parts = sortFormulaParts(definition);
+        OperatorDefinition operator = getOperator(definition.getOperatorDefinitions());
+        List<FormulaPart> parts = sortFormulaParts(operator);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 FormulaPart partA = parts.get(j);
                 FormulaPart partB = parts.get((j < 2) ? j + 1 : 0);
-                int valueA = getValue(definition, partA);
+                int valueA = getValue(operator, partA);
                 for (int k = 0; k < 10; k++) {
-                    int valueB = getValue(definition, partB);
-                    Formula found = Solver.solve(operator, partA, valueA, partB, valueB);
+                    int valueB = getValue(operator, partB);
+                    Formula found = Solver.solve(operator.getOperator(), partA, valueA, partB, valueB);
                     if (found == null) {
                         continue;
                     }
-                    boolean valid = checkSolution(found, partA, partB, definition);
+                    boolean valid = checkSolution(found, partA, partB, operator);
                     if (log.isTraceEnabled()) {
                         log.trace(valid + " " +
                         found.getFirstOperand() +  " " + found.getOperator() + " " +
@@ -53,7 +54,7 @@ public class FormulaGenerator {
             }
         }
 
-        log.warn("No formula found for " + definition);
+        log.warn("No formula found for " + definition + " using operator " + operator.getOperator());
         return null;
     }
 
@@ -65,7 +66,7 @@ public class FormulaGenerator {
      * @param definition formula definition
      * @return true if formula is valid
      */
-    private static boolean checkSolution(Formula formula, FormulaPart partA, FormulaPart partB, FormulaDefinition definition) {
+    private static boolean checkSolution(Formula formula, FormulaPart partA, FormulaPart partB, OperatorDefinition definition) {
         Values values;
         int value;
         if (partA == FormulaPart.FIRST_OPERAND) {
@@ -105,13 +106,15 @@ public class FormulaGenerator {
      * @param definition formula definition
      * @return ordered set of left, right operand and result
      */
-    static List<FormulaPart> sortFormulaParts(FormulaDefinition definition) {
+    static List<FormulaPart> sortFormulaParts(OperatorDefinition definition) {
         int a = definition.getFirstOperand().getRange();
         int b = definition.getSecondOperand().getRange();
         int c = definition.getResult().getRange();
+
         List<FormulaPart> parts = new ArrayList<>(3);
         parts.add(FormulaPart.FIRST_OPERAND);
         parts.add((b < a) ? 0 : 1, FormulaPart.SECOND_OPERAND);
+
         if (c < b && c < a) {
             parts.add(0, FormulaPart.RESULT);
         } else if (c > a && c > b) {
@@ -122,9 +125,9 @@ public class FormulaGenerator {
         return parts;
     }
 
-    static Operator getOperator(List<Operator> operators) {
+    static OperatorDefinition getOperator(List<OperatorDefinition> operators) {
         if (operators == null || operators.isEmpty()) {
-            return Operator.PLUS;
+            return new OperatorDefinition(Operator.PLUS, Values.DEMO, Values.DEMO, null);
         }
         if (operators.size() == 1) {
             return operators.get(0);
@@ -145,7 +148,7 @@ public class FormulaGenerator {
     /**
      * @return select random value from FormulaPart
      */
-    static Integer getValue(FormulaDefinition definition, FormulaPart part) {
+    static Integer getValue(OperatorDefinition definition, FormulaPart part) {
         Values values;
         if (part.equals(FormulaPart.FIRST_OPERAND)) {
             values = definition.getFirstOperand();
@@ -153,6 +156,10 @@ public class FormulaGenerator {
             values = definition.getSecondOperand();
         } else {
             values = definition.getResult();
+        }
+
+        if (values.equals(Values.UNDEFINED)) {
+            log.warn("Generating value from Values.Undefined!", new Exception("Stacktrace"));
         }
 
         List<Integer> listing = values.getListing();

@@ -8,6 +8,7 @@ import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
+import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
 
 /**
@@ -22,10 +23,8 @@ public class FormulaGeneratorTest extends TestCase {
         Values result = new Values().add(10).add(11).add(12);
 
         FormulaDefinition definition = new FormulaDefinition();
-        definition.setLeftOperand(left);
-        definition.setRightOperand(right);
-        definition.setResult(result);
-        definition.addOperator(Operator.PLUS);
+        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
+        definition.addOperator(operatorDefinition);
         definition.addUnknown(FormulaPart.RESULT);
 
         for (int i = 0; i < 10; i++) {
@@ -51,9 +50,9 @@ public class FormulaGeneratorTest extends TestCase {
         assertEquals(4, right.getRange());
         assertEquals(3, result.getRange());
 
-        FormulaDefinition definition = new FormulaDefinition();
-        definition.setLeftOperand(left);
-        definition.setRightOperand(right);
+        OperatorDefinition definition = new OperatorDefinition();
+        definition.setFirstOperand(left);
+        definition.setSecondOperand(right);
         definition.setResult(result);
         List<FormulaPart> parts = FormulaGenerator.sortFormulaParts(definition);
         assertEquals(FormulaPart.RESULT, parts.get(0));

@@ -23,27 +23,10 @@ public class FormulaDefinition {
     int testTimeLimit;
     /** Maximum time to receive speed badge, in seconds */
     int badgeTimeLimit;
-    /** allowed values for formula's left operand */
-    Values leftOperand;
-    /** allowed values for formula's right operand */
-    Values rightOperand;
-    /** allowed values for difference between formula's operands */
-    Values operandDifference;
-    /** allowed values for formula's result */
-    Values result;
-    /** Allowed formula's operators. If unset PLUS will be used */
-    List<Operator> operators;
+    /** Allowed formula's operators and their definition. If unset demo PLUS 0-9 will be used */
+    List<OperatorDefinition> operatorDefinitions;
     /** allowed formula's unknowns. If unset RESULT will be used */
     List<FormulaPart> unknowns;
-
-    public FormulaDefinition() {
-    }
-
-    public FormulaDefinition(Values leftOperand, Values rightOperand, Values result) {
-        this.leftOperand = leftOperand;
-        this.rightOperand = rightOperand;
-        this.result = result;
-    }
 
     public String getId() {
         return id;
@@ -101,61 +84,28 @@ public class FormulaDefinition {
         this.badgeTimeLimit = badgeTimeLimit;
     }
 
-    public Values getFirstOperand() {
-        return leftOperand;
+    public void setOperatorDefinitions(List<OperatorDefinition> operatorDefinitions) {
+        this.operatorDefinitions = operatorDefinitions;
     }
 
-    public void setLeftOperand(Values leftOperand) {
-        this.leftOperand = leftOperand;
-    }
-
-    public Values getSecondOperand() {
-        return rightOperand;
-    }
-
-    public void setRightOperand(Values rightOperand) {
-        this.rightOperand = rightOperand;
-    }
-
-    public Values getOperandDifference() {
-        return operandDifference;
-    }
-
-    public void setOperandDifference(Values operandDifference) {
-        this.operandDifference = operandDifference;
-    }
-
-    public Values getResult() {
-        return result;
-    }
-
-    public FormulaDefinition setResult(Values result) {
-        this.result = result;
-        return this;
-    }
-
-    public FormulaDefinition addOperator(Operator operator) {
-        if (operators == null) {
-            operators = Collections.singletonList(operator);
+    public FormulaDefinition addOperator(OperatorDefinition operator) {
+        if (operatorDefinitions == null) {
+            operatorDefinitions = Collections.singletonList(operator);
             return this;
         }
-        if (operators.size() == 1) {
-            List<Operator> list = new ArrayList<Operator>(3);
-            list.add(operators.get(0));
+        if (operatorDefinitions.size() == 1) {
+            List<OperatorDefinition> list = new ArrayList<>(3);
+            list.add(operatorDefinitions.get(0));
             list.add(operator);
-            operators = list;
+            operatorDefinitions = list;
             return this;
         }
-        operators.add(operator);
+        operatorDefinitions.add(operator);
         return this;
     }
 
-    public List<Operator> getOperators() {
-        return operators;
-    }
-
-    public void setOperators(List<Operator> operators) {
-        this.operators = operators;
+    public List<OperatorDefinition> getOperatorDefinitions() {
+        return operatorDefinitions;
     }
 
     public List<FormulaPart> getUnknowns() {
@@ -186,56 +136,47 @@ public class FormulaDefinition {
      * Calculates number of characters neccessary for most long equation.
      * @return maximum length
      */
+    @SuppressWarnings("ConstantConditions")
     public int getFormulaMaximumLength() {
-        int length = 6;
-        length += getValuesMaximumLength(leftOperand);
-        length += getValuesMaximumLength(rightOperand);
-        length += getValuesMaximumLength(result);
-        return length;
-    }
+        int length = 6, i, j, k;
+        int maxFirst = 2, maxSecond = 2, maxResult = 2;
+        for (OperatorDefinition definition : operatorDefinitions) {
+            i = definition.firstOperand.getMaximumLength();
+            j = definition.secondOperand.getMaximumLength();
+            k = definition.result.getMaximumLength();
 
-    public int getValuesMaximumLength(Values values) {
-        if (values == null) {
-            return 0;
-        }
-
-        if (values.listing != null && values.listing.size() > 0) {
-            int max = 0, size;
-            for (Integer number : values.listing) {
-                size = getNumberLength(number);
-                if (size > max) {
-                    max = size;
+            if (i == 0) {
+                i = Math.max(j, k);
+            }
+            if (j == 0) {
+                j = Math.max(i, k);
+            }
+            if (k == 0) {
+                switch (definition.getOperator()) {
+                    case MULTIPLY: k = i + j; break;
+                    case PLUS: k = Math.max(i, j) + 1; break;
+                    default: k = Math.max(i, j);
                 }
             }
-            return max;
-        } else {
-            int a = getNumberLength(values.minValue);
-            int b = getNumberLength(values.maxValue);
-            return Math.max(a, b);
-        }
-    }
 
-    private int getNumberLength(int number) {
-        if (number == 0) {
-            return 1;
+            if (i > maxFirst) {
+                maxFirst = i;
+            }
+            if (j > maxSecond) {
+                maxSecond = j;
+            }
+            if (k > maxResult) {
+                maxResult = k;
+            }
         }
-        int size = 0;
-        if (number < 0) {
-            size += 1;
-            number *= -1;
-        }
-        size += (int)(Math.log10(number) + 1);
-        return size;
+        length += maxFirst + maxSecond + maxResult;
+        return length;
     }
 
     public String toString() {
         return "FormulaDefinition{" +
                 "unknowns=" + unknowns +
-                ", operators=" + operators +
-                ", result=" + result +
-                ", operandDifference=" + operandDifference +
-                ", rightOperand=" + rightOperand +
-                ", leftOperand=" + leftOperand +
-                '}';
+                ", operators=" + operatorDefinitions +
+                "}";
     }
 }

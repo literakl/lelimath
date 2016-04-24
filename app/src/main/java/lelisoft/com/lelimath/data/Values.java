@@ -11,6 +11,9 @@ import java.util.StringTokenizer;
  * Created by leos.literak on 26.2.2015.
  */
 public class Values {
+    public static final Values DEMO = new Values(0, 10);
+    public static final Values UNDEFINED = new UndefinedValues();
+
     /** Smallest value */
     Integer minValue;
     /** Largest value */
@@ -137,16 +140,80 @@ public class Values {
         this.listing = listing;
     }
 
+    public int getMaximumLength() {
+        if (listing != null && listing.size() > 0) {
+            int max = 0, size;
+            for (Integer number : listing) {
+                size = getNumberLength(number);
+                if (size > max) {
+                    max = size;
+                }
+            }
+            return max;
+        } else {
+            int a = getNumberLength(minValue);
+            int b = getNumberLength(maxValue);
+            return Math.max(a, b);
+        }
+    }
+
+    private int getNumberLength(int number) {
+        if (number == 0) {
+            return 1;
+        }
+        int size = 0;
+        if (number < 0) {
+            size += 1;
+            number *= -1;
+        }
+        size += (int)(Math.log10(number) + 1);
+        return size;
+    }
+
+    static class UndefinedValues extends Values {
+        @Override
+        public boolean belongs(Integer value) {
+            return value >= 0;
+        }
+
+        @Override
+        public int getRange() {
+            return Integer.MAX_VALUE;
+        }
+
+        @Override
+        public Integer getMinValue() {
+            return 0;
+        }
+
+        @Override
+        public Integer getMaxValue() {
+            return Integer.MAX_VALUE;
+        }
+
+        @Override
+        public int getMaximumLength() {
+            return 0;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof UndefinedValues;
+        }
+
+        @Override
+        public String toString() {
+            return "UndefinedValues";
+        }
+    }
+
     public String toString() {
         if (listing != null) {
             return "Values{" +
                     "listing=" + listing +
                     '}';
         } else {
-            return "Values{" +
-                    "minValue=" + minValue +
-                    ", maxValue=" + maxValue +
-                    '}';
+            return "Values{" + minValue + " - " + maxValue + '}';
         }
     }
 }

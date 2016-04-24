@@ -31,9 +31,9 @@
     <string name="pref_title_divide_first_arg">Dělenec</string>
     <string name="pref_title_divide_second_arg">Dělitel</string>
     <string name="pref_title_divide_result">Podíl</string>
-    <string name="pref_title_operation_reuse">Použít hodnoty z</string>
-    <string name="pref_no_reuse">Vlastní hodnoty</string>
-    <string name="pref_operation_reused">Operaci <xliff:g id="operation" example="Sčítání" >%s</xliff:g> používá: </string>
+    <string name="pref_title_operation_depend_on">Použít hodnoty z</string>
+    <string name="pref_value_not_depend">Vlastní hodnoty</string>
+    <string name="pref_operation_dependencies">Operaci <xliff:g id="operation" example="Sčítání" >%s</xliff:g> používá: </string>
     <string name="pref_operation_enabled">Povoleno</string>
     <string name="pref_operation_disabled">Nepovoleno</string>
     <string name="pref_app_version">Verze</string>

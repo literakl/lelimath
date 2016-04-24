@@ -6,9 +6,5 @@ package lelisoft.com.lelimath.logic;
  */
 public interface PuzzleLogic extends GameLogic {
 
-    int getFirstOperandMaximumLength();
-
-    int getSecondOperandMaximumLength();
-
     String getSampleFormula();
 }

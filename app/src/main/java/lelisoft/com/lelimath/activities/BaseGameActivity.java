@@ -8,11 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
+import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.logic.GameLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
@@ -33,43 +36,93 @@ public class BaseGameActivity extends AppCompatActivity {
         String prefComplexity = sharedPref.getString(GamePreferenceActivity.KEY_COMPLEXITY, "EASY");
         gameLogic.setLevel(PuzzleLogic.Level.valueOf(prefComplexity));
 
-        Values defaultValues = new Values(0, 30), values = defaultValues;
         FormulaDefinition definition = new FormulaDefinition().addUnknown(FormulaPart.RESULT);
         gameLogic.setFormulaDefinition(definition);
+
+        Map<String,OperatorDefinition> operatorDefinitions = new HashMap<>();
+        Map<String, String> dependencies = new HashMap<>();
+
+        String[] operations = new String[]{"plus", "minus", "multiply", "divide"};
+        for (String operation : operations) {
+            OperatorDefinition operator = new OperatorDefinition(Operator.valueOf(operation.toUpperCase()));
+            operatorDefinitions.put(operation, operator);
+
+            String dependsOn = sharedPref.getString("pref_game_" + operation + "_depends", "NONE");
+            if ("NONE".equals(dependsOn)) {
+                operator.setFirstOperand(readValues("pref_game_" + operation + "_first_arg"));
+                operator.setSecondOperand(readValues("pref_game_" + operation + "_second_arg"));
+                operator.setResult(readValues("pref_game_" + operation + "_result"));
+            } else {
+                dependencies.put(operation, dependsOn.toLowerCase());
+            }
+        }
+
 /*
 
-        String sValues = sharedPref.getString(GamePreferenceActivity.KEY_FIRST_OPERAND, null);
-        if (sValues != null) {
-            values = Values.parse(sValues);
-        }
-        definition.setLeftOperand(values);
+3+8=11 3*8=24 11-8=3 24/8=3
 
-        sValues = sharedPref.getString(GamePreferenceActivity.KEY_SECOND_OPERAND, null);
-        if (sValues != null) {
-            values = Values.parse(sValues);
-        } else {
-            values = defaultValues;
-        }
-        definition.setRightOperand(values);
++ X Y Z   * X Y Z  - X Y Z   / X Y Z
+--------  -------   -------  -------
+- Z Y X   + X Y Z   + Z Y X  + Z Y X
+* X Y Z   - Z Y X   * Z Y X  - X Y Z
+/ Z Y X   / Z Y X   / X Y Z  * Z Y X
 
-        sValues = sharedPref.getString(GamePreferenceActivity.KEY_RESULT, null);
-        if (sValues != null) {
-            values = Values.parse(sValues);
-        } else {
-            values = defaultValues;
-        }
-        definition.setResult(values);
+ */
 
-        Set<String> mValues = sharedPref.getStringSet(GamePreferenceActivity.KEY_OPERATIONS, null);
-        if (mValues != null) {
-            for (String value : mValues) {
-                definition.addOperator(Operator.valueOf(value));
+        for (String operation : dependencies.keySet()) {
+            OperatorDefinition dependingOperatorDef = operatorDefinitions.get(operation);
+            String targetKey = dependencies.get(operation);
+            OperatorDefinition targetOperatorDef = operatorDefinitions.get(targetKey);
+            if (targetOperatorDef == null) {
+                log.error("Dependency <" + operation + "," + targetKey + "> is missing!");
+                continue;
             }
-        } else {
-            definition.addOperator(Operator.PLUS).addOperator(Operator.MINUS);
-            definition.addOperator(Operator.MULTIPLY).addOperator(Operator.DIVIDE);
+
+            dependingOperatorDef.setSecondOperand(targetOperatorDef.getSecondOperand());
+            Operator targetOperator = targetOperatorDef.getOperator();
+            switch (dependingOperatorDef.getOperator()) {
+                case PLUS:
+                case MULTIPLY:
+                    if (targetOperator == Operator.MINUS || targetOperator == Operator.DIVIDE) {
+                        dependingOperatorDef.setFirstOperand(targetOperatorDef.getResult());
+                        dependingOperatorDef.setResult(targetOperatorDef.getFirstOperand());
+                    } else {
+                        dependingOperatorDef.setFirstOperand(targetOperatorDef.getFirstOperand());
+                        dependingOperatorDef.setResult(targetOperatorDef.getResult());
+                    }
+                    break;
+                default:
+                    if (targetOperator == Operator.PLUS || targetOperator == Operator.MULTIPLY) {
+                        dependingOperatorDef.setFirstOperand(targetOperatorDef.getResult());
+                        dependingOperatorDef.setResult(targetOperatorDef.getFirstOperand());
+                    } else {
+                        dependingOperatorDef.setFirstOperand(targetOperatorDef.getFirstOperand());
+                        dependingOperatorDef.setResult(targetOperatorDef.getResult());
+                    }
+            }
         }
-*/
+
+        for (String operation : operations) {
+            if (! sharedPref.getBoolean("pref_game_operation_" + operation, true)) {
+                operatorDefinitions.remove(operation);
+            }
+        }
+
+        definition.setOperatorDefinitions(new ArrayList<>(operatorDefinitions.values()));
+        log.debug(definition.toString());
+    }
+
+    public Values readValues(String key) {
+        String sValues = sharedPref.getString(key, null);
+        if (sValues != null && sValues.trim().length() > 0) {
+            try {
+                return Values.parse(sValues);
+            } catch (IllegalArgumentException e) {
+                log.warn("Wrong input for key " + key + ", was: " + sValues);
+                return Values.DEMO;
+            }
+        }
+        return Values.UNDEFINED;
     }
 
     public void setGameLogic(GameLogic gameLogic) {
