@@ -25,21 +25,33 @@ public class FormulaGenerator {
 
     public static Formula generateRandomFormula(FormulaDefinition definition) {
         log.trace("Starting search for formula using " + definition);
-        OperatorDefinition operator = getOperator(definition.getOperatorDefinitions());
-        List<FormulaPart> parts = sortFormulaParts(operator);
+        OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
 
+        // TODO defect #6 - handle undefined values - before the loop
+        List<FormulaPart> parts = sortFormulaParts(operatorDefinition);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 FormulaPart partA = parts.get(j);
                 FormulaPart partB = parts.get((j < 2) ? j + 1 : 0);
-                int valueA = getValue(operator, partA);
+                Values valuesA = getValues(operatorDefinition, partA);
+                int valueA = getValue(valuesA);
+                if (valuesA == Values.UNDEFINED) {
+                    log.warn(parts.toString() + "\ni = " + i + ", j = " + j);
+                }
+
                 for (int k = 0; k < 10; k++) {
-                    int valueB = getValue(operator, partB);
-                    Formula found = Solver.solve(operator.getOperator(), partA, valueA, partB, valueB);
+                    Values valuesB = getValues(operatorDefinition, partB);
+                    int valueB = getValue(valuesB);
+                    if (valuesB == Values.UNDEFINED) {
+                        log.warn(parts.toString() + "\ni = " + i + ", j = " + j + ", k = " + k);
+                    }
+
+                    Formula found = Solver.solve(operatorDefinition.getOperator(), partA, valueA, partB, valueB);
                     if (found == null) {
                         continue;
                     }
-                    boolean valid = checkSolution(found, partA, partB, operator);
+
+                    boolean valid = checkSolution(found, partA, partB, operatorDefinition);
                     if (log.isTraceEnabled()) {
                         log.trace(valid + " " +
                         found.getFirstOperand() +  " " + found.getOperator() + " " +
@@ -54,7 +66,7 @@ public class FormulaGenerator {
             }
         }
 
-        log.warn("No formula found for " + definition + " using operator " + operator.getOperator());
+        log.warn("No formula found for " + definition + " using operatorDefinition " + operatorDefinition.getOperator());
         return null;
     }
 
@@ -145,21 +157,25 @@ public class FormulaGenerator {
         return unknowns.get(random.nextInt(unknowns.size()));
     }
 
-    /**
-     * @return select random value from FormulaPart
-     */
-    static Integer getValue(OperatorDefinition definition, FormulaPart part) {
-        Values values;
-        if (part.equals(FormulaPart.FIRST_OPERAND)) {
-            values = definition.getFirstOperand();
-        } else if (part.equals(FormulaPart.SECOND_OPERAND)) {
-            values = definition.getSecondOperand();
-        } else {
-            values = definition.getResult();
+    static Values getValues(OperatorDefinition definition, FormulaPart part) {
+        switch (part) {
+            case FIRST_OPERAND:
+                return definition.getFirstOperand();
+            case SECOND_OPERAND:
+                return definition.getSecondOperand();
+            default:
+                return definition.getResult();
         }
+    }
 
+    /**
+     * Randomly selects a number from given Values. It returns 1 for Undefined Values.
+     * @return select random value from Values
+     */
+    static int getValue(Values values) {
         if (values.equals(Values.UNDEFINED)) {
             log.warn("Generating value from Values.Undefined!", new Exception("Stacktrace"));
+            return 1;
         }
 
         List<Integer> listing = values.getListing();
