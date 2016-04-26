@@ -50,7 +50,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = preferences.edit();
             int version = preferences.getInt(GamePreferenceActivity.KEY_CURRENT_VERSION, 0);
-            if (version == 0) {
+            if (version == 0 || version < packageInfo.versionCode) {
                 editor.putInt(GamePreferenceActivity.KEY_CURRENT_VERSION, packageInfo.versionCode);
                 editor.apply();
                 return; // new installation
