@@ -39,7 +39,9 @@ import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
+import lelisoft.com.lelimath.helpers.PreferenceInputValidator;
 
 /**
  * Preferences for a game. Utilizes source code from https://github.com/davcpas1234/MaterialSettings.
@@ -89,11 +91,15 @@ public class GamePreferenceActivity extends PreferenceActivity implements
 //        preferenceScreen.findPreference("pref_game_operation_divide").setOnPreferenceChangeListener(this);
 //        preferenceScreen.findPreference("pref_game_operation_plus").setOnPreferenceChangeListener(this);
 
-/*
-        InputFilter[] filters = {new ValuesInputFilter()};
-        EditText editText = ((EditTextPreference) findPreference(KEY_FIRST_OPERAND)).getEditText();
-        editText.setFilters(filters);
-*/
+        String[] operations = new String[]{"plus", "minus", "multiply", "divide"};
+        for (String operation : operations) {
+            EditTextPreference preference = ((EditTextPreference) preferenceScreen.findPreference("pref_game_" + operation + "_first_arg"));
+            new ValuesPreferenceValidator(preference);
+            preference = ((EditTextPreference) preferenceScreen.findPreference("pref_game_" + operation + "_second_arg"));
+            new ValuesPreferenceValidator(preference);
+            preference = ((EditTextPreference) preferenceScreen.findPreference("pref_game_" + operation + "_result"));
+            new ValuesPreferenceValidator(preference);
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -112,7 +118,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
             }
         }
 
-            /* move cursor to end of line in EditText preferences */
+        /* move cursor to end of line in EditText preferences */
         if (preference instanceof EditTextPreference) {
             EditText prefEt = ((EditTextPreference) preference).getEditText();
             prefEt.setSelection(prefEt.length());
@@ -280,6 +286,18 @@ public class GamePreferenceActivity extends PreferenceActivity implements
                 dialog.dismiss();
             }
         });
+    }
+
+    public class ValuesPreferenceValidator extends PreferenceInputValidator {
+
+        public ValuesPreferenceValidator(EditTextPreference preference) {
+            super(preference);
+        }
+
+        @Override
+        public void isValid(CharSequence s) throws Exception {
+            Values.parse(s);
+        }
     }
 
     @Override

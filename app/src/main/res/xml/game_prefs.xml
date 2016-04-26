@@ -37,6 +37,7 @@
                 android:title="@string/pref_title_plus_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-10"
                 />
 
@@ -46,6 +47,7 @@
                 android:title="@string/pref_title_plus_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-10"
                 />
 
@@ -55,6 +57,7 @@
                 android:title="@string/pref_title_plus_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-20"
                 />
         </PreferenceScreen>
@@ -86,6 +89,7 @@
                 android:title="@string/pref_title_minus_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-20"
                 />
 
@@ -95,6 +99,7 @@
                 android:title="@string/pref_title_minus_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-10"
                 />
 
@@ -104,6 +109,7 @@
                 android:title="@string/pref_title_minus_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-10"
                 />
         </PreferenceScreen>
@@ -135,6 +141,7 @@
                 android:title="@string/pref_title_multiply_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-10"
                 />
 
@@ -144,6 +151,7 @@
                 android:title="@string/pref_title_multiply_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-10"
                 />
 
@@ -153,6 +161,7 @@
                 android:title="@string/pref_title_multiply_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-100"
                 />
         </PreferenceScreen>
@@ -184,6 +193,7 @@
                 android:title="@string/pref_title_divide_first_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="0-100"
                 />
 
@@ -193,6 +203,7 @@
                 android:title="@string/pref_title_divide_second_arg"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue="1-10"
                 />
 
@@ -202,6 +213,7 @@
                 android:title="@string/pref_title_divide_result"
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
+                android:digits="@string/value_allowed_digits"
                 android:defaultValue=""
                 />
         </PreferenceScreen>

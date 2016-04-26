@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
+
 /**
  * Holder for allowed values. You can either define both minimum and maximum, or set of values.
  * It is not allowed to combine set of values with minimum and maximum.
@@ -50,11 +53,11 @@ public class Values {
      */
     public static Values parse(CharSequence sequence) throws IllegalArgumentException {
         if (sequence == null) {
-            throw new IllegalArgumentException("Null is prohibited");
+            throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_empty_argument));
         }
         String data = sequence.toString().trim();
         if (data.length() == 0) {
-            throw new IllegalArgumentException("No data specified!");
+            throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_empty_argument));
         }
 
         Values values = new Values();
@@ -62,18 +65,34 @@ public class Values {
         if (position != -1) {
             String sFirst = data.substring(0, position);
             String sSecond = data.substring(position + 1);
-            values.minValue = Integer.parseInt(sFirst.trim());
-            values.maxValue = Integer.parseInt(sSecond.trim());
+            values.minValue = parseNumber(sFirst.trim());
+            String secondNumber = sSecond.trim();
+            if (secondNumber.length() > 0) {
+                values.maxValue = parseNumber(secondNumber);
+            } else {
+                throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_values_undefined_second));
+            }
+            if (values.minValue > values.maxValue) {
+                throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_values_swapped));
+            }
         } else {
             StringTokenizer stk = new StringTokenizer(data, ",");
             while(stk.hasMoreElements()) {
                 String s = stk.nextToken().trim();
                 if (s.length() > 0) {
-                    values.add(Integer.parseInt(s));
+                    values.add(parseNumber(s));
                 }
             }
         }
         return values;
+    }
+
+    private static int parseNumber(String s) {
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_values_not_number, s));
+        }
     }
 
     /**

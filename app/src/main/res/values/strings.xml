@@ -39,4 +39,9 @@
     <string name="pref_app_version">Verze</string>
     <string name="pref_build_time">Sestavení</string>
     <string name="pref_operation_help_title">Nápověda</string>
+    <string name="error_empty_argument">Prázdný argument není povolen!</string>
+    <string name="error_values_swapped">První číslo nesmí být větší než druhé!</string>
+    <string name="value_allowed_digits">0123456789-,</string>
+    <string name="error_values_not_number">Chybné číslo: \'%s\'!</string>
+    <string name="error_values_undefined_second">Zadejte druhé číslo</string>
 </resources>

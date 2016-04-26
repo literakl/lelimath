@@ -1,9 +1,11 @@
 package lelisoft.com.lelimath.helpers;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
 import org.slf4j.LoggerFactory;
@@ -26,10 +28,12 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(LeliMathApp.class);
 
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
+    public static Resources resources;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        resources = getResources();
 
 //        new File("/data/data/lelisoft.com.lelimath/files/log/").mkdirs();
         configureLogbackDirectly();
