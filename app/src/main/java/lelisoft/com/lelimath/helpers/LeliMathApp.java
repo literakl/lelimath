@@ -1,16 +1,19 @@
 package lelisoft.com.lelimath.helpers;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.sql.SQLException;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
@@ -19,6 +22,8 @@ import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
+import lelisoft.com.lelimath.data.User;
+import lelisoft.com.lelimath.provider.DatabaseHelper;
 
 /**
  * Application handler
@@ -29,17 +34,18 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public static Resources resources;
+    public User currentUser;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        resources = getResources();
-
 //        new File("/data/data/lelisoft.com.lelimath/files/log/").mkdirs();
         configureLogbackDirectly();
-        performUpgrade();
         androidExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
+
+        resources = getResources();
+        performUpgrade();
     }
 
     private void performUpgrade() {
@@ -68,6 +74,18 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         }
     }
 
+    public synchronized User getCurrentUser() {
+        if (currentUser == null) {
+            try {
+                Dao<User, Long> dao = getDatabaseHelper().getUserDao();
+                currentUser = dao.queryForId(1l);
+            } catch (SQLException e) {
+                log.error("Cannot load user!", e);
+            }
+        }
+        return currentUser;
+    }
+
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         try {
@@ -77,6 +95,13 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         }
 
         androidExceptionHandler.uncaughtException(thread, ex);
+    }
+
+    /**
+     * @return shared database helper instance
+     */
+    public DatabaseHelper getDatabaseHelper() {
+        return (DatabaseHelper) OpenHelperManager.getHelper(this, DatabaseHelper.class);
     }
 
     private void configureLogbackDirectly() {

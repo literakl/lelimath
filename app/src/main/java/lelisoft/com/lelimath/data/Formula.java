@@ -3,8 +3,6 @@ package lelisoft.com.lelimath.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Objects;
-
 import lelisoft.com.lelimath.logic.Solver;
 
 /**
@@ -15,7 +13,6 @@ public class Formula implements Parcelable {
     Integer firstOperand, secondOperand, result;
     Operator operator;
     FormulaPart unknown;
-    long timeSpent;
     StringBuilder sb = new StringBuilder(5);
 
     public Formula(Integer firstOperand, Integer secondOperand, Integer result, Operator operator, FormulaPart unknown) {
@@ -72,17 +69,6 @@ public class Formula implements Parcelable {
     public void setUserEntry(CharSequence entry) {
         sb.setLength(0);
         sb.append(entry);
-    }
-
-    /**
-     * @return amount of milliseconds that user spent solving this formula
-     */
-    public long getTimeSpent() {
-        return timeSpent;
-    }
-
-    public void setTimeSpent(long timeSpent) {
-        this.timeSpent = timeSpent;
     }
 
     /**
@@ -222,7 +208,6 @@ public class Formula implements Parcelable {
         dest.writeValue(this.result);
         dest.writeInt(this.operator == null ? -1 : this.operator.ordinal());
         dest.writeInt(this.unknown == null ? -1 : this.unknown.ordinal());
-        dest.writeValue(this.timeSpent);
         dest.writeSerializable(this.sb);
     }
 
@@ -234,7 +219,6 @@ public class Formula implements Parcelable {
         this.operator = tmpOperator == -1 ? null : Operator.values()[tmpOperator];
         int tmpUnknown = in.readInt();
         this.unknown = tmpUnknown == -1 ? null : FormulaPart.values()[tmpUnknown];
-        this.timeSpent = (Long) in.readValue(Long.class.getClassLoader());
         this.sb = (StringBuilder) in.readSerializable();
     }
 

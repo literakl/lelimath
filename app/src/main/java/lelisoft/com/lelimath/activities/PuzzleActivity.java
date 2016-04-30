@@ -10,10 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.j256.ormlite.dao.GenericRawResults;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
+
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.FormulaRecord;
 import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.helpers.Misc;
@@ -65,6 +70,22 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
         puzzleFragment = new PuzzleFragment();
         puzzleFragment.setLogic((PuzzleLogic) gameLogic);
         initializePuzzleFragment(false);
+
+        try {
+            log.debug("start browsing db");
+            GenericRawResults<String[]> rawResults = getHelper().getFormulaRecordDao().queryRaw("select * from formula_record");
+            for (String[] columns : rawResults.getResults()) {
+                for (int i = 0; i < columns.length; i++) {
+                    String column = columns[i];
+                    log.debug("{} = {}", rawResults.getColumnNames()[i], column);
+                }
+                log.debug("----");
+            }
+            rawResults.close();
+        } catch (SQLException e) {
+            log.error("error browsing db",e);
+        }
+//        getHelper().getConnectionSource().getReadOnlyConnection().
     }
 
     @Override
@@ -81,6 +102,11 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
         transaction.commit();
 
         puzzleFragment = null;
+    }
+
+    @Override
+    public void saveFormulaRecord(FormulaRecord record) {
+        storeFormulaRecord(record);
     }
 
     private void initializePuzzleFragment(boolean replace) {

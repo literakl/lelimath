@@ -3,7 +3,6 @@ package lelisoft.com.lelimath.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayout;
 import android.view.LayoutInflater;
@@ -16,10 +15,14 @@ import android.view.animation.AnimationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.data.Game;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.view.FormulaResultPair;
 import lelisoft.com.lelimath.view.Tile;
@@ -28,7 +31,7 @@ import lelisoft.com.lelimath.view.Tile;
  * Puzzle view
  * Created by Leoš on 23.01.2016.
  */
-public class PuzzleFragment extends Fragment {
+public class PuzzleFragment extends LeliBaseFragment {
     private static final Logger log = LoggerFactory.getLogger(PuzzleFragment.class);
 
     PuzzleBridge callback;
@@ -41,6 +44,7 @@ public class PuzzleFragment extends Fragment {
 
     public interface PuzzleBridge {
         void puzzleFinished();
+        void saveFormulaRecord(FormulaRecord record);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +109,9 @@ public class PuzzleFragment extends Fragment {
                     Tile selectedTile = (Tile) selectedButton.getTag(R.id.button_tile);
                     if (selectedTile.matches(currentTile)) {
                         log.debug(currentTile + " matches " + selectedTile);
+                        FormulaRecord record = getFormulaRecord(true, selectedTile, currentTile);
+                        callback.saveFormulaRecord(record);
+
                         currentButton.setText("");
                         currentButton.setBackgroundResource(R.drawable.tile_solved);
                         currentButton.setClickable(false);
@@ -120,6 +127,9 @@ public class PuzzleFragment extends Fragment {
                         }
                     } else {
                         log.debug(currentTile + " does not match " + selectedTile);
+                        FormulaRecord record = getFormulaRecord(false, selectedTile, currentTile);
+                        callback.saveFormulaRecord(record);
+
                         selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
                         selectedButton.startAnimation(shake);
                         selectedButton = null;
@@ -131,6 +141,22 @@ public class PuzzleFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private FormulaRecord getFormulaRecord(boolean correct, @NonNull Tile first, @NonNull Tile second) {
+        FormulaRecord record = new FormulaRecord();
+        record.setGame(Game.PUZZLE);
+        record.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
+        record.setDate(new Date());
+        record.setCorrect(correct);
+        if (first.getFormula() != null) {
+            record.setFormula(first.getFormula());
+            record.setResult(second.getResult());
+        } else {
+            record.setFormula(second.getFormula());
+            record.setResult(first.getResult());
+        }
+        return record;
     }
 
     public class CalculateDimensions implements ViewTreeObserver.OnGlobalLayoutListener {

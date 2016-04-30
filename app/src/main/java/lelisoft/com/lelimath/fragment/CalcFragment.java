@@ -163,7 +163,7 @@ public class CalcFragment extends Fragment {
             spent = SPEED_MAX;
         }
         totalTimeSpent += spent;
-        formula.setTimeSpent(spent);
+//        formula.setTimeSpent(spent);
         started = now;
 
         long averageTime = (totalTimeSpent) / (1000 * formulaPosition);

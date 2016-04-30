@@ -3,17 +3,20 @@ package lelisoft.com.lelimath.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+
+import com.j256.ormlite.dao.Dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
+import lelisoft.com.lelimath.data.FormulaRecord;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
@@ -25,12 +28,26 @@ import lelisoft.com.lelimath.logic.PuzzleLogic;
  * from SharedPreferences and it can measure time.
  * Created by Leoš on 09.04.2016.
  */
-public class BaseGameActivity extends AppCompatActivity {
+public class BaseGameActivity extends LeliBaseActivity {
     private static final Logger log = LoggerFactory.getLogger(BaseGameActivity.class);
 
     GameLogic gameLogic;
-
     SharedPreferences sharedPref;
+
+    protected void storeFormulaRecord(FormulaRecord record) {
+        try {
+            Dao<FormulaRecord, Long> dao = getHelper().getFormulaRecordDao();
+            int result = dao.create(record);
+            if (result == 1) {
+                log.debug("Saved FormulaRecord");
+            } else {
+                log.warn("Failed to store " + record);
+            }
+            // todo in background
+        } catch (SQLException e) {
+            log.error("Failed to store " + record, e);
+        }
+    }
 
     protected void initializeGameLogic() {
         String prefComplexity = sharedPref.getString(GamePreferenceActivity.KEY_COMPLEXITY, "EASY");
@@ -135,55 +152,6 @@ public class BaseGameActivity extends AppCompatActivity {
         super.onCreate(state);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-    }
-
-    @Override
-    protected void onStart() {
-        log.debug("onStart()");
-        super.onStart();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle state) {
-        log.debug("onSaveInstanceState()");
-        super.onSaveInstanceState(state);
-    }
-
-    @Override
-    protected void onPause() {
-        log.debug("onPause()");
-        super.onPause();
-
-    }
-
-    @Override
-    protected void onResume() {
-        log.debug("onResume()");
-        super.onResume();
-    }
-
-    @Override
-    protected void onStop() {
-        log.debug("onStop()");
-        super.onStop();
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle state) {
-        log.debug("onRestoreInstanceState()");
-        super.onRestoreInstanceState(state);
-    }
-
-    @Override
-    protected void onRestart() {
-        log.debug("onRestart()");
-        super.onRestart();
-    }
-
-    @Override
-    protected void onDestroy() {
-        log.debug("onDestroy()");
-        super.onDestroy();
     }
 }
 /*
