@@ -132,7 +132,7 @@
                 android:summary="%s"
                 android:entries="@array/pref_dependency_entries"
                 android:entryValues="@array/pref_dependency_values"
-                android:defaultValue="PLUS"
+                android:defaultValue="DIVIDE"
                 />
 
             <EditTextPreference
@@ -214,7 +214,7 @@
                 android:dialogMessage="@string/pref_enter_values"
                 android:summary="%s"
                 android:digits="@string/value_allowed_digits"
-                android:defaultValue=""
+                android:defaultValue="1-10"
                 />
         </PreferenceScreen>
 
