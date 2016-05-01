@@ -2,7 +2,6 @@ package lelisoft.com.lelimath.data;
 
 import android.support.annotation.NonNull;
 
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -29,28 +28,31 @@ public class FormulaRecord {
     @DatabaseField(canBeNull=false, columnName="game", width = 2)
     String gameStr;
 
-    @DatabaseField
+    @DatabaseField(canBeNull=true, columnName="first")
     Integer firstOperand;
 
-    @DatabaseField
+    @DatabaseField(canBeNull=true, columnName="second")
     Integer secondOperand;
 
-    @DatabaseField
+    @DatabaseField(canBeNull=true, columnName="result")
     Integer result;
 
     @DatabaseField(persisted = false)
-//    @DatabaseField(canBeNull = false, foreign = true)
     Operator operator;
 
-//    @DatabaseField(persisted = false)
-//    @DatabaseField(canBeNull = false, foreign = true)
-    @DatabaseField(dataType= DataType.ENUM_INTEGER)
+    @DatabaseField(canBeNull=true, columnName="operator", width = 1)
+    String operatorStr;
+
+    @DatabaseField(persisted = false)
     FormulaPart unknown;
 
-    @DatabaseField
+    @DatabaseField(canBeNull=true, columnName="unknown", width = 2)
+    String unknownStr;
+
+    @DatabaseField(canBeNull=true, columnName="correct")
     boolean correct;
 
-    @DatabaseField
+    @DatabaseField(canBeNull=true, columnName="spent")
     Long timeSpent;
 
     public FormulaRecord() {
@@ -60,6 +62,10 @@ public class FormulaRecord {
         firstOperand = formula.getFirstOperand();
         secondOperand = formula.getSecondOperand();
         result = formula.getResult();
+        if (formula.getUnknown() != null) {
+            setUnknown(formula.getUnknown());
+        }
+        timeSpent = formula.getTimeSpent();
     }
 
     public Long getId() {
@@ -82,7 +88,7 @@ public class FormulaRecord {
         if (game != null) {
             return game;
         } else if (gameStr != null) {
-            game = Game.valueOf(gameStr);
+            game = Game.getValue(gameStr);
         }
         return game;
     }
@@ -125,19 +131,31 @@ public class FormulaRecord {
     }
 
     public Operator getOperator() {
+        if (operator != null) {
+            return operator;
+        } else if (operatorStr != null) {
+            operator = Operator.getValue(operatorStr);
+        }
         return operator;
     }
 
     public void setOperator(Operator operator) {
         this.operator = operator;
+        operatorStr = operator.value;
     }
 
     public FormulaPart getUnknown() {
+        if (unknown != null) {
+            return unknown;
+        } else if (unknownStr != null) {
+            unknown = FormulaPart.getValue(unknownStr);
+        }
         return unknown;
     }
 
     public void setUnknown(FormulaPart unknown) {
         this.unknown = unknown;
+        unknownStr = unknown.key;
     }
 
     public boolean isCorrect() {
@@ -165,12 +183,12 @@ public class FormulaRecord {
                 "id=" + id +
                 ", date=" + date +
                 ", user=" + user +
-                ", game=" + game +
+                ", game=" + getGame() +
                 ", firstOperand=" + firstOperand +
                 ", secondOperand=" + secondOperand +
                 ", result=" + result +
-                ", operator=" + operator +
-                ", unknown=" + unknown +
+                ", operator=" + getOperator() +
+                ", unknown=" + getUnknown() +
                 ", correct=" + correct +
                 ", timeSpent=" + timeSpent +
                 '}';

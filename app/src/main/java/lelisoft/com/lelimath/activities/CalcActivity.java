@@ -16,6 +16,7 @@ import java.util.Set;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
+import lelisoft.com.lelimath.data.FormulaRecord;
 import lelisoft.com.lelimath.fragment.CalcFragment;
 import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.helpers.Misc;
@@ -67,6 +68,11 @@ public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcB
         transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
         transaction.replace(R.id.calc_content, pictureFragment);
         transaction.commit();
+    }
+
+    @Override
+    public void saveFormulaRecord(FormulaRecord record) {
+        storeFormulaRecord(record);
     }
 
     private void initializeCalcFragment(boolean replace) {

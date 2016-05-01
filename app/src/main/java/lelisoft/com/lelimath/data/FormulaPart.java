@@ -1,16 +1,12 @@
 package lelisoft.com.lelimath.data;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Enum identifying individual parts of formula.
  * Created by Leoš on 4. 2. 2015.
  */
-//@DatabaseTable(tableName = "part")
 public enum FormulaPart {
-    FIRST_OPERAND, SECOND_OPERAND, RESULT, OPERATOR
-/*
     FIRST_OPERAND("FO"), SECOND_OPERAND("SO"), RESULT("RS"), OPERATOR("OP"), EXPRESSION("EX");
     @DatabaseField(id = true)
     String key;
@@ -18,5 +14,21 @@ public enum FormulaPart {
     FormulaPart(String key) {
         this.key = key;
     }
-*/
+
+    public static FormulaPart getValue(String s) {
+        switch (s) {
+            case "FO":
+                return FIRST_OPERAND;
+            case "SO":
+                return SECOND_OPERAND;
+            case "RS":
+                return RESULT;
+            case "OP":
+                return OPERATOR;
+            case "EX":
+                return EXPRESSION;
+            default:
+                throw new IllegalArgumentException("Unknown FormulaPart '" + s + "'!");
+        }
+    }
 }

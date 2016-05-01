@@ -75,11 +75,12 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
             log.debug("start browsing db");
             GenericRawResults<String[]> rawResults = getHelper().getFormulaRecordDao().queryRaw("select * from formula_record");
             for (String[] columns : rawResults.getResults()) {
+                StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < columns.length; i++) {
                     String column = columns[i];
-                    log.debug("{} = {}", rawResults.getColumnNames()[i], column);
+                    sb.append(rawResults.getColumnNames()[i]).append("=").append(column).append(", ");
                 }
-                log.debug("----");
+                log.debug(sb.toString());
             }
             rawResults.close();
         } catch (SQLException e) {

@@ -19,11 +19,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaPart;
+import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Operator;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.CalcLogic;
 
 /**
@@ -52,6 +56,7 @@ public class CalcFragment extends Fragment {
 
     public interface CalcBridge {
         void calcFinished();
+        void saveFormulaRecord(FormulaRecord record);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -139,7 +144,12 @@ public class CalcFragment extends Fragment {
 
     public void resultClicked() {
         log.debug("resultClicked(" + formula + ", ? = " + formula.getUserInput() + ")");
+
+        updateSpeedIndicator();
         if (formula.isEntryCorrect()) {
+            FormulaRecord record = getFormulaRecord(true);
+            callback.saveFormulaRecord(record);
+
             if (formulaPosition == formulas.size()) {
                 callback.calcFinished();
                 return;
@@ -147,13 +157,25 @@ public class CalcFragment extends Fragment {
 
             prepareNewFormula();
             displayFormula();
-            updateSpeedIndicator();
             mProgress.setProgress(formulaPosition);
         } else {
+            FormulaRecord record = getFormulaRecord(false);
+            callback.saveFormulaRecord(record);
+
             unknown.startAnimation(shake);
             unknown.setText("");
             formula.clear();
         }
+    }
+
+    private FormulaRecord getFormulaRecord(boolean correct) {
+        FormulaRecord record = new FormulaRecord();
+        record.setGame(Game.FAST_CALC);
+        record.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
+        record.setDate(new Date());
+        record.setCorrect(correct);
+        record.setFormula(formula);
+        return record;
     }
 
     private void updateSpeedIndicator() {
@@ -163,7 +185,7 @@ public class CalcFragment extends Fragment {
             spent = SPEED_MAX;
         }
         totalTimeSpent += spent;
-//        formula.setTimeSpent(spent);
+        formula.setTimeSpent(spent);
         started = now;
 
         long averageTime = (totalTimeSpent) / (1000 * formulaPosition);

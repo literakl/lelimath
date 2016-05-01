@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.FormulaRecord;
 import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
@@ -152,9 +153,11 @@ public class PuzzleFragment extends LeliBaseFragment {
         if (first.getFormula() != null) {
             record.setFormula(first.getFormula());
             record.setResult(second.getResult());
+            record.setUnknown(FormulaPart.RESULT);
         } else {
             record.setFormula(second.getFormula());
             record.setResult(first.getResult());
+            record.setUnknown(FormulaPart.EXPRESSION);
         }
         return record;
     }

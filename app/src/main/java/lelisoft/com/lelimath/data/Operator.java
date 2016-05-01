@@ -1,6 +1,7 @@
 package lelisoft.com.lelimath.data;
 
 /**
+ * Operators
  * Created by Leoš on 4. 2. 2015.
  */
 public enum Operator {
@@ -28,6 +29,21 @@ public enum Operator {
 
     public boolean equals(String another) {
         return value.equals(another);
+    }
+
+    public static Operator getValue(String s) {
+        switch (s) {
+            case "+":
+                return PLUS;
+            case "-":
+                return MINUS;
+            case "\u22C5":
+                return MULTIPLY;
+            case ":":
+                return DIVIDE;
+            default:
+                throw new IllegalArgumentException("Unknown Operator '" + s + "'!");
+        }
     }
 
     @Override
