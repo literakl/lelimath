@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -21,6 +22,7 @@ import ch.qos.logback.classic.android.LogcatAppender;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
+import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
@@ -46,6 +48,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
         resources = getResources();
         performUpgrade();
+        new FeedPreferencesTask().execute();
     }
 
     private void performUpgrade() {
@@ -78,7 +81,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         if (currentUser == null) {
             try {
                 Dao<User, Long> dao = getDatabaseHelper().getUserDao();
-                currentUser = dao.queryForId(1l);
+                currentUser = dao.queryForId(1L);
             } catch (SQLException e) {
                 log.error("Cannot load user!", e);
             }
@@ -101,7 +104,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
      * @return shared database helper instance
      */
     public DatabaseHelper getDatabaseHelper() {
-        return (DatabaseHelper) OpenHelperManager.getHelper(this, DatabaseHelper.class);
+        return OpenHelperManager.getHelper(this, DatabaseHelper.class);
     }
 
     private void configureLogbackDirectly() {
@@ -144,5 +147,15 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 //        root.setLevel(Level.TRACE);
         root.addAppender(fileAppender);
         root.addAppender(logcatAppender);
+    }
+
+    class FeedPreferencesTask extends AsyncTask {
+        @Override
+        protected Object doInBackground(Object[] params) {
+            log.debug("Loading default values from XML");
+            PreferenceManager.setDefaultValues(LeliMathApp.this, R.xml.game_prefs, false);
+            log.debug("Defaults are loaded");
+            return null;
+        }
     }
 }
