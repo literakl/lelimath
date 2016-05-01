@@ -60,6 +60,9 @@ public class FormulaRecord {
 
     public void setFormula(@NonNull Formula formula) {
         firstOperand = formula.getFirstOperand();
+        if (formula.getOperator() != null) {
+            setOperator(formula.getOperator());
+        }
         secondOperand = formula.getSecondOperand();
         result = formula.getResult();
         if (formula.getUnknown() != null) {
