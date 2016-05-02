@@ -162,7 +162,6 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         log.debug("onSharedPreferenceChanged(" + key + ")");
         //noinspection deprecation
         PreferenceScreen preferencesRoot = getPreferenceScreen();
-        Preference preference;
         switch (key) {
             case "pref_game_plus_depends":
                 changeDefinitionsState("plus", preferencesRoot);
@@ -184,12 +183,8 @@ public class GamePreferenceActivity extends PreferenceActivity implements
                 dependencyMap.updateDependencies(preferencesRoot);
                 return;
 
-/*
             case "pref_game_operation_plus":
-//                preferenceScreenHelper.setScreenSummary("plus", preferencesRoot, sharedPreferences);
-                preference = preferencesRoot.findPreference("pref_game_divide_category");
-                preference.setSummary("pokus");
-                log.debug(preference.getSummary().toString());
+                preferenceScreenHelper.setScreenSummary("plus", preferencesRoot, sharedPreferences);
                 return;
 
             case "pref_game_operation_minus":
@@ -201,12 +196,8 @@ public class GamePreferenceActivity extends PreferenceActivity implements
                 return;
 
             case "pref_game_operation_divide":
-                preference = preferencesRoot.findPreference("pref_game_plus_category");
-                preference.setSummary("pokus");
-                log.debug(preference.getSummary().toString());
                 preferenceScreenHelper.setScreenSummary("divide", preferencesRoot, sharedPreferences);
                 return;
-*/
         }
 
         //noinspection deprecation

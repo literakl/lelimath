@@ -11,6 +11,7 @@ import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
+import android.widget.BaseAdapter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,6 @@ public class PreferenceHelper {
 	private void initSummary(Preference preference, SharedPreferences sharedPreferences) {
 		if (preference instanceof PreferenceGroup) {
             PreferenceGroup group = (PreferenceGroup) preference;
-/*
             if (group.getKey() != null) {
                 switch (preference.getKey()) {
                     case "pref_game_plus_category":
@@ -59,7 +59,6 @@ public class PreferenceHelper {
                         break;
                 }
             }
-*/
 
 			for (int i = 0; i < group.getPreferenceCount(); i++) {
 				initSummary(group.getPreference(i), sharedPreferences);
@@ -77,9 +76,10 @@ public class PreferenceHelper {
     public void setScreenSummary(String key, PreferenceScreen preferencesRoot, SharedPreferences sharedPreferences) {
         boolean value = sharedPreferences.getBoolean("pref_game_operation_" + key, true);
         PreferenceScreen preference = (PreferenceScreen) preferencesRoot.findPreference("pref_game_" + key + "_category");
-//        preference.setSummary(value ? R.string.pref_operation_enabled : R.string.pref_operation_disabled);
-//        preference.setSummary("trest");
-    }
+        preference.setSummary(value ? R.string.pref_operation_enabled : R.string.pref_operation_disabled);
+		//This is necessary to reflect change after coming back from sub-pref screen
+		((BaseAdapter)preferencesRoot.getRootAdapter()).notifyDataSetChanged();
+	}
 
     public void updatePreferenceSummary(Preference preference) {
 	    if (preference == null) {
