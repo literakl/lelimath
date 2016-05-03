@@ -61,4 +61,8 @@ public class DashboardHomeFragment extends Fragment implements View.OnClickListe
                 break;
         }
     }
+
+    public static Fragment newInstance() {
+        return new DashboardHomeFragment();
+    }
 }
