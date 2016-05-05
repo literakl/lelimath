@@ -28,6 +28,10 @@
         <item name="android:textColorPrimary">#ffffffff</item>
     </style>
 
+    <style name="Invisible" parent="AppTheme">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
     <style name="Formula">
         <!--<item name="android:background">@color/gray_215</item>-->
     </style>
