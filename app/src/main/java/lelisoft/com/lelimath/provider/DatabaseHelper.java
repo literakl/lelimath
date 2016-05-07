@@ -24,7 +24,7 @@ import lelisoft.com.lelimath.data.User;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(DatabaseHelper.class);
 
-    private static final String DATABASE_NAME = "lelimath";
+    private static final String DATABASE_NAME = "lelimath.sqlite";
     private static final int DATABASE_VERSION = 1;
     private static File path;
 
