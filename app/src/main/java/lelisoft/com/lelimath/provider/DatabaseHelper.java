@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 
 import lelisoft.com.lelimath.data.FormulaRecord;
-import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.User;
 
 /**
@@ -41,10 +40,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, User.class);
             getUserDao().create(new User());
             TableUtils.createTable(connectionSource, FormulaRecord.class);
-//            TableUtils.createTable(connectionSource, Game.class);
-//            Dao<Game, Long> gameDao = getGameDao();
-//            gameDao.create(Game.FAST_CALC);
-//            gameDao.create(Game.PUZZLE);
         } catch (SQLException e) {
             log.error("Error creating new database!", e);
         }
@@ -55,15 +50,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         log.info("Upgrading existing database " + oldVersion + " version " + newVersion);
     }
 
-    public Dao<User, Long> getUserDao() throws SQLException {
+    public Dao<User, Integer> getUserDao() throws SQLException {
         return getDao(User.class);
     }
 
-    public Dao<FormulaRecord, Long> getFormulaRecordDao() throws SQLException {
+    public Dao<FormulaRecord, Integer> getFormulaRecordDao() throws SQLException {
         return getDao(FormulaRecord.class);
-    }
-
-    public Dao<Game, Long> getGameDao() throws SQLException {
-        return getDao(Game.class);
     }
 }

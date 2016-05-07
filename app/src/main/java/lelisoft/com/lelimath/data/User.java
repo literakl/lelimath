@@ -8,7 +8,7 @@ import com.j256.ormlite.field.DatabaseField;
  */
 public class User {
     @DatabaseField(generatedId = true)
-    private Long id;
+    private Integer id;
 
     @DatabaseField
     private String nickname;
@@ -16,11 +16,11 @@ public class User {
     public User() {
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

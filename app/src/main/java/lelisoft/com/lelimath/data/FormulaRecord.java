@@ -14,7 +14,7 @@ import java.util.Date;
 @DatabaseTable(tableName = "formula_record")
 public class FormulaRecord {
     @DatabaseField(generatedId = true)
-    Long id;
+    Integer id;
 
     @DatabaseField(canBeNull = false)
     Date date;
@@ -71,11 +71,11 @@ public class FormulaRecord {
         timeSpent = formula.getTimeSpent();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -138,6 +138,8 @@ public class FormulaRecord {
             return operator;
         } else if (operatorStr != null) {
             operator = Operator.getValue(operatorStr);
+        } else {
+            operator = Operator.PLUS; // todo remove
         }
         return operator;
     }

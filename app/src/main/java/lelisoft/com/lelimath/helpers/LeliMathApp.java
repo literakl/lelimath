@@ -80,8 +80,8 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     public synchronized User getCurrentUser() {
         if (currentUser == null) {
             try {
-                Dao<User, Long> dao = getDatabaseHelper().getUserDao();
-                currentUser = dao.queryForId(1L);
+                Dao<User, Integer> dao = getDatabaseHelper().getUserDao();
+                currentUser = dao.queryForId(1);
             } catch (SQLException e) {
                 log.error("Cannot load user!", e);
             }

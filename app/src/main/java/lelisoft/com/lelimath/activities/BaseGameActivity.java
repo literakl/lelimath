@@ -36,7 +36,7 @@ public class BaseGameActivity extends LeliBaseActivity {
 
     protected void storeFormulaRecord(FormulaRecord record) {
         try {
-            Dao<FormulaRecord, Long> dao = getHelper().getFormulaRecordDao();
+            Dao<FormulaRecord, Integer> dao = getHelper().getFormulaRecordDao();
             int result = dao.create(record);
             if (result == 1) {
                 log.debug("Saved FormulaRecord");

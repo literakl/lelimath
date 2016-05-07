@@ -5,11 +5,12 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.fragment.DashboardHomeFragment;
+import lelisoft.com.lelimath.fragment.FormulaRecordListFragment;
 
 public class DashboardActivity extends LeliBaseActivity {
 
@@ -27,7 +28,7 @@ public class DashboardActivity extends LeliBaseActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    class TabsAdapter extends FragmentPagerAdapter {
+    class TabsAdapter extends FragmentStatePagerAdapter {
         public TabsAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -41,7 +42,7 @@ public class DashboardActivity extends LeliBaseActivity {
         public Fragment getItem(int i) {
             switch(i) {
                 case 0: return DashboardHomeFragment.newInstance();
-                case 1: return DashboardHomeFragment.newInstance();
+                case 1: return FormulaRecordListFragment.newInstance();
             }
             return null;
         }
