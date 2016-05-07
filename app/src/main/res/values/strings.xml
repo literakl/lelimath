@@ -44,4 +44,9 @@
     <string name="value_allowed_digits">0123456789-,</string>
     <string name="error_values_not_number">Chybné číslo: \'%s\'!</string>
     <string name="error_values_undefined_second">Zadejte druhé číslo</string>
+    <string name="permission_fs_rationale">Aplikace vyžaduje přístup k disku</string>
+    <string name="button_allow">Povolit</string>
+    <string name="button_deny">Zakázat</string>
+    <string name="permission_fs_denied">Bez přístupu k disku některé funkce nebudou fungovat</string>
+    <string name="permission_fs_neverask">Bez přístupu k disku některé funkce nebudou fungovat. Změnit rozhodnutí můžete v nastavení systému.</string>
 </resources>

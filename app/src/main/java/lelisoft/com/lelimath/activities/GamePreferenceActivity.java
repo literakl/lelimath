@@ -1,14 +1,18 @@
 package lelisoft.com.lelimath.activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -16,6 +20,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatCheckedTextView;
 import android.support.v7.widget.AppCompatEditText;
@@ -28,10 +33,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -40,16 +47,24 @@ import java.util.Map;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
 import lelisoft.com.lelimath.helpers.PreferenceInputValidator;
+import lelisoft.com.lelimath.provider.DatabaseHelper;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * Preferences for a game. Utilizes source code from https://github.com/davcpas1234/MaterialSettings.
  * Created by Leoš on 17.01.2016.
  */
+@RuntimePermissions
 public class GamePreferenceActivity extends PreferenceActivity implements
-        SharedPreferences.OnSharedPreferenceChangeListener,
-        Preference.OnPreferenceChangeListener {
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private static final Logger log = LoggerFactory.getLogger(GamePreferenceActivity.class);
 
     public static final String KEY_CURRENT_VERSION = "pref_current_version";
@@ -58,6 +73,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
 
     private PreferenceHelper preferenceScreenHelper;
     private DependencyMap dependencyMap;
+    private long copyDBLastClick = 0;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -87,9 +103,6 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         changeDefinitionsState("minus", preferenceScreen);
         changeDefinitionsState("multiply", preferenceScreen);
         changeDefinitionsState("divide", preferenceScreen);
-//        preferenceScreen.findPreference("pref_game_plus_reuse").setOnPreferenceChangeListener(this);
-//        preferenceScreen.findPreference("pref_game_operation_divide").setOnPreferenceChangeListener(this);
-//        preferenceScreen.findPreference("pref_game_operation_plus").setOnPreferenceChangeListener(this);
 
         String[] operations = new String[]{"plus", "minus", "multiply", "divide"};
         for (String operation : operations) {
@@ -122,39 +135,52 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         if (preference instanceof EditTextPreference) {
             EditText prefEt = ((EditTextPreference) preference).getEditText();
             prefEt.setSelection(prefEt.length());
+            return false;
+        }
+
+        if ("pref_build_number".equals(preference.getKey())) {
+            if (System.currentTimeMillis() - copyDBLastClick < 500) {
+                GamePreferenceActivityPermissionsDispatcher.copyDatabaseWithCheck(this);
+            } else {
+                copyDBLastClick = System.currentTimeMillis();
+            }
         }
 
         return false;
     }
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        log.debug("onPreferenceChange(" + preference.getKey() + ")");
-/*
-        //noinspection deprecation
-        PreferenceScreen preferencesRoot = getPreferenceScreen();
-        Preference category;
-        switch (preference.getKey()) {
-            case "pref_game_plus_reuse":
-                category = preferencesRoot.findPreference("pref_game_divide_category");
-                category.setSummary("tesr");
-                log.debug(category.getSummary().toString());
-                return true;
 
-            case "pref_game_operation_plus":
-                category = preferencesRoot.findPreference("pref_game_divide_category");
-                category.setSummary("pokus " + ((CheckBoxPreference)preference).isChecked());
-                log.debug(category.getSummary().toString());
-                return true;
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    public void copyDatabase() {
+        new CopyDatabaseTask().execute();
+    }
 
-            case "pref_game_operation_divide":
-                category = preferencesRoot.findPreference("pref_game_plus_category");
-                category.setSummary("pokus2 " + ((CheckBoxPreference)preference).isChecked());
-                log.debug(category.getSummary().toString());
-                return true;
-        }
-*/
+    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showRationaleForCamera(final PermissionRequest permissionRequest) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.permission_fs_rationale)
+                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        permissionRequest.proceed();
+                    }
+                })
+                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        permissionRequest.cancel();
+                    }
+                })
+                .show();
+    }
 
-        return true;
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showDeniedForCamera() {
+        Toast.makeText(this, R.string.permission_fs_denied, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showNeverAskForCamera() {
+        Toast.makeText(this, R.string.permission_fs_neverask, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -419,6 +445,23 @@ public class GamePreferenceActivity extends PreferenceActivity implements
                 }
             }
             return result;
+        }
+    }
+
+    private class CopyDatabaseTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void[] params) {
+            File in = DatabaseHelper.getDatabasePath();
+            File out = new File(Environment.getExternalStorageDirectory(), in.getName());
+            log.debug("Copying database {} to SD card at {}", in.getName(), out.getAbsolutePath());
+            boolean result = Misc.copyFile(in, out);
+            log.debug("finished {}", result ? "successfully" : "unsuccessfully");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Toast.makeText(GamePreferenceActivity.this, "Database copied", Toast.LENGTH_SHORT).show();
         }
     }
 }

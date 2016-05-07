@@ -251,7 +251,7 @@
             android:key="pref_build_number"
             android:title="@string/pref_build_time"
             android:persistent="false"
-            android:selectable="false"
+            android:selectable="true"
             android:summary="@string/app_build_number" />
     </PreferenceCategory>
 </PreferenceScreen>

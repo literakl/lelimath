@@ -10,6 +10,7 @@ import com.j256.ormlite.table.TableUtils;
 
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import lelisoft.com.lelimath.data.FormulaRecord;
@@ -25,9 +26,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "lelimath";
     private static final int DATABASE_VERSION = 1;
+    private static File path;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        path = context.getDatabasePath(DATABASE_NAME);
     }
 
     // TODO To set the logger to a particular type, set the system property ("com.j256.ormlite.logger.type")
@@ -56,5 +59,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     public Dao<FormulaRecord, Integer> getFormulaRecordDao() throws SQLException {
         return getDao(FormulaRecord.class);
+    }
+
+    public static File getDatabasePath() {
+        return path;
     }
 }

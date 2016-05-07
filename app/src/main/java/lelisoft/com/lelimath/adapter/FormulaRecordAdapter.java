@@ -33,11 +33,11 @@ public class FormulaRecordAdapter  extends ArrayAdapter<FormulaRecord> {
         ViewHolder holder;
         if (convertView != null) {
             // recycle unused view
-            log.debug("getView(%d) - recycle is true", formulaRecord.getId());
+            log.debug("getView({}) - recycle is true", formulaRecord.getId());
             holder = (ViewHolder) convertView.getTag();
         } else {
             // no recycle
-            log.debug("getView(%d) - recycle is false", formulaRecord.getId());
+            log.debug("getView({}) - recycle is false", formulaRecord.getId());
             convertView = inflater.inflate(R.layout.template_list_formula_record, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);

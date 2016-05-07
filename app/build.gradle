@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     signingConfigs {
@@ -21,6 +22,10 @@ android {
         }
     }
     productFlavors {
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_7
     }
 }
 
@@ -46,4 +51,6 @@ dependencies {
     compile project(':circle_progress_1.2')
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
+    compile 'com.github.hotchemi:permissionsdispatcher:2.1.2'
+    apt 'com.github.hotchemi:permissionsdispatcher-processor:2.1.2'
 }

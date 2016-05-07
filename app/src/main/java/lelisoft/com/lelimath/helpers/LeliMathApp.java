@@ -149,9 +149,9 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         root.addAppender(logcatAppender);
     }
 
-    class FeedPreferencesTask extends AsyncTask {
+    private class FeedPreferencesTask extends AsyncTask<Void, Void, Void> {
         @Override
-        protected Object doInBackground(Object[] params) {
+        protected Void doInBackground(Void[] params) {
             log.debug("Loading default values from XML");
             PreferenceManager.setDefaultValues(LeliMathApp.this, R.xml.game_prefs, false);
             log.debug("Defaults are loaded");

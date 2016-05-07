@@ -2,7 +2,16 @@ package lelisoft.com.lelimath.helpers;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Environment;
 
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -10,6 +19,8 @@ import java.util.Random;
  * Created by leos.literak on 31.10.2015.
  */
 public class Misc {
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(LeliMathApp.class);
+
     static Float density = null;
     static Random random = new Random(System.currentTimeMillis());
 
@@ -89,6 +100,45 @@ public class Misc {
             }
         }
         return text.toString();
+    }
+
+    /**
+     * Copy one file to another
+     * @param source input
+     * @param dest output
+     * @return result
+     */
+    public static boolean copyFile(File source, File dest) {
+        BufferedInputStream in = null;
+        BufferedOutputStream out = null;
+
+        try {
+            in = new BufferedInputStream(new FileInputStream(source));
+            out = new BufferedOutputStream(new FileOutputStream(dest, false));
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            return true;
+        } catch (IOException e) {
+            log.warn("Failed to copy file {} to {}!", source.getAbsolutePath(), dest.getAbsolutePath(), e);
+            return false;
+        } finally {
+            try {
+                if (in != null) in.close();
+                if (out != null) out.close();
+            } catch (IOException e) {
+                log.warn("Failed to copy file {} to {}!", source.getAbsolutePath(), dest.getAbsolutePath(), e);
+                //noinspection ReturnInsideFinallyBlock
+                return false;
+            }
+        }
+    }
+
+    public static boolean isSDMounted() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
     public static Random getRandom() {
