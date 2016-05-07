@@ -156,7 +156,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     }
 
     @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showRationaleForCamera(final PermissionRequest permissionRequest) {
+    void showRationaleForStorage(final PermissionRequest permissionRequest) {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.permission_fs_rationale)
                 .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
@@ -175,13 +175,20 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showDeniedForCamera() {
+    void showDeniedForStorage() {
         Toast.makeText(this, R.string.permission_fs_denied, Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showNeverAskForCamera() {
+    void showNeverAskForStorage() {
         Toast.makeText(this, R.string.permission_fs_neverask, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        GamePreferenceActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @Override
