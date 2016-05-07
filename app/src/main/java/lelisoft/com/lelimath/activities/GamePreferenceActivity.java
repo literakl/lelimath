@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -449,19 +450,28 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     }
 
     private class CopyDatabaseTask extends AsyncTask<Void, Void, Void> {
+        String message = "Database copied";
         @Override
         protected Void doInBackground(Void[] params) {
+            if (! Misc.isExternalStorageWritable()) {
+                message = "External storage is not writable! Is not it mounted to a computer?";
+                return null;
+            }
+
             File in = DatabaseHelper.getDatabasePath();
             File out = new File(Environment.getExternalStorageDirectory(), in.getName());
+            //noinspection ResultOfMethodCallIgnored
+            out.setReadable(true, false);
             log.debug("Copying database {} to SD card at {}", in.getName(), out.getAbsolutePath());
             boolean result = Misc.copyFile(in, out);
+            MediaScannerConnection.scanFile(getApplicationContext(), new String[]{out.getAbsolutePath()}, null, null);
             log.debug("finished {}", result ? "successfully" : "unsuccessfully");
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Toast.makeText(GamePreferenceActivity.this, "Database copied", Toast.LENGTH_SHORT).show();
+            Toast.makeText(GamePreferenceActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
 }
