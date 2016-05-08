@@ -150,14 +150,23 @@ public class PuzzleFragment extends LeliBaseFragment {
         record.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
         record.setDate(new Date());
         record.setCorrect(correct);
+
+        if ((first.getFormula() != null && second.getFormula() != null) || (first.getResult() != null && second.getResult() != null)) {
+            return null; // chyba v ovladani, ne ve vysledku
+        }
+
         if (first.getFormula() != null) {
             record.setFormula(first.getFormula());
-            record.setResult(second.getResult());
             record.setUnknown(FormulaPart.RESULT);
+            if (!correct) {
+                record.setWrongValue(second.getResult().toString());
+            }
         } else if (second.getFormula() != null) {
             record.setFormula(second.getFormula());
-            record.setResult(first.getResult());
             record.setUnknown(FormulaPart.EXPRESSION);
+            if (!correct) {
+                record.setWrongValue(first.getResult().toString());
+            }
         }
         return record;
     }

@@ -52,6 +52,9 @@ public class FormulaRecord {
     @DatabaseField(canBeNull=true, columnName="correct")
     boolean correct;
 
+    @DatabaseField(canBeNull=true, columnName="wrong_value")
+    String wrongValue;
+
     @DatabaseField(canBeNull=true, columnName="spent")
     Long timeSpent;
 
@@ -170,6 +173,17 @@ public class FormulaRecord {
     }
 
     /**
+     * @return value that user has entered and it is incorrect
+     */
+    public String getWrongValue() {
+        return wrongValue;
+    }
+
+    public void setWrongValue(String wrongValue) {
+        this.wrongValue = wrongValue;
+    }
+
+    /**
      * @return amount of milliseconds that user spent solving this formula
      */
     public Long getTimeSpent() {
@@ -196,6 +210,7 @@ public class FormulaRecord {
                 ", result=" + result +
                 ", operator=" + getOperator() +
                 ", unknown=" + getUnknown() +
+                ", wrongValue" + getWrongValue() +
                 ", correct=" + correct +
                 ", timeSpent=" + timeSpent +
                 '}';

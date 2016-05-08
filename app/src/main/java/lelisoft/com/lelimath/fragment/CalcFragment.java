@@ -174,6 +174,9 @@ public class CalcFragment extends Fragment {
         record.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
         record.setDate(new Date());
         record.setCorrect(correct);
+        if (! correct) {
+            record.setWrongValue(formula.getUnknownValue());
+        }
         record.setFormula(formula);
         return record;
     }
