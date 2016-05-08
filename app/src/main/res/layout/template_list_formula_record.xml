@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v7.widget.GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:columnCount="2"
+    app:rowCount="2"
+    app:useDefaultMargins="true">
 
     <TextView
+        android:id="@+id/fr_formula"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fr_date" />
+        android:text="8 + 3 = 11"
+        tools:ignore="HardcodedText"
+        style="@style/FormulaRecordHeader" />
+
+    <ImageView
+        android:id="@+id/fr_status"
+        android:src="@drawable/ic_correct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:contentDescription="Status" />
 
     <TextView
+        android:id="@+id/fr_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fr_first_operand" />
+        android:text="8.5.2016 7:35"
+        tools:ignore="HardcodedText"
+        style="@style/FormulaRecordTime" />
 
     <TextView
+        android:id="@+id/fr_time_spent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fr_operator" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fr_second_operand" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="=" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fr_result" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fr_time_spent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fr_status" />
-</LinearLayout>
+        android:text="536 ms"
+        tools:ignore="HardcodedText"
+        style="@style/FormulaRecordTime"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp" />
+</android.support.v7.widget.GridLayout>

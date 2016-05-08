@@ -138,8 +138,6 @@ public class FormulaRecord {
             return operator;
         } else if (operatorStr != null) {
             operator = Operator.getValue(operatorStr);
-        } else {
-            operator = Operator.PLUS; // todo remove
         }
         return operator;
     }
@@ -174,12 +172,16 @@ public class FormulaRecord {
     /**
      * @return amount of milliseconds that user spent solving this formula
      */
-    public long getTimeSpent() {
+    public Long getTimeSpent() {
         return timeSpent;
     }
 
-    public void setTimeSpent(long timeSpent) {
+    public void setTimeSpent(Long timeSpent) {
         this.timeSpent = timeSpent;
+    }
+
+    public String getFormulaString() {
+        return firstOperand + " " + getOperator() + " " + secondOperand + " = " + result;
     }
 
     @Override

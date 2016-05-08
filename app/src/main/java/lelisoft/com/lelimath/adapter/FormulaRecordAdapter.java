@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -52,12 +53,9 @@ public class FormulaRecordAdapter  extends ArrayAdapter<FormulaRecord> {
      */
     static class ViewHolder {
         TextView dateView;
-        TextView firstOperandView;
-        TextView operatorView;
-        TextView secondOperandView;
-        TextView resultView;
+        TextView formulaView;
         TextView timeSpentView;
-        TextView statusView;
+        ImageView statusView;
 
         /**
          * Creates new ViewHolder and init look with data from formulaRecord
@@ -65,26 +63,25 @@ public class FormulaRecordAdapter  extends ArrayAdapter<FormulaRecord> {
          */
         public ViewHolder(View view) {
             dateView = (TextView) view.findViewById(R.id.fr_date);
-            firstOperandView = (TextView) view.findViewById(R.id.fr_first_operand);
-            operatorView = (TextView) view.findViewById(R.id.fr_operator);
-            secondOperandView = (TextView) view.findViewById(R.id.fr_second_operand);
-            resultView = (TextView) view.findViewById(R.id.fr_result);
+            formulaView = (TextView) view.findViewById(R.id.fr_formula);
             timeSpentView = (TextView) view.findViewById(R.id.fr_time_spent);
-            statusView = (TextView) view.findViewById(R.id.fr_status);
+            statusView = (ImageView) view.findViewById(R.id.fr_status);
         }
 
         /**
          * Update views (if necessary) that are hold by this ViewHolder
-         *
          * @param view the view that views belong to
          * @param transaction transaction to be displayed on the view
          */
         public void update(View view, FormulaRecord transaction) {
             dateView.setText(String.format(Locale.getDefault(), "%1$td.%1$tm.%1$tY %1$tH:%1$tM", transaction.getDate()));
-            firstOperandView.setText(String.format(Locale.getDefault(), "%d", transaction.getFirstOperand()));
-            operatorView.setText(transaction.getOperator().toString());
-            secondOperandView.setText(String.format(Locale.getDefault(), "%d", transaction.getSecondOperand()));
-            resultView.setText(String.format(Locale.getDefault(), "%d", transaction.getResult()));
+            formulaView.setText(transaction.getFormulaString());
+            statusView.setImageResource(transaction.isCorrect() ? R.drawable.ic_correct : R.drawable.ic_wrong);
+            if (transaction.getTimeSpent() != null) {
+                timeSpentView.setText(String.format(Locale.getDefault(), "%d ms", transaction.getTimeSpent()));
+            } else {
+                timeSpentView.setText("");
+            }
         }
     }
 }

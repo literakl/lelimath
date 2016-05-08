@@ -154,7 +154,7 @@ public class PuzzleFragment extends LeliBaseFragment {
             record.setFormula(first.getFormula());
             record.setResult(second.getResult());
             record.setUnknown(FormulaPart.RESULT);
-        } else {
+        } else if (second.getFormula() != null) {
             record.setFormula(second.getFormula());
             record.setResult(first.getResult());
             record.setUnknown(FormulaPart.EXPRESSION);
