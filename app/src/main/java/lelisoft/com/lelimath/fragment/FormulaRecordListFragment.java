@@ -4,10 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import java.util.List;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.FormulaRecordAdapter;
 import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.helpers.EndlessRecyclerViewScrollListener;
 import lelisoft.com.lelimath.provider.FormulaRecordProvider;
 
 /**
@@ -26,30 +28,54 @@ import lelisoft.com.lelimath.provider.FormulaRecordProvider;
 public class FormulaRecordListFragment extends LeliBaseFragment {
     private static final Logger log = LoggerFactory.getLogger(DashboardHomeFragment.class);
 
+    RecyclerView recyclerView;
     FragmentActivity activity;
     FormulaRecordProvider recordsProvider;
-    FormulaRecordAdapter recordsListAdapter;
+    FormulaRecordAdapter adapter;
     List<FormulaRecord> records;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log.debug("onCreateView()");
+        recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_dashboard_log, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_dashboard_log, container, false);
         activity = getActivity();
         recordsProvider = new FormulaRecordProvider(getActivity());
         records = recordsProvider.getAll();
-        recordsListAdapter = new FormulaRecordAdapter(activity, records);
+        adapter = new FormulaRecordAdapter(records);
+        recyclerView.setAdapter(adapter);
 
-        ListView listView = (ListView) view.findViewById(R.id.log_listView);
-        listView.setAdapter(recordsListAdapter);
-        return view;
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                log.debug("onLoadMore({},{})", page, totalItemsCount);
+                // fetch data here
+                customLoadMoreDataFromApi(page);
+                // update the adapter, saving the last known size
+                int curSize = adapter.getItemCount();
+/*
+                records.addAll(moreContacts);
+*/
+                // for efficiency purposes, only notify the adapter of what elements that got changed
+                // curSize will equal to the index of the first element inserted because the list is 0-indexed
+                adapter.notifyItemRangeInserted(curSize, records.size() - 1);
+            }
+        });
+        return recyclerView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle state) {
         log.debug("onActivityCreated()");
         super.onActivityCreated(state);
+    }
+
+    // Append more data into the adapter
+    public void customLoadMoreDataFromApi(int offset) {
+        // This method probably sends out a network request and appends new data items to your adapter.
+        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+        // Deserialize API response and then construct new objects to append to the adapter
     }
 
     public static Fragment newInstance() {

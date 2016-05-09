@@ -1,6 +1,7 @@
 package lelisoft.com.lelimath.adapter;
 
 import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,15 @@ import lelisoft.com.lelimath.data.FormulaRecord;
  * Adapter for ListView holding FormulaRecords
  * Created by Leoš on 06.05.2016.
  */
-public class FormulaRecordAdapter  extends ArrayAdapter<FormulaRecord> {
+public class FormulaRecordAdapter extends RecyclerView.Adapter<FormulaRecordAdapter.ViewHolder> {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(FormulaRecordAdapter.class);
+    List<FormulaRecord> records;
 
+    public FormulaRecordAdapter(List<FormulaRecord> records) {
+        this.records = records;
+    }
+
+/*
     private final LayoutInflater inflater;
 
     public FormulaRecordAdapter(Activity context, List<FormulaRecord> lst) {
@@ -47,11 +54,31 @@ public class FormulaRecordAdapter  extends ArrayAdapter<FormulaRecord> {
         holder.update(convertView, formulaRecord);
         return convertView;
     }
+*/
+
+    @Override
+    public FormulaRecordAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View itemView = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.template_list_formula_record, viewGroup, false);
+
+        return new ViewHolder(itemView);
+
+    }
+
+    @Override
+    public void onBindViewHolder(FormulaRecordAdapter.ViewHolder viewHolder, int position) {
+        viewHolder.update(null, records.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return records.size();
+    }
 
     /**
      * This class simply holds view of an item in list
      */
-    static class ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView dateView;
         TextView formulaView;
         TextView timeSpentView;
@@ -62,6 +89,7 @@ public class FormulaRecordAdapter  extends ArrayAdapter<FormulaRecord> {
          * @param view view its views will be injected to these fields
          */
         public ViewHolder(View view) {
+            super(view);
             dateView = (TextView) view.findViewById(R.id.fr_date);
             formulaView = (TextView) view.findViewById(R.id.fr_formula);
             timeSpentView = (TextView) view.findViewById(R.id.fr_time_spent);
