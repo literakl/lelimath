@@ -65,7 +65,7 @@
     <style name="FormulaEqualSign" parent="FormulaValue">
     </style>
 
-    <style name="FormulaRecordHeader" parent="@style/Base.TextAppearance.AppCompat.Title">
+    <style name="FormulaRecordHeader" parent="@style/Base.TextAppearance.AppCompat.Caption">
         <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:textColor">@color/gray_79</item>
     </style>
