@@ -44,6 +44,20 @@ public class FormulaRecordListFragment extends LeliBaseFragment {
         records = recordsProvider.getAll();
         adapter = new FormulaRecordAdapter(records);
         recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+/*
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public void onTouchEvent(RecyclerView recycler, MotionEvent event) {
+                // Handle on touch events here
+            }
+
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recycler, MotionEvent event) {
+                return false;
+            }
+        });
+*/
 
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {

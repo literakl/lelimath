@@ -90,9 +90,9 @@ public class FormulaRecordAdapter extends RecyclerView.Adapter<FormulaRecordAdap
          */
         public ViewHolder(View view) {
             super(view);
-            dateView = (TextView) view.findViewById(R.id.fr_date);
+//            dateView = (TextView) view.findViewById(R.id.fr_date);
             formulaView = (TextView) view.findViewById(R.id.fr_formula);
-            timeSpentView = (TextView) view.findViewById(R.id.fr_time_spent);
+//            timeSpentView = (TextView) view.findViewById(R.id.fr_time_spent);
             statusView = (ImageView) view.findViewById(R.id.fr_status);
         }
 
@@ -102,14 +102,16 @@ public class FormulaRecordAdapter extends RecyclerView.Adapter<FormulaRecordAdap
          * @param transaction transaction to be displayed on the view
          */
         public void update(View view, FormulaRecord transaction) {
-            dateView.setText(String.format(Locale.getDefault(), "%1$td.%1$tm.%1$tY %1$tH:%1$tM", transaction.getDate()));
+//            dateView.setText(String.format(Locale.getDefault(), "%1$td.%1$tm.%1$tY %1$tH:%1$tM", transaction.getDate()));
             formulaView.setText(transaction.getFormulaString());
             statusView.setImageResource(transaction.isCorrect() ? R.drawable.ic_correct : R.drawable.ic_wrong);
+/*
             if (transaction.getTimeSpent() != null) {
                 timeSpentView.setText(String.format(Locale.getDefault(), "%d ms", transaction.getTimeSpent()));
             } else {
                 timeSpentView.setText("");
             }
+*/
         }
     }
 }

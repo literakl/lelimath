@@ -39,6 +39,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:gridlayout-v7:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile('com.github.tony19:logback-android-classic:1.1.1-4') {
         exclude module: 'android'
@@ -47,7 +48,6 @@ dependencies {
         exclude module: 'android'
     }
     compile 'org.slf4j:slf4j-api:1.7.7'
-    //    compile 'com.github.lzyzsd:circleprogress:1.1.0@aar'
     compile project(':circle_progress_1.2')
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
