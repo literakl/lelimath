@@ -57,6 +57,19 @@ public class FormulaRecordProvider {
         return null;
     }
 
+    public List<FormulaRecord> getAllInDescendingOrder() {
+        try {
+            QueryBuilder<FormulaRecord, Integer> queryBuilder = dao.queryBuilder();
+            queryBuilder.orderByRaw("id DESC");
+
+            PreparedQuery<FormulaRecord> query = queryBuilder.prepare();
+            return dao.query(query);
+        } catch (SQLException e) {
+            log.error("Unable to get all FormulaRecords from database.", e);
+        }
+        return null;
+    }
+
     public FormulaRecord getById(Integer formulaRecordId) {
         try {
             return dao.queryForId(formulaRecordId);
@@ -66,19 +79,6 @@ public class FormulaRecordProvider {
         return null;
     }
 
-    public List<FormulaRecord> findForReverse() {
-        try {
-            QueryBuilder<FormulaRecord, Integer> queryBuilder = dao.queryBuilder();
-            queryBuilder.where().eq("reversal", true);
-
-            PreparedQuery<FormulaRecord> query = queryBuilder.prepare();
-            return dao.query(query);
-        } catch (SQLException e) {
-            log.error("Unable to get FormulaRecords for reverse from database", e);
-        }
-        return null;
-    }
-    
     public List<FormulaRecord> executeQuery(PreparedQuery<FormulaRecord> query) {
         try {
             return dao.query(query);

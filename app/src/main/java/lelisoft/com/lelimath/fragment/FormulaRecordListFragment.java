@@ -41,7 +41,7 @@ public class FormulaRecordListFragment extends LeliBaseFragment {
 
         activity = getActivity();
         recordsProvider = new FormulaRecordProvider(getActivity());
-        records = recordsProvider.getAll();
+        records = recordsProvider.getAllInDescendingOrder();
         adapter = new FormulaRecordAdapter(records);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
