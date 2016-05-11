@@ -71,7 +71,6 @@ public class FormulaRecord {
         if (formula.getUnknown() != null) {
             setUnknown(formula.getUnknown());
         }
-        timeSpent = formula.getTimeSpent();
     }
 
     public Integer getId() {

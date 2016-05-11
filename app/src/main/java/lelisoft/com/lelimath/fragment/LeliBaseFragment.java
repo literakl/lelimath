@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.support.ConnectionSource;
 
+import lelisoft.com.lelimath.data.FormulaRecord;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
 
 /**
@@ -16,9 +17,15 @@ import lelisoft.com.lelimath.provider.DatabaseHelper;
 public class LeliBaseFragment extends Fragment {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LeliBaseFragment.class);
 
+    /**
+     * Maximum spent time to save - user could leave the mobile device and we do not want to destroy statistics of such peaks
+     */
+    private static final int MAX_SPENT_TIME = 10000;
+
     private volatile DatabaseHelper helper;
     private volatile boolean created = false;
     private volatile boolean destroyed = false;
+    long started, stopped;
 
     /**
      * Get a helper for this action.
@@ -35,6 +42,24 @@ public class LeliBaseFragment extends Fragment {
         } else {
             return helper;
         }
+    }
+
+    protected void startRecordingSpentTime() {
+        if (started == 0) { started = System.currentTimeMillis(); }
+    }
+
+    /**
+     * Calculates time a user spent on solving this task
+     * @param formula formula record to be updated
+     */
+    protected void updateSpentTime(FormulaRecord formula) {
+        long now = System.currentTimeMillis();
+        long spent = now - started;
+        if (spent > MAX_SPENT_TIME) {
+            spent = MAX_SPENT_TIME;
+        }
+        formula.setTimeSpent(spent);
+        started = now;
     }
 
     /**

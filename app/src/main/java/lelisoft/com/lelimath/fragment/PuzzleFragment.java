@@ -42,6 +42,7 @@ public class PuzzleFragment extends LeliBaseFragment {
     Animation shake;
     int maxHorizontalTiles, maxVerticalTiles, tilesToBeSolved;
     PuzzleLogic logic;
+    long started, stopped;
 
     public interface PuzzleBridge {
         void puzzleFinished();
@@ -54,9 +55,14 @@ public class PuzzleFragment extends LeliBaseFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        log.debug("onActivityCreated()");
-        super.onActivityCreated(savedInstanceState);
+    public void onActivityCreated(Bundle state) {
+        log.debug("onActivityCreated({})", state);
+        super.onActivityCreated(state);
+
+        if (state != null) {
+            started = state.getLong("started");
+            stopped = state.getLong("stopped");
+        }
 
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
         puzzleGrid = (GridLayout) getActivity().findViewById(R.id.puzzle_grid);
@@ -101,6 +107,7 @@ public class PuzzleFragment extends LeliBaseFragment {
             }
             log.debug("onClick(" + currentTile + ")");
             AppCompatButton currentButton = (AppCompatButton) view;
+            startRecordingSpentTime();
 
             if (view == selectedButton) {
                 currentButton.setBackgroundResource((currentTile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
@@ -111,6 +118,7 @@ public class PuzzleFragment extends LeliBaseFragment {
                     if (selectedTile.matches(currentTile)) {
                         log.debug(currentTile + " matches " + selectedTile);
                         FormulaRecord record = getFormulaRecord(true, selectedTile, currentTile);
+                        updateSpentTime(record);
                         callback.saveFormulaRecord(record);
 
                         currentButton.setText("");
@@ -129,6 +137,7 @@ public class PuzzleFragment extends LeliBaseFragment {
                     } else {
                         log.debug(currentTile + " does not match " + selectedTile);
                         FormulaRecord record = getFormulaRecord(false, selectedTile, currentTile);
+                        updateSpentTime(record);
                         callback.saveFormulaRecord(record);
 
                         selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);

@@ -3,7 +3,6 @@ package lelisoft.com.lelimath.fragment;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,7 @@ import lelisoft.com.lelimath.logic.CalcLogic;
  * Calc game view
  * Created by Leoš on 17.04.2016.
  */
-public class CalcFragment extends Fragment {
+public class CalcFragment extends LeliBaseFragment {
     private static final Logger log = LoggerFactory.getLogger(CalcFragment.class);
 
     private static final int SPEED_FAST = 5;
@@ -49,7 +48,7 @@ public class CalcFragment extends Fragment {
     TextView unknown;
     Animation shake;
     DonutProgress mProgress;
-    long started, stopped, totalTimeSpent;
+    long totalTimeSpent;
     int formulaPosition = 0;
     Drawable iconSlow, iconNormal, iconFast;
     private CalcLogic logic;
@@ -66,7 +65,7 @@ public class CalcFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle state) {
-        log.debug("onActivityCreated()");
+        log.debug("onActivityCreated({})", state);
         super.onActivityCreated(state);
 
         activity = getActivity();
@@ -120,7 +119,7 @@ public class CalcFragment extends Fragment {
 
     void digitClicked(String digit) {
         log.debug("digitClicked(" + digit + ")");
-        if (started == 0) { started = System.currentTimeMillis(); }
+        startRecordingSpentTime();
         if (formula.getUnknown() != FormulaPart.OPERATOR) {
             formula.append(digit);
             unknown.append(digit);
@@ -138,16 +137,16 @@ public class CalcFragment extends Fragment {
             log.debug("operatorClicked(" + operator + ")");
             formula.setUserEntry(operator.toString());
             unknown.setText(operator.toString());
-            if (started == 0) { started = System.currentTimeMillis(); }
+            startRecordingSpentTime();
         }
     }
 
     public void resultClicked() {
         log.debug("resultClicked(" + formula + ", ? = " + formula.getUserInput() + ")");
 
-        updateSpeedIndicator();
         if (formula.isEntryCorrect()) {
             FormulaRecord record = getFormulaRecord(true);
+            updateSpentTime(record);
             callback.saveFormulaRecord(record);
 
             if (formulaPosition == formulas.size()) {
@@ -160,6 +159,7 @@ public class CalcFragment extends Fragment {
             mProgress.setProgress(formulaPosition);
         } else {
             FormulaRecord record = getFormulaRecord(false);
+            updateSpentTime(record);
             callback.saveFormulaRecord(record);
 
             unknown.startAnimation(shake);
@@ -181,18 +181,12 @@ public class CalcFragment extends Fragment {
         return record;
     }
 
-    private void updateSpeedIndicator() {
-        long now = System.currentTimeMillis();
-        long spent = now - started;
-        if (spent > SPEED_MAX) {
-            spent = SPEED_MAX;
-        }
-        totalTimeSpent += spent;
-        formula.setTimeSpent(spent);
-        started = now;
-
-        long averageTime = (totalTimeSpent) / (1000 * formulaPosition);
+    protected void updateSpentTime(FormulaRecord formulaRecord) {
+        super.updateSpentTime(formulaRecord);
 /*
+        totalTimeSpent += formulaRecord.getTimeSpent();
+        long averageTime = (totalTimeSpent) / (1000 * formulaPosition);
+
         View speedIndicator = findViewById(R.id.speedIndicator);
         if (averageTime < SPEED_FAST) {
             ((ActionMenuItemView) speedIndicator).setIcon(iconFast);
