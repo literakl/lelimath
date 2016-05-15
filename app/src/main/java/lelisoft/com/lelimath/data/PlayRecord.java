@@ -12,21 +12,15 @@ import java.util.Date;
  * Created by Leoš on 29.04.2016.
  */
 @DatabaseTable(tableName = "formula_record")
-public class FormulaRecord {
+public class PlayRecord {
     @DatabaseField(generatedId = true)
     Integer id;
 
     @DatabaseField(canBeNull = false)
     Date date;
 
-    @DatabaseField(canBeNull = false, foreign = true)
-    User user;
-
-    @DatabaseField(persisted=false)
-    Game game;
-
-    @DatabaseField(canBeNull=false, columnName="game", width = 2)
-    String gameStr;
+    @DatabaseField(foreign = true, columnName="play_id")
+    Play play;
 
     @DatabaseField(canBeNull=true, columnName="first")
     Integer firstOperand;
@@ -58,7 +52,7 @@ public class FormulaRecord {
     @DatabaseField(canBeNull=true, columnName="spent")
     Long timeSpent;
 
-    public FormulaRecord() {
+    public PlayRecord() {
     }
 
     public void setFormula(@NonNull Formula formula) {
@@ -89,26 +83,12 @@ public class FormulaRecord {
         this.date = date;
     }
 
-    public Game getGame() {
-        if (game != null) {
-            return game;
-        } else if (gameStr != null) {
-            game = Game.getValue(gameStr);
-        }
-        return game;
+    public Play getPlay() {
+        return play;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-        gameStr = game.key;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setPlay(Play play) {
+        this.play = play;
     }
 
     public Integer getFirstOperand() {
@@ -199,11 +179,10 @@ public class FormulaRecord {
 
     @Override
     public String toString() {
-        return "FormulaRecord{" +
+        return "PlayRecord{" +
                 "id=" + id +
                 ", date=" + date +
-                ", user=" + user +
-                ", game=" + getGame() +
+                ", play=" + getPlay() +
                 ", firstOperand=" + firstOperand +
                 ", secondOperand=" + secondOperand +
                 ", result=" + result +

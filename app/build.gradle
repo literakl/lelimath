@@ -10,8 +10,8 @@ android {
         applicationId "lelisoft.com.lelimath"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 160
-        versionName '1.6.0'
+        versionCode 170
+        versionName '1.7.0'
         resValue "string", "app_build_number", getDate();
         resValue "string", "app_version", versionName;
     }

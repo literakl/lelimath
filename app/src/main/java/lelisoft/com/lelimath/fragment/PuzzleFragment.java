@@ -21,10 +21,12 @@ import java.util.List;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.FormulaPart;
-import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.data.Play;
+import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
+import lelisoft.com.lelimath.provider.PlayProvider;
 import lelisoft.com.lelimath.view.FormulaResultPair;
 import lelisoft.com.lelimath.view.Tile;
 
@@ -42,11 +44,12 @@ public class PuzzleFragment extends LeliBaseFragment {
     Animation shake;
     int maxHorizontalTiles, maxVerticalTiles, tilesToBeSolved;
     PuzzleLogic logic;
+    Play play;
     long started, stopped;
 
     public interface PuzzleBridge {
         void puzzleFinished();
-        void saveFormulaRecord(FormulaRecord record);
+        void savePlayRecord(Play play, PlayRecord record);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,20 +85,32 @@ public class PuzzleFragment extends LeliBaseFragment {
     }
 
     private void generateTiles() {
-        log.debug("generateTiles(horizontal = " + maxHorizontalTiles + ", vertical = " + maxVerticalTiles + ")");
-        AppCompatButton button;List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
+        log.debug("generateTiles(horizontal = {}, vertical = {})", maxHorizontalTiles, maxVerticalTiles);
+        List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
         tilesToBeSolved = tilesValues.size();
-        Iterator<FormulaResultPair> iterator = tilesValues.iterator();
+        setupPlay();
 
+        Iterator<FormulaResultPair> iterator = tilesValues.iterator();
         for (int i = 0; i < maxVerticalTiles; i++) {
             for (int j = 0; j < maxHorizontalTiles; j++) {
                 if (iterator.hasNext()) {
                     Tile tile = new Tile(iterator.next());
-                    button = inflateButton(tile, getActivity().getLayoutInflater());
+                    AppCompatButton button = inflateButton(tile, getActivity().getLayoutInflater());
                     puzzleGrid.addView(button);
                 }
             }
         }
+    }
+
+    private void setupPlay() {
+        play = new Play();
+        play.setGame(Game.PUZZLE);
+        play.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
+        play.setDate(new Date());
+        play.setCount(tilesToBeSolved / 2);
+
+        PlayProvider provider = new PlayProvider(getActivity());
+        provider.create(play);
     }
 
     public class HandleClick implements View.OnClickListener {
@@ -105,7 +120,7 @@ public class PuzzleFragment extends LeliBaseFragment {
             if (currentTile == null) {
                 return;
             }
-            log.debug("onClick(" + currentTile + ")");
+            log.debug("onClick({})", currentTile);
             AppCompatButton currentButton = (AppCompatButton) view;
             startRecordingSpentTime();
 
@@ -116,29 +131,34 @@ public class PuzzleFragment extends LeliBaseFragment {
                 if (selectedButton != null) {
                     Tile selectedTile = (Tile) selectedButton.getTag(R.id.button_tile);
                     if (selectedTile.matches(currentTile)) {
-                        log.debug(currentTile + " matches " + selectedTile);
-                        FormulaRecord record = getFormulaRecord(true, selectedTile, currentTile);
+                        log.debug("{} matches {}", currentTile, selectedTile);
+                        PlayRecord record = getPlayRecord(true, selectedTile, currentTile);
                         updateSpentTime(record);
-                        callback.saveFormulaRecord(record);
-
-                        currentButton.setText("");
-                        currentButton.setBackgroundResource(R.drawable.tile_solved);
-                        currentButton.setClickable(false);
-
-                        selectedButton.setText("");
-                        selectedButton.setBackgroundResource(R.drawable.tile_solved);
-                        selectedButton.setClickable(false);
-                        selectedButton = null;
 
                         tilesToBeSolved -= 2;
                         if (tilesToBeSolved <= 0) {
+                            play.setFinished(true);
+                            callback.savePlayRecord(play, record);
                             callback.puzzleFinished();
+                        } else {
+                            callback.savePlayRecord(play, record);
+
+                            currentButton.setText("");
+                            currentButton.setBackgroundResource(R.drawable.tile_solved);
+                            currentButton.setClickable(false);
+
+                            selectedButton.setText("");
+                            selectedButton.setBackgroundResource(R.drawable.tile_solved);
+                            selectedButton.setClickable(false);
+                            selectedButton = null;
                         }
                     } else {
                         log.debug(currentTile + " does not match " + selectedTile);
-                        FormulaRecord record = getFormulaRecord(false, selectedTile, currentTile);
-                        updateSpentTime(record);
-                        callback.saveFormulaRecord(record);
+                        PlayRecord record = getPlayRecord(false, selectedTile, currentTile);
+                        if (record != null) {
+                            updateSpentTime(record);
+                            callback.savePlayRecord(play, record);
+                        }
 
                         selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
                         selectedButton.startAnimation(shake);
@@ -153,10 +173,9 @@ public class PuzzleFragment extends LeliBaseFragment {
         }
     }
 
-    private FormulaRecord getFormulaRecord(boolean correct, @NonNull Tile first, @NonNull Tile second) {
-        FormulaRecord record = new FormulaRecord();
-        record.setGame(Game.PUZZLE);
-        record.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
+    private PlayRecord getPlayRecord(boolean correct, @NonNull Tile first, @NonNull Tile second) {
+        PlayRecord record = new PlayRecord();
+        record.setPlay(play);
         record.setDate(new Date());
         record.setCorrect(correct);
 
@@ -178,6 +197,11 @@ public class PuzzleFragment extends LeliBaseFragment {
             }
         }
         return record;
+    }
+
+    protected void updateSpentTime(PlayRecord playRecord) {
+        super.updateSpentTime(playRecord);
+        play.addTimeSpent(playRecord.getTimeSpent());
     }
 
     public class CalculateDimensions implements ViewTreeObserver.OnGlobalLayoutListener {

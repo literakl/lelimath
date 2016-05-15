@@ -16,7 +16,8 @@ import java.util.Map;
 
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
-import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.data.Play;
+import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
@@ -34,22 +35,44 @@ public class BaseGameActivity extends LeliBaseActivity {
     GameLogic gameLogic;
     SharedPreferences sharedPref;
 
-    protected void storeFormulaRecord(FormulaRecord record) {
+    protected void storePlayRecord(PlayRecord record) {
         try {
             if (record == null) {
                 return;
             }
 
-            Dao<FormulaRecord, Integer> dao = getHelper().getFormulaRecordDao();
+            Dao<PlayRecord, Integer> dao = getHelper().getPlayRecordDao();
             int result = dao.create(record);
             if (result == 1) {
-                log.debug("Saved FormulaRecord");
+                log.debug("Saved PlayRecord");
             } else {
-                log.warn("Failed to store " + record);
+                log.warn("Failed to store {}", record);
             }
-            // todo in background
         } catch (SQLException e) {
-            log.error("Failed to store " + record, e);
+            log.error("Failed to store {}", record, e);
+        }
+    }
+
+    protected void storePlay(Play play) {
+        try {
+            if (play == null) {
+                return;
+            }
+
+            Dao<Play, Integer> dao = getHelper().getPlayDao();
+            int result;
+            if (play.getId() == null) {
+                result = dao.create(play);
+            } else {
+                result = dao.update(play);
+            }
+            if (result == 1) {
+                log.debug("Play stored");
+            } else {
+                log.warn("Failed to store {}", play);
+            }
+        } catch (SQLException e) {
+            log.error("Failed to store {}", play, e);
         }
     }
 

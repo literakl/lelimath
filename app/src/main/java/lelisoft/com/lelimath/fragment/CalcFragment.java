@@ -23,11 +23,13 @@ import java.util.Date;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaPart;
-import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.data.Play;
+import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.CalcLogic;
+import lelisoft.com.lelimath.provider.PlayProvider;
 
 /**
  * Calc game view
@@ -51,11 +53,12 @@ public class CalcFragment extends LeliBaseFragment {
     long totalTimeSpent;
     int formulaPosition = 0;
     Drawable iconSlow, iconNormal, iconFast;
-    private CalcLogic logic;
+    CalcLogic logic;
+    Play play;
 
     public interface CalcBridge {
         void calcFinished();
-        void saveFormulaRecord(FormulaRecord record);
+        void savePlayRecord(Play play, PlayRecord record);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +81,7 @@ public class CalcFragment extends LeliBaseFragment {
         clickHandler = new HandleClick();
         attachClickListener();
 
-        formulas = logic.generateFormulas();
+        setupPlay();
         prepareNewFormula();
         mProgress.setMax(formulas.size());
         mProgress.setProgress(1);
@@ -87,6 +90,7 @@ public class CalcFragment extends LeliBaseFragment {
             formulas = state.getParcelableArrayList("formulas");
             formulaPosition = state.getInt("formulaPosition");
             formula = formulas.get(formulaPosition);
+            play = state.getParcelable("play");
             started = state.getLong("started");
             stopped = state.getLong("stopped");
             totalTimeSpent = state.getLong("timeSpent");
@@ -145,22 +149,24 @@ public class CalcFragment extends LeliBaseFragment {
         log.debug("resultClicked(" + formula + ", ? = " + formula.getUserInput() + ")");
 
         if (formula.isEntryCorrect()) {
-            FormulaRecord record = getFormulaRecord(true);
+            PlayRecord record = getPlayRecord(true);
             updateSpentTime(record);
-            callback.saveFormulaRecord(record);
 
             if (formulaPosition == formulas.size()) {
+                play.setFinished(true);
+                callback.savePlayRecord(play, record);
                 callback.calcFinished();
-                return;
-            }
+            } else {
+                callback.savePlayRecord(play, record);
 
-            prepareNewFormula();
-            displayFormula();
-            mProgress.setProgress(formulaPosition);
+                prepareNewFormula();
+                displayFormula();
+                mProgress.setProgress(formulaPosition);
+            }
         } else {
-            FormulaRecord record = getFormulaRecord(false);
+            PlayRecord record = getPlayRecord(false);
             updateSpentTime(record);
-            callback.saveFormulaRecord(record);
+            callback.savePlayRecord(play, record);
 
             unknown.startAnimation(shake);
             unknown.setText("");
@@ -168,10 +174,9 @@ public class CalcFragment extends LeliBaseFragment {
         }
     }
 
-    private FormulaRecord getFormulaRecord(boolean correct) {
-        FormulaRecord record = new FormulaRecord();
-        record.setGame(Game.FAST_CALC);
-        record.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
+    private PlayRecord getPlayRecord(boolean correct) {
+        PlayRecord record = new PlayRecord();
+        record.setPlay(play);
         record.setDate(new Date());
         record.setCorrect(correct);
         if (! correct) {
@@ -181,10 +186,11 @@ public class CalcFragment extends LeliBaseFragment {
         return record;
     }
 
-    protected void updateSpentTime(FormulaRecord formulaRecord) {
-        super.updateSpentTime(formulaRecord);
+    protected void updateSpentTime(PlayRecord playRecord) {
+        super.updateSpentTime(playRecord);
+        play.addTimeSpent(playRecord.getTimeSpent());
 /*
-        totalTimeSpent += formulaRecord.getTimeSpent();
+        totalTimeSpent += playRecord.getTimeSpent();
         long averageTime = (totalTimeSpent) / (1000 * formulaPosition);
 
         View speedIndicator = findViewById(R.id.speedIndicator);
@@ -222,6 +228,19 @@ public class CalcFragment extends LeliBaseFragment {
         if (unknown.getId() != R.id.result) {
             ((TextView) activity.findViewById(R.id.result)).setText(formula.getResult().toString());
         }
+    }
+
+    private void setupPlay() {
+        formulas = logic.generateFormulas();
+
+        play = new Play();
+        play.setGame(Game.FAST_CALC);
+        play.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
+        play.setDate(new Date());
+        play.setCount(formulas.size());
+
+        PlayProvider provider = new PlayProvider(activity);
+        provider.create(play);
     }
 
     private void prepareNewFormula() {
@@ -271,6 +290,7 @@ public class CalcFragment extends LeliBaseFragment {
         super.onSaveInstanceState(state);
         state.putParcelableArrayList("formulas", formulas);
         state.putInt("formulaPosition", formulaPosition);
+        state.putParcelable("play", play);
         state.putLong("started", started);
         state.putLong("stopped", stopped);
         state.putLong("timeSpent", totalTimeSpent);

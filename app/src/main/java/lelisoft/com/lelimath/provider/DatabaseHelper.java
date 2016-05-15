@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.sql.SQLException;
 
-import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.data.Play;
+import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.User;
 
 /**
@@ -25,7 +26,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(DatabaseHelper.class);
 
     private static final String DATABASE_NAME = "lelimath.sqlite";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static File path;
 
     public DatabaseHelper(Context context) {
@@ -42,7 +43,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, User.class);
             getUserDao().create(new User());
-            TableUtils.createTable(connectionSource, FormulaRecord.class);
+            TableUtils.createTable(connectionSource, Play.class);
+            TableUtils.createTable(connectionSource, PlayRecord.class);
         } catch (SQLException e) {
             log.error("Error creating new database!", e);
         }
@@ -50,15 +52,28 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        log.info("Upgrading existing database " + oldVersion + " version " + newVersion);
+        log.info("Upgrading database from version {} to {}", oldVersion, newVersion);
+        if (oldVersion == 1) {
+            try {
+                TableUtils.dropTable(connectionSource, PlayRecord.class, true);
+                TableUtils.createTable(connectionSource, Play.class);
+                TableUtils.createTable(connectionSource, PlayRecord.class);
+            } catch (SQLException e) {
+                log.error("Error upgrading a database!", e);
+            }
+        }
     }
 
     public Dao<User, Integer> getUserDao() throws SQLException {
         return getDao(User.class);
     }
 
-    public Dao<FormulaRecord, Integer> getFormulaRecordDao() throws SQLException {
-        return getDao(FormulaRecord.class);
+    public Dao<PlayRecord, Integer> getPlayRecordDao() throws SQLException {
+        return getDao(PlayRecord.class);
+    }
+
+    public Dao<Play, Integer> getPlayDao() throws SQLException {
+        return getDao(Play.class);
     }
 
     public static File getDatabasePath() {

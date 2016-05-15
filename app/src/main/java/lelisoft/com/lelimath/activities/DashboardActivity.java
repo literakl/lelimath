@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.fragment.DashboardHomeFragment;
-import lelisoft.com.lelimath.fragment.FormulaRecordListFragment;
+import lelisoft.com.lelimath.fragment.PlayRecordListFragment;
 
 public class DashboardActivity extends LeliBaseActivity {
 
@@ -42,7 +42,7 @@ public class DashboardActivity extends LeliBaseActivity {
         public Fragment getItem(int i) {
             switch(i) {
                 case 0: return DashboardHomeFragment.newInstance();
-                case 1: return FormulaRecordListFragment.newInstance();
+                case 1: return PlayRecordListFragment.newInstance();
             }
             return null;
         }

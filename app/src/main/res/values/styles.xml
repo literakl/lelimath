@@ -65,12 +65,12 @@
     <style name="FormulaEqualSign" parent="FormulaValue">
     </style>
 
-    <style name="FormulaRecordHeader" parent="@style/Base.TextAppearance.AppCompat.Caption">
+    <style name="PlayRecordHeader" parent="@style/Base.TextAppearance.AppCompat.Caption">
         <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:textColor">@color/gray_79</item>
     </style>
 
-    <style name="FormulaRecordTime" parent="@style/Base.TextAppearance.AppCompat.Caption">
+    <style name="PlayRecordTime" parent="@style/Base.TextAppearance.AppCompat.Caption">
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textColor">@color/gray_79</item>
     </style>

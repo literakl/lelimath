@@ -16,23 +16,23 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.adapter.FormulaRecordAdapter;
-import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.adapter.PlayRecordAdapter;
+import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.helpers.EndlessRecyclerViewScrollListener;
-import lelisoft.com.lelimath.provider.FormulaRecordProvider;
+import lelisoft.com.lelimath.provider.PlayRecordProvider;
 
 /**
  * Lists formula records from a database
  * Created by Leoš on 06.05.2016.
  */
-public class FormulaRecordListFragment extends LeliBaseFragment {
+public class PlayRecordListFragment extends LeliBaseFragment {
     private static final Logger log = LoggerFactory.getLogger(DashboardHomeFragment.class);
 
     RecyclerView recyclerView;
     FragmentActivity activity;
-    FormulaRecordProvider recordsProvider;
-    FormulaRecordAdapter adapter;
-    List<FormulaRecord> records;
+    PlayRecordProvider recordsProvider;
+    PlayRecordAdapter adapter;
+    List<PlayRecord> records;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,9 +40,9 @@ public class FormulaRecordListFragment extends LeliBaseFragment {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_dashboard_log, container, false);
 
         activity = getActivity();
-        recordsProvider = new FormulaRecordProvider(getActivity());
+        recordsProvider = new PlayRecordProvider(getActivity());
         records = recordsProvider.getAllInDescendingOrder();
-        adapter = new FormulaRecordAdapter(records);
+        adapter = new PlayRecordAdapter(records);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
 /*
@@ -93,6 +93,6 @@ public class FormulaRecordListFragment extends LeliBaseFragment {
     }
 
     public static Fragment newInstance() {
-        return new FormulaRecordListFragment();
+        return new PlayRecordListFragment();
     }
 }

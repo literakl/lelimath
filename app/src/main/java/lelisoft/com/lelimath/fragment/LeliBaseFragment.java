@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.support.ConnectionSource;
 
-import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
 
 /**
@@ -52,7 +52,7 @@ public class LeliBaseFragment extends Fragment {
      * Calculates time a user spent on solving this task
      * @param formula formula record to be updated
      */
-    protected void updateSpentTime(FormulaRecord formula) {
+    protected void updateSpentTime(PlayRecord formula) {
         long now = System.currentTimeMillis();
         long spent = now - started;
         if (spent > MAX_SPENT_TIME) {

@@ -18,7 +18,8 @@ import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.FormulaRecord;
+import lelisoft.com.lelimath.data.Play;
+import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.helpers.Misc;
@@ -73,7 +74,7 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
 
         try {
             log.debug("start browsing db");
-            GenericRawResults<String[]> rawResults = getHelper().getFormulaRecordDao().queryRaw("select * from formula_record");
+            GenericRawResults<String[]> rawResults = getHelper().getPlayRecordDao().queryRaw("select * from formula_record");
             for (String[] columns : rawResults.getResults()) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < columns.length; i++) {
@@ -106,8 +107,10 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
     }
 
     @Override
-    public void saveFormulaRecord(FormulaRecord record) {
-        storeFormulaRecord(record);
+    public void savePlayRecord(Play play, PlayRecord record) {
+        // todo in background bug #42
+        storePlay(play);
+        storePlayRecord(record);
     }
 
     private void initializePuzzleFragment(boolean replace) {
