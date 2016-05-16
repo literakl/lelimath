@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.fragment.BadgeListFragment;
 import lelisoft.com.lelimath.fragment.DashboardHomeFragment;
 import lelisoft.com.lelimath.fragment.PlayRecordListFragment;
 
@@ -35,14 +36,15 @@ public class DashboardActivity extends LeliBaseActivity {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
         public Fragment getItem(int i) {
             switch(i) {
                 case 0: return DashboardHomeFragment.newInstance();
-                case 1: return PlayRecordListFragment.newInstance();
+                case 1: return BadgeListFragment.newInstance();
+                case 2: return PlayRecordListFragment.newInstance();
             }
             return null;
         }
@@ -50,8 +52,9 @@ public class DashboardActivity extends LeliBaseActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch(position) {
-                case 0: return "Home";
-                case 1: return "Log";
+                case 0: return getString(R.string.tab_home);
+                case 1: return getString(R.string.tab_badges);
+                case 2: return getString(R.string.tab_log);
             }
             return "";
         }

@@ -12,7 +12,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
+
+import lelisoft.com.lelimath.R;
 
 /**
  * Various view methods
@@ -157,6 +160,21 @@ public class Misc {
             return true;
         }
         return false;
+    }
+
+    public static String getResource(String key) {
+        Class res = R.string.class;
+        int result;
+        try {
+            Field field = res.getField(key);
+            result = field.getInt(null);
+            return LeliMathApp.resources.getString(result);
+        } catch (NoSuchFieldException e) {
+            log.warn("Key {} was not found in R.string!", key);
+            return key;
+        } catch (IllegalAccessException e) {
+            return key;
+        }
     }
 
     public static Random getRandom() {

@@ -50,7 +50,7 @@
             android:id="@+id/main.button.settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nastavení"
+            android:text="@string/action_settings"
             android:textAppearance="@style/TextAppearance.Item"
             android:drawableRight="@drawable/ic_arrow_forward_24dp"
             style="@style/TextComponent.ItemRow.Selectable"/>

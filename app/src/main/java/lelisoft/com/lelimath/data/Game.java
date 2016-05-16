@@ -1,7 +1,5 @@
 package lelisoft.com.lelimath.data;
 
-import com.j256.ormlite.field.DatabaseField;
-
 /**
  * Game types
  * Created by Leoš on 29.04.2016.
@@ -9,7 +7,6 @@ import com.j256.ormlite.field.DatabaseField;
 public enum Game {
     PUZZLE("PZ"), FAST_CALC("FC");
 
-    @DatabaseField(id = true)
     final String key;
 
     Game(String key) {

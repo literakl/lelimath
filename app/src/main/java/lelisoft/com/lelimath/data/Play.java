@@ -20,7 +20,7 @@ public class Play implements Parcelable {
     @DatabaseField(canBeNull = false)
     Date date;
 
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(canBeNull = false, foreign = true, columnName="user_id")
     User user;
 
     @DatabaseField(persisted=false)
