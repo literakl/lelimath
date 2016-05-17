@@ -11,6 +11,7 @@ import java.util.List;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Badge;
+import lelisoft.com.lelimath.helpers.Misc;
 
 /**
  * Adapter for ListView holding Badges
@@ -59,7 +60,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
             super(view);
             formulaView = (TextView) view.findViewById(R.id.badge_title);
             typeView = (ImageView) view.findViewById(R.id.badge_type);
-//            statusView = (ImageView) view.findViewById(R.id.fr_status);
+            statusView = (ImageView) view.findViewById(R.id.badge_status);
         }
 
         /**
@@ -78,6 +79,11 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
                     break;
                 default:
                     typeView.setImageResource(R.drawable.ic_bronze_circle);
+            }
+            if (Misc.getRandom().nextInt(10) > 3) {
+                statusView.setImageResource(R.drawable.ic_correct);
+            } else {
+                statusView.setImageResource(0);
             }
         }
     }
