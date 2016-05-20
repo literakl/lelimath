@@ -8,6 +8,8 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
+import lelisoft.com.lelimath.logic.GameLogic;
+
 /**
  * Holder for one play of same game
  * Created by Leoš on 13.05.2016.
@@ -29,10 +31,15 @@ public class Play implements Parcelable {
     @DatabaseField(canBeNull=false, columnName="game", width = 2)
     String gameStr;
 
+    public static final String LEVEL_COLUMN_NAME = "level";
+    @DatabaseField(canBeNull = false, columnName = LEVEL_COLUMN_NAME)
+    int level;
+
     @DatabaseField(canBeNull = false)
     int count;
 
-    @DatabaseField(canBeNull = false)
+    public static final String FINISHED_COLUMN_NAME = "finished";
+    @DatabaseField(canBeNull = false, columnName = FINISHED_COLUMN_NAME)
     boolean finished = false;
 
     @DatabaseField(canBeNull=true, columnName="spent")
@@ -77,6 +84,41 @@ public class Play implements Parcelable {
     public void setGame(Game game) {
         this.game = game;
         gameStr = game.key;
+    }
+
+    /**
+     * Level.TRIVIAL = 0, Level.GENIUS = 12
+     * @return numeric value for GameLogic.Level
+     */
+    public GameLogic.Level getLevel() {
+        switch (level) {
+            case 0:
+                return GameLogic.Level.TRIVIAL;
+            case 3:
+                return GameLogic.Level.EASY;
+            case 6:
+                return GameLogic.Level.NORMAL;
+            case 9:
+                return GameLogic.Level.HARD;
+            case 12:
+                return GameLogic.Level.GENIUS;
+        }
+        return null;
+    }
+
+    public void setLevel(GameLogic.Level level) {
+        switch (level) {
+            case TRIVIAL:
+                this.level = 0; break;
+            case EASY:
+                this.level = 3; break;
+            case NORMAL:
+                this.level = 6; break;
+            case HARD:
+                this.level = 9; break;
+            case GENIUS:
+                this.level = 12; break;
+        }
     }
 
     public int getCount() {

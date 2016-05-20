@@ -235,7 +235,8 @@ public class CalcFragment extends LeliBaseFragment {
 
         play = new Play();
         play.setGame(Game.FAST_CALC);
-        play.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
+        play.setLevel(logic.getLevel());
+        play.setUser(LeliMathApp.getInstance().getCurrentUser());
         play.setDate(new Date());
         play.setCount(formulas.size());
 

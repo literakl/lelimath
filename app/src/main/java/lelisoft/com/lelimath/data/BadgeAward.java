@@ -23,10 +23,92 @@ public class BadgeAward {
     @DatabaseField(persisted = false)
     Badge badge;
 
-    @DatabaseField(canBeNull=false, columnName="badge")
+    public static final String BADGE_COLUMN_NAME = "badge";
+    @DatabaseField(canBeNull=false, columnName=BADGE_COLUMN_NAME)
     String badgeStr;
 
     @DatabaseField(canBeNull=false, columnName="type", width = 1)
     String type;
 
+    @DatabaseField(canBeNull=true, columnName="data")
+    String data;
+
+    @DatabaseField(canBeNull=true, columnName="last_id")
+    Integer lastId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Badge getBadge() {
+        if (badge != null) {
+            return badge;
+        } else if (badgeStr != null) {
+            badge = Badge.getValue(badgeStr);
+            type = Character.toString(badge.getType());
+        }
+        return badge;
+    }
+
+    public void setBadge(Badge badge) {
+        this.badge = badge;
+        badgeStr = badge.key;
+        type = Character.toString(badge.getType());
+    }
+
+    public String getBadgeStr() {
+        return badgeStr;
+    }
+
+    public void setBadgeStr(String badgeStr) {
+        this.badgeStr = badgeStr;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Holds data for displaying what was used for awarding this badge
+     * @return some data, typically comma separated formula record ids
+     */
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    /**
+     * Holds id of last formula record or play used for awarding this badge.
+     * @return id or null
+     */
+    public Integer getLastId() {
+        return lastId;
+    }
+
+    public void setLastId(Integer lastId) {
+        this.lastId = lastId;
+    }
 }

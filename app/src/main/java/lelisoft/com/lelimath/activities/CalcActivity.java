@@ -21,6 +21,7 @@ import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.fragment.CalcFragment;
 import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.helpers.Misc;
+import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
 import lelisoft.com.lelimath.logic.CalcLogic;
 import lelisoft.com.lelimath.logic.CalcLogicImpl;
 
@@ -60,6 +61,8 @@ public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcB
     @Override
     public void calcFinished() {
         log.debug("calcFinished()");
+        new BadgeEvaluationTask(this).execute();
+
         pictureFragment = new PictureFragment();
         Bundle args = new Bundle();
         args.putInt(PictureFragment.ARG_PICTURE, PuzzleActivity.pictures[Misc.getRandom().nextInt(PuzzleActivity.pictures.length)]);

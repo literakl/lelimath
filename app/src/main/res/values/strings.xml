@@ -51,6 +51,7 @@
     <string name="button_deny">Zakázat</string>
     <string name="permission_fs_denied">Bez přístupu k disku některé funkce nebudou fungovat</string>
     <string name="permission_fs_neverask">Bez přístupu k disku některé funkce nebudou fungovat. Změnit rozhodnutí můžete v nastavení systému.</string>
+    <string name="message_badge_received">Nové odznáčky: %1$d</string>
     <string name="badge_title_PAGE">Páže</string>
     <string name="badge_title_KNIGHT">Rytíř</string>
     <string name="badge_title_PALADIN">Paladin</string>

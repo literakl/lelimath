@@ -89,7 +89,11 @@ public class PlayRecordProvider {
         }
     }
 
-    public List<PlayRecord> executeQuery(PreparedQuery<PlayRecord> query) {
+    public QueryBuilder<PlayRecord, Integer> queryBuilder() {
+        return dao.queryBuilder();
+    }
+
+    public List<PlayRecord> query(PreparedQuery<PlayRecord> query) {
         try {
             return dao.query(query);
         } catch (SQLException e) {

@@ -34,13 +34,16 @@ import lelisoft.com.lelimath.provider.DatabaseHelper;
 public class LeliMathApp extends Application implements Thread.UncaughtExceptionHandler {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(LeliMathApp.class);
 
-    private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public static Resources resources;
+    private static LeliMathApp instance;
+
+    private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public User currentUser;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
 //        new File("/data/data/lelisoft.com.lelimath/files/log/").mkdirs();
         configureLogbackDirectly();
         androidExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -49,6 +52,10 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         resources = getResources();
         performUpgrade();
         new FeedPreferencesTask().execute();
+    }
+
+    public static LeliMathApp getInstance() {
+        return instance;
     }
 
     private void performUpgrade() {

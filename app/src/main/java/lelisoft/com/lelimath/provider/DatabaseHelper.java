@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.sql.SQLException;
 
+import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.User;
@@ -45,6 +46,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             getUserDao().create(new User());
             TableUtils.createTable(connectionSource, Play.class);
             TableUtils.createTable(connectionSource, PlayRecord.class);
+            TableUtils.createTable(connectionSource, BadgeAward.class);
         } catch (SQLException e) {
             log.error("Error creating new database!", e);
         }
@@ -74,6 +76,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     public Dao<Play, Integer> getPlayDao() throws SQLException {
         return getDao(Play.class);
+    }
+
+    public Dao<BadgeAward, Integer> getBadgeAwardDao() throws SQLException {
+        return getDao(BadgeAward.class);
     }
 
     public static File getDatabasePath() {

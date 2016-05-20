@@ -11,7 +11,7 @@ import java.util.Date;
  * Records formula solving activity into database
  * Created by Leoš on 29.04.2016.
  */
-@DatabaseTable(tableName = "formula_record")
+@DatabaseTable(tableName = "play_record")
 public class PlayRecord {
     @DatabaseField(generatedId = true)
     Integer id;

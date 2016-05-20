@@ -105,7 +105,8 @@ public class PuzzleFragment extends LeliBaseFragment {
     private void setupPlay() {
         play = new Play();
         play.setGame(Game.PUZZLE);
-        play.setUser(((LeliMathApp)getActivity().getApplication()).getCurrentUser());
+        play.setLevel(logic.getLevel());
+        play.setUser(LeliMathApp.getInstance().getCurrentUser());
         play.setDate(new Date());
         play.setCount(tilesToBeSolved / 2);
 

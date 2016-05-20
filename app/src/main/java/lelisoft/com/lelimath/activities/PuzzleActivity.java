@@ -23,6 +23,7 @@ import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.helpers.Misc;
+import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
 
@@ -93,6 +94,8 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
     @Override
     public void puzzleFinished() {
         log.debug("puzzleFinished()");
+        new BadgeEvaluationTask(this).execute();
+
         pictureFragment = new PictureFragment();
         Bundle args = new Bundle();
         args.putInt(PictureFragment.ARG_PICTURE, pictures[Misc.getRandom().nextInt(pictures.length)]);
