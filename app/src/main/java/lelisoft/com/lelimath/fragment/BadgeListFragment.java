@@ -12,12 +12,17 @@ import android.view.ViewGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.BadgeAdapter;
 import lelisoft.com.lelimath.data.Badge;
+import lelisoft.com.lelimath.data.BadgeAward;
+import lelisoft.com.lelimath.provider.BadgeAwardProvider;
+import lelisoft.com.lelimath.view.BadgeView;
 
 /**
  * List of all badges with info if a badge is taken
@@ -29,18 +34,30 @@ public class BadgeListFragment extends LeliBaseFragment {
     RecyclerView recyclerView;
     FragmentActivity activity;
     BadgeAdapter adapter;
-    List<Badge> badges;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log.debug("onCreateView()");
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_dashboard_badges, container, false);
         activity = getActivity();
-        badges = Arrays.asList(Badge.values());
-        adapter = new BadgeAdapter(badges);
+        List<BadgeView> records = fetchBadgeViews();
+        adapter = new BadgeAdapter(records);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         return recyclerView;
+    }
+
+    private List<BadgeView> fetchBadgeViews() {
+        List<Badge> badges = Arrays.asList(Badge.values());
+        BadgeAwardProvider provider = new BadgeAwardProvider(activity);
+        Map<Badge, BadgeAward> badgeAwards = provider.getAll();
+        List<BadgeView> views = new ArrayList<>(badges.size());
+        for (Badge badge : badges) {
+            BadgeView view = new BadgeView(badge);
+            view.awarded = badgeAwards.get(badge) != null;
+            views.add(view);
+        }
+        return views;
     }
 
     public static Fragment newInstance() {

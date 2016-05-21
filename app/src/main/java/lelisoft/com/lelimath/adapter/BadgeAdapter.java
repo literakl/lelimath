@@ -10,18 +10,16 @@ import android.widget.TextView;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.Badge;
-import lelisoft.com.lelimath.helpers.Misc;
+import lelisoft.com.lelimath.view.BadgeView;
 
 /**
  * Adapter for ListView holding Badges
  * Created by Leoš on 06.05.2016.
  */
 public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(BadgeAdapter.class);
-    List<Badge> records;
+    List<BadgeView> records;
 
-    public BadgeAdapter(List<Badge> records) {
+    public BadgeAdapter(List<BadgeView> records) {
         this.records = records;
     }
 
@@ -36,7 +34,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(BadgeAdapter.ViewHolder viewHolder, int position) {
-        viewHolder.update(null, records.get(position));
+        viewHolder.update(records.get(position));
     }
 
     @Override
@@ -65,12 +63,11 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
 
         /**
          * Update views (if necessary) that are hold by this ViewHolder
-         * @param view the view that views belong to
-         * @param badge badge to be displayed on the view
+         * @param badgeView badge to be displayed on the view
          */
-        public void update(View view, Badge badge) {
-            formulaView.setText(badge.getTitle());
-            switch (badge.getType()) {
+        public void update(BadgeView badgeView) {
+            formulaView.setText(badgeView.badge.getTitle());
+            switch (badgeView.badge.getType()) {
                 case 'G':
                     typeView.setImageResource(R.drawable.ic_gold_circle);
                     break;
@@ -80,7 +77,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
                 default:
                     typeView.setImageResource(R.drawable.ic_bronze_circle);
             }
-            if (Misc.getRandom().nextInt(10) > 3) {
+            if (badgeView.awarded) {
                 statusView.setImageResource(R.drawable.ic_correct);
             } else {
                 statusView.setImageResource(0);
