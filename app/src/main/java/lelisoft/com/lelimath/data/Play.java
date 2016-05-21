@@ -16,7 +16,8 @@ import lelisoft.com.lelimath.logic.GameLogic;
  */
 @DatabaseTable(tableName = "play")
 public class Play implements Parcelable {
-    @DatabaseField(generatedId = true)
+    public static final String ID_COLUMN_NAME = "id";
+    @DatabaseField(generatedId = true, columnName = ID_COLUMN_NAME)
     Integer id;
 
     @DatabaseField(canBeNull = false)

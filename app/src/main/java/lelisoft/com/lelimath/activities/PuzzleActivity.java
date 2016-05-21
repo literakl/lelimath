@@ -10,12 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.j256.ormlite.dao.GenericRawResults;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.sql.SQLException;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Play;
@@ -72,23 +68,6 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
         puzzleFragment = new PuzzleFragment();
         puzzleFragment.setLogic((PuzzleLogic) gameLogic);
         initializePuzzleFragment(false);
-
-        try {
-            log.debug("start browsing db");
-            GenericRawResults<String[]> rawResults = getHelper().getPlayRecordDao().queryRaw("select * from formula_record");
-            for (String[] columns : rawResults.getResults()) {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < columns.length; i++) {
-                    String column = columns[i];
-                    sb.append(rawResults.getColumnNames()[i]).append("=").append(column).append(", ");
-                }
-                log.debug(sb.toString());
-            }
-            rawResults.close();
-        } catch (SQLException e) {
-            log.error("error browsing db",e);
-        }
-//        getHelper().getConnectionSource().getReadOnlyConnection().
     }
 
     @Override

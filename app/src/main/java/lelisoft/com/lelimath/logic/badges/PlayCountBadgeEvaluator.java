@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
@@ -43,12 +44,13 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
         User user = LeliMathApp.getInstance().getCurrentUser();
 
         try {
-            QueryBuilder<Play, Integer> queryBuilder = playProvider.queryBuilder();
-            Where<Play, Integer> where = queryBuilder.where().le(Play.LEVEL_COLUMN_NAME, 6).and().eq(Play.FINISHED_COLUMN_NAME, true);
-            log.debug("where = {}", where);
-            long count = where.countOf();
+            QueryBuilder<Play, Integer> queryBuilder = setPlayConditions(playProvider, true);
+            long count = queryBuilder.countOf();
             if (count > 0 && badges.get(Badge.PAGE) == null) {
                 BadgeAward award = createBadgeAward(Badge.PAGE, user);
+                queryBuilder = setPlayConditions(playProvider, true);
+                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true);
+                setPlayId(award, queryBuilder.queryForFirst());
                 awardProvider.create(award);
                 badgesCount.bronze++;
                 log.debug("Badge {} was awarded", Badge.PAGE);
@@ -56,6 +58,9 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
 
             if (count >= 25 && badges.get(Badge.KNIGHT) == null) {
                 BadgeAward award = createBadgeAward(Badge.KNIGHT, user);
+                queryBuilder = setPlayConditions(playProvider, true);
+                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(25L);
+                setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
                 badgesCount.silver++;
                 log.debug("Badge {} was awarded", Badge.KNIGHT);
@@ -63,14 +68,21 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
 
             if (count >= 100 && badges.get(Badge.PALADIN) == null) {
                 BadgeAward award = createBadgeAward(Badge.PAGE, user);
+                queryBuilder = setPlayConditions(playProvider, true);
+                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(100L);
+                setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
                 badgesCount.gold++;
                 log.debug("Badge {} was awarded", Badge.PALADIN);
             }
 
-            count = queryBuilder.where().ge(Play.LEVEL_COLUMN_NAME, 9).and().eq(Play.FINISHED_COLUMN_NAME, true).countOf();
+            queryBuilder = setPlayConditions(playProvider, false);
+            count = queryBuilder.countOf();
             if (count > 0 && badges.get(Badge.GLADIATOR) == null) {
                 BadgeAward award = createBadgeAward(Badge.GLADIATOR, user);
+                queryBuilder = setPlayConditions(playProvider, false);
+                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true);
+                setPlayId(award, queryBuilder.queryForFirst());
                 awardProvider.create(award);
                 badgesCount.bronze++;
                 log.debug("Badge {} was awarded", Badge.GLADIATOR);
@@ -78,6 +90,9 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
 
             if (count >= 25 && badges.get(Badge.VIKING) == null) {
                 BadgeAward award = createBadgeAward(Badge.VIKING, user);
+                queryBuilder = setPlayConditions(playProvider, false);
+                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(25L);
+                setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
                 badgesCount.silver++;
                 log.debug("Badge {} was awarded", Badge.VIKING);
@@ -85,6 +100,9 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
 
             if (count >= 100 && badges.get(Badge.SAMURAI) == null) {
                 BadgeAward award = createBadgeAward(Badge.SAMURAI, user);
+                queryBuilder = setPlayConditions(playProvider, false);
+                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(100L);
+                setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
                 badgesCount.gold++;
                 log.debug("Badge {} was awarded", Badge.SAMURAI);
@@ -97,6 +115,21 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
         }
     }
 
+    private void setPlayId(BadgeAward award, Play play) throws SQLException {
+        award.setData(Integer.toString(play.getId()));
+        award.setLastId(play.getId());
+    }
+
+    private void setPlayIds(BadgeAward award, List<Play> plays) {
+        StringBuilder sb = new StringBuilder();
+        for (Play play : plays) {
+            sb.append(Integer.toString(play.getId())).append(',');
+        }
+        sb.setLength(sb.length() - 1);
+        award.setLastId(plays.get(plays.size() - 1).getId());
+        award.setData(sb.toString());
+    }
+
     @NonNull
     private BadgeAward createBadgeAward(Badge badge, User user) {
         BadgeAward award = new BadgeAward();
@@ -104,5 +137,17 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
         award.setDate(new Date());
         award.setUser(user);
         return award;
+    }
+
+    public QueryBuilder<Play, Integer> setPlayConditions(PlayProvider provider, boolean easy) throws SQLException {
+        QueryBuilder<Play, Integer> builder = provider.queryBuilder();
+        Where<Play, Integer> where = builder.where();
+        if (easy) {
+            where.le(Play.LEVEL_COLUMN_NAME, 6);
+        } else {
+            where.ge(Play.LEVEL_COLUMN_NAME, 9);
+        }
+        where.and().eq(Play.FINISHED_COLUMN_NAME, true);
+        return builder;
     }
 }
