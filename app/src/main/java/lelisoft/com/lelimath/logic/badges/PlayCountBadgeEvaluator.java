@@ -67,7 +67,7 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
             }
 
             if (count >= 100 && badges.get(Badge.PALADIN) == null) {
-                BadgeAward award = createBadgeAward(Badge.PAGE, user);
+                BadgeAward award = createBadgeAward(Badge.PALADIN, user);
                 queryBuilder = setPlayConditions(playProvider, true);
                 queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(100L);
                 setPlayIds(award, queryBuilder.query());
