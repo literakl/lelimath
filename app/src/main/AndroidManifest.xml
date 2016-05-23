@@ -41,6 +41,10 @@
             android:parentActivityName=".activities.DashboardActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
         </activity>
+        <activity
+            android:name=".activities.BadgeAwardActivity"
+            android:label="@string/title_badge"
+            android:parentActivityName=".activities.DashboardActivity">
+        </activity>
     </application>
-
 </manifest>

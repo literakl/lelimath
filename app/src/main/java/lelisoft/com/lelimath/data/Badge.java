@@ -5,6 +5,7 @@ import lelisoft.com.lelimath.helpers.Misc;
 /**
  * Badges are awards for user activity
  * Created by Leoš on 15.05.2016.
+ * TODO use badge.name() a valueOf
  */
 public enum Badge {
     PAGE("PAGE", 'B'),

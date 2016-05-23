@@ -29,7 +29,7 @@ import lelisoft.com.lelimath.view.BadgeView;
  * Created by Leoš on 16.05.2016.
  */
 public class BadgeListFragment extends LeliBaseFragment {
-    private static final Logger log = LoggerFactory.getLogger(DashboardHomeFragment.class);
+    private static final Logger log = LoggerFactory.getLogger(BadgeListFragment.class);
 
     RecyclerView recyclerView;
     FragmentActivity activity;

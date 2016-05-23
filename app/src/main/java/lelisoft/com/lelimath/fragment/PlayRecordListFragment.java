@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import java.util.List;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.PlayRecordAdapter;
 import lelisoft.com.lelimath.data.PlayRecord;
-import lelisoft.com.lelimath.helpers.EndlessRecyclerViewScrollListener;
 import lelisoft.com.lelimath.provider.PlayRecordProvider;
 
 /**
@@ -58,23 +56,23 @@ public class PlayRecordListFragment extends LeliBaseFragment {
         });
 */
 
+/*
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                log.debug("onLoadMore({},{})", page, totalItemsCount);
+                log.trace("onLoadMore({},{})", page, totalItemsCount);
                 // fetch data here
                 customLoadMoreDataFromApi(page);
                 // update the adapter, saving the last known size
                 int curSize = adapter.getItemCount();
-/*
                 records.addAll(moreContacts);
-*/
                 // for efficiency purposes, only notify the adapter of what elements that got changed
                 // curSize will equal to the index of the first element inserted because the list is 0-indexed
                 adapter.notifyItemRangeInserted(curSize, records.size() - 1);
             }
         });
+*/
         return recyclerView;
     }
 
@@ -84,12 +82,14 @@ public class PlayRecordListFragment extends LeliBaseFragment {
         super.onActivityCreated(state);
     }
 
+/*
     // Append more data into the adapter
     public void customLoadMoreDataFromApi(int offset) {
         // This method probably sends out a network request and appends new data items to your adapter.
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
     }
+*/
 
     public static Fragment newInstance() {
         return new PlayRecordListFragment();

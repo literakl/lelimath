@@ -46,6 +46,7 @@ public class LeliBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        log.debug("{}.onCreate()", this.getClass().getSimpleName());
         if (helper == null) {
             helper = getHelperInternal(this);
             created = true;
@@ -88,44 +89,44 @@ public class LeliBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        log.debug("onStart()");
+        log.debug("{}.onStart()", this.getClass().getSimpleName());
         super.onStart();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle state) {
-        log.debug("onSaveInstanceState()");
+        log.debug("{}.onSaveInstanceState()", this.getClass().getSimpleName());
         super.onSaveInstanceState(state);
     }
 
     @Override
     protected void onPause() {
-        log.debug("onPause()");
+        log.debug("{}.onPause()", this.getClass().getSimpleName());
         super.onPause();
 
     }
 
     @Override
     protected void onResume() {
-        log.debug("onResume()");
+        log.debug("{}.onResume()", this.getClass().getSimpleName());
         super.onResume();
     }
 
     @Override
     protected void onStop() {
-        log.debug("onStop()");
+        log.debug("{}.onStop()", this.getClass().getSimpleName());
         super.onStop();
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle state) {
-        log.debug("onRestoreInstanceState()");
+        log.debug("{}.onRestoreInstanceState()", this.getClass().getSimpleName());
         super.onRestoreInstanceState(state);
     }
 
     @Override
     protected void onRestart() {
-        log.debug("onRestart()");
+        log.debug("{}.onRestart()", this.getClass().getSimpleName());
         super.onRestart();
     }
 }

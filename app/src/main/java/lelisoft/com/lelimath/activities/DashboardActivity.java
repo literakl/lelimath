@@ -14,6 +14,8 @@ import lelisoft.com.lelimath.fragment.DashboardHomeFragment;
 import lelisoft.com.lelimath.fragment.PlayRecordListFragment;
 
 public class DashboardActivity extends LeliBaseActivity {
+    ViewPager viewPager;
+    int tabPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +25,17 @@ public class DashboardActivity extends LeliBaseActivity {
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         collapsingToolbarLayout.setTitle(getString(R.string.app_name));
 
-        ViewPager viewPager  = (ViewPager) findViewById(R.id.dashboard_viewpager);
+        viewPager  = (ViewPager) findViewById(R.id.dashboard_viewpager);
         viewPager.setAdapter(new TabsAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tabs);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(tabPosition);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        tabPosition = viewPager.getCurrentItem();
     }
 
     class TabsAdapter extends FragmentStatePagerAdapter {

@@ -229,4 +229,18 @@ vraceni zpatky
 03-15 11:24:54.136  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onStart()
 03-15 11:24:54.136  12499-12499/lelisoft.com.lelimath D/CalcActivity﹕ onResume()
 
+dashboard -> activity -> zpet
+
+05-22 10:10:23.017 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: DashboardActivity.onPause()
+05-22 10:10:23.027 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: BadgeAwardActivity.onCreate()
+05-22 10:10:23.067 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: BadgeAwardActivity.onStart()
+05-22 10:10:23.068 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: BadgeAwardActivity.onResume()
+05-22 10:10:23.517 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: DashboardActivity.onSaveInstanceState()
+05-22 10:10:23.534 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: DashboardActivity.onStop()
+05-22 10:10:24.074 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: BadgeAwardActivity.onPause()
+05-22 10:10:24.081 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: DashboardActivity.onRestart()
+05-22 10:10:24.083 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: DashboardActivity.onStart()
+05-22 10:10:24.083 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: DashboardActivity.onResume()
+05-22 10:10:24.408 11939-11939/lelisoft.com.lelimath D/l.c.l.a.LeliBaseActivity: BadgeAwardActivity.onStop()
+
 */

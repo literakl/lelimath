@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.util.Random;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.Badge;
 
 /**
  * Various view methods
@@ -174,6 +175,17 @@ public class Misc {
             return key;
         } catch (IllegalAccessException e) {
             return key;
+        }
+    }
+
+    public static int getBadgeImage(Badge badge) {
+        switch (badge.getType()) {
+            case 'G':
+                return R.drawable.ic_gold_circle;
+            case 'S':
+                return R.drawable.ic_silver_circle;
+            default:
+                return R.drawable.ic_bronze_circle;
         }
     }
 
