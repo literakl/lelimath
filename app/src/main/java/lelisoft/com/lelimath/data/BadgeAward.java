@@ -64,7 +64,7 @@ public class BadgeAward {
         if (badge != null) {
             return badge;
         } else if (badgeStr != null) {
-            badge = Badge.getValue(badgeStr);
+            badge = Badge.valueOf(badgeStr);
             type = Character.toString(badge.getType());
         }
         return badge;
@@ -72,16 +72,8 @@ public class BadgeAward {
 
     public void setBadge(Badge badge) {
         this.badge = badge;
-        badgeStr = badge.key;
+        badgeStr = badge.name();
         type = Character.toString(badge.getType());
-    }
-
-    public String getBadgeStr() {
-        return badgeStr;
-    }
-
-    public void setBadgeStr(String badgeStr) {
-        this.badgeStr = badgeStr;
     }
 
     public String getType() {
