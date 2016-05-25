@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="pref_complexity_entries">
-        <item>Lehká</item>
-        <item>Běžná</item>
-        <item>Náročná</item>
-        <item>Těžká</item>
-        <item>Strašná</item>
+        <item>@string/level_TRIVIAL</item>
+        <item>@string/level_EASY</item>
+        <item>@string/level_NORMAL</item>
+        <item>@string/level_HARD</item>
+        <item>@string/level_GENIUS</item>
     </string-array>
     <string-array name="pref_complexity_entries_values">
         <item>TRIVIAL</item>
@@ -15,10 +15,10 @@
         <item>GENIUS</item>
     </string-array>
     <string-array name="pref_operations_entries">
-        <item>Sčítání</item>
-        <item>Odečítání</item>
-        <item>Násobení</item>
-        <item>Dělení</item>
+        <item>@string/operation_plus</item>
+        <item>@string/operation_minus</item>
+        <item>@string/operation_multiply</item>
+        <item>@string/operation_divide</item>
     </string-array>
     <string-array name="pref_operations_entries_values">
         <item>PLUS</item>

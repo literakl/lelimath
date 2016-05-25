@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,27 +30,40 @@
                 android:layout_marginLeft="6dp"/>
 
             <TextView
+                android:id="@+id/badge_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.Item"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:text="Sprinter"
-                android:id="@+id/badge_title"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/badge_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="This is badge description, describing how it can be awarderded. It can be very long spanning multiple lines."
-            style="@style/TextAppearance.Item"
-            android:id="@+id/description" />
+            style="@style/TextAppearance.AppCompat"
+            android:layout_marginTop="@dimen/text_margin" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/caption_awarded"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_marginTop="@dimen/text_margin"
+            android:layout_marginBottom="@dimen/text_margin"
+        />
+
+        <TextView
+            android:id="@+id/badge_earned"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.Item"
-            android:text="Earned: 23.5.2016 6:41"
-            android:id="@+id/earned" />
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:text="23.5.2016 6:41"
+            />
 
     </LinearLayout>
 </FrameLayout>

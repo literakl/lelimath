@@ -3,6 +3,7 @@ package lelisoft.com.lelimath.helpers;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Environment;
+import android.text.format.DateUtils;
 
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.Random;
 
 import lelisoft.com.lelimath.R;
@@ -104,6 +106,10 @@ public class Misc {
             }
         }
         return text.toString();
+    }
+
+    public static String format(Date date, Context context) {
+        return DateUtils.formatDateTime(context, date.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_TIME);
     }
 
     /**

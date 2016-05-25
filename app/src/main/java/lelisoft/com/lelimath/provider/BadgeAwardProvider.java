@@ -86,8 +86,17 @@ public class BadgeAwardProvider {
             }
             return badges;
         } catch (SQLException e) {
-            log.error("Unable to get all BadgeAward from database.", e);
+            log.error("Unable to get all BadgeAwards from database.", e);
             return null;
         }
+    }
+
+    public List<BadgeAward> getAwards(Badge badge) {
+        try {
+            return dao.queryForEq(BadgeAward.BADGE_COLUMN_NAME, badge.name());
+        } catch (SQLException e) {
+            log.error("Unable to get BadgeAwards for {} from database.", badge.name(), e);
+        }
+        return null;
     }
 }
