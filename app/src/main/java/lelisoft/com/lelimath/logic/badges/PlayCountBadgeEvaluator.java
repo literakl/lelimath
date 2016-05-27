@@ -24,7 +24,7 @@ import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.PlayProvider;
 
 /**
- * Awarding logic for
+ * Awarding logic for six play count based badges
  * Created by Leoš on 19.05.2016.
  */
 public class PlayCountBadgeEvaluator implements BadgeEvaluator {
@@ -117,7 +117,6 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
 
     private void setPlayId(BadgeAward award, Play play) throws SQLException {
         award.setData(Integer.toString(play.getId()));
-        award.setLastId(play.getId());
     }
 
     private void setPlayIds(BadgeAward award, List<Play> plays) {
@@ -126,7 +125,6 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
             sb.append(Integer.toString(play.getId())).append(',');
         }
         sb.setLength(sb.length() - 1);
-        award.setLastId(plays.get(plays.size() - 1).getId());
         award.setData(sb.toString());
     }
 

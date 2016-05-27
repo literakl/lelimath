@@ -14,6 +14,7 @@ import java.io.File;
 import java.sql.SQLException;
 
 import lelisoft.com.lelimath.data.BadgeAward;
+import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.User;
@@ -27,7 +28,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(DatabaseHelper.class);
 
     private static final String DATABASE_NAME = "lelimath.sqlite";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static File path;
 
     public DatabaseHelper(Context context) {
@@ -47,6 +48,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Play.class);
             TableUtils.createTable(connectionSource, PlayRecord.class);
             TableUtils.createTable(connectionSource, BadgeAward.class);
+            TableUtils.createTable(connectionSource, BadgeEvaluation.class);
         } catch (SQLException e) {
             log.error("Error creating new database!", e);
         }
@@ -58,10 +60,18 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         if (oldVersion == 1) {
             try {
                 TableUtils.dropTable(connectionSource, PlayRecord.class, true);
-                TableUtils.createTable(connectionSource, Play.class);
-                TableUtils.createTable(connectionSource, PlayRecord.class);
+                onCreate(database, connectionSource);
+                return;
             } catch (SQLException e) {
-                log.error("Error upgrading a database!", e);
+                log.error("Error upgrading a database from version 1!", e);
+            }
+        }
+        if (oldVersion == 2) {
+            try {
+                TableUtils.createTable(connectionSource, BadgeEvaluation.class);
+                getBadgeAwardDao().executeRaw("ALTER TABLE `badge_award` DROP COLUMN last_id;");
+            } catch (SQLException e) {
+                log.error("Error upgrading a database from version 2!", e);
             }
         }
     }
@@ -80,6 +90,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     public Dao<BadgeAward, Integer> getBadgeAwardDao() throws SQLException {
         return getDao(BadgeAward.class);
+    }
+
+    public Dao<BadgeEvaluation, Integer> getBadgeEvaluationDao() throws SQLException {
+        return getDao(BadgeEvaluation.class);
     }
 
     public static File getDatabasePath() {

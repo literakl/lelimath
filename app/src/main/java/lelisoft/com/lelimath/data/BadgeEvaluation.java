@@ -6,11 +6,11 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 /**
- * Register of awarded badges
- * Created by Leoš on 15.05.2016.
+ * Record of the last badge evaluator task.
+ * Created by Leoš on 26.05.2016.
  */
-@DatabaseTable(tableName = "badge_award")
-public class BadgeAward {
+@DatabaseTable(tableName = "badge_eval")
+public class BadgeEvaluation {
     @DatabaseField(generatedId = true)
     Integer id;
 
@@ -27,11 +27,11 @@ public class BadgeAward {
     @DatabaseField(canBeNull=false, columnName=BADGE_COLUMN_NAME)
     String badgeStr;
 
-    @DatabaseField(canBeNull=false, columnName="type", width = 1)
-    String type;
+    @DatabaseField(canBeNull=true, columnName="last_awarded_row")
+    Integer lastAwardedRow;
 
-    @DatabaseField(canBeNull=true, columnName="data")
-    String data;
+    @DatabaseField(canBeNull=true, columnName="last_wrong_row")
+    Integer lastWrongRow;
 
     public Integer getId() {
         return id;
@@ -62,7 +62,6 @@ public class BadgeAward {
             return badge;
         } else if (badgeStr != null) {
             badge = Badge.valueOf(badgeStr);
-            type = Character.toString(badge.getType());
         }
         return badge;
     }
@@ -70,22 +69,28 @@ public class BadgeAward {
     public void setBadge(Badge badge) {
         this.badge = badge;
         badgeStr = badge.name();
-        type = Character.toString(badge.getType());
-    }
-
-    public String getType() {
-        return type;
     }
 
     /**
-     * Holds data for displaying what was used for awarding this badge
-     * @return some data, typically comma separated formula record ids
+     * @return id of last formula / play record that fit last award of this badge
      */
-    public String getData() {
-        return data;
+    public Integer getLastAwardedRow() {
+        return lastAwardedRow;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setLastAwardedRow(Integer lastAwardedRow) {
+        this.lastAwardedRow = lastAwardedRow;
     }
+
+    /**
+     * @return id of last formula / play record that breaks eavluator rules for this badge
+     */
+    public Integer getLastWrongRow() {
+        return lastWrongRow;
+    }
+
+    public void setLastWrongRow(Integer lastWrongRow) {
+        this.lastWrongRow = lastWrongRow;
+    }
+
 }

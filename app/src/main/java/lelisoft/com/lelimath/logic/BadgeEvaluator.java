@@ -23,6 +23,12 @@ public interface BadgeEvaluator {
             this.silver = silver;
             this.gold = gold;
         }
+
+        public void add(AwardedBadgesCount other) {
+            this.bronze += other.bronze;
+            this.silver += other.silver;
+            this.gold += other.gold;
+        }
     }
 
     /**
