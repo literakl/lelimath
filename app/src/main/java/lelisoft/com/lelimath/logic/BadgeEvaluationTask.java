@@ -15,6 +15,7 @@ import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.logic.badges.PlayCountBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.StaminaBadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
+import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 /**
  * Main class for awarding Badges
@@ -36,9 +37,10 @@ public class BadgeEvaluationTask extends AsyncTask<Void, Void, Integer> {
         Map<Badge, BadgeAward> badges = provider.getAll();
 
         BadgeEvaluator evaluator = new PlayCountBadgeEvaluator();
-        BadgeEvaluator.AwardedBadgesCount badgesCount = evaluator.evaluate(badges, context);
+        AwardedBadgesCount badgesCount = evaluator.evaluate(badges, context);
         evaluator = new StaminaBadgeEvaluator();
         badgesCount.add(evaluator.evaluate(badges, context));
+
         log.debug("doInBackground finished with {} / {} / {} badges", badgesCount.gold, badgesCount.silver, badgesCount.bronze);
         return badgesCount.bronze + badgesCount.silver + badgesCount.gold;
     }

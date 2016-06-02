@@ -55,6 +55,13 @@ public class PlayRecord {
     public PlayRecord() {
     }
 
+    public PlayRecord(Play play, Date date, boolean correct, Long timeSpent) {
+        setPlay(play);
+        setDate(date);
+        setCorrect(correct);
+        setTimeSpent(timeSpent);
+    }
+
     public void setFormula(@NonNull Formula formula) {
         firstOperand = formula.getFirstOperand();
         if (formula.getOperator() != null) {

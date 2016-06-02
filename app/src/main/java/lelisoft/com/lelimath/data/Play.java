@@ -49,6 +49,15 @@ public class Play implements Parcelable {
     public Play() {
     }
 
+    public Play(Game game, GameLogic.Level level, int count, boolean finished, Long timeSpent, Date date, User user) {
+        setGame(game);
+        setCount(count);
+        setFinished(finished);
+        setTimeSpent(timeSpent);
+        setDate(date);
+        setUser(user);
+    }
+
     public Integer getId() {
         return id;
     }

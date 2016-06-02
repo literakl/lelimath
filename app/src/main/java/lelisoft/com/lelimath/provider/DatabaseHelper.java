@@ -31,9 +31,16 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 3;
     private static File path;
 
+    /**
+     * For tests
+     */
+    public DatabaseHelper(Context context, String dbName) {
+        super(context, dbName, null, DATABASE_VERSION);
+        path = context.getDatabasePath(dbName);
+    }
+
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        path = context.getDatabasePath(DATABASE_NAME);
+        this(context, DATABASE_NAME);
     }
 
     // TODO To set the logger to a particular type, set the system property ("com.j256.ormlite.logger.type")

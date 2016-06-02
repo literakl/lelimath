@@ -11,10 +11,12 @@ import java.util.Date;
  */
 @DatabaseTable(tableName = "badge_eval")
 public class BadgeEvaluation {
-    @DatabaseField(generatedId = true)
+    public static final String ID_COLUMN_NAME = "id";
+    @DatabaseField(generatedId = true, columnName = ID_COLUMN_NAME)
     Integer id;
 
-    @DatabaseField(canBeNull = false, foreign = true, columnName="user_id")
+    public static final String USER_COLUMN_NAME = "user_id";
+    @DatabaseField(canBeNull = false, foreign = true, columnName=USER_COLUMN_NAME)
     User user;
 
     @DatabaseField(canBeNull = false)
@@ -27,11 +29,14 @@ public class BadgeEvaluation {
     @DatabaseField(canBeNull=false, columnName=BADGE_COLUMN_NAME)
     String badgeStr;
 
-    @DatabaseField(canBeNull=true, columnName="last_awarded_row")
-    Integer lastAwardedRow;
+    @DatabaseField(canBeNull=true, columnName="last_awarded_id")
+    Integer lastAwardedId;
 
-    @DatabaseField(canBeNull=true, columnName="last_wrong_row")
-    Integer lastWrongRow;
+    @DatabaseField(canBeNull=true, columnName="last_wrong_id")
+    Integer lastWrongId;
+
+    @DatabaseField(canBeNull=true, columnName="last_wrong_date")
+    Date lastWrongDate;
 
     public Integer getId() {
         return id;
@@ -74,23 +79,30 @@ public class BadgeEvaluation {
     /**
      * @return id of last formula / play record that fit last award of this badge
      */
-    public Integer getLastAwardedRow() {
-        return lastAwardedRow;
+    public Integer getLastAwardedId() {
+        return lastAwardedId;
     }
 
-    public void setLastAwardedRow(Integer lastAwardedRow) {
-        this.lastAwardedRow = lastAwardedRow;
+    public void setLastAwardedId(Integer lastAwardedId) {
+        this.lastAwardedId = lastAwardedId;
     }
 
     /**
-     * @return id of last formula / play record that breaks eavluator rules for this badge
+     * @return id of last formula / play record that breaks evaluator rules for this badge
      */
-    public Integer getLastWrongRow() {
-        return lastWrongRow;
+    public Integer getLastWrongId() {
+        return lastWrongId;
     }
 
-    public void setLastWrongRow(Integer lastWrongRow) {
-        this.lastWrongRow = lastWrongRow;
+    public void setLastWrongId(Integer lastWrongId) {
+        this.lastWrongId = lastWrongId;
     }
 
+    public Date getLastWrongDate() {
+        return lastWrongDate;
+    }
+
+    public void setLastWrongDate(Date lastWrongDate) {
+        this.lastWrongDate = lastWrongDate;
+    }
 }

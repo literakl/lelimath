@@ -1,7 +1,6 @@
 package lelisoft.com.lelimath.logic.badges;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
@@ -10,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
@@ -22,17 +19,18 @@ import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.BadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.PlayProvider;
+import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 /**
  * Awarding logic for six play count based badges
  * Created by Leoš on 19.05.2016.
  */
-public class PlayCountBadgeEvaluator implements BadgeEvaluator {
+public class PlayCountBadgeEvaluator extends BadgeEvaluator {
     private static final Logger log = LoggerFactory.getLogger(PlayCountBadgeEvaluator.class);
 
     @Override
     public AwardedBadgesCount evaluate(Map<Badge, BadgeAward> badges, Context context) {
-        log.debug("evaluate");
+        log.debug("evaluate starts");
         if (badges.get(Badge.PALADIN) != null) {
             // already received maximum
             return new AwardedBadgesCount();
@@ -108,33 +106,12 @@ public class PlayCountBadgeEvaluator implements BadgeEvaluator {
                 log.debug("Badge {} was awarded", Badge.SAMURAI);
             }
 
+            log.debug("evaluate finished: {}", badgesCount);
             return badgesCount;
         } catch (SQLException e) {
             log.error("Evaluation failed", e);
             return new AwardedBadgesCount();
         }
-    }
-
-    private void setPlayId(BadgeAward award, Play play) throws SQLException {
-        award.setData(Integer.toString(play.getId()));
-    }
-
-    private void setPlayIds(BadgeAward award, List<Play> plays) {
-        StringBuilder sb = new StringBuilder();
-        for (Play play : plays) {
-            sb.append(Integer.toString(play.getId())).append(',');
-        }
-        sb.setLength(sb.length() - 1);
-        award.setData(sb.toString());
-    }
-
-    @NonNull
-    private BadgeAward createBadgeAward(Badge badge, User user) {
-        BadgeAward award = new BadgeAward();
-        award.setBadge(badge);
-        award.setDate(new Date());
-        award.setUser(user);
-        return award;
     }
 
     public QueryBuilder<Play, Integer> setPlayConditions(PlayProvider provider, boolean easy) throws SQLException {
