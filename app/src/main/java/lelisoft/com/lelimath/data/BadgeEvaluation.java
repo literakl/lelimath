@@ -38,6 +38,9 @@ public class BadgeEvaluation {
     @DatabaseField(canBeNull=true, columnName="last_wrong_date")
     Date lastWrongDate;
 
+    @DatabaseField(canBeNull=true, columnName="progress")
+    Integer progress;
+
     public Integer getId() {
         return id;
     }
@@ -98,11 +101,25 @@ public class BadgeEvaluation {
         this.lastWrongId = lastWrongId;
     }
 
+    /**
+     * @return id of last date that breaks evaluator rules for this badge
+     */
     public Date getLastWrongDate() {
         return lastWrongDate;
     }
 
     public void setLastWrongDate(Date lastWrongDate) {
         this.lastWrongDate = lastWrongDate;
+    }
+
+    /**
+     * @return number of units that fit this badge conditions
+     */
+    public Integer getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Integer progress) {
+        this.progress = progress;
     }
 }

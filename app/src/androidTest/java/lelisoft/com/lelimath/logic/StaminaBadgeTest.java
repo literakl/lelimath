@@ -16,7 +16,7 @@ import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.User;
-import lelisoft.com.lelimath.logic.badges.PlayCountBadgeEvaluator;
+import lelisoft.com.lelimath.logic.badges.StaminaBadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
@@ -33,7 +33,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         Dao<Play, Integer> playDao = helper.getPlayDao();
         Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
         Calendar calendar = Calendar.getInstance();
-        BadgeEvaluator evaluator = new PlayCountBadgeEvaluator();
+        BadgeEvaluator evaluator = new StaminaBadgeEvaluator();
         BadgeAwardProvider provider = new BadgeAwardProvider(getContext());
         Map<Badge, BadgeAward> badges = provider.getAll();
 

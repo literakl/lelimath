@@ -20,13 +20,11 @@ import java.util.concurrent.TimeUnit;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
-import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.BadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
-import lelisoft.com.lelimath.provider.PlayRecordProvider;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 import static lelisoft.com.lelimath.data.Badge.LONG_DISTANCE_RUNNER;
@@ -47,7 +45,6 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         try {
             log.debug("evaluate starts");
             BadgeAwardProvider awardProvider = new BadgeAwardProvider(context);
-            PlayRecordProvider playRecordProvider = new PlayRecordProvider(context);
             AwardedBadgesCount badgesCount = new AwardedBadgesCount();
             User user = LeliMathApp.getInstance().getCurrentUser();
             DatabaseHelper helper = OpenHelperManager.getHelper(context, DatabaseHelper.class);
@@ -59,9 +56,8 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             boolean evaluateGold = silverAwarded && ! badges.containsKey(MARATHON_RUNNER);
 
             BadgeEvaluation silverEvaluation = queryLast(LONG_DISTANCE_RUNNER, user, evaluationDao);
-            if (evaluateSilver && silverEvaluation != null && silverEvaluation.getLastWrongId() != null) {
-                PlayRecord wrong = playRecordProvider.getById(silverEvaluation.getLastWrongId());
-                long diff = TimeUnit.DAYS.toDays(System.currentTimeMillis() - wrong.getDate().getTime());
+            if (evaluateSilver && silverEvaluation != null && silverEvaluation.getLastWrongDate() != null) {
+                long diff = TimeUnit.DAYS.toDays(System.currentTimeMillis() - silverEvaluation.getLastWrongDate().getTime());
                 if (diff < 25) {
                     evaluateSilver = evaluateGold = false;
                 }
@@ -69,85 +65,121 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
 
             BadgeEvaluation goldEvaluation = queryLast(MARATHON_RUNNER, user, evaluationDao);
             if (evaluateGold && goldEvaluation != null && goldEvaluation.getLastWrongId() != null) {
-                PlayRecord wrong = playRecordProvider.getById(goldEvaluation.getLastWrongId());
-                long diff = TimeUnit.DAYS.toDays(System.currentTimeMillis() - wrong.getDate().getTime());
+                long diff = TimeUnit.DAYS.toDays(System.currentTimeMillis() - goldEvaluation.getLastWrongDate().getTime());
                 if (diff < 100) {
                     evaluateGold = false;
                 }
             }
 
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.clear(Calendar.HOUR);
-            calendar.clear(Calendar.MINUTE);
-            calendar.clear(Calendar.SECOND);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-M-d");
-            String today = format.format(calendar.getTime());
-
             if (! bronzeAwarded) {
-                calendar.add(Calendar.DATE, -1);
-                log.debug("Date is {}", calendar);
-                String sql = "select strftime('%Y-%m-%d', date), count(*) from play_record where correct=1 " +
-                        "and date > ? group by strftime('%Y%m%d', date) order by 1 desc";
-                GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, format.format(calendar.getTime()));
-                String searchedDate = today;
-                int processed = 0;
-                for (String[] dayStats : results) {
-                    if (! searchedDate.equals(dayStats[0])) {
-                        BadgeEvaluation evaluation = new BadgeEvaluation();
-                        evaluation.setDate(new Date());
-                        evaluation.setUser(user);
-                        evaluation.setBadge(Badge.RETURNER);
-                        evaluation.setLastWrongDate(calendar.getTime());
-                        // missing date
-                        break;
-                    }
-                    if (Integer.parseInt(dayStats[1]) < 10) {
-                        // low count
-                        // do not store current day as wrong, it can improve
-                        break;
-                    }
-
-                    processed++;
-                    calendar.add(Calendar.DATE, -1);
-                    searchedDate = format.format(calendar.getTime());
-                }
-
-                if (processed == 2) {
-                    BadgeAward award = createBadgeAward(Badge.RETURNER, user);
-                    awardProvider.create(award);
+                BadgeEvaluation bronzeEvaluation = queryLast(RETURNER, user, evaluationDao);
+                if (performEvaluation(RETURNER, 2, bronzeEvaluation, user, awardProvider, evaluationDao)) {
                     badgesCount.bronze++;
-                    log.debug("Badge {} was awarded", Badge.RETURNER);
                 }
             }
 
             if (evaluateSilver) {
-                calendar.add(Calendar.DATE, -24);
-                log.debug("Date is {}", calendar);
-
-//                BadgeAward award = createBadgeAward(Badge.LONG_DISTANCE_RUNNER, user);
-//                awardProvider.create(award);
-//                badgesCount.silver++;
-//                log.debug("Badge {} was awarded", Badge.LONG_DISTANCE_RUNNER);
+                if (performEvaluation(LONG_DISTANCE_RUNNER, 25, silverEvaluation, user, awardProvider, evaluationDao)) {
+                    badgesCount.silver++;
+                }
             }
 
             if (evaluateGold) {
-                calendar.add(Calendar.DATE, -99);
-                log.debug("Date is {}", calendar);
-
-//                BadgeAward award = createBadgeAward(Badge.MARATHON_RUNNER, user);
-//                awardProvider.create(award);
-//                badgesCount.gold++;
-//                log.debug("Badge {} was awarded", Badge.MARATHON_RUNNER);
+                if (performEvaluation(MARATHON_RUNNER, 100, goldEvaluation, user, awardProvider, evaluationDao)) {
+                    badgesCount.gold++;
+                }
             }
-
-//        select strftime('%Y-%m-%d', date), count(*) from play_record where date > date('now','-8 day') group by strftime('%Y%m%d', date);
 
             log.debug("evaluate finished: {}", badgesCount);
             return badgesCount;
         } catch (SQLException e) {
-            log.error("Evaluate failed!", e);
+            log.error("evaluate failed!", e);
             return new AwardedBadgesCount();
+        }
+    }
+
+    private boolean performEvaluation(Badge badge, int count, BadgeEvaluation evaluation, User user,
+                                   BadgeAwardProvider awardProvider, Dao<BadgeEvaluation, Integer> evaluationDao) throws SQLException {
+        if (evaluation == null) {
+            evaluation = new BadgeEvaluation();
+            evaluation.setUser(user);
+            evaluation.setBadge(badge);
+        }
+        evaluation.setDate(new Date());
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Calendar calendar = Calendar.getInstance();
+        log.debug("{}", calendar.getTimeInMillis());
+        calendar.clear(Calendar.HOUR_OF_DAY);
+        log.debug("{}", calendar.getTimeInMillis());
+        calendar.clear(Calendar.MINUTE);
+        log.debug("{}", calendar.getTimeInMillis());
+        calendar.clear(Calendar.SECOND);
+        log.debug("{}", calendar.getTimeInMillis());
+        calendar.clear(Calendar.MILLISECOND);
+        log.debug("{}", calendar.getTimeInMillis());
+        String today = format.format(calendar.getTime());
+/*
+    06-03 07:14:31.296 1464930871295
+    06-03 07:14:31.297 1464930871295
+    06-03 07:14:31.297 1464930031295
+    06-03 07:14:31.298 1464930000295
+    06-03 07:14:31.299 1464930000000
+    06-03 07:14:31.300 Date is Thu Jun 02 07:00:00 GMT+02:00 2016
+
+ */
+        Calendar sinceCal = Calendar.getInstance();
+        sinceCal.setTime(calendar.getTime());
+        sinceCal.add(Calendar.DATE, 1 - count);
+        log.debug("Date is {}", sinceCal.getTime());
+        String since = format.format(calendar.getTime());
+
+//        select strftime('%Y-%m-%d', date), count(*) from play_record where date > date('now','-8 day') group by strftime('%Y%m%d', date);
+        String sql = "select strftime('%Y-%m-%d', date), count(*) from play_record where correct=1 " +
+                "and date > ? group by strftime('%Y%m%d', date) order by 1 desc";
+        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, since);
+
+        String searchedDate = today;
+        int processed = 0;
+        for (String[] dayStats : results) {
+            if (! searchedDate.equals(dayStats[0])) {
+                // missing date
+                evaluation.setProgress(processed);
+                evaluation.setLastWrongDate(calendar.getTime());
+                evaluationDao.createOrUpdate(evaluation);
+                return false;
+            }
+            if (Integer.parseInt(dayStats[1]) < 10) {
+                // low count
+                // do not store current day as wrong, it can improve
+                if (! dayStats[0].equals(today)) {
+                    evaluation.setProgress(processed);
+                    evaluation.setLastWrongDate(calendar.getTime());
+                    evaluationDao.createOrUpdate(evaluation);
+                }
+                return false;
+            }
+
+            processed++;
+            calendar.add(Calendar.DATE, -1);
+            searchedDate = format.format(calendar.getTime());
+        }
+
+        if (processed == count) {
+            evaluation.setProgress(processed);
+            evaluation.setLastWrongDate(null);
+            evaluationDao.createOrUpdate(evaluation);
+
+            BadgeAward award = createBadgeAward(badge, user);
+            awardProvider.create(award);
+            log.debug("Badge {} was awarded", badge);
+            return true;
+        } else {
+            // missing date
+            evaluation.setProgress(processed);
+            evaluation.setLastWrongDate(calendar.getTime());
+            evaluationDao.createOrUpdate(evaluation);
+            return false;
         }
     }
 
