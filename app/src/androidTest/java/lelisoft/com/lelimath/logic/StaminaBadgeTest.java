@@ -1,10 +1,15 @@
 package lelisoft.com.lelimath.logic;
 
+import android.media.MediaScannerConnection;
+import android.os.Environment;
 import android.test.AndroidTestCase;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.table.TableUtils;
 
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -16,6 +21,8 @@ import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.User;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.badges.StaminaBadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
@@ -26,6 +33,8 @@ import lelisoft.com.lelimath.view.AwardedBadgesCount;
  * Created by Leoš on 29.05.2016.
  */
 public class StaminaBadgeTest extends AndroidTestCase {
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(LeliMathApp.class);
+
     DatabaseHelper helper;
     User user = new User(1);
 
@@ -92,13 +101,21 @@ public class StaminaBadgeTest extends AndroidTestCase {
     @Override
     protected void setUp() throws Exception {
         if (helper == null) {
-            helper = new DatabaseHelper(getContext(), "test.sqlite");
+            DatabaseHelper.setDatabaseName("test.sqlite");
+            helper = new DatabaseHelper(getContext());
+            log.debug("Helper path is {}", DatabaseHelper.getDatabasePath());
         }
     }
 
     @Override
     protected void tearDown() throws Exception {
-        TableUtils.clearTable(helper.getConnectionSource(), User.class);
+        File in = DatabaseHelper.getDatabasePath();
+        File out = new File(Environment.getExternalStorageDirectory(), in.getName());
+        //noinspection ResultOfMethodCallIgnored
+        out.setReadable(true, false);
+        boolean result = Misc.copyFile(in, out);
+        MediaScannerConnection.scanFile(getContext(), new String[]{out.getAbsolutePath()}, null, null);
+
         TableUtils.clearTable(helper.getConnectionSource(), Play.class);
         TableUtils.clearTable(helper.getConnectionSource(), PlayRecord.class);
         TableUtils.clearTable(helper.getConnectionSource(), BadgeAward.class);

@@ -1,6 +1,7 @@
 package lelisoft.com.lelimath.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -185,7 +186,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // NOTE: delegate the permission handling to generated method
         GamePreferenceActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
@@ -458,6 +459,8 @@ public class GamePreferenceActivity extends PreferenceActivity implements
 
     private class CopyDatabaseTask extends AsyncTask<Void, Void, Void> {
         String message = "Database copied";
+
+        @SuppressLint("SetWorldReadable")
         @Override
         protected Void doInBackground(Void[] params) {
             if (! Misc.isExternalStorageWritable()) {

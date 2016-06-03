@@ -27,20 +27,14 @@ import lelisoft.com.lelimath.data.User;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(DatabaseHelper.class);
 
-    private static final String DATABASE_NAME = "lelimath.sqlite";
+    private static final String DEFAULT_DATABASE_NAME = "lelimath.sqlite";
     private static final int DATABASE_VERSION = 3;
     private static File path;
-
-    /**
-     * For tests
-     */
-    public DatabaseHelper(Context context, String dbName) {
-        super(context, dbName, null, DATABASE_VERSION);
-        path = context.getDatabasePath(dbName);
-    }
+    private static String databaseName = DEFAULT_DATABASE_NAME;
 
     public DatabaseHelper(Context context) {
-        this(context, DATABASE_NAME);
+        super(context, databaseName, null, DATABASE_VERSION);
+        path = context.getDatabasePath(databaseName);
     }
 
     // TODO To set the logger to a particular type, set the system property ("com.j256.ormlite.logger.type")
@@ -105,5 +99,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     public static File getDatabasePath() {
         return path;
+    }
+
+    public static void setDatabaseName(String databaseName) {
+        DatabaseHelper.databaseName = databaseName;
     }
 }

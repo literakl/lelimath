@@ -123,6 +123,7 @@ public class Misc {
         BufferedOutputStream out = null;
 
         try {
+            log.warn("Copying file {} to {}", source.getAbsolutePath(), dest.getAbsolutePath());
             in = new BufferedInputStream(new FileInputStream(source));
             out = new BufferedOutputStream(new FileOutputStream(dest, false));
 

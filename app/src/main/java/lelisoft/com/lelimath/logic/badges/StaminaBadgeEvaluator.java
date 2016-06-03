@@ -107,32 +107,19 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         }
         evaluation.setDate(new Date());
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Calendar calendar = Calendar.getInstance();
-        log.debug("{}", calendar.getTimeInMillis());
-        calendar.clear(Calendar.HOUR_OF_DAY);
-        log.debug("{}", calendar.getTimeInMillis());
-        calendar.clear(Calendar.MINUTE);
-        log.debug("{}", calendar.getTimeInMillis());
-        calendar.clear(Calendar.SECOND);
-        log.debug("{}", calendar.getTimeInMillis());
-        calendar.clear(Calendar.MILLISECOND);
-        log.debug("{}", calendar.getTimeInMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String today = format.format(calendar.getTime());
-/*
-    06-03 07:14:31.296 1464930871295
-    06-03 07:14:31.297 1464930871295
-    06-03 07:14:31.297 1464930031295
-    06-03 07:14:31.298 1464930000295
-    06-03 07:14:31.299 1464930000000
-    06-03 07:14:31.300 Date is Thu Jun 02 07:00:00 GMT+02:00 2016
 
- */
         Calendar sinceCal = Calendar.getInstance();
         sinceCal.setTime(calendar.getTime());
         sinceCal.add(Calendar.DATE, 1 - count);
-        log.debug("Date is {}", sinceCal.getTime());
-        String since = format.format(calendar.getTime());
+        log.debug("Starting date is {}", sinceCal.getTime());
+        String since = format.format(sinceCal.getTime());
 
 //        select strftime('%Y-%m-%d', date), count(*) from play_record where date > date('now','-8 day') group by strftime('%Y%m%d', date);
         String sql = "select strftime('%Y-%m-%d', date), count(*) from play_record where correct=1 " +
@@ -149,6 +136,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
                 evaluationDao.createOrUpdate(evaluation);
                 return false;
             }
+
             if (Integer.parseInt(dayStats[1]) < 10) {
                 // low count
                 // do not store current day as wrong, it can improve
