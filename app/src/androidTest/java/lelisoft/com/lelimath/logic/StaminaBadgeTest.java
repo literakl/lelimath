@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.logic;
 
+import android.annotation.SuppressLint;
 import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.test.AndroidTestCase;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
@@ -24,7 +26,6 @@ import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.badges.StaminaBadgeEvaluator;
-import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
@@ -38,13 +39,95 @@ public class StaminaBadgeTest extends AndroidTestCase {
     DatabaseHelper helper;
     User user = new User(1);
 
+    public void testSilverBadge() throws Exception {
+        Dao<Play, Integer> playDao = helper.getPlayDao();
+        Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
+        BadgeEvaluator evaluator = new StaminaBadgeEvaluator();
+        Map<Badge, BadgeAward> badges = new HashMap<>();
+        badges.put(Badge.RETURNER, new BadgeAward());
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 16);
+
+        PlayRecord record = null;
+        for (int i = 0; i < 25; i++) {
+            calendar.add(Calendar.MINUTE, -10);
+            Date time = calendar.getTime();
+            Play play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 10, true, 3000L, time, user);
+            playDao.create(play);
+            for (int j = 0; j < play.getCount(); j++) {
+                calendar.add(Calendar.MINUTE, 1);
+                time = calendar.getTime();
+                record = new PlayRecord(play, time, true, 600L);
+                recordDao.create(record);
+            }
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        assert record != null;
+        record.setCorrect(false);
+        recordDao.update(record);
+
+        AwardedBadgesCount result = evaluator.evaluate(badges, getContext());
+        assertEquals(0, result.bronze);
+        assertEquals(0, result.silver);
+        assertEquals(0, result.gold);
+
+        record.setCorrect(true);
+        recordDao.update(record);
+
+        result = evaluator.evaluate(badges, getContext());
+        assertEquals(0, result.bronze);
+        assertEquals(1, result.silver);
+        assertEquals(0, result.gold);
+    }
+
+/*
+1000 plays * 50 records. Generating took 7 minutes, evaluation took 180 ms
+
+06-04 07:47:13.491 31553-31566/lelisoft.com.lelimath I/TestRunner: started: testGoldBadge(lelisoft.com.lelimath.logic.StaminaBadgeTest)
+06-04 07:47:13.566 31553-31566/lelisoft.com.lelimath I/TableUtils: clearing table 'badge_eval' with 'DELETE FROM `badge_eval`
+06-04 07:54:21.641 31553-31566/lelisoft.com.lelimath D/l.c.l.l.b.StaminaBadgeEvaluator: evaluate starts
+06-04 07:54:21.756 31553-31566/lelisoft.com.lelimath D/l.c.l.l.b.StaminaBadgeEvaluator: Starting date is Fri Feb 26 00:00:00 GMT+01:00 2016
+06-04 07:54:21.827 31553-31566/lelisoft.com.lelimath D/l.c.l.l.b.StaminaBadgeEvaluator: Badge MARATHON_RUNNER was awarded
+06-04 07:54:21.828 31553-31566/lelisoft.com.lelimath D/l.c.l.l.b.StaminaBadgeEvaluator: evaluate finished: AwardedBadgesCount{bronze=0, silver=0, gold=1}
+ */
+    public void testGoldBadge() throws Exception {
+        Dao<Play, Integer> playDao = helper.getPlayDao();
+        Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
+        BadgeEvaluator evaluator = new StaminaBadgeEvaluator();
+        Map<Badge, BadgeAward> badges = new HashMap<>();
+        badges.put(Badge.RETURNER, new BadgeAward());
+        badges.put(Badge.LONG_DISTANCE_RUNNER, new BadgeAward());
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 16);
+        calendar.set(Calendar.MINUTE, 0);
+
+        for (int i = 0; i < 100; i++) {
+            calendar.add(Calendar.MINUTE, -10);
+            Date time = calendar.getTime();
+            Play play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 10, true, 3000L, time, user);
+            playDao.create(play);
+            for (int j = 0; j < play.getCount(); j++) {
+                calendar.add(Calendar.MINUTE, 1);
+                time = calendar.getTime();
+                PlayRecord record = new PlayRecord(play, time, true, 600L);
+                recordDao.create(record);
+            }
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        AwardedBadgesCount result = evaluator.evaluate(badges, getContext());
+        assertEquals(0, result.bronze);
+        assertEquals(0, result.silver);
+        assertEquals(1, result.gold);
+    }
+
     public void testBronzeBadge() throws Exception {
         Dao<Play, Integer> playDao = helper.getPlayDao();
         Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
         Calendar calendar = Calendar.getInstance();
         BadgeEvaluator evaluator = new StaminaBadgeEvaluator();
-        BadgeAwardProvider provider = new BadgeAwardProvider(getContext());
-        Map<Badge, BadgeAward> badges = provider.getAll();
+        Map<Badge, BadgeAward> badges = new HashMap<>();
 
         calendar.add(Calendar.MINUTE, -5);
         Date time = calendar.getTime();
@@ -105,20 +188,21 @@ public class StaminaBadgeTest extends AndroidTestCase {
             helper = new DatabaseHelper(getContext());
             log.debug("Helper path is {}", DatabaseHelper.getDatabasePath());
         }
+
+        TableUtils.clearTable(helper.getConnectionSource(), Play.class);
+        TableUtils.clearTable(helper.getConnectionSource(), PlayRecord.class);
+        TableUtils.clearTable(helper.getConnectionSource(), BadgeAward.class);
+        TableUtils.clearTable(helper.getConnectionSource(), BadgeEvaluation.class);
     }
 
+    @SuppressLint("SetWorldReadable")
     @Override
     protected void tearDown() throws Exception {
         File in = DatabaseHelper.getDatabasePath();
         File out = new File(Environment.getExternalStorageDirectory(), in.getName());
         //noinspection ResultOfMethodCallIgnored
         out.setReadable(true, false);
-        boolean result = Misc.copyFile(in, out);
+        Misc.copyFile(in, out);
         MediaScannerConnection.scanFile(getContext(), new String[]{out.getAbsolutePath()}, null, null);
-
-        TableUtils.clearTable(helper.getConnectionSource(), Play.class);
-        TableUtils.clearTable(helper.getConnectionSource(), PlayRecord.class);
-        TableUtils.clearTable(helper.getConnectionSource(), BadgeAward.class);
-        TableUtils.clearTable(helper.getConnectionSource(), BadgeEvaluation.class);
     }
 }
