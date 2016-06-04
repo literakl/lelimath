@@ -49,7 +49,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         calendar.set(Calendar.HOUR_OF_DAY, 16);
 
         PlayRecord record = null;
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 7; i++) {
             calendar.add(Calendar.MINUTE, -10);
             Date time = calendar.getTime();
             Play play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 10, true, 3000L, time, user);
@@ -102,7 +102,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         calendar.set(Calendar.HOUR_OF_DAY, 16);
         calendar.set(Calendar.MINUTE, 0);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 30; i++) {
             calendar.add(Calendar.MINUTE, -10);
             Date time = calendar.getTime();
             Play play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 10, true, 3000L, time, user);

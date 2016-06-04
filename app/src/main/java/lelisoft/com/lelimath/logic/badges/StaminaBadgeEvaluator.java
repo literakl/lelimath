@@ -58,7 +58,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             BadgeEvaluation silverEvaluation = queryLast(LONG_DISTANCE_RUNNER, user, evaluationDao);
             if (evaluateSilver && silverEvaluation != null && silverEvaluation.getLastWrongDate() != null) {
                 long diff = TimeUnit.DAYS.toDays(System.currentTimeMillis() - silverEvaluation.getLastWrongDate().getTime());
-                if (diff < 25) {
+                if (diff < 7) {
                     evaluateSilver = evaluateGold = false;
                 }
             }
@@ -66,7 +66,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             BadgeEvaluation goldEvaluation = queryLast(MARATHON_RUNNER, user, evaluationDao);
             if (evaluateGold && goldEvaluation != null && goldEvaluation.getLastWrongId() != null) {
                 long diff = TimeUnit.DAYS.toDays(System.currentTimeMillis() - goldEvaluation.getLastWrongDate().getTime());
-                if (diff < 100) {
+                if (diff < 30) {
                     evaluateGold = false;
                 }
             }
@@ -79,13 +79,13 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             }
 
             if (evaluateSilver) {
-                if (performEvaluation(LONG_DISTANCE_RUNNER, 25, silverEvaluation, user, awardProvider, evaluationDao)) {
+                if (performEvaluation(LONG_DISTANCE_RUNNER, 7, silverEvaluation, user, awardProvider, evaluationDao)) {
                     badgesCount.silver++;
                 }
             }
 
             if (evaluateGold) {
-                if (performEvaluation(MARATHON_RUNNER, 100, goldEvaluation, user, awardProvider, evaluationDao)) {
+                if (performEvaluation(MARATHON_RUNNER, 30, goldEvaluation, user, awardProvider, evaluationDao)) {
                     badgesCount.gold++;
                 }
             }
