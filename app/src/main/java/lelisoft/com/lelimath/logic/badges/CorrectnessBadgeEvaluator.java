@@ -89,7 +89,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
                                    Dao<PlayRecord, Integer> playRecordDao) throws SQLException {
         log.debug("performEvaluation({})", operator);
 
-        PlayRecord incorrectRecord = findLastIncorrectPlayRecord(PLUS, user, playRecordDao);
+        PlayRecord incorrectRecord = findLastIncorrectPlayRecord(operator, user, playRecordDao);
         int lastIncorrectId = (incorrectRecord != null) ? incorrectRecord.getId() : 0;
 //        long correctCount = countCorrectSince(PLUS, lastIncorrectId, user, playRecordDao);
 

@@ -107,6 +107,83 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         assertEquals(1, result.gold);
     }
 
+    public void testMinusMultiplyDivide() throws Exception {
+        Dao<Play, Integer> playDao = helper.getPlayDao();
+        Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
+        BadgeEvaluator evaluator = new CorrectnessBadgeEvaluator();
+        Map<Badge, BadgeAward> badges = new HashMap<>();
+
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR_OF_DAY, 16);
+        time.set(Calendar.MINUTE, 0);
+
+        Play play = new Play(Game.FAST_CALC, GameLogic.Level.HARD, 1000, true, 3000L, time.getTime(), user);
+        playDao.create(play);
+        for (int i = 0; i < 10; i++) {
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, MINUS, 1, i, FIRST_OPERAND));
+            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, MULTIPLY, 1, i, SECOND_OPERAND));
+            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
+        }
+
+        AwardedBadgesCount result = evaluator.evaluate(badges, getContext());
+        assertEquals(3, result.bronze);
+        assertEquals(0, result.silver);
+        assertEquals(0, result.gold);
+
+        // break the strike
+        PlayRecord badRecord = new PlayRecord(play, time.getTime(), false, 600L, user);
+        recordDao.create(badRecord.setFormula(1, MINUS, 1, 0, RESULT));
+        badRecord = new PlayRecord(play, time.getTime(), false, 600L, user);
+        recordDao.create(badRecord.setFormula(1, MULTIPLY, 1, 1, RESULT));
+        badRecord = new PlayRecord(play, time.getTime(), false, 600L, user);
+        recordDao.create(badRecord.setFormula(1, DIVIDE, 1, 1, RESULT));
+
+        for (int i = 0; i < 26; i++) {
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, MINUS, 1, i, FIRST_OPERAND));
+            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, MULTIPLY, 1, i, SECOND_OPERAND));
+            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
+        }
+
+        result = evaluator.evaluate(badges, getContext());
+        assertEquals(3, result.bronze);
+        assertEquals(3, result.silver);
+        assertEquals(0, result.gold);
+
+        for (int i = 26; i < 101; i++) {
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, MINUS, 1, i, FIRST_OPERAND));
+            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, MULTIPLY, 1, i, SECOND_OPERAND));
+            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
+        }
+
+        result = evaluator.evaluate(badges, getContext());
+        assertEquals(0, result.bronze);
+        assertEquals(0, result.silver);
+        assertEquals(3, result.gold);
+
+        for (int i = 101; i < 202; i++) {
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, MINUS, 1, i, FIRST_OPERAND));
+            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, MULTIPLY, 1, i, SECOND_OPERAND));
+            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
+        }
+
+        result = evaluator.evaluate(badges, getContext());
+        assertEquals(0, result.bronze);
+        assertEquals(0, result.silver);
+        assertEquals(0, result.gold);
+    }
+
     @Override
     protected void setUp() throws Exception {
         if (helper == null) {
