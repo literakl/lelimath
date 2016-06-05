@@ -177,6 +177,7 @@ public class CalcFragment extends LeliBaseFragment {
     private PlayRecord getPlayRecord(boolean correct) {
         PlayRecord record = new PlayRecord();
         record.setPlay(play);
+        record.setUser(LeliMathApp.getInstance().getCurrentUser());
         record.setDate(new Date());
         record.setCorrect(correct);
         if (! correct) {

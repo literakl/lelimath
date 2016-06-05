@@ -57,7 +57,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
             for (int j = 0; j < play.getCount(); j++) {
                 calendar.add(Calendar.MINUTE, 1);
                 time = calendar.getTime();
-                record = new PlayRecord(play, time, true, 600L);
+                record = new PlayRecord(play, time, true, 600L, user);
                 recordDao.create(record);
             }
             calendar.add(Calendar.DAY_OF_MONTH, -1);
@@ -110,7 +110,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
             for (int j = 0; j < play.getCount(); j++) {
                 calendar.add(Calendar.MINUTE, 1);
                 time = calendar.getTime();
-                PlayRecord record = new PlayRecord(play, time, true, 600L);
+                PlayRecord record = new PlayRecord(play, time, true, 600L, user);
                 recordDao.create(record);
             }
             calendar.add(Calendar.DAY_OF_MONTH, -1);
@@ -134,7 +134,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         Play play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 5, true, 3000L, time, user);
         playDao.create(play);
         for (int i = 0; i < play.getCount(); i++) {
-            PlayRecord record = new PlayRecord(play, time, true, 600L);
+            PlayRecord record = new PlayRecord(play, time, true, 600L, user);
             recordDao.create(record);
         }
 
@@ -143,7 +143,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 5, true, 2000L, time, user);
         playDao.create(play);
         for (int i = 0; i < play.getCount(); i++) {
-            PlayRecord record = new PlayRecord(play, time, true, 400L);
+            PlayRecord record = new PlayRecord(play, time, true, 400L, user);
             recordDao.create(record);
         }
 
@@ -157,7 +157,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 8, true, 3000L, time, user);
         playDao.create(play);
         for (int i = 0; i < play.getCount(); i++) {
-            PlayRecord record = new PlayRecord(play, time, true, 600L);
+            PlayRecord record = new PlayRecord(play, time, true, 600L, user);
             recordDao.create(record);
         }
 
@@ -171,7 +171,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 5, true, 2000L, time, user);
         playDao.create(play);
         for (int i = 0; i < play.getCount(); i++) {
-            PlayRecord record = new PlayRecord(play, time, true, 400L);
+            PlayRecord record = new PlayRecord(play, time, true, 400L, user);
             recordDao.create(record);
         }
 

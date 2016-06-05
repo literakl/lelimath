@@ -13,7 +13,8 @@ import java.util.Date;
  */
 @DatabaseTable(tableName = "play_record")
 public class PlayRecord {
-    @DatabaseField(generatedId = true)
+    public static final String ID_COLUMN_NAME = "id";
+    @DatabaseField(generatedId = true, columnName = ID_COLUMN_NAME)
     Integer id;
 
     @DatabaseField(canBeNull = false)
@@ -21,6 +22,10 @@ public class PlayRecord {
 
     @DatabaseField(foreign = true, columnName="play_id")
     Play play;
+
+    public static final String USER_COLUMN_NAME = "user_id";
+    @DatabaseField(canBeNull = false, foreign = true, columnName=USER_COLUMN_NAME)
+    User user;
 
     @DatabaseField(canBeNull=true, columnName="first")
     Integer firstOperand;
@@ -34,7 +39,8 @@ public class PlayRecord {
     @DatabaseField(persisted = false)
     Operator operator;
 
-    @DatabaseField(canBeNull=true, columnName="operator", width = 1)
+    public static final String OPERATOR_COLUMN_NAME = "operator";
+    @DatabaseField(canBeNull=true, columnName=OPERATOR_COLUMN_NAME, width = 1)
     String operatorStr;
 
     @DatabaseField(persisted = false)
@@ -43,7 +49,8 @@ public class PlayRecord {
     @DatabaseField(canBeNull=true, columnName="unknown", width = 2)
     String unknownStr;
 
-    @DatabaseField(canBeNull=true, columnName="correct")
+    public static final String CORRECT_COLUMN_NAME = "correct";
+    @DatabaseField(canBeNull=true, columnName=CORRECT_COLUMN_NAME)
     boolean correct;
 
     @DatabaseField(canBeNull=true, columnName="wrong_value")
@@ -55,9 +62,10 @@ public class PlayRecord {
     public PlayRecord() {
     }
 
-    public PlayRecord(Play play, Date date, boolean correct, Long timeSpent) {
+    public PlayRecord(Play play, Date date, boolean correct, Long timeSpent, User user) {
         setPlay(play);
         setDate(date);
+        setUser(user);
         setCorrect(correct);
         setTimeSpent(timeSpent);
     }
@@ -72,6 +80,15 @@ public class PlayRecord {
         if (formula.getUnknown() != null) {
             setUnknown(formula.getUnknown());
         }
+    }
+
+    public PlayRecord setFormula(Integer firstOperand, Operator operator, Integer secondOperand, Integer result, FormulaPart unknown) {
+        this.firstOperand = firstOperand;
+        this.secondOperand = secondOperand;
+        setOperator(operator);
+        this.result = result;
+        setUnknown(unknown);
+        return this;
     }
 
     public Integer getId() {
@@ -96,6 +113,14 @@ public class PlayRecord {
 
     public void setPlay(Play play) {
         this.play = play;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getFirstOperand() {
@@ -132,8 +157,13 @@ public class PlayRecord {
     }
 
     public void setOperator(Operator operator) {
-        this.operator = operator;
-        operatorStr = operator.value;
+        if (operator != null) {
+            this.operator = operator;
+            operatorStr = operator.value;
+        } else {
+            this.operator = null;
+            operatorStr = null;
+        }
     }
 
     public FormulaPart getUnknown() {
@@ -146,8 +176,13 @@ public class PlayRecord {
     }
 
     public void setUnknown(FormulaPart unknown) {
-        this.unknown = unknown;
-        unknownStr = unknown.key;
+        if (unknown != null ) {
+            this.unknown = unknown;
+            unknownStr = unknown.key;
+        } else {
+            this.unknown = null;
+            unknownStr = null;
+        }
     }
 
     public boolean isCorrect() {

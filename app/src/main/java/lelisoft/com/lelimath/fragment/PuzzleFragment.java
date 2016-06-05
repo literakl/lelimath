@@ -177,6 +177,7 @@ public class PuzzleFragment extends LeliBaseFragment {
     private PlayRecord getPlayRecord(boolean correct, @NonNull Tile first, @NonNull Tile second) {
         PlayRecord record = new PlayRecord();
         record.setPlay(play);
+        record.setUser(LeliMathApp.getInstance().getCurrentUser());
         record.setDate(new Date());
         record.setCorrect(correct);
 

@@ -62,17 +62,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             try {
                 TableUtils.dropTable(connectionSource, PlayRecord.class, true);
                 onCreate(database, connectionSource);
-                return;
             } catch (SQLException e) {
                 log.error("Error upgrading a database from version 1!", e);
-            }
-        }
-        if (oldVersion == 2) {
-            try {
-                TableUtils.createTable(connectionSource, BadgeEvaluation.class);
-                getBadgeAwardDao().executeRaw("ALTER TABLE `badge_award` DROP COLUMN last_id;");
-            } catch (SQLException e) {
-                log.error("Error upgrading a database from version 2!", e);
             }
         }
     }

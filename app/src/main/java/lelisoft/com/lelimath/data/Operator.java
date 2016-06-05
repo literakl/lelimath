@@ -8,7 +8,7 @@ public enum Operator {
 
     PLUS("+"), MINUS("-"), MULTIPLY("\u22C5"), DIVIDE(":");
 
-    String value;
+    public final String value;
 
     Operator(String value) {
         this.value = value;

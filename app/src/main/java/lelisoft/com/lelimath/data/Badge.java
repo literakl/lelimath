@@ -17,18 +17,18 @@ public enum Badge {
     RETURNER('B', false),
     LONG_DISTANCE_RUNNER('S', false),
     MARATHON_RUNNER('G', false),
-    GOOD_SUMMATION('B', false),
-    GREAT_SUMMATION('S', false),
-    EXCELLENT_SUMMATION('G', false),
-    GOOD_SUBTRACTION('B', false),
-    GREAT_SUBTRACTION('S', false),
-    EXCELLENT_SUBTRACTION('G', false),
-    GOOD_MULTIPLICATION('B', false),
-    GREAT_MULTIPLICATION('S', false),
-    EXCELLENT_MULTIPLICATION('G', false),
-    GOOD_DIVISION('B', false),
-    GREAT_DIVISION('S', false),
-    EXCELLENT_DIVISION('G', false);
+    GOOD_SUMMATION('B', true),
+    GREAT_SUMMATION('S', true),
+    EXCELLENT_SUMMATION('G', true),
+    GOOD_SUBTRACTION('B', true),
+    GREAT_SUBTRACTION('S', true),
+    EXCELLENT_SUBTRACTION('G', true),
+    GOOD_MULTIPLICATION('B', true),
+    GREAT_MULTIPLICATION('S', true),
+    EXCELLENT_MULTIPLICATION('G', true),
+    GOOD_DIVISION('B', true),
+    GREAT_DIVISION('S', true),
+    EXCELLENT_DIVISION('G', true);
 
     final char type;
     final boolean multipleAwards;

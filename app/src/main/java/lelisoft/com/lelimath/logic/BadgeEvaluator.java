@@ -3,16 +3,24 @@ package lelisoft.com.lelimath.logic;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
+
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
+import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
+
+import static lelisoft.com.lelimath.data.BadgeEvaluation.BADGE_COLUMN_NAME;
+import static lelisoft.com.lelimath.data.BadgeEvaluation.USER_COLUMN_NAME;
 
 /**
  * Performs database analysis for certain set of badges and decides if a user is elligible
@@ -56,5 +64,12 @@ public abstract class BadgeEvaluator {
         }
         sb.setLength(sb.length() - 1);
         award.setData(sb.toString());
+    }
+
+    protected BadgeEvaluation queryLastEvaluation(Badge badge, User user, Dao<BadgeEvaluation, Integer> dao) throws SQLException {
+        QueryBuilder<BadgeEvaluation, Integer> builder = dao.queryBuilder();
+        builder.where().eq(BADGE_COLUMN_NAME, badge.name()).and().eq(USER_COLUMN_NAME, user.getId());
+        builder.orderBy(BadgeEvaluation.ID_COLUMN_NAME, true).limit(1L);
+        return builder.queryForFirst();
     }
 }

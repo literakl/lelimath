@@ -5,7 +5,6 @@ import android.content.Context;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +29,6 @@ import lelisoft.com.lelimath.view.AwardedBadgesCount;
 import static lelisoft.com.lelimath.data.Badge.LONG_DISTANCE_RUNNER;
 import static lelisoft.com.lelimath.data.Badge.MARATHON_RUNNER;
 import static lelisoft.com.lelimath.data.Badge.RETURNER;
-import static lelisoft.com.lelimath.data.BadgeEvaluation.BADGE_COLUMN_NAME;
-import static lelisoft.com.lelimath.data.BadgeEvaluation.USER_COLUMN_NAME;
 
 /**
  * Logic for three badges awarding user stamina.
@@ -55,7 +52,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             boolean evaluateSilver = bronzeAwarded && ! silverAwarded;
             boolean evaluateGold = silverAwarded && ! badges.containsKey(MARATHON_RUNNER);
 
-            BadgeEvaluation silverEvaluation = queryLast(LONG_DISTANCE_RUNNER, user, evaluationDao);
+            BadgeEvaluation silverEvaluation = queryLastEvaluation(LONG_DISTANCE_RUNNER, user, evaluationDao);
             if (evaluateSilver && silverEvaluation != null && silverEvaluation.getLastWrongDate() != null) {
                 long diff = TimeUnit.DAYS.toDays(System.currentTimeMillis() - silverEvaluation.getLastWrongDate().getTime());
                 if (diff < 7) {
@@ -63,7 +60,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
                 }
             }
 
-            BadgeEvaluation goldEvaluation = queryLast(MARATHON_RUNNER, user, evaluationDao);
+            BadgeEvaluation goldEvaluation = queryLastEvaluation(MARATHON_RUNNER, user, evaluationDao);
             if (evaluateGold && goldEvaluation != null && goldEvaluation.getLastWrongId() != null) {
                 long diff = TimeUnit.DAYS.toDays(System.currentTimeMillis() - goldEvaluation.getLastWrongDate().getTime());
                 if (diff < 30) {
@@ -72,7 +69,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             }
 
             if (! bronzeAwarded) {
-                BadgeEvaluation bronzeEvaluation = queryLast(RETURNER, user, evaluationDao);
+                BadgeEvaluation bronzeEvaluation = queryLastEvaluation(RETURNER, user, evaluationDao);
                 if (performEvaluation(RETURNER, 2, bronzeEvaluation, user, awardProvider, evaluationDao)) {
                     badgesCount.bronze++;
                 }
@@ -123,8 +120,8 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
 
 //        select strftime('%Y-%m-%d', date), count(*) from play_record where date > date('now','-8 day') group by strftime('%Y%m%d', date);
         String sql = "select strftime('%Y-%m-%d', date), count(*) from play_record where correct=1 " +
-                "and date > ? group by strftime('%Y%m%d', date) order by 1 desc";
-        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, since);
+                "and user_id=? and date > ? group by strftime('%Y%m%d', date) order by 1 desc";
+        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, user.getId().toString(), since);
 
         String searchedDate = today;
         int processed = 0;
@@ -169,12 +166,5 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             evaluationDao.createOrUpdate(evaluation);
             return false;
         }
-    }
-
-    private BadgeEvaluation queryLast(Badge badge, User user, Dao<BadgeEvaluation, Integer> dao) throws SQLException {
-        QueryBuilder<BadgeEvaluation, Integer> builder = dao.queryBuilder();
-        builder.where().eq(BADGE_COLUMN_NAME, badge.name()).and().eq(USER_COLUMN_NAME, user.getId());
-        builder.orderBy(BadgeEvaluation.ID_COLUMN_NAME, true).limit(1L);
-        return builder.queryForFirst();
     }
 }
