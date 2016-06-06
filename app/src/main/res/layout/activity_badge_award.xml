@@ -57,13 +57,15 @@
             android:layout_marginBottom="@dimen/text_margin"
         />
 
-        <TextView
-            android:id="@+id/badge_earned"
+        <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:text="23.5.2016 6:41"
-            />
-
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/earned_badges">
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </FrameLayout>
