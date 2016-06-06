@@ -8,9 +8,12 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
+import io.fabric.sdk.android.Fabric;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
@@ -43,6 +46,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Answers(), new Crashlytics());
         instance = this;
 //        new File("/data/data/lelisoft.com.lelimath/files/log/").mkdirs();
         configureLogbackDirectly();

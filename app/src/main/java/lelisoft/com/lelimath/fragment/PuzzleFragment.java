@@ -65,6 +65,8 @@ public class PuzzleFragment extends LeliBaseFragment {
         if (state != null) {
             started = state.getLong("started");
             stopped = state.getLong("stopped");
+        } else {
+            saveKeyMetricGameStarted(Game.PUZZLE, logic.getLevel());
         }
 
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
@@ -141,6 +143,7 @@ public class PuzzleFragment extends LeliBaseFragment {
                             play.setFinished(true);
                             callback.savePlayRecord(play, record);
                             callback.puzzleFinished();
+                            saveKeyMetricGameFinished(Game.PUZZLE, logic.getLevel());
                         } else {
                             callback.savePlayRecord(play, record);
 

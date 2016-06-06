@@ -94,6 +94,8 @@ public class CalcFragment extends LeliBaseFragment {
             started = state.getLong("started");
             stopped = state.getLong("stopped");
             totalTimeSpent = state.getLong("timeSpent");
+        } else {
+            saveKeyMetricGameStarted(Game.FAST_CALC, logic.getLevel());
         }
     }
 
@@ -156,6 +158,7 @@ public class CalcFragment extends LeliBaseFragment {
                 play.setFinished(true);
                 callback.savePlayRecord(play, record);
                 callback.calcFinished();
+                saveKeyMetricGameFinished(Game.FAST_CALC, logic.getLevel());
             } else {
                 callback.savePlayRecord(play, record);
 
