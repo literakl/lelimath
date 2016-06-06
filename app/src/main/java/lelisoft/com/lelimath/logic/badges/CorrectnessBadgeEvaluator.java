@@ -46,7 +46,7 @@ import static lelisoft.com.lelimath.data.PlayRecord.*;
  * Created by Leoš on 04.06.2016.
  */
 public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
-    private static final Logger log = LoggerFactory.getLogger(StaminaBadgeEvaluator.class);
+    private static final Logger log = LoggerFactory.getLogger(CorrectnessBadgeEvaluator.class);
 
 
     @Override
