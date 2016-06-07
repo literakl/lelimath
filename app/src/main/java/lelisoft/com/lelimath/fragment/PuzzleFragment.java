@@ -25,6 +25,7 @@ import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
+import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.provider.PlayProvider;
 import lelisoft.com.lelimath.view.FormulaResultPair;
@@ -66,7 +67,7 @@ public class PuzzleFragment extends LeliBaseFragment {
             started = state.getLong("started");
             stopped = state.getLong("stopped");
         } else {
-            saveKeyMetricGameStarted(Game.PUZZLE, logic.getLevel());
+            Metrics.saveGameStarted(Game.PUZZLE, logic.getLevel());
         }
 
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
@@ -143,7 +144,7 @@ public class PuzzleFragment extends LeliBaseFragment {
                             play.setFinished(true);
                             callback.savePlayRecord(play, record);
                             callback.puzzleFinished();
-                            saveKeyMetricGameFinished(Game.PUZZLE, logic.getLevel());
+                            Metrics.saveGameFinished(Game.PUZZLE, logic.getLevel());
                         } else {
                             callback.savePlayRecord(play, record);
 

@@ -17,6 +17,7 @@ import java.util.List;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.PlayRecordAdapter;
 import lelisoft.com.lelimath.data.PlayRecord;
+import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.provider.PlayRecordProvider;
 
 /**
@@ -80,6 +81,7 @@ public class PlayRecordListFragment extends LeliBaseFragment {
     public void onActivityCreated(@Nullable Bundle state) {
         log.debug("onActivityCreated()");
         super.onActivityCreated(state);
+        Metrics.saveContentDisplayed("dashboard", "records");
     }
 
 /*

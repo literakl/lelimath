@@ -14,6 +14,7 @@ import lelisoft.com.lelimath.BuildConfig;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
+import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 
@@ -50,6 +51,8 @@ public class BadgeAwardActivity extends AppCompatActivity {
                 earnedView.addView(view);
             }
         }
+
+        Metrics.saveContentDisplayed("view_badge", badge.name());
     }
 
     public static void start(Context c, Bundle bundle) {

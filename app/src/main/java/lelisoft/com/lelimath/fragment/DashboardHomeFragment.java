@@ -16,12 +16,13 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.CalcActivity;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.activities.PuzzleActivity;
+import lelisoft.com.lelimath.helpers.Metrics;
 
 /**
  * Fragment for home tab on Dashboard
  * Created by Leoš on 02.05.2016.
  */
-public class DashboardHomeFragment extends Fragment implements View.OnClickListener {
+public class DashboardHomeFragment extends LeliBaseFragment implements View.OnClickListener {
     private static final Logger log = LoggerFactory.getLogger(DashboardHomeFragment.class);
     FragmentActivity activity;
 
@@ -43,6 +44,8 @@ public class DashboardHomeFragment extends Fragment implements View.OnClickListe
         button.setOnClickListener(this);
         button = (TextView) activity.findViewById(R.id.main_button_settings);
         button.setOnClickListener(this);
+
+        Metrics.saveContentDisplayed("dashboard", "home");
     }
 
     @Override

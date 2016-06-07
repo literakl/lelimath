@@ -49,6 +49,7 @@ import java.util.Map;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
 import lelisoft.com.lelimath.helpers.PreferenceInputValidator;
@@ -115,6 +116,12 @@ public class GamePreferenceActivity extends PreferenceActivity implements
             preference = ((EditTextPreference) preferenceScreen.findPreference("pref_game_" + operation + "_result"));
             new ValuesPreferenceValidator(preference);
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Metrics.saveContentDisplayed("preferences", null);
     }
 
     @SuppressWarnings("deprecation")

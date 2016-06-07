@@ -21,6 +21,7 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.BadgeAdapter;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
+import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.view.BadgeView;
 
@@ -58,6 +59,13 @@ public class BadgeListFragment extends LeliBaseFragment {
             views.add(view);
         }
         return views;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle state) {
+        log.debug("onActivityCreated()");
+        super.onActivityCreated(state);
+        Metrics.saveContentDisplayed("dashboard", "badges");
     }
 
     public static Fragment newInstance() {

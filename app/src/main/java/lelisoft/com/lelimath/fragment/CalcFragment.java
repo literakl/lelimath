@@ -28,6 +28,7 @@ import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
+import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.logic.CalcLogic;
 import lelisoft.com.lelimath.provider.PlayProvider;
 
@@ -95,7 +96,7 @@ public class CalcFragment extends LeliBaseFragment {
             stopped = state.getLong("stopped");
             totalTimeSpent = state.getLong("timeSpent");
         } else {
-            saveKeyMetricGameStarted(Game.FAST_CALC, logic.getLevel());
+            Metrics.saveGameStarted(Game.FAST_CALC, logic.getLevel());
         }
     }
 
@@ -158,7 +159,7 @@ public class CalcFragment extends LeliBaseFragment {
                 play.setFinished(true);
                 callback.savePlayRecord(play, record);
                 callback.calcFinished();
-                saveKeyMetricGameFinished(Game.FAST_CALC, logic.getLevel());
+                Metrics.saveGameFinished(Game.FAST_CALC, logic.getLevel());
             } else {
                 callback.savePlayRecord(play, record);
 

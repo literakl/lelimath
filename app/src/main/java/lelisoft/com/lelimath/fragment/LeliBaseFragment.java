@@ -4,15 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LevelEndEvent;
-import com.crashlytics.android.answers.LevelStartEvent;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.support.ConnectionSource;
 
-import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.PlayRecord;
-import lelisoft.com.lelimath.logic.GameLogic;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
 
 /**
@@ -65,16 +60,6 @@ public class LeliBaseFragment extends Fragment {
         }
         formula.setTimeSpent(spent);
         started = now;
-    }
-
-    public void saveKeyMetricGameStarted(Game game, GameLogic.Level level) {
-        Answers.getInstance().logLevelStart(new LevelStartEvent().putLevelName(game.name())
-                .putCustomAttribute("level", level.name()));
-    }
-
-    public void saveKeyMetricGameFinished(Game game, GameLogic.Level level) {
-        Answers.getInstance().logLevelEnd(new LevelEndEvent().putLevelName(game.name())
-                .putCustomAttribute("level", level.name()));
     }
 
     /**
