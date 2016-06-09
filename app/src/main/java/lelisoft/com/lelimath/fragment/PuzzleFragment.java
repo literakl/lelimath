@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaPart;
+import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Game;
@@ -90,6 +93,11 @@ public class PuzzleFragment extends LeliBaseFragment {
     private void generateTiles() {
         log.debug("generateTiles(horizontal = {}, vertical = {})", maxHorizontalTiles, maxVerticalTiles);
         List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
+        if (tilesValues.isEmpty()) {
+            tilesValues.add(new FormulaResultPair(new Formula(1, 1, 2, Operator.PLUS, FormulaPart.RESULT)));
+            tilesValues.add(new FormulaResultPair(2));
+            Toast.makeText(getContext(), R.string.error_no_formula_generated, Toast.LENGTH_LONG).show();
+        }
         tilesToBeSolved = tilesValues.size();
         setupPlay();
 

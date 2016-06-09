@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
@@ -237,6 +238,10 @@ public class CalcFragment extends LeliBaseFragment {
 
     private void setupPlay() {
         formulas = logic.generateFormulas();
+        if (formulas.isEmpty()) {
+            formulas.add(new Formula(1, 1, 2, Operator.PLUS, FormulaPart.RESULT));
+            Toast.makeText(getContext(), R.string.error_no_formula_generated, Toast.LENGTH_LONG).show();
+        }
 
         play = new Play();
         play.setGame(Game.FAST_CALC);
