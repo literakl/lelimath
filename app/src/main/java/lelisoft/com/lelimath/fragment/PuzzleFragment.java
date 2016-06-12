@@ -155,6 +155,7 @@ public class PuzzleFragment extends LeliBaseFragment {
                             Metrics.saveGameFinished(Game.PUZZLE, logic.getLevel());
                         } else {
                             callback.savePlayRecord(play, record);
+                            LeliMathApp.getInstance().playSound(R.raw.correct);
 
                             currentButton.setText("");
                             currentButton.setBackgroundResource(R.drawable.tile_solved);
@@ -172,6 +173,7 @@ public class PuzzleFragment extends LeliBaseFragment {
                             updateSpentTime(record);
                             callback.savePlayRecord(play, record);
                         }
+                        LeliMathApp.getInstance().playSound(R.raw.incorrect);
 
                         selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
                         selectedButton.startAnimation(shake);

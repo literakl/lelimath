@@ -239,6 +239,14 @@
             />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/pref_category_misc">
+        <CheckBoxPreference
+            android:key="pref_sound"
+            android:title="@string/pref_sound"
+            android:defaultValue="true"
+            />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="O aplikaci">
         <Preference
             android:key="pref_version"

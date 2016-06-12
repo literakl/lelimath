@@ -47,6 +47,8 @@
     <string name="pref_operation_dependencies">Operaci <xliff:g id="operation" example="Sčítání" >%s</xliff:g> používá: </string>
     <string name="pref_operation_enabled">Povoleno</string>
     <string name="pref_operation_disabled">Nepovoleno</string>
+    <string name="pref_category_misc">Různé</string>
+    <string name="pref_sound">Zvuk</string>
     <string name="pref_app_version">Verze</string>
     <string name="pref_build_time">Sestavení</string>
     <string name="pref_operation_help_title">Nápověda</string>

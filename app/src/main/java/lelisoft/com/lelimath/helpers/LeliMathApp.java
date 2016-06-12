@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.crashlytics.android.Crashlytics;
@@ -18,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
@@ -39,6 +44,9 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
     public static Resources resources;
     private static LeliMathApp instance;
+    private SoundPool mShortPlayer = null;
+    private Map<Integer, Integer> mSounds = new HashMap<>();
+    private boolean soundEnabled;
 
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public User currentUser;
@@ -48,18 +56,29 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         super.onCreate();
         Fabric.with(this, new Answers(), new Crashlytics());
         instance = this;
-//        new File("/data/data/lelisoft.com.lelimath/files/log/").mkdirs();
+
         configureLogbackDirectly();
         androidExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
 
         resources = getResources();
         performUpgrade();
-        new FeedPreferencesTask().doInBackground(null);
+        setDefaultPreferences();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        soundEnabled = sharedPref.getBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, true);
+        toggleSound(soundEnabled);
     }
 
     public static LeliMathApp getInstance() {
         return instance;
+    }
+
+    public void playSound(int resourceId) {
+        if (soundEnabled) {
+            int soundId = mSounds.get(resourceId);
+            mShortPlayer.play(soundId, 0.99f, 0.99f, 0, 0, 1);
+        }
     }
 
     private void performUpgrade() {
@@ -119,6 +138,8 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     }
 
     private void configureLogbackDirectly() {
+//        new File("/data/data/lelisoft.com.lelimath/files/log/").mkdirs();
+
         // reset the default context (which may already have been initialized) since we want to reconfigure it
         LoggerContext lc = (LoggerContext)LoggerFactory.getILoggerFactory();
         lc.reset();
@@ -160,12 +181,36 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         root.addAppender(logcatAppender);
     }
 
+    protected void setDefaultPreferences() {
+        log.debug("Loading default values from XML");
+        PreferenceManager.setDefaultValues(LeliMathApp.this, R.xml.game_prefs, false);
+        log.debug("Defaults are loaded");
+    }
+
+    public void toggleSound(boolean state) {
+        log.debug("Toggle sound support");
+        if (! state && mShortPlayer != null) {
+            mShortPlayer.release();
+            mShortPlayer = null;
+            mSounds.clear();
+        } else if (state && mShortPlayer == null) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                mShortPlayer = new SoundPool.Builder().build();
+            } else {
+                //noinspection deprecation
+                mShortPlayer = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+            }
+            mSounds.put(R.raw.correct, this.mShortPlayer.load(this, R.raw.correct, 1));
+            mSounds.put(R.raw.incorrect, this.mShortPlayer.load(this, R.raw.incorrect, 1));
+            mSounds.put(R.raw.victory, this.mShortPlayer.load(this, R.raw.victory, 1));
+        }
+    }
+
+    // todo remove
     private class FeedPreferencesTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void[] params) {
-            log.debug("Loading default values from XML");
-            PreferenceManager.setDefaultValues(LeliMathApp.this, R.xml.game_prefs, false);
-            log.debug("Defaults are loaded");
+            LeliMathApp.this.setDefaultPreferences();
             return null;
         }
     }

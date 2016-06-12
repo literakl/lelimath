@@ -163,6 +163,7 @@ public class CalcFragment extends LeliBaseFragment {
                 Metrics.saveGameFinished(Game.FAST_CALC, logic.getLevel());
             } else {
                 callback.savePlayRecord(play, record);
+                LeliMathApp.getInstance().playSound(R.raw.correct);
 
                 prepareNewFormula();
                 displayFormula();
@@ -172,6 +173,7 @@ public class CalcFragment extends LeliBaseFragment {
             PlayRecord record = getPlayRecord(false);
             updateSpentTime(record);
             callback.savePlayRecord(play, record);
+            LeliMathApp.getInstance().playSound(R.raw.incorrect);
 
             unknown.startAnimation(shake);
             unknown.setText("");

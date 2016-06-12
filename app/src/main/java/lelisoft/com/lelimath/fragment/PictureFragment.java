@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 
 /**
  * Fragment displaying picture
@@ -37,5 +38,6 @@ public class PictureFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         log.debug("onActivityCreated()");
         super.onActivityCreated(savedInstanceState);
+        LeliMathApp.getInstance().playSound(R.raw.victory);
     }
 }

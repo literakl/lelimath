@@ -49,6 +49,7 @@ import java.util.Map;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
@@ -73,6 +74,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     public static final String KEY_CURRENT_VERSION = "pref_current_version";
     public static final String KEY_COMPLEXITY = "pref_game_complexity";
     public static final String KEY_UNKNOWN = "pref_game_calc_unknown";
+    public static final String KEY_SOUND_ENABLED = "pref_sound";
 
     private PreferenceHelper preferenceScreenHelper;
     private DependencyMap dependencyMap;
@@ -239,6 +241,10 @@ public class GamePreferenceActivity extends PreferenceActivity implements
 
             case "pref_game_operation_divide":
                 preferenceScreenHelper.setScreenSummary("divide", preferencesRoot, sharedPreferences);
+                return;
+
+            case KEY_SOUND_ENABLED:
+                LeliMathApp.getInstance().toggleSound(sharedPreferences.getBoolean(KEY_SOUND_ENABLED, true));
                 return;
         }
 
