@@ -71,9 +71,8 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
      * This class simply holds view of an item in list
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView formulaView;
-        ImageView typeView;
-        ImageView statusView;
+        TextView formulaView, newView;
+        ImageView typeView, statusView;
 
         /**
          * Creates new ViewHolder and init look with data from Badge
@@ -82,6 +81,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
         public ViewHolder(View view) {
             super(view);
             formulaView = (TextView) view.findViewById(R.id.badge_title);
+            newView = (TextView) view.findViewById(R.id.badge_new);
             typeView = (ImageView) view.findViewById(R.id.badge_type);
             statusView = (ImageView) view.findViewById(R.id.badge_status);
         }
@@ -97,6 +97,11 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
                 statusView.setImageResource(R.drawable.ic_correct);
             } else {
                 statusView.setImageResource(0);
+            }
+            if (! badgeView.awardedToday) {
+                newView.setVisibility(View.GONE);
+            } else {
+                newView.setVisibility(View.VISIBLE);
             }
         }
     }

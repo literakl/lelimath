@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
@@ -45,7 +46,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         Dao<Play, Integer> playDao = helper.getPlayDao();
         Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
         BadgeEvaluator evaluator = new CorrectnessBadgeEvaluator();
-        Map<Badge, BadgeAward> badges = new HashMap<>();
+        Map<Badge, List<BadgeAward>> badges = new HashMap<>();
 
         Calendar time = Calendar.getInstance();
         time.set(Calendar.HOUR_OF_DAY, 16);
@@ -111,7 +112,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         Dao<Play, Integer> playDao = helper.getPlayDao();
         Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
         BadgeEvaluator evaluator = new CorrectnessBadgeEvaluator();
-        Map<Badge, BadgeAward> badges = new HashMap<>();
+        Map<Badge, List<BadgeAward>> badges = new HashMap<>();
 
         Calendar time = Calendar.getInstance();
         time.set(Calendar.HOUR_OF_DAY, 16);

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -38,7 +39,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
     private static final Logger log = LoggerFactory.getLogger(StaminaBadgeEvaluator.class);
 
     @Override
-    public AwardedBadgesCount evaluate(Map<Badge, BadgeAward> badges, Context context) {
+    public AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context context) {
         try {
             log.debug("evaluate starts");
             BadgeAwardProvider awardProvider = new BadgeAwardProvider(context);

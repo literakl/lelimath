@@ -12,8 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
@@ -43,8 +45,8 @@ public class StaminaBadgeTest extends AndroidTestCase {
         Dao<Play, Integer> playDao = helper.getPlayDao();
         Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
         BadgeEvaluator evaluator = new StaminaBadgeEvaluator();
-        Map<Badge, BadgeAward> badges = new HashMap<>();
-        badges.put(Badge.RETURNER, new BadgeAward());
+        Map<Badge, List<BadgeAward>> badges = new HashMap<>();
+        badges.put(Badge.RETURNER, Collections.singletonList(new BadgeAward()));
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 16);
 
@@ -95,9 +97,9 @@ public class StaminaBadgeTest extends AndroidTestCase {
         Dao<Play, Integer> playDao = helper.getPlayDao();
         Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
         BadgeEvaluator evaluator = new StaminaBadgeEvaluator();
-        Map<Badge, BadgeAward> badges = new HashMap<>();
-        badges.put(Badge.RETURNER, new BadgeAward());
-        badges.put(Badge.LONG_DISTANCE_RUNNER, new BadgeAward());
+        Map<Badge, List<BadgeAward>> badges = new HashMap<>();
+        badges.put(Badge.RETURNER, Collections.singletonList(new BadgeAward()));
+        badges.put(Badge.LONG_DISTANCE_RUNNER, Collections.singletonList(new BadgeAward()));
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 16);
         calendar.set(Calendar.MINUTE, 0);
@@ -127,7 +129,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
         Calendar calendar = Calendar.getInstance();
         BadgeEvaluator evaluator = new StaminaBadgeEvaluator();
-        Map<Badge, BadgeAward> badges = new HashMap<>();
+        Map<Badge, List<BadgeAward>> badges = new HashMap<>();
 
         calendar.add(Calendar.MINUTE, -5);
         Date time = calendar.getTime();

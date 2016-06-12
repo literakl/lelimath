@@ -9,6 +9,7 @@ import lelisoft.com.lelimath.data.Badge;
 public class BadgeView {
     public Badge badge;
     public boolean awarded;
+    public boolean awardedToday;
 
     public BadgeView(Badge badge) {
         this.badge = badge;

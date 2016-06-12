@@ -33,7 +33,7 @@ public abstract class BadgeEvaluator {
      * @param badges currently awarded badges
      * @return number of newly awarded badged
      */
-    public abstract AwardedBadgesCount evaluate(Map<Badge, BadgeAward> badges, Context context);
+    public abstract AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context context);
 
     @NonNull
     protected BadgeAward createBadgeAward(Badge badge, User user) {

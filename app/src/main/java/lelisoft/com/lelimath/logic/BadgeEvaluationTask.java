@@ -7,6 +7,7 @@ import android.widget.Toast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.R;
@@ -35,7 +36,7 @@ public class BadgeEvaluationTask extends AsyncTask<Void, Void, Integer> {
     protected Integer doInBackground(Void... params) {
         log.debug("doInBackground starts");
         BadgeAwardProvider provider = new BadgeAwardProvider(context);
-        Map<Badge, BadgeAward> badges = provider.getAll();
+        Map<Badge, List<BadgeAward>> badges = provider.getAll();
 
         BadgeEvaluator evaluator = new PlayCountBadgeEvaluator();
         AwardedBadgesCount badgesCount = evaluator.evaluate(badges, context);

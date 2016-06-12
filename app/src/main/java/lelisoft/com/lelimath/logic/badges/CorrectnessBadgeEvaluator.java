@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
@@ -50,7 +51,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
 
 
     @Override
-    public AwardedBadgesCount evaluate(Map<Badge, BadgeAward> badges, Context context) {
+    public AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context context) {
         try {
             log.debug("evaluate starts");
             BadgeAwardProvider awardProvider = new BadgeAwardProvider(context);

@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -73,16 +74,27 @@ public class BadgeAwardProvider {
         return dao.queryBuilder();
     }
 
-    public Map<Badge, BadgeAward> getAll() {
+    public Map<Badge, List<BadgeAward>> getAll() {
         try {
-            List<BadgeAward> list = dao.queryForAll();
-            if (list == null || list.isEmpty()) {
+            List<BadgeAward> allAwards = dao.queryForAll();
+            if (allAwards == null || allAwards.isEmpty()) {
                 return Collections.emptyMap();
             }
 
-            Map<Badge, BadgeAward> badges = new HashMap<>(list.size());
-            for (BadgeAward badgeAward : list) {
-                badges.put(badgeAward.getBadge(), badgeAward);
+            Map<Badge, List<BadgeAward>> badges = new HashMap<>(allAwards.size(), 1.0f);
+            for (BadgeAward badgeAward : allAwards) {
+                List<BadgeAward> previous = badges.get(badgeAward.getBadge());
+                if (previous != null) {
+                    List<BadgeAward> list = previous;
+                    if (previous.size() == 1) {
+                        list = new ArrayList<>(4);
+                        list.add(previous.get(0));
+                        badges.put(badgeAward.getBadge(), list);
+                    }
+                    list.add(badgeAward);
+                } else {
+                    badges.put(badgeAward.getBadge(), Collections.singletonList(badgeAward));
+                }
             }
             return badges;
         } catch (SQLException e) {

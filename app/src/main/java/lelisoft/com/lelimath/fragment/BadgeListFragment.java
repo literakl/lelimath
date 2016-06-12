@@ -22,6 +22,7 @@ import lelisoft.com.lelimath.adapter.BadgeAdapter;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.helpers.Metrics;
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.view.BadgeView;
 
@@ -51,11 +52,21 @@ public class BadgeListFragment extends LeliBaseFragment {
     private List<BadgeView> fetchBadgeViews() {
         List<Badge> badges = Arrays.asList(Badge.values());
         BadgeAwardProvider provider = new BadgeAwardProvider(activity);
-        Map<Badge, BadgeAward> badgeAwards = provider.getAll();
+        Map<Badge, List<BadgeAward>> allAwardedBadges = provider.getAll();
         List<BadgeView> views = new ArrayList<>(badges.size());
         for (Badge badge : badges) {
             BadgeView view = new BadgeView(badge);
-            view.awarded = badgeAwards.get(badge) != null;
+            List<BadgeAward> awards = allAwardedBadges.get(badge);
+            if (awards != null) {
+                view.awarded = true;
+                long maxTime = 0;
+                for (BadgeAward award : awards) {
+                    if (award.getDate().getTime() > maxTime) {
+                        maxTime = award.getDate().getTime();
+                    }
+                }
+                view.awardedToday = Misc.isInCurrentDay(maxTime);
+            }
             views.add(view);
         }
         return views;

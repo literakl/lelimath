@@ -22,6 +22,7 @@
     <string name="tab_log">Žurnál</string>
     <string name="title_badge">Odznáček</string>
     <string name="caption_awarded">Získáno</string>
+    <string name="caption_new">Nový</string>
     <string name="message_badge_not_awarded">Zatím ne</string>
     <string name="pref_build_number_title">Datum sestavení</string>
     <string name="pref_enter_values">Zadejte rozsah oddělený pomlčkou nebo výčet hodnot oddělených čárkou</string>

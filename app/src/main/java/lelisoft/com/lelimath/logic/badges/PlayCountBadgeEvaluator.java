@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
@@ -29,7 +30,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
     private static final Logger log = LoggerFactory.getLogger(PlayCountBadgeEvaluator.class);
 
     @Override
-    public AwardedBadgesCount evaluate(Map<Badge, BadgeAward> badges, Context context) {
+    public AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context context) {
         log.debug("evaluate starts");
         if (badges.get(Badge.PALADIN) != null) {
             // already received maximum

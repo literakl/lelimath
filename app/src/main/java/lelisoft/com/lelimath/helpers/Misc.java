@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -29,6 +30,18 @@ public class Misc {
 
     static Float density = null;
     static Random random = new Random(System.currentTimeMillis());
+    static long today, tomorrow;
+
+    static {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        today = calendar.getTimeInMillis();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        tomorrow = calendar.getTimeInMillis();
+    }
 
     public static float dpFromPx(final Context context, final float px) {
         if (density == null) {
@@ -194,6 +207,15 @@ public class Misc {
             default:
                 return R.drawable.ic_bronze_circle;
         }
+    }
+
+    public static boolean isInCurrentDay(long time) {
+        if (System.currentTimeMillis() > tomorrow) {
+            today = tomorrow;
+            tomorrow = today + 86400000;
+        }
+
+        return time > today && time < tomorrow;
     }
 
     public static Random getRandom() {
