@@ -33,6 +33,15 @@ public class DashboardActivity extends LeliBaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() > 0) {
+            viewPager.setCurrentItem(0);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         tabPosition = viewPager.getCurrentItem();
