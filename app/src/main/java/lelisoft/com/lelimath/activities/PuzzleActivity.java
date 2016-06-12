@@ -33,17 +33,6 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
     PuzzleFragment puzzleFragment;
     PictureFragment pictureFragment;
 
-    public static int[] pictures = new int[] {
-            R.drawable.pic_cat_kitten,
-            R.drawable.pic_child_ball_on_head,
-            R.drawable.pic_cute_girl,
-            R.drawable.pic_girl_teddy_bear,
-            R.drawable.pic_green_snake,
-            R.drawable.pic_kid_airplane,
-            R.drawable.pic_koalas_on_tree,
-            R.drawable.pic_owl
-    };
-
     @Override
     protected void onCreate(Bundle state) {
         log.debug("onCreate()");
@@ -77,7 +66,7 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
 
         pictureFragment = new PictureFragment();
         Bundle args = new Bundle();
-        args.putInt(PictureFragment.ARG_PICTURE, pictures[Misc.getRandom().nextInt(pictures.length)]);
+        args.putInt(PictureFragment.ARG_PICTURE, selectRandomPicture());
         pictureFragment.setArguments(args);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

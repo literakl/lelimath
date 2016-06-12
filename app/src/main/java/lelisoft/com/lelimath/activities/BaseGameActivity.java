@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Play;
@@ -21,6 +22,7 @@ import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.GameLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 
@@ -34,6 +36,28 @@ public class BaseGameActivity extends LeliBaseActivity {
 
     GameLogic gameLogic;
     SharedPreferences sharedPref;
+
+    public static int[] pictures = new int[] {
+            R.drawable.pic_dragon,
+            R.drawable.pic_genie,
+            R.drawable.pic_kitten,
+            R.drawable.pic_knight_boy,
+            R.drawable.pic_knight_girl,
+            R.drawable.pic_lion,
+            R.drawable.pic_little_witch,
+            R.drawable.pic_orc,
+            R.drawable.pic_pirate,
+            R.drawable.pic_pirate_parrot,
+            R.drawable.pic_pirate_ship,
+            R.drawable.pic_pixie,
+            R.drawable.pic_playing_tiger,
+            R.drawable.pic_princess_in_yellow,
+            R.drawable.pic_princess_on_horse,
+            R.drawable.pic_puppy,
+            R.drawable.pic_queen_on_throne,
+            R.drawable.pic_sitting_panda,
+            R.drawable.pic_treasure
+    };
 
     protected void storePlayRecord(PlayRecord record) {
         try {
@@ -171,6 +195,10 @@ public class BaseGameActivity extends LeliBaseActivity {
 
     public void setGameLogic(GameLogic gameLogic) {
         this.gameLogic = gameLogic;
+    }
+
+    protected int selectRandomPicture() {
+        return pictures[Misc.getRandom().nextInt(pictures.length)];
     }
 
     @Override

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +28,7 @@ public class PictureFragment extends Fragment {
         ImageView view = (ImageView) inflater.inflate(R.layout.template_picture, container, false);
         int picture = getArguments().getInt(ARG_PICTURE);
         if (picture != 0) {
-            // TODO scaling? reading in backgound?
-            view.setImageResource(picture);
+            Picasso.with(getContext()).load(picture).into(view);
         }
         return view;
     }
