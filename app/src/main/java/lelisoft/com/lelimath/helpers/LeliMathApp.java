@@ -55,7 +55,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
         resources = getResources();
         performUpgrade();
-        new FeedPreferencesTask().execute();
+        new FeedPreferencesTask().doInBackground(null);
     }
 
     public static LeliMathApp getInstance() {
