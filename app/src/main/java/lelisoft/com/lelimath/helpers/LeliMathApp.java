@@ -47,6 +47,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     private SoundPool mShortPlayer = null;
     private Map<Integer, Integer> mSounds = new HashMap<>();
     private boolean soundEnabled;
+    private float soundLevel;
 
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public User currentUser;
@@ -67,6 +68,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         soundEnabled = sharedPref.getBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, true);
+        setSoundLevel(sharedPref.getInt(GamePreferenceActivity.KEY_SOUND_LEVEL, 50));
         toggleSound(soundEnabled);
     }
 
@@ -77,7 +79,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     public void playSound(int resourceId) {
         if (soundEnabled) {
             int soundId = mSounds.get(resourceId);
-            mShortPlayer.play(soundId, 0.99f, 0.99f, 0, 0, 1);
+            mShortPlayer.play(soundId, soundLevel, soundLevel, 0, 0, 1);
         }
     }
 
@@ -89,18 +91,17 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = preferences.edit();
             int version = preferences.getInt(GamePreferenceActivity.KEY_CURRENT_VERSION, 0);
-            if (version == 0 || version < packageInfo.versionCode) {
+            if (version < packageInfo.versionCode) {
                 editor.putInt(GamePreferenceActivity.KEY_CURRENT_VERSION, packageInfo.versionCode);
                 editor.apply();
+            }
+            if (version == 0) {
                 return; // new installation
             }
 
-            if (version <= 141) {
-                log.info("Removing deprecated preferences from version 1.4.1 and older");
-                editor.remove("pref_game_operations");
-                editor.remove("pref_game_first_operand");
-                editor.remove("pref_game_second_operand");
-                editor.remove("pref_game_result");
+            if (version == 180) {
+                boolean enabled = preferences.getBoolean("pref_sound", true);
+                editor.putBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, enabled);
             }
         } catch (PackageManager.NameNotFoundException e) {
             log.warn("Package search failed!", e);
@@ -204,6 +205,10 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
             mSounds.put(R.raw.incorrect, this.mShortPlayer.load(this, R.raw.incorrect, 1));
             mSounds.put(R.raw.victory, this.mShortPlayer.load(this, R.raw.victory, 1));
         }
+    }
+
+    public void setSoundLevel(int soundLevel) {
+        this.soundLevel = soundLevel / 100f;
     }
 
     // todo remove

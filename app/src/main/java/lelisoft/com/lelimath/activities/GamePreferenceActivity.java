@@ -74,7 +74,8 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     public static final String KEY_CURRENT_VERSION = "pref_current_version";
     public static final String KEY_COMPLEXITY = "pref_game_complexity";
     public static final String KEY_UNKNOWN = "pref_game_calc_unknown";
-    public static final String KEY_SOUND_ENABLED = "pref_sound";
+    public static final String KEY_SOUND_ENABLED = "pref_sound_enabled";
+    public static final String KEY_SOUND_LEVEL = "pref_sound_level";
 
     private PreferenceHelper preferenceScreenHelper;
     private DependencyMap dependencyMap;
@@ -206,6 +207,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         log.debug("onSharedPreferenceChanged(" + key + ")");
         //noinspection deprecation
         PreferenceScreen preferencesRoot = getPreferenceScreen();
+        PreferenceScreen preference;
         switch (key) {
             case "pref_game_plus_depends":
                 changeDefinitionsState("plus", preferencesRoot);
@@ -244,7 +246,17 @@ public class GamePreferenceActivity extends PreferenceActivity implements
                 return;
 
             case KEY_SOUND_ENABLED:
-                LeliMathApp.getInstance().toggleSound(sharedPreferences.getBoolean(KEY_SOUND_ENABLED, true));
+                boolean enabled = sharedPreferences.getBoolean(KEY_SOUND_ENABLED, true);
+                LeliMathApp.getInstance().toggleSound(enabled);
+                preference = (PreferenceScreen) preferencesRoot.findPreference("pref_misc_sound_category");
+                preferenceScreenHelper.setSoundSummary(preference, sharedPreferences, enabled, null);
+                return;
+
+            case KEY_SOUND_LEVEL:
+                int volume = sharedPreferences.getInt(KEY_SOUND_LEVEL, 50);
+                LeliMathApp.getInstance().setSoundLevel(volume);
+                preference = (PreferenceScreen) preferencesRoot.findPreference("pref_misc_sound_category");
+                preferenceScreenHelper.setSoundSummary(preference, sharedPreferences, null, volume);
                 return;
         }
 

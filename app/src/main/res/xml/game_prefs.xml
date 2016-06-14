@@ -240,11 +240,27 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_misc">
-        <CheckBoxPreference
-            android:key="pref_sound"
-            android:title="@string/pref_sound"
-            android:defaultValue="true"
-            />
+        <PreferenceScreen
+            android:key="pref_misc_sound_category"
+            android:title="@string/pref_sound_state"
+            android:persistent="false">
+
+            <CheckBoxPreference
+                android:key="pref_sound_enabled"
+                android:title="@string/pref_sound_state"
+                android:defaultValue="true"
+                />
+
+            <lelisoft.com.lelimath.helpers.SeekBarPreference
+                android:key="pref_sound_level"
+                android:dependency="pref_sound_enabled"
+                android:title="@string/pref_sound_level"
+                android:defaultValue="50"
+                android:max="100"
+                android:dialogMessage="@string/pref_sound_level_message"
+                android:text="%"
+                />
+        </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="O aplikaci">

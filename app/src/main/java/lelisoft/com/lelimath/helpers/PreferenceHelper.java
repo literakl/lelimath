@@ -5,6 +5,7 @@
 package lelisoft.com.lelimath.helpers;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
@@ -22,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 import lelisoft.com.lelimath.R;
+import static lelisoft.com.lelimath.activities.GamePreferenceActivity.KEY_SOUND_ENABLED;
+import static lelisoft.com.lelimath.activities.GamePreferenceActivity.KEY_SOUND_LEVEL;
 
 /**
  * Workaround for Android bug that Summary is not generated for most types of Preferences
@@ -57,6 +60,9 @@ public class PreferenceHelper {
                     case "pref_game_divide_category":
                         setScreenSummary("divide", group, sharedPreferences);
                         break;
+                    case "pref_misc_sound_category":
+                        setSoundSummary((PreferenceScreen) group, sharedPreferences, null, null);
+                        break;
                 }
             }
 
@@ -79,6 +85,32 @@ public class PreferenceHelper {
         preference.setSummary(value ? R.string.pref_operation_enabled : R.string.pref_operation_disabled);
 		//This is necessary to reflect change after coming back from sub-pref screen
 		((BaseAdapter)preferencesRoot.getRootAdapter()).notifyDataSetChanged();
+	}
+
+	public void setSoundSummary(PreferenceScreen preferenceScreen, SharedPreferences sharedPreferences, Boolean enabled, Integer volume) {
+        if (enabled == null) {
+            enabled = sharedPreferences.getBoolean(KEY_SOUND_ENABLED, true);
+        }
+        if (volume == null) {
+            volume = sharedPreferences.getInt(KEY_SOUND_LEVEL, 50);
+        }
+
+        Preference volumePreference = preferenceScreen.findPreference(KEY_SOUND_LEVEL);
+		if (! enabled) {
+            preferenceScreen.setSummary(R.string.pref_sound_muted);
+            volumePreference.setSummary("");
+        } else {
+            Resources resources = LeliMathApp.getInstance().getResources();
+            String summary = resources.getString(R.string.pref_sound_current_level, volume);
+            if (volume == 0) {
+                preferenceScreen.setSummary(R.string.pref_sound_muted);
+            } else {
+                preferenceScreen.setSummary(summary);
+            }
+            volumePreference.setSummary(summary);
+        }
+		//This is necessary to reflect change after coming back from sub-pref screen
+		((BaseAdapter)preferenceScreen.getRootAdapter()).notifyDataSetChanged();
 	}
 
     public void updatePreferenceSummary(Preference preference) {
