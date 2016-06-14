@@ -265,6 +265,20 @@
 
     <PreferenceCategory android:title="O aplikaci">
         <Preference
+            android:key="pref_page_blog"
+            android:title="@string/pref_page_blog"
+            android:persistent="false">
+            <intent android:action="android.intent.action.VIEW" android:data="http://www.literak.cz/kategorie/lelimath/" />
+        </Preference>
+
+        <Preference
+            android:key="pref_page_project"
+            android:title="@string/pref_page_project"
+            android:persistent="false">
+            <intent android:action="android.intent.action.VIEW" android:data="http://lelimath.net/projects/lelimath" />
+        </Preference>
+
+        <Preference
             android:key="pref_version"
             android:title="@string/pref_app_version"
             android:persistent="false"

@@ -53,6 +53,8 @@
     <string name="pref_sound_current_level">Hlasitost <xliff:g id="level" example="33" >%s</xliff:g>%%</string>
     <string name="pref_sound_level">Hlasitost</string>
     <string name="pref_sound_level_message">Nastavte hlasitost pro zvukové efekty</string>
+    <string name="pref_page_blog">LeliMath blog</string>
+    <string name="pref_page_project">Nápady a chyby</string>
     <string name="pref_app_version">Verze</string>
     <string name="pref_build_time">Sestavení</string>
     <string name="pref_operation_help_title">Nápověda</string>
