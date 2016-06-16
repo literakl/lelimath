@@ -47,7 +47,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     private SoundPool mShortPlayer = null;
     private Map<Integer, Integer> mSounds = new HashMap<>();
     private boolean soundEnabled;
-    private float soundLevel;
+    private float volume;
 
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public User currentUser;
@@ -68,7 +68,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         soundEnabled = sharedPref.getBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, true);
-        setSoundLevel(sharedPref.getInt(GamePreferenceActivity.KEY_SOUND_LEVEL, 50));
+        setVolume(sharedPref.getInt(GamePreferenceActivity.KEY_SOUND_LEVEL, 50));
         toggleSound(soundEnabled);
     }
 
@@ -78,8 +78,12 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
     public void playSound(int resourceId) {
         if (soundEnabled) {
-            int soundId = mSounds.get(resourceId);
-            mShortPlayer.play(soundId, soundLevel, soundLevel, 0, 0, 1);
+            Integer soundId = mSounds.get(resourceId);
+            if (soundId == null) {
+                log.warn("Failed to get sound {}!", resourceId);
+                return;
+            }
+            mShortPlayer.play(soundId, volume, volume, 0, 0, 1);
         }
     }
 
@@ -189,7 +193,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     }
 
     public void toggleSound(boolean state) {
-        log.debug("Toggle sound support");
+        log.debug("Toggle sound support({})", state);
         if (! state && mShortPlayer != null) {
             mShortPlayer.release();
             mShortPlayer = null;
@@ -207,8 +211,9 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         }
     }
 
-    public void setSoundLevel(int soundLevel) {
-        this.soundLevel = soundLevel / 100f;
+    public void setVolume(int volume) {
+        log.debug("Set sound volume({})", volume);
+        this.volume = volume / 100f;
     }
 
     // todo remove

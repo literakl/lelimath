@@ -254,7 +254,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
 
             case KEY_SOUND_LEVEL:
                 int volume = sharedPreferences.getInt(KEY_SOUND_LEVEL, 50);
-                LeliMathApp.getInstance().setSoundLevel(volume);
+                LeliMathApp.getInstance().setVolume(volume);
                 preference = (PreferenceScreen) preferencesRoot.findPreference("pref_misc_sound_category");
                 preferenceScreenHelper.setSoundSummary(preference, sharedPreferences, null, volume);
                 return;
