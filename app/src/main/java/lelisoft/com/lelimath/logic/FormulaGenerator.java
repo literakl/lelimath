@@ -139,7 +139,7 @@ public class FormulaGenerator {
 
     static OperatorDefinition getOperator(List<OperatorDefinition> operators) {
         if (operators == null || operators.isEmpty()) {
-            return new OperatorDefinition(Operator.PLUS, Values.DEMO, Values.DEMO, null);
+            return new OperatorDefinition(Operator.PLUS, Values.DEMO, Values.DEMO, Values.DEMO);
         }
         if (operators.size() == 1) {
             return operators.get(0);
