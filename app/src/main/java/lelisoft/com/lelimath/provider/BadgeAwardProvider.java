@@ -98,8 +98,7 @@ public class BadgeAwardProvider {
             }
             return badges;
         } catch (SQLException e) {
-            log.error("Unable to get all BadgeAwards from database.", e);
-            return null;
+            throw new RuntimeException("Unable to get all BadgeAwards from a database!", e);
         }
     }
 
