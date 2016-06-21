@@ -1,5 +1,7 @@
 package lelisoft.com.lelimath.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +18,6 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.CalcActivity;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.activities.PuzzleActivity;
-import lelisoft.com.lelimath.activities.WebViewerActivity;
 import lelisoft.com.lelimath.helpers.Metrics;
 
 /**
@@ -45,7 +46,11 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         button.setOnClickListener(this);
         button = (TextView) activity.findViewById(R.id.main_button_settings);
         button.setOnClickListener(this);
-        button = (TextView) activity.findViewById(R.id.main_button_changelog);
+        button = (TextView) activity.findViewById(R.id.main_button_blog);
+        button.setOnClickListener(this);
+        button = (TextView) activity.findViewById(R.id.main_button_bugtracker);
+        button.setOnClickListener(this);
+        button = (TextView) activity.findViewById(R.id.main_button_twitter);
         button.setOnClickListener(this);
 
         Metrics.saveContentDisplayed("dashboard", "home");
@@ -66,13 +71,26 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
                 GamePreferenceActivity.start(activity);
                 break;
 
-            case R.id.main_button_changelog:
-                WebViewerActivity.start(activity, "changelog.html");
+            case R.id.main_button_bugtracker:
+                openBrowser("http://lelimath.net/projects/lelimath");
+                break;
+
+            case R.id.main_button_blog:
+                openBrowser("http://www.literak.cz/kategorie/lelimath/");
+                break;
+
+            case R.id.main_button_twitter:
+                openBrowser("https://twitter.com/lelimath_app");
                 break;
         }
     }
 
     public static Fragment newInstance() {
         return new DashboardHomeFragment();
+    }
+
+    public void openBrowser(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 }

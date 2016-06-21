@@ -16,6 +16,7 @@ import lelisoft.com.lelimath.helpers.Metrics;
 public class WebViewerActivity extends AppCompatActivity {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(WebViewerActivity.class);
     public static final String KEY_RESOURCE_NAME = BuildConfig.APPLICATION_ID + ".RESOURCE_NAME";
+    public static final String KEY_TITLE = BuildConfig.APPLICATION_ID + ".TITLE";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,10 @@ public class WebViewerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         WebView webview = new WebView(this);
         setContentView(webview);
+        String title = (String) getIntent().getSerializableExtra(KEY_TITLE);
+        if (title != null) {
+            getSupportActionBar().setTitle(title);
+        }
         String resource = (String) getIntent().getSerializableExtra(KEY_RESOURCE_NAME);
         webview.loadUrl("file:///android_res/raw/" + resource);
         Metrics.saveContentDisplayed("web", resource);

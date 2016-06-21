@@ -3,7 +3,9 @@
     <string name="app_name">LeliMath</string>
     <string name="action_new_game">Nová hra</string>
     <string name="action_settings">Nastavení</string>
-    <string name="action_changelog">Popis změn</string>
+    <string name="action_twitter">Twitter</string>
+    <string name="action_blog">LeliMath blog</string>
+    <string name="action_project">Nápady a chyby</string>
     <string name="action_pause">Pauza</string>
     <string name="action_speed">Rychlost</string>
     <string name="action_progress_fast">Fast</string>
@@ -54,9 +56,8 @@
     <string name="pref_sound_current_level">Hlasitost <xliff:g id="level" example="33" >%s</xliff:g>%%</string>
     <string name="pref_sound_level">Hlasitost</string>
     <string name="pref_sound_level_message">Nastavte hlasitost pro zvukové efekty</string>
-    <string name="pref_page_blog">LeliMath blog</string>
-    <string name="pref_page_project">Nápady a chyby</string>
-    <string name="pref_page_credits">Poděkování</string>
+    <string name="pref_credits">Poděkování</string>
+    <string name="pref_changelog">Soupis změn</string>
     <string name="pref_app_version">Verze</string>
     <string name="pref_build_time">Sestavení</string>
     <string name="pref_operation_help_title">Nápověda</string>

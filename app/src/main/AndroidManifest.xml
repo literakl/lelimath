@@ -50,7 +50,7 @@
         </activity>
         <activity
             android:name=".activities.WebViewerActivity"
-            android:label="@string/action_changelog"
+            android:label="Prohlížeč"
             android:parentActivityName=".activities.DashboardActivity">
         </activity>
         <meta-data
