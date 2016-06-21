@@ -10,6 +10,7 @@ import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
@@ -48,6 +49,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     private Map<Integer, Integer> mSounds = new HashMap<>();
     private boolean soundEnabled;
     private float volume;
+    private boolean insideFirebase;
 
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public User currentUser;
@@ -55,7 +57,13 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Answers(), new Crashlytics());
+
+        insideFirebase = Settings.System.getString(getContentResolver(), "firebase.test.lab") != null;
+        if (insideFirebase) {
+            Fabric.with(this, new Crashlytics());
+        } else {
+            Fabric.with(this, new Answers(), new Crashlytics());
+        }
         instance = this;
 
         configureLogbackDirectly();
@@ -74,6 +82,10 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
     public static LeliMathApp getInstance() {
         return instance;
+    }
+
+    public static boolean isInsideFirebase() {
+        return instance.insideFirebase;
     }
 
     public void playSound(int resourceId) {
