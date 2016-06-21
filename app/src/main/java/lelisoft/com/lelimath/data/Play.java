@@ -178,7 +178,7 @@ public class Play implements Parcelable {
     protected Play(Parcel in) {
         id = in.readInt();
         count = in.readInt();
-        timeSpent = in.readLong();
+        timeSpent = (Long) in.readSerializable();
         gameStr = in.readString();
         finished = in.readByte() != 0;
         date = new Date(in.readLong());
@@ -189,7 +189,7 @@ public class Play implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeInt(count);
-        dest.writeLong(timeSpent);
+        dest.writeSerializable(timeSpent);
         dest.writeString(gameStr);
         dest.writeByte((byte) (finished ? 1 : 0));
         dest.writeLong(date.getTime());
