@@ -16,6 +16,7 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.CalcActivity;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.activities.PuzzleActivity;
+import lelisoft.com.lelimath.activities.WebViewerActivity;
 import lelisoft.com.lelimath.helpers.Metrics;
 
 /**
@@ -44,6 +45,8 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         button.setOnClickListener(this);
         button = (TextView) activity.findViewById(R.id.main_button_settings);
         button.setOnClickListener(this);
+        button = (TextView) activity.findViewById(R.id.main_button_changelog);
+        button.setOnClickListener(this);
 
         Metrics.saveContentDisplayed("dashboard", "home");
     }
@@ -61,6 +64,10 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
 
             case R.id.main_button_settings:
                 GamePreferenceActivity.start(activity);
+                break;
+
+            case R.id.main_button_changelog:
+                WebViewerActivity.start(activity, "changelog.html");
                 break;
         }
     }
