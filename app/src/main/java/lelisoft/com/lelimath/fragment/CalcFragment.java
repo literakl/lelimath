@@ -188,7 +188,7 @@ public class CalcFragment extends LeliBaseFragment {
         record.setDate(new Date());
         record.setCorrect(correct);
         if (! correct) {
-            record.setWrongValue(formula.getUnknownValue());
+            record.setWrongValue(formula.getUserInput());
         }
         record.setFormula(formula);
         return record;
