@@ -1,7 +1,12 @@
 package lelisoft.com.lelimath.adapter;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.format.DateUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +17,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
@@ -126,8 +131,38 @@ public class PlayRecordAdapter extends RecyclerView.Adapter<PlayRecordAdapter.Ge
         public void setDataOnView(int position) {
             Pair<String, PlayRecord> pair = records.get(position);
             PlayRecord record = pair.second;
-            formulaView.setText(record.getFormulaString());
+            formulaView.setText(getFormula(record));
             statusView.setImageResource(record.isCorrect() ? R.drawable.ic_correct : R.drawable.ic_wrong);
         }
+    }
+
+    private CharSequence getFormula(PlayRecord record) {
+        if (record.isCorrect()) {
+            return record.getFormulaString();
+        } else {
+            FormulaPart unknown = record.getUnknown();
+            SpannableStringBuilder sb = new SpannableStringBuilder();
+            insertMistake(sb, FormulaPart.FIRST_OPERAND, unknown, record.getWrongValue());
+            sb.append(record.getFirstOperand().toString()).append(' ');
+            insertMistake(sb, FormulaPart.OPERATOR, unknown, record.getWrongValue());
+            sb.append(record.getOperator().toString()).append(' ');
+            insertMistake(sb, FormulaPart.SECOND_OPERAND, unknown, record.getWrongValue());
+            sb.append(record.getSecondOperand().toString()).append(" = ");
+            insertMistake(sb, FormulaPart.RESULT, unknown, record.getWrongValue());
+            sb.append(record.getResult().toString());
+            return sb;
+        }
+    }
+
+    private void insertMistake(SpannableStringBuilder sb, FormulaPart currentFormulaPart, FormulaPart unknown, String wrongValue) {
+        if (currentFormulaPart != unknown) {
+            return;
+        }
+
+        int mistakeStart = sb.length();
+        sb.append(wrongValue);
+        sb.setSpan(new StrikethroughSpan(), mistakeStart, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sb.setSpan(new ForegroundColorSpan(Color.RED), mistakeStart, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        sb.append(' ');
     }
 }
