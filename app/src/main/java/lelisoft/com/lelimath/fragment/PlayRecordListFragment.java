@@ -42,7 +42,6 @@ public class PlayRecordListFragment extends LeliBaseFragment {
         records = recordsProvider.getAllInDescendingOrder();
         adapter = new PlayRecordAdapter(records);
         recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
 /*
         recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override

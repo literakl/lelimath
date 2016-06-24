@@ -34,13 +34,21 @@ public class Misc {
 
     static {
         Calendar calendar = Calendar.getInstance();
+        clearTime(calendar);
+        today = calendar.getTimeInMillis();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        tomorrow = calendar.getTimeInMillis();
+    }
+
+    /**
+     * Sets hours, minutes, seconds and milliseconds to zero.
+     * @param calendar calendar to be cleared
+     */
+    public static void clearTime(Calendar calendar) {
         calendar.set(Calendar.MILLISECOND, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
-        today = calendar.getTimeInMillis();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        tomorrow = calendar.getTimeInMillis();
     }
 
     public static float dpFromPx(final Context context, final float px) {
