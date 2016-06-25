@@ -25,7 +25,7 @@ import lelisoft.com.lelimath.logic.CalcLogic;
 import lelisoft.com.lelimath.logic.CalcLogicImpl;
 
 
-public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcBridge {
+public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcBridge, PictureFragment.PictureBridge {
     private static final Logger log = LoggerFactory.getLogger(CalcActivity.class);
 
     CalcFragment calcFragment;
@@ -105,8 +105,9 @@ public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcB
         }
     }
 
-    public void restartGame(View view) {
-        log.debug("restartGame(), calcFragment " + ((calcFragment == null) ? "is not null" : "is null"));
+    @Override
+    public void restartGame() {
+        log.debug("restartGame()");
         calcFragment = new CalcFragment();
         calcFragment.setLogic((CalcLogic) gameLogic);
         initializeCalcFragment(true);

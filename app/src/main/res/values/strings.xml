@@ -11,6 +11,8 @@
     <string name="action_progress_fast">Fast</string>
     <string name="action_about">O aplikaci</string>
     <string name="action_level">Složitost</string>
+    <string name="action_next_formula">Další</string>
+    <string name="action_next_game">Další hra</string>
     <string name="operation_plus">Sčítání</string>
     <string name="operation_minus">Odečítání</string>
     <string name="operation_multiply">Násobení</string>

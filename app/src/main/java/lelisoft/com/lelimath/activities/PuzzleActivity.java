@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import org.slf4j.Logger;
@@ -18,7 +16,6 @@ import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
-import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
@@ -27,7 +24,7 @@ import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
  * Guess picture type of activity
  * Author leos.literak on 18.10.2015.
  */
-public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.PuzzleBridge {
+public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.PuzzleBridge, PictureFragment.PictureBridge {
     private static final Logger log = LoggerFactory.getLogger(PuzzleActivity.class);
 
     PuzzleFragment puzzleFragment;
@@ -94,27 +91,11 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
         transaction.commit();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.puzzle_toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_new_game: {
-                restartGame();
-                break;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * Restarts game. If PuzzleFragment is not displayed it will be restored.
      */
-    private void restartGame() {
+    @Override
+    public void restartGame() {
         log.debug("restartGame(), puzzleFragment " + ((puzzleFragment == null) ? "is not null" : "is null"));
         puzzleFragment = new PuzzleFragment();
         puzzleFragment.setLogic((PuzzleLogic) gameLogic);
