@@ -10,10 +10,9 @@ import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
@@ -31,6 +30,7 @@ import ch.qos.logback.classic.android.LogcatAppender;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
+import lelisoft.com.lelimath.BuildConfig;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.data.User;
@@ -49,7 +49,6 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     private Map<Integer, Integer> mSounds = new HashMap<>();
     private boolean soundEnabled;
     private float volume;
-    private boolean insideFirebase;
 
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public User currentUser;
@@ -57,18 +56,16 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     @Override
     public void onCreate() {
         super.onCreate();
-
-        insideFirebase = Settings.System.getString(getContentResolver(), "firebase.test.lab") != null;
-        if (insideFirebase) {
-            Fabric.with(this, new Crashlytics());
-        } else {
-            Fabric.with(this, new Answers(), new Crashlytics());
-        }
         instance = this;
 
         configureLogbackDirectly();
         androidExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
+
+//        insideFirebase = Settings.System.getString(getContentResolver(), "firebase.test.lab") != null;
+//        https://docs.fabric.io/android/crashlytics/build-tools.html
+        CrashlyticsCore core = new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build();
+        Fabric.with(this, new Crashlytics.Builder().core(core).build());
 
         resources = getResources();
         performUpgrade();
@@ -82,10 +79,6 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
     public static LeliMathApp getInstance() {
         return instance;
-    }
-
-    public static boolean isInsideFirebase() {
-        return instance.insideFirebase;
     }
 
     public void playSound(int resourceId) {
