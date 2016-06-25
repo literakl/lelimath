@@ -67,8 +67,10 @@ public class PuzzleFragment extends LeliBaseFragment {
         super.onActivityCreated(state);
 
         if (state != null) {
+            logic = (PuzzleLogic) state.getSerializable("logic");
             started = state.getLong("started");
             stopped = state.getLong("stopped");
+            play = state.getParcelable("play");
         } else {
             Metrics.saveGameStarted(Game.PUZZLE, logic.getLevel());
         }
@@ -78,6 +80,17 @@ public class PuzzleFragment extends LeliBaseFragment {
         clickHandler = new HandleClick();
 
         puzzleGrid.getViewTreeObserver().addOnGlobalLayoutListener(new CalculateDimensions());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle state) {
+        log.debug("onSaveInstanceState()");
+        super.onSaveInstanceState(state);
+        state.putSerializable("logic", logic);
+        state.putParcelable("play", play);
+        state.putLong("started", started);
+        state.putLong("stopped", stopped);
+        state.putLong("stoped", stopped);
     }
 
     @NonNull

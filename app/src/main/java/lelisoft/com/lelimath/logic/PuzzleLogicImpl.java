@@ -1,12 +1,14 @@
 package lelisoft.com.lelimath.logic;
 
+import java.io.Serializable;
+
 import lelisoft.com.lelimath.data.OperatorDefinition;
 
 /**
  * Implementation for handling all Puzzle calculations
  * Created by Leoš on 03.12.2015.
  */
-public class PuzzleLogicImpl extends GameLogicImpl implements PuzzleLogic {
+public class PuzzleLogicImpl extends GameLogicImpl implements PuzzleLogic, Serializable {
 
     @Override
     public String getSampleFormula() {

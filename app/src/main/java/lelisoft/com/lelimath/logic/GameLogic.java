@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import lelisoft.com.lelimath.view.FormulaResultPair;
  * Game preferences
  * Created by Leoš on 09.04.2016.
  */
-public interface GameLogic {
+public interface GameLogic extends Serializable {
 
     Level getLevel();
 

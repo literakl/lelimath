@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * A definition to generate one test.
  * Created by leos.literak on 26.2.2015.
  */
-public class FormulaDefinition {
+public class FormulaDefinition implements Serializable {
     /** Primary key that shall never change */
     String id;
     /** Name of this test, it shall be short */

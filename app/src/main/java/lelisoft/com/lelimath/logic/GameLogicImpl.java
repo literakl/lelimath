@@ -3,6 +3,7 @@ package lelisoft.com.lelimath.logic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +17,7 @@ import lelisoft.com.lelimath.view.FormulaResultPair;
  * Base class
  * Created by Leoš on 09.04.2016.
  */
-public class GameLogicImpl implements GameLogic {
+public class GameLogicImpl implements GameLogic, Serializable {
     private static final Logger log = LoggerFactory.getLogger(GameLogicImpl.class);
 
     FormulaDefinition definition;

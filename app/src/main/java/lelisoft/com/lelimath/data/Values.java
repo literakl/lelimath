@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +14,7 @@ import lelisoft.com.lelimath.helpers.LeliMathApp;
  * It is not allowed to combine set of values with minimum and maximum.
  * Created by leos.literak on 26.2.2015.
  */
-public class Values {
+public class Values implements Serializable {
     public static final Values DEMO = new Values(0, 10);
     public static final Values UNDEFINED = new UndefinedValues();
 

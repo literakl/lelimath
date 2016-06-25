@@ -1,10 +1,12 @@
 package lelisoft.com.lelimath.data;
 
+import java.io.Serializable;
+
 /**
  * Argument and result definition for some operation.
  * Created by Leoš on 23.04.2016.
  */
-public class OperatorDefinition {
+public class OperatorDefinition implements Serializable {
     /** the Operator */
     Operator operator;
     /** allowed values for operator's left operand */
