@@ -86,7 +86,7 @@ public class CalcFragment extends LeliBaseFragment {
         setupPlay();
         prepareNewFormula();
         mProgress.setMax(formulas.size());
-        mProgress.setProgress(1);
+        mProgress.setProgress(0);
 
         if (state != null) {
             formulas = state.getParcelableArrayList("formulas");
@@ -155,6 +155,7 @@ public class CalcFragment extends LeliBaseFragment {
         if (formula.isEntryCorrect()) {
             PlayRecord record = getPlayRecord(true);
             updateSpentTime(record);
+            mProgress.setProgress(formulaPosition);
 
             if (formulaPosition == formulas.size()) {
                 play.setFinished(true);
@@ -167,7 +168,6 @@ public class CalcFragment extends LeliBaseFragment {
 
                 prepareNewFormula();
                 displayFormula();
-                mProgress.setProgress(formulaPosition);
             }
         } else {
             PlayRecord record = getPlayRecord(false);
