@@ -64,8 +64,10 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
 //        insideFirebase = Settings.System.getString(getContentResolver(), "firebase.test.lab") != null;
 //        https://docs.fabric.io/android/crashlytics/build-tools.html
-        CrashlyticsCore core = new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build();
-        Fabric.with(this, new Crashlytics.Builder().core(core).build());
+        if (! BuildConfig.DEBUG) {
+            CrashlyticsCore core = new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build();
+            Fabric.with(this, new Crashlytics.Builder().core(core).build());
+        }
 
         resources = getResources();
         performUpgrade();
