@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/main.button.changelog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_changelog"
+        android:textAppearance="@style/TextAppearance.Item"
+        android:drawableRight="@drawable/ic_arrow_forward_24dp"
+        android:drawableEnd="@drawable/ic_arrow_forward_24dp"
+        style="@style/TextComponent.ItemRow.Selectable"/>
+
+    <TextView
+        android:id="@+id/main.button.bugtracker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_project"
+        android:textAppearance="@style/TextAppearance.Item"
+        android:drawableRight="@drawable/ic_arrow_forward_24dp"
+        android:drawableEnd="@drawable/ic_arrow_forward_24dp"
+        style="@style/TextComponent.ItemRow.Selectable"/>
+
+    <TextView
+        android:id="@+id/main.button.blog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_blog"
+        android:textAppearance="@style/TextAppearance.Item"
+        android:drawableRight="@drawable/ic_arrow_forward_24dp"
+        android:drawableEnd="@drawable/ic_arrow_forward_24dp"
+        style="@style/TextComponent.ItemRow.Selectable"/>
+
+    <TextView
+        android:id="@+id/main.button.twitter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_twitter"
+        android:textAppearance="@style/TextAppearance.Item"
+        android:drawableRight="@drawable/ic_arrow_forward_24dp"
+        android:drawableEnd="@drawable/ic_arrow_forward_24dp"
+        style="@style/TextComponent.ItemRow.Selectable"/>
+
+    <TextView
+        android:id="@+id/main.button.credits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_credits"
+        android:textAppearance="@style/TextAppearance.Item"
+        android:drawableRight="@drawable/ic_arrow_forward_24dp"
+        android:drawableEnd="@drawable/ic_arrow_forward_24dp"
+        style="@style/TextComponent.ItemRow.Selectable"/>
+
+</LinearLayout>

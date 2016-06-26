@@ -53,6 +53,11 @@
             android:label="Prohlížeč"
             android:parentActivityName=".activities.DashboardActivity">
         </activity>
+        <activity
+            android:name=".activities.InformationActivity"
+            android:label="@string/action_info"
+            android:parentActivityName=".activities.DashboardActivity">
+        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7c7bf17a7ad99a3376db27a6dbcbcd2720f8e933" />

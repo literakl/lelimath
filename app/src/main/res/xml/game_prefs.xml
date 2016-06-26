@@ -265,31 +265,6 @@
 
     <PreferenceCategory android:title="O aplikaci">
         <Preference
-            android:key="pref_page_credits"
-            android:title="@string/pref_credits"
-            android:persistent="false">
-            <intent
-                android:targetPackage="lelisoft.com.lelimath"
-                android:targetClass="lelisoft.com.lelimath.activities.WebViewerActivity">
-                <extra android:name="lelisoft.com.lelimath.RESOURCE_NAME" android:value="credits.html" />
-                <extra android:name="lelisoft.com.lelimath.TITLE" android:value="@string/pref_credits" />
-            </intent>
-        </Preference>
-
-
-        <Preference
-            android:key="pref_page_changelog"
-            android:title="@string/pref_changelog"
-            android:persistent="false">
-            <intent
-                android:targetPackage="lelisoft.com.lelimath"
-                android:targetClass="lelisoft.com.lelimath.activities.WebViewerActivity">
-                <extra android:name="lelisoft.com.lelimath.RESOURCE_NAME" android:value="changelog.html" />
-                <extra android:name="lelisoft.com.lelimath.TITLE" android:value="@string/pref_changelog" />
-            </intent>
-        </Preference>
-
-        <Preference
             android:key="pref_version"
             android:title="@string/pref_app_version"
             android:persistent="false"
