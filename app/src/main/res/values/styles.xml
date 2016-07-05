@@ -86,6 +86,12 @@
         <item name="android:textColor">?colorAccent</item>
     </style>
 
+    <style name="TextAppearance.SubHeader">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">?colorAccent</item>
+    </style>
+
     <style name="TextAppearance.Item">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">16sp</item>

@@ -36,7 +36,7 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginLeft="6dp"
                 style="@style/TextAppearance.AppCompat.Headline"
-                android:text="Sprinter"
+                android:text="@string/badge_title_GOOD_MULTIPLICATION"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
 
@@ -44,15 +44,33 @@
             android:id="@+id/badge_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This is badge description, describing how it can be awarderded. It can be very long spanning multiple lines."
+            android:text="@string/badge_desc_GOOD_MULTIPLICATION"
             style="@style/TextAppearance.AppCompat"
             android:layout_marginTop="@dimen/text_margin" />
+
+        <TextView
+            android:id="@+id/badge_progress_caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/caption_progress"
+            style="@style/TextAppearance.SubHeader"
+            android:layout_marginTop="@dimen/text_margin"
+            android:layout_marginBottom="@dimen/text_margin"
+        />
+
+        <TextView
+            android:id="@+id/badge_progress_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/caption_awarded"
+            style="@style/TextAppearance.AppCompat"
+        />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/caption_awarded"
-            style="@style/TextAppearance.AppCompat.Subhead"
+            style="@style/TextAppearance.SubHeader"
             android:layout_marginTop="@dimen/text_margin"
             android:layout_marginBottom="@dimen/text_margin"
         />

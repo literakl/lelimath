@@ -110,4 +110,21 @@ public class PlayRecordProvider {
             return -1;
         }
     }
+
+    public long getLastPlayRecordDate() {
+        try {
+            QueryBuilder<PlayRecord, Integer> queryBuilder = dao.queryBuilder();
+            queryBuilder.orderByRaw("id DESC");
+            PreparedQuery<PlayRecord> query = queryBuilder.prepare();
+            PlayRecord record = dao.queryForFirst(query);
+            if (record == null) {
+                return 0;
+            } else {
+                return record.getDate().getTime();
+            }
+        } catch (SQLException e) {
+            log.error("Cannot get last play record date.", e);
+            return 0;
+        }
+    }
 }

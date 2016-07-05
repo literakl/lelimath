@@ -35,6 +35,7 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
+import lelisoft.com.lelimath.provider.PlayRecordProvider;
 
 /**
  * Application handler
@@ -49,12 +50,14 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     private Map<Integer, Integer> mSounds = new HashMap<>();
     private boolean soundEnabled;
     private float volume;
+    private long lastFormulaDate;
 
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public User currentUser;
 
     @Override
     public void onCreate() {
+        log.debug("onCreate()");
         super.onCreate();
         instance = this;
 
@@ -72,11 +75,13 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         resources = getResources();
         performUpgrade();
         setDefaultPreferences();
+        setLastFormulaDate();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         soundEnabled = sharedPref.getBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, true);
         setVolume(sharedPref.getInt(GamePreferenceActivity.KEY_SOUND_LEVEL, 50));
         toggleSound(soundEnabled);
+        log.debug("onCreate() finished");
     }
 
     public static LeliMathApp getInstance() {
@@ -221,6 +226,31 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     public void setVolume(int volume) {
         log.debug("Set sound volume({})", volume);
         this.volume = volume / 100f;
+    }
+
+    /**
+     * @return date when last formula was finished
+     */
+    public long getLastFormulaDate() {
+        return lastFormulaDate;
+    }
+
+    /**
+     * Set a date in milliseconds when last formula was finished
+     * @param lastFormulaDate date
+     */
+    public void setLastFormulaDate(long lastFormulaDate) {
+        this.lastFormulaDate = lastFormulaDate;
+    }
+
+    /**
+     * Set a date in milliseconds when last formula was finished
+     */
+    public void setLastFormulaDate() {
+        log.debug("setLastFormulaDate()");
+        PlayRecordProvider provider = new PlayRecordProvider(this);
+        this.lastFormulaDate = provider.getLastPlayRecordDate();
+        log.debug("setLastFormulaDate() finished");
     }
 
     // todo remove

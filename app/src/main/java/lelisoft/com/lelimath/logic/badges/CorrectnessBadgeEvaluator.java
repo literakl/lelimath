@@ -18,6 +18,7 @@ import java.util.Map;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
+import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.User;
@@ -49,6 +50,8 @@ import static lelisoft.com.lelimath.data.PlayRecord.*;
 public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
     private static final Logger log = LoggerFactory.getLogger(CorrectnessBadgeEvaluator.class);
 
+    static final String sql = "select count(*) from (select distinct first || second from play_record " +
+            "where id > ? and user_id=? and operator=?)";
 
     @Override
     public AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context context) {
@@ -72,7 +75,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
             for (int i = 0; i < bsgBadges.length; i++) {
                 Badge[] searchedBadges = bsgBadges[i];
                 performEvaluation(searchedBadges, operators[i], user, badgesCount, awardProvider,
-                        evaluationDao, playRecordDao);
+                        evaluationDao, playRecordDao, context);
             }
 
             log.debug("evaluate finished: {}", badgesCount);
@@ -83,21 +86,53 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
         }
     }
 
+    @Override
+    public BadgeProgress calculateProgress(Badge badge, Context ctx) {
+        try {
+            log.debug("calculateProgress({}) starts", badge);
+            switch (badge) {
+                case GOOD_SUMMATION:
+                    return calculateProgress(badge, Operator.PLUS, 10, ctx);
+                case GREAT_SUMMATION:
+                    return calculateProgress(badge, Operator.PLUS, 25, ctx);
+                case EXCELLENT_SUMMATION:
+                    return calculateProgress(badge, Operator.PLUS, 100, ctx);
+                case GOOD_SUBTRACTION:
+                    return calculateProgress(badge, Operator.MINUS, 10, ctx);
+                case GREAT_SUBTRACTION:
+                    return calculateProgress(badge, Operator.MINUS, 25, ctx);
+                case EXCELLENT_SUBTRACTION:
+                    return calculateProgress(badge, Operator.MINUS, 100, ctx);
+                case GOOD_MULTIPLICATION:
+                    return calculateProgress(badge, Operator.MULTIPLY, 10, ctx);
+                case GREAT_MULTIPLICATION:
+                    return calculateProgress(badge, Operator.MULTIPLY, 25, ctx);
+                case EXCELLENT_MULTIPLICATION:
+                    return calculateProgress(badge, Operator.MULTIPLY, 100, ctx);
+                case GOOD_DIVISION:
+                    return calculateProgress(badge, Operator.DIVIDE, 10, ctx);
+                case GREAT_DIVISION:
+                    return calculateProgress(badge, Operator.DIVIDE, 25, ctx);
+                case EXCELLENT_DIVISION:
+                    return calculateProgress(badge, Operator.DIVIDE, 100, ctx);
+            }
+            throw new RuntimeException("Unhandled badge " + badge);
+        } catch (SQLException e) {
+            log.error("calculateProgress failed!", e);
+            return null;
+        }
+    }
+
     private void performEvaluation(Badge[] bsgBadges, Operator operator, User user,
                                    AwardedBadgesCount badgesCount,
                                    BadgeAwardProvider awardProvider,
                                    Dao<BadgeEvaluation, Integer> evaluationDao,
-                                   Dao<PlayRecord, Integer> playRecordDao) throws SQLException {
+                                   Dao<PlayRecord, Integer> playRecordDao, Context ctx) throws SQLException {
         log.debug("performEvaluation({})", operator);
 
         PlayRecord incorrectRecord = findLastIncorrectPlayRecord(operator, user, playRecordDao);
         int lastIncorrectId = (incorrectRecord != null) ? incorrectRecord.getId() : 0;
-//        long correctCount = countCorrectSince(PLUS, lastIncorrectId, user, playRecordDao);
-
-        String sql = "select count(*) from (select distinct first || second from play_record " +
-                "where id > ? and user_id=? and operator=?)";
-        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, Integer.toString(lastIncorrectId),
-                user.getId().toString(), operator.value);
+        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, Integer.toString(lastIncorrectId), user.getId().toString(), operator.value);
         int distinctCorrectCount = Integer.parseInt(results.getFirstResult()[0]);
 
         BadgeEvaluation bronzeEvaluation, silverEvaluation, goldEvaluation;
@@ -106,7 +141,8 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
         if (awardBronze) {
             bronzeEvaluation = queryLastEvaluation(bsgBadges[0], user, evaluationDao);
             if (! wasCurrentRowAwarded(bronzeEvaluation, lastIncorrectId)) {
-                awardBadge(bsgBadges[0], 10, bronzeEvaluation, lastIncorrectId, user, awardProvider, evaluationDao);
+                awardBadge(bsgBadges[0], bronzeEvaluation, lastIncorrectId, user, awardProvider, evaluationDao);
+                setProgressAfterBadge(bsgBadges[0], distinctCorrectCount - 10, 10, user, ctx);
                 badgesCount.bronze++;
             }
             // intentionally not creating negative BadgeEvaluation as it does not bring any value
@@ -115,27 +151,51 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
         boolean awardSilver = distinctCorrectCount >= 25;
         if (awardSilver) {
             silverEvaluation = queryLastEvaluation(bsgBadges[1], user, evaluationDao);
-           if (! wasCurrentRowAwarded(silverEvaluation, lastIncorrectId)) {
-               awardBadge(bsgBadges[1], 25, silverEvaluation, lastIncorrectId, user, awardProvider, evaluationDao);
+            if (! wasCurrentRowAwarded(silverEvaluation, lastIncorrectId)) {
+               awardBadge(bsgBadges[1], silverEvaluation, lastIncorrectId, user, awardProvider, evaluationDao);
+               setProgressAfterBadge(bsgBadges[1], distinctCorrectCount - 25, 25, user, ctx);
                badgesCount.silver++;
-           }
+            }
         }
 
         boolean awardGold = distinctCorrectCount >= 100;
         if (awardGold) {
             goldEvaluation = queryLastEvaluation(bsgBadges[2], user, evaluationDao);
             if (! wasCurrentRowAwarded(goldEvaluation, lastIncorrectId)) {
-                awardBadge(bsgBadges[2], 100, goldEvaluation, lastIncorrectId, user, awardProvider, evaluationDao);
+                awardBadge(bsgBadges[2], goldEvaluation, lastIncorrectId, user, awardProvider, evaluationDao);
+                setProgressAfterBadge(bsgBadges[2], distinctCorrectCount - 100, 100, user, ctx);
                 badgesCount.gold++;
             }
         }
+    }
+
+    private BadgeProgress calculateProgress(Badge badge, Operator operator, int required, Context ctx) throws SQLException {
+        DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
+        Dao<BadgeEvaluation, Integer> evaluationDao = helper.getBadgeEvaluationDao();
+        Dao<PlayRecord, Integer> playRecordDao = helper.getPlayRecordDao();
+        User user = LeliMathApp.getInstance().getCurrentUser();
+
+        BadgeEvaluation evaluation = queryLastEvaluation(badge, user, evaluationDao);
+        PlayRecord incorrectRecord = findLastIncorrectPlayRecord(operator, user, playRecordDao);
+        int index = (incorrectRecord != null) ? incorrectRecord.getId() : 0;
+        if (evaluation != null && evaluation.getLastAwardedId() > index) {
+            // already awarded but strike has not been broken => waiting for mistake to restart
+            log.debug("calculateProgress({}) finished", badge);
+            return null;
+        }
+
+        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, Integer.toString(index), user.getId().toString(), operator.value);
+        int count = Integer.parseInt(results.getFirstResult()[0]);
+        BadgeProgress progress = saveBadgeProgress(badge, true, count, required, user, ctx);
+        log.debug("calculateProgress({}) finished", badge);
+        return progress;
     }
 
     private boolean wasCurrentRowAwarded(BadgeEvaluation evaluation, int lastIncorrectId) {
         return evaluation != null && evaluation.getLastAwardedId() > lastIncorrectId;
     }
 
-    private void awardBadge(Badge badge, int count, BadgeEvaluation evaluation, int lastIncorrectId, User user,
+    private void awardBadge(Badge badge, BadgeEvaluation evaluation, int lastIncorrectId, User user,
                             BadgeAwardProvider awardProvider, Dao<BadgeEvaluation, Integer> evaluationDao) throws SQLException {
         if (evaluation == null) {
             evaluation = new BadgeEvaluation();
@@ -144,7 +204,6 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
         }
 
         evaluation.setDate(new Date());
-        evaluation.setProgress(count);
         evaluation.setLastAwardedId(lastIncorrectId + 1); // simple hack to make wasCurrentRowAwarded() work
         evaluation.setLastWrongId(null);
         evaluationDao.createOrUpdate(evaluation);
@@ -152,6 +211,18 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
         BadgeAward award = createBadgeAward(badge, user);
         awardProvider.create(award);
         log.debug("Badge {} was awarded", badge);
+    }
+
+    /**
+     * Stores a progress after awarding a badge. If there were more correct formulas than required
+     * a badge progress in running state is created.
+     */
+    private void setProgressAfterBadge(Badge badge, int oversize, int required, User user, Context ctx) {
+        if (oversize > 0) {
+            saveBadgeProgress(badge, true, oversize, required, user, ctx);
+        } else {
+            saveBadgeProgress(badge, false, 0, 0, user, ctx);
+        }
     }
 
 /*

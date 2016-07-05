@@ -38,6 +38,7 @@ public class BadgeEvaluation {
     @DatabaseField(canBeNull=true, columnName="last_wrong_date")
     Date lastWrongDate;
 
+    // this field is unused but sqlite cannot remove it
     @DatabaseField(canBeNull=true, columnName="progress")
     Integer progress;
 
@@ -110,16 +111,5 @@ public class BadgeEvaluation {
 
     public void setLastWrongDate(Date lastWrongDate) {
         this.lastWrongDate = lastWrongDate;
-    }
-
-    /**
-     * @return number of units that fit this badge conditions
-     */
-    public Integer getProgress() {
-        return progress;
-    }
-
-    public void setProgress(Integer progress) {
-        this.progress = progress;
     }
 }

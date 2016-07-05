@@ -33,8 +33,10 @@
     <string name="title_games">Hry</string>
     <string name="title_other">Ostatní</string>
     <string name="title_badge">Odznáček</string>
+    <string name="caption_progress">Postup</string>
     <string name="caption_awarded">Získáno</string>
     <string name="caption_new">Nový</string>
+    <string name="message_badge_progress"><xliff:g id="current" example="1" >%s</xliff:g> ze <xliff:g id="total" example="5" >%s</xliff:g></string>
     <string name="message_badge_not_awarded">Zatím ne</string>
     <string name="pref_build_number_title">Datum sestavení</string>
     <string name="pref_enter_values">Zadejte rozsah oddělený pomlčkou nebo výčet hodnot oddělených čárkou</string>

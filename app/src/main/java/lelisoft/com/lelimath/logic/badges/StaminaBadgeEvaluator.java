@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
+import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.BadgeEvaluator;
@@ -38,14 +39,19 @@ import static lelisoft.com.lelimath.data.Badge.RETURNER;
 public class StaminaBadgeEvaluator extends BadgeEvaluator {
     private static final Logger log = LoggerFactory.getLogger(StaminaBadgeEvaluator.class);
 
+    static final String sql = "select strftime('%Y-%m-%d', date), count(*) from play_record where correct=1 " +
+            "and user_id=? and date > ? group by strftime('%Y%m%d', date) order by 1 desc";
+
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
     @Override
-    public AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context context) {
+    public AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context ctx) {
         try {
             log.debug("evaluate starts");
-            BadgeAwardProvider awardProvider = new BadgeAwardProvider(context);
+            BadgeAwardProvider awardProvider = new BadgeAwardProvider(ctx);
             AwardedBadgesCount badgesCount = new AwardedBadgesCount();
             User user = LeliMathApp.getInstance().getCurrentUser();
-            DatabaseHelper helper = OpenHelperManager.getHelper(context, DatabaseHelper.class);
+            DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
             Dao<BadgeEvaluation, Integer> evaluationDao = helper.getBadgeEvaluationDao();
 
             boolean bronzeAwarded = badges.containsKey(RETURNER);
@@ -71,19 +77,19 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
 
             if (! bronzeAwarded) {
                 BadgeEvaluation bronzeEvaluation = queryLastEvaluation(RETURNER, user, evaluationDao);
-                if (performEvaluation(RETURNER, 2, bronzeEvaluation, user, awardProvider, evaluationDao)) {
+                if (performEvaluation(RETURNER, 2, bronzeEvaluation, user, awardProvider, evaluationDao, ctx)) {
                     badgesCount.bronze++;
                 }
             }
 
             if (evaluateSilver) {
-                if (performEvaluation(LONG_DISTANCE_RUNNER, 7, silverEvaluation, user, awardProvider, evaluationDao)) {
+                if (performEvaluation(LONG_DISTANCE_RUNNER, 7, silverEvaluation, user, awardProvider, evaluationDao, ctx)) {
                     badgesCount.silver++;
                 }
             }
 
             if (evaluateGold) {
-                if (performEvaluation(MARATHON_RUNNER, 30, goldEvaluation, user, awardProvider, evaluationDao)) {
+                if (performEvaluation(MARATHON_RUNNER, 30, goldEvaluation, user, awardProvider, evaluationDao, ctx)) {
                     badgesCount.gold++;
                 }
             }
@@ -96,8 +102,28 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         }
     }
 
+    @Override
+    public BadgeProgress calculateProgress(Badge badge, Context ctx) {
+        try {
+            log.debug("calculateProgress({}) starts", badge);
+            switch (badge) {
+                case RETURNER:
+                    return calculateProgress(badge, 2, ctx);
+                case LONG_DISTANCE_RUNNER:
+                    return calculateProgress(badge, 7, ctx);
+                case MARATHON_RUNNER:
+                    return calculateProgress(badge, 30, ctx);
+            }
+            throw new RuntimeException("Unhandled badge " + badge);
+        } catch (SQLException e) {
+            log.error("calculateProgress failed!", e);
+            return null;
+        }
+    }
+
     private boolean performEvaluation(Badge badge, int count, BadgeEvaluation evaluation, User user,
-                                   BadgeAwardProvider awardProvider, Dao<BadgeEvaluation, Integer> evaluationDao) throws SQLException {
+                                   BadgeAwardProvider awardProvider, Dao<BadgeEvaluation, Integer> evaluationDao,
+                                   Context ctx) throws SQLException {
         if (evaluation == null) {
             evaluation = new BadgeEvaluation();
             evaluation.setUser(user);
@@ -110,7 +136,6 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String today = format.format(calendar.getTime());
 
         Calendar sinceCal = Calendar.getInstance();
@@ -120,16 +145,12 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         String since = format.format(sinceCal.getTime());
 
 //        select strftime('%Y-%m-%d', date), count(*) from play_record where date > date('now','-8 day') group by strftime('%Y%m%d', date);
-        String sql = "select strftime('%Y-%m-%d', date), count(*) from play_record where correct=1 " +
-                "and user_id=? and date > ? group by strftime('%Y%m%d', date) order by 1 desc";
-        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, user.getId().toString(), since);
-
         String searchedDate = today;
         int processed = 0;
+        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, user.getId().toString(), since);
         for (String[] dayStats : results) {
             if (! searchedDate.equals(dayStats[0])) {
                 // missing date
-                evaluation.setProgress(processed);
                 evaluation.setLastWrongDate(calendar.getTime());
                 evaluationDao.createOrUpdate(evaluation);
                 return false;
@@ -139,7 +160,6 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
                 // low count
                 // do not store current day as wrong, it can improve
                 if (! dayStats[0].equals(today)) {
-                    evaluation.setProgress(processed);
                     evaluation.setLastWrongDate(calendar.getTime());
                     evaluationDao.createOrUpdate(evaluation);
                 }
@@ -152,20 +172,70 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         }
 
         if (processed == count) {
-            evaluation.setProgress(processed);
             evaluation.setLastWrongDate(null);
             evaluationDao.createOrUpdate(evaluation);
-
             BadgeAward award = createBadgeAward(badge, user);
             awardProvider.create(award);
+            saveBadgeProgress(badge, false, 0, 0, user, ctx);
             log.debug("Badge {} was awarded", badge);
             return true;
         } else {
             // missing date
-            evaluation.setProgress(processed);
             evaluation.setLastWrongDate(calendar.getTime());
             evaluationDao.createOrUpdate(evaluation);
             return false;
         }
+    }
+
+    private BadgeProgress calculateProgress(Badge badge, int required, Context ctx) throws SQLException {
+        User user = LeliMathApp.getInstance().getCurrentUser();
+        BadgeAwardProvider awardProvider = new BadgeAwardProvider(ctx);
+        DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
+        Dao<BadgeEvaluation, Integer> evaluationDao = helper.getBadgeEvaluationDao();
+
+        List<BadgeAward> awards = awardProvider.getAwards(badge);
+        if (! awards.isEmpty()) {
+            // these badges are one time
+            BadgeProgress progress = saveBadgeProgress(badge, false, 0, 0, user, ctx);
+            log.debug("calculateProgress({}) finished", badge);
+            return progress;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String today = format.format(calendar.getTime());
+
+        Calendar sinceCal = Calendar.getInstance();
+        sinceCal.setTime(calendar.getTime());
+        sinceCal.add(Calendar.DATE, 1 - required);
+        log.debug("Starting date is {}", sinceCal.getTime());
+        String since = format.format(sinceCal.getTime());
+
+        int processed = 0;
+        String searchedDate = today;
+        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, user.getId().toString(), since);
+        for (String[] dayStats : results) {
+            if (! searchedDate.equals(dayStats[0])) {
+                // missing date
+                break;
+            }
+
+            if (Integer.parseInt(dayStats[1]) < 10) {
+                // low count
+                break;
+            }
+
+            processed++;
+            calendar.add(Calendar.DATE, -1);
+            searchedDate = format.format(calendar.getTime());
+        }
+
+        BadgeProgress progress = saveBadgeProgress(badge, true, processed, required, user, ctx);
+        log.debug("calculateProgress({}) finished", badge);
+        return progress;
     }
 }

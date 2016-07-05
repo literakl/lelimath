@@ -15,6 +15,7 @@ import java.sql.SQLException;
 
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
+import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.User;
@@ -28,7 +29,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(DatabaseHelper.class);
 
     private static final String DEFAULT_DATABASE_NAME = "lelimath.sqlite";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static File path;
     private static String databaseName = DEFAULT_DATABASE_NAME;
 
@@ -50,6 +51,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, PlayRecord.class);
             TableUtils.createTable(connectionSource, BadgeAward.class);
             TableUtils.createTable(connectionSource, BadgeEvaluation.class);
+            TableUtils.createTable(connectionSource, BadgeProgress.class);
         } catch (SQLException e) {
             log.error("Error creating new database!", e);
         }
@@ -58,12 +60,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         log.info("Upgrading database from version {} to {}", oldVersion, newVersion);
-        if (oldVersion == 1) {
+        if (oldVersion == 3) {
             try {
-                TableUtils.dropTable(connectionSource, PlayRecord.class, true);
-                onCreate(database, connectionSource);
+                // drop column badge_eval.progress - unsupported feature
+                TableUtils.createTable(connectionSource, BadgeProgress.class);
             } catch (SQLException e) {
-                log.error("Error upgrading a database from version 1!", e);
+                log.error("Error upgrading a database from version 3!", e);
             }
         }
     }
@@ -86,6 +88,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     public Dao<BadgeEvaluation, Integer> getBadgeEvaluationDao() throws SQLException {
         return getDao(BadgeEvaluation.class);
+    }
+
+    public Dao<BadgeProgress, String> getBadgeProgressDao() throws SQLException {
+        return getDao(BadgeProgress.class);
     }
 
     public static File getDatabasePath() {

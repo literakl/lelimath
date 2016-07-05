@@ -22,6 +22,7 @@ import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.GameLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
@@ -72,6 +73,8 @@ public class BaseGameActivity extends LeliBaseActivity {
             } else {
                 log.warn("Failed to store {}", record);
             }
+
+            LeliMathApp.getInstance().setLastFormulaDate(record.getDate().getTime());
         } catch (SQLException e) {
             log.error("Failed to store {}", record, e);
         }

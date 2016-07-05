@@ -30,7 +30,7 @@ public class BadgeAwardProvider {
             DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
             dao = helper.getBadgeAwardDao();
         } catch (SQLException e) {
-            log.error("Unable to create PlayProvider instance", e);
+            log.error("Unable to create BadgeAwardProvider instance", e);
         }
     }
 
@@ -38,7 +38,7 @@ public class BadgeAwardProvider {
         try {
             return dao.create(award);
         } catch (SQLException e) {
-            log.error("Unable to create new Play in database. award=" + award, e);
+            log.error("Unable to create new BadgeAward in database. award=" + award, e);
         }
         return 0;
     }
@@ -47,7 +47,7 @@ public class BadgeAwardProvider {
         try {
             return dao.createOrUpdate(award);
         } catch (SQLException e) {
-            log.error("Unable to create new Play in database. award=" + award, e);
+            log.error("Unable to create new BadgeAward in database. award=" + award, e);
         }
         return null;
     }
