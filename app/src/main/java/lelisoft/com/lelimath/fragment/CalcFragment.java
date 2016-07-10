@@ -154,6 +154,7 @@ public class CalcFragment extends LeliBaseFragment {
 
         if (formula.isEntryCorrect()) {
             PlayRecord record = getPlayRecord(true);
+            setPoints(record);
             updateSpentTime(record);
             mProgress.setProgress(formulaPosition);
 
@@ -192,6 +193,16 @@ public class CalcFragment extends LeliBaseFragment {
         }
         record.setFormula(formula);
         return record;
+    }
+
+    /**
+     * Calculates points for correctly solved formula.
+     */
+    protected void setPoints(PlayRecord record) {
+        StringBuilder sb = new StringBuilder().append(record.getFirstOperand());
+        sb.append(record.getSecondOperand()).append(record.getResult());
+        record.setPoints(Math.max(1, sb.length() - 3));
+        log.debug("{} za {}", record.getPoints(), record.getFormulaString());
     }
 
     protected void updateSpentTime(PlayRecord playRecord) {

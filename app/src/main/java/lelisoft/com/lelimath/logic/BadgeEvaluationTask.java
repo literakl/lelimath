@@ -17,13 +17,14 @@ import lelisoft.com.lelimath.logic.badges.CorrectnessBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.PlayCountBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.StaminaBadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
+import lelisoft.com.lelimath.provider.PlayRecordProvider;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 /**
  * Main class for awarding Badges
  * Created by Leoš on 18.05.2016.
  */
-public class BadgeEvaluationTask extends AsyncTask<Void, Void, Integer> {
+public class BadgeEvaluationTask extends AsyncTask<Void, Void, BadgeEvaluationTask.Holder> {
     private static final Logger log = LoggerFactory.getLogger(BadgeEvaluationTask.class);
 
     Context context;
@@ -33,10 +34,11 @@ public class BadgeEvaluationTask extends AsyncTask<Void, Void, Integer> {
     }
 
     @Override
-    protected Integer doInBackground(Void... params) {
+    protected Holder doInBackground(Void... params) {
         log.debug("doInBackground starts");
         BadgeAwardProvider provider = new BadgeAwardProvider(context);
         Map<Badge, List<BadgeAward>> badges = provider.getAll();
+        int points = getPointsForCurrenPlay();
 
         BadgeEvaluator evaluator = new PlayCountBadgeEvaluator();
         AwardedBadgesCount badgesCount = evaluator.evaluate(badges, context);
@@ -45,15 +47,30 @@ public class BadgeEvaluationTask extends AsyncTask<Void, Void, Integer> {
         evaluator = new CorrectnessBadgeEvaluator();
         badgesCount.add(evaluator.evaluate(badges, context));
 
-        log.debug("doInBackground finished with {} / {} / {} badges", badgesCount.gold, badgesCount.silver, badgesCount.bronze);
-        return badgesCount.bronze + badgesCount.silver + badgesCount.gold;
+        log.debug("doInBackground finished with {} points and {} / {} / {} badges", points, badgesCount.gold, badgesCount.silver, badgesCount.bronze);
+        return new Holder(badgesCount, points);
+    }
+
+    private int getPointsForCurrenPlay() {
+        PlayRecordProvider provider = new PlayRecordProvider(context);
+        return provider.getLastPlayPoints();
     }
 
     @Override
-    protected void onPostExecute(Integer count) {
-        if (count > 0) {
-            String string = context.getString(R.string.message_badge_received, count);
-            Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
+    protected void onPostExecute(Holder holder) {
+        AwardedBadgesCount badgesCount = holder.badgesCount;
+        int badges = badgesCount.bronze + badgesCount.silver + badgesCount.gold;
+        String string = context.getString(R.string.message_badge_received, badges, holder.points);
+        Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
+    }
+
+    public static class Holder {
+        AwardedBadgesCount badgesCount;
+        int points;
+
+        public Holder(AwardedBadgesCount badgesCount, int points) {
+            this.badgesCount = badgesCount;
+            this.points = points;
         }
     }
 }

@@ -59,6 +59,10 @@ public class PlayRecord {
     @DatabaseField(canBeNull=true, columnName="spent")
     Long timeSpent;
 
+    public static final String POINTS_COLUMN_NAME = "points";
+    @DatabaseField(canBeNull=false, defaultValue = "0", columnName=POINTS_COLUMN_NAME)
+    Integer points;
+
     public PlayRecord() {
     }
 
@@ -215,6 +219,22 @@ public class PlayRecord {
         this.timeSpent = timeSpent;
     }
 
+    /**
+     * Correctly solved formula will receive points. Value depends on formula complexity.
+     * @return points for this formula
+     */
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    /**
+     * This method returns formula without localization.
+     * @return formula with spaces
+     */
     public String getFormulaString() {
         return firstOperand + " " + getOperator() + " " + secondOperand + " = " + result;
     }

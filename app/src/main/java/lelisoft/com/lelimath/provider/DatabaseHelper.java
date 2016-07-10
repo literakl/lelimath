@@ -29,7 +29,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(DatabaseHelper.class);
 
     private static final String DEFAULT_DATABASE_NAME = "lelimath.sqlite";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static File path;
     private static String databaseName = DEFAULT_DATABASE_NAME;
 
@@ -64,6 +64,16 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             try {
                 // drop column badge_eval.progress - unsupported feature
                 TableUtils.createTable(connectionSource, BadgeProgress.class);
+            } catch (SQLException e) {
+                log.error("Error upgrading a database from version 3!", e);
+            }
+        }
+
+        if (oldVersion == 4) {
+            try {
+                Dao<PlayRecord, Integer> dao = getPlayRecordDao();
+                dao.executeRaw("ALTER TABLE `play_record` ADD COLUMN points INTEGER NOT NULL DEFAULT 0");
+                dao.updateRaw("UPDATE `play_record` SET points = length(first || second || result) - 2 WHERE correct > 0");
             } catch (SQLException e) {
                 log.error("Error upgrading a database from version 3!", e);
             }

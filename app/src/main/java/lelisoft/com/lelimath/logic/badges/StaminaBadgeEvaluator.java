@@ -206,7 +206,6 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String today = format.format(calendar.getTime());
 
         Calendar sinceCal = Calendar.getInstance();

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -122,6 +123,17 @@ public class PlayRecordProvider {
             } else {
                 return record.getDate().getTime();
             }
+        } catch (SQLException e) {
+            log.error("Cannot get last play record date.", e);
+            return 0;
+        }
+    }
+
+    public int getLastPlayPoints() {
+        try {
+            String sql = "select sum(points) from play_record where play_id = (select max(id) from play order by id desc)";
+            GenericRawResults<String[]> results = dao.queryRaw(sql);
+            return Integer.parseInt(results.getFirstResult()[0]);
         } catch (SQLException e) {
             log.error("Cannot get last play record date.", e);
             return 0;

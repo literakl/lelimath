@@ -42,7 +42,6 @@ public class PlayRecordAdapter extends RecyclerView.Adapter<PlayRecordAdapter.Ge
                 calendar.setTime(record.getDate());
                 Misc.clearTime(calendar);
                 startOfDay = calendar.getTimeInMillis();
-//                String caption = String.format(Locale.getDefault(), "%1$td.%1$tm.%1$tY", calendar.getTime());
                 String caption = DateUtils.formatDateTime(LeliMathApp.getInstance(), calendar.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE);
                 records.add(new Pair<String, PlayRecord>(caption, null));
             }
@@ -136,8 +135,9 @@ public class PlayRecordAdapter extends RecyclerView.Adapter<PlayRecordAdapter.Ge
         }
     }
 
+    // what about localization?
     private CharSequence getFormula(PlayRecord record) {
-        if (record.isCorrect()) {
+        if (record.isCorrect() || record.getUnknown() == FormulaPart.EXPRESSION) {
             return record.getFormulaString();
         } else {
             FormulaPart unknown = record.getUnknown();
