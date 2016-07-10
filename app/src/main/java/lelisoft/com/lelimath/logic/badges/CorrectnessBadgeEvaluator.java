@@ -142,7 +142,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
             bronzeEvaluation = queryLastEvaluation(bsgBadges[0], user, evaluationDao);
             if (! wasCurrentRowAwarded(bronzeEvaluation, lastIncorrectId)) {
                 awardBadge(bsgBadges[0], bronzeEvaluation, lastIncorrectId, user, awardProvider, evaluationDao);
-                setProgressAfterBadge(bsgBadges[0], distinctCorrectCount - 10, 10, user, ctx);
+                setProgressAfterBadge(bsgBadges[0], distinctCorrectCount - 10, user, ctx);
                 badgesCount.bronze++;
             }
             // intentionally not creating negative BadgeEvaluation as it does not bring any value
@@ -153,7 +153,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
             silverEvaluation = queryLastEvaluation(bsgBadges[1], user, evaluationDao);
             if (! wasCurrentRowAwarded(silverEvaluation, lastIncorrectId)) {
                awardBadge(bsgBadges[1], silverEvaluation, lastIncorrectId, user, awardProvider, evaluationDao);
-               setProgressAfterBadge(bsgBadges[1], distinctCorrectCount - 25, 25, user, ctx);
+               setProgressAfterBadge(bsgBadges[1], distinctCorrectCount - 25, user, ctx);
                badgesCount.silver++;
             }
         }
@@ -163,7 +163,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
             goldEvaluation = queryLastEvaluation(bsgBadges[2], user, evaluationDao);
             if (! wasCurrentRowAwarded(goldEvaluation, lastIncorrectId)) {
                 awardBadge(bsgBadges[2], goldEvaluation, lastIncorrectId, user, awardProvider, evaluationDao);
-                setProgressAfterBadge(bsgBadges[2], distinctCorrectCount - 100, 100, user, ctx);
+                setProgressAfterBadge(bsgBadges[2], distinctCorrectCount - 100, user, ctx);
                 badgesCount.gold++;
             }
         }
@@ -217,11 +217,11 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
      * Stores a progress after awarding a badge. If there were more correct formulas than required
      * a badge progress in running state is created.
      */
-    private void setProgressAfterBadge(Badge badge, int oversize, int required, User user, Context ctx) {
-        if (oversize > 0) {
-            saveBadgeProgress(badge, true, oversize, required, user, ctx);
-        } else {
+    private void setProgressAfterBadge(Badge badge, int oversize, User user, Context ctx) {
+        if (oversize == 0) {
             saveBadgeProgress(badge, false, 0, 0, user, ctx);
+//        } else {
+//             we would have to detect if the row was broken with a mistake since this badge was awarded
         }
     }
 
