@@ -158,6 +158,7 @@ public class PuzzleFragment extends LeliBaseFragment {
                     if (selectedTile.matches(currentTile)) {
                         log.debug("{} matches {}", currentTile, selectedTile);
                         PlayRecord record = getPlayRecord(true, selectedTile, currentTile);
+                        setPoints(record, play);
                         updateSpentTime(record);
 
                         tilesToBeSolved -= 2;
@@ -202,30 +203,46 @@ public class PuzzleFragment extends LeliBaseFragment {
     }
 
     private PlayRecord getPlayRecord(boolean correct, @NonNull Tile first, @NonNull Tile second) {
+        if ((first.getFormula() != null && second.getFormula() != null) || (first.getResult() != null && second.getResult() != null)) {
+            return null; // chyba v ovladani, ne ve vysledku
+        }
+
         PlayRecord record = new PlayRecord();
         record.setPlay(play);
         record.setUser(LeliMathApp.getInstance().getCurrentUser());
         record.setDate(new Date());
         record.setCorrect(correct);
-
-        if ((first.getFormula() != null && second.getFormula() != null) || (first.getResult() != null && second.getResult() != null)) {
-            return null; // chyba v ovladani, ne ve vysledku
-        }
+        record.setUnknown(FormulaPart.RESULT);
 
         if (first.getFormula() != null) {
             record.setFormula(first.getFormula());
-            record.setUnknown(FormulaPart.RESULT);
             if (!correct) {
                 record.setWrongValue(second.getResult().toString());
             }
         } else if (second.getFormula() != null) {
             record.setFormula(second.getFormula());
-            record.setUnknown(FormulaPart.EXPRESSION);
             if (!correct) {
                 record.setWrongValue(first.getResult().toString());
             }
         }
         return record;
+    }
+
+    /**
+     * Calculates points for correctly solved formula. Puzzle is easy so we divide number of digits
+     * by three for easy games and by two for hard games.
+     */
+    protected void setPoints(PlayRecord record, Play play) {
+        StringBuilder sb = new StringBuilder().append(record.getFirstOperand());
+        sb.append(record.getSecondOperand()).append(record.getResult());
+        int length = sb.length();
+        if (play.getCount() >= 10) {
+            record.setPoints(Math.max(1, length / 2 - 1));
+            log.debug("{} za {} hard", record.getPoints(), record.getFormulaString());
+        } else {
+            record.setPoints(Math.max(1, length / 3 - 2));
+            log.debug("{} za {} eas", record.getPoints(), record.getFormulaString());
+        }
     }
 
     protected void updateSpentTime(PlayRecord playRecord) {
