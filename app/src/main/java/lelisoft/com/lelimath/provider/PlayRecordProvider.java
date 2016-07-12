@@ -9,10 +9,15 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
+import lelisoft.com.lelimath.data.TimePeriod;
+import lelisoft.com.lelimath.data.User;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 
 /**
  * DB provider for play records
@@ -126,6 +131,66 @@ public class PlayRecordProvider {
         } catch (SQLException e) {
             log.error("Cannot get last play record date.", e);
             return 0;
+        }
+    }
+
+    /**
+     * Returns a sum of points in PlayRecords grouped by given time unit in selected period.
+     * It returns null in case of error.
+     * @param since maximum date
+     * @param unit time unit used for grouping and for limiting data
+     * @param countBack number of time units to be returned preceding <code>since</code> date
+     * @return list of string array results.
+     */
+    public GenericRawResults<String[]> getPlayRecordsPointsSum(long since, TimePeriod unit, int countBack) {
+        return queryPlayRecords("SUM(points)", since, countBack, unit);
+    }
+
+    public GenericRawResults<String[]> getPlayRecordsCount(long since, TimePeriod unit, int countBack) {
+        return queryPlayRecords("COUNT(*)", since, countBack, unit);
+    }
+
+    protected GenericRawResults<String[]> queryPlayRecords(String column, long since, int countBack, TimePeriod unit) {
+        try {
+            log.debug("queryPlayRecords({},{},{})", column, countBack, unit);
+            User user = LeliMathApp.getInstance().getCurrentUser();
+            String userStr = user.getId().toString();
+            String timeExpression;
+            switch (unit) {
+                case DAY:
+                    timeExpression = "'%Y-%m-%d'"; break;
+                case WEEK:
+                    timeExpression = "'%Y-%W'"; break;
+                case MONTH:
+                    timeExpression = "'%Y-%m'"; break;
+                default:
+                    throw new IllegalArgumentException("Unit " + unit + " is not supported!");
+            }
+            String sql = "SELECT strftime(" + timeExpression + ", date), " + column +
+                    " FROM play_record WHERE user_id=? AND date >= ? AND date <= ?" +
+                    " GROUP BY strftime(" + timeExpression + ", date)";
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(since);
+            String upToStr = format.format(calendar.getTime());
+
+            switch (unit) {
+                case DAY:
+                    calendar.add(Calendar.DAY_OF_YEAR, -1 * countBack); break;
+                case WEEK:
+                    calendar.add(Calendar.WEEK_OF_YEAR, -1 * countBack); break;
+                case MONTH:
+                    calendar.add(Calendar.MONTH, -1 * countBack); break;
+            }
+            String sinceStr = format.format(calendar.getTime());
+
+            GenericRawResults<String[]> results = dao.queryRaw(sql, userStr, sinceStr, upToStr);
+            log.debug("queryPlayRecords() finished");
+            return results;
+        } catch (SQLException e) {
+            log.error("Cannot query database for ", e);
+            return null;
         }
     }
 

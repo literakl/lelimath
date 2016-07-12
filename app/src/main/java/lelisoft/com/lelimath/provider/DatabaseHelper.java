@@ -64,6 +64,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             try {
                 // drop column badge_eval.progress - unsupported feature
                 TableUtils.createTable(connectionSource, BadgeProgress.class);
+                oldVersion = 4;
             } catch (SQLException e) {
                 log.error("Error upgrading a database from version 3!", e);
             }
@@ -75,7 +76,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 dao.executeRaw("ALTER TABLE `play_record` ADD COLUMN points INTEGER NOT NULL DEFAULT 0");
                 dao.updateRaw("UPDATE `play_record` SET points = length(first || second || result) - 2 WHERE correct > 0");
             } catch (SQLException e) {
-                log.error("Error upgrading a database from version 3!", e);
+                log.error("Error upgrading a database from version 4!", e);
             }
         }
     }

@@ -33,6 +33,11 @@ public class PlayRecordAdapter extends RecyclerView.Adapter<PlayRecordAdapter.Ge
     List<Pair<String, PlayRecord>> records;
 
     public PlayRecordAdapter(List<PlayRecord> playRecords) {
+        if (records == null) {
+            records = new ArrayList<>();
+            return;
+        }
+
         records = new ArrayList<>((int)(playRecords.size() * 1.25));
         Calendar calendar = Calendar.getInstance();
         long startOfDay = calendar.getTimeInMillis();
