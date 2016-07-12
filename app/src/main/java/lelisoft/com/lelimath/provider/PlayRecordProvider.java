@@ -140,17 +140,17 @@ public class PlayRecordProvider {
      * @param since maximum date
      * @param unit time unit used for grouping and for limiting data
      * @param countBack number of time units to be returned preceding <code>since</code> date
-     * @return list of string array results.
+     * @return list of string array
      */
-    public GenericRawResults<String[]> getPlayRecordsPointsSum(long since, TimePeriod unit, int countBack) {
+    public List<String[]> getPlayRecordsPointSums(long since, TimePeriod unit, int countBack) {
         return queryPlayRecords("SUM(points)", since, countBack, unit);
     }
 
-    public GenericRawResults<String[]> getPlayRecordsCount(long since, TimePeriod unit, int countBack) {
+    public List<String[]> getPlayRecordsCounts(long since, TimePeriod unit, int countBack) {
         return queryPlayRecords("COUNT(*)", since, countBack, unit);
     }
 
-    protected GenericRawResults<String[]> queryPlayRecords(String column, long since, int countBack, TimePeriod unit) {
+    protected List<String[]> queryPlayRecords(String column, long since, int countBack, TimePeriod unit) {
         try {
             log.debug("queryPlayRecords({},{},{})", column, countBack, unit);
             User user = LeliMathApp.getInstance().getCurrentUser();
@@ -168,7 +168,7 @@ public class PlayRecordProvider {
             }
             String sql = "SELECT strftime(" + timeExpression + ", date), " + column +
                     " FROM play_record WHERE user_id=? AND date >= ? AND date <= ?" +
-                    " GROUP BY strftime(" + timeExpression + ", date)";
+                    " GROUP BY strftime(" + timeExpression + ", date) ORDER BY 1 ASC";
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Calendar calendar = Calendar.getInstance();
@@ -187,7 +187,7 @@ public class PlayRecordProvider {
 
             GenericRawResults<String[]> results = dao.queryRaw(sql, userStr, sinceStr, upToStr);
             log.debug("queryPlayRecords() finished");
-            return results;
+            return results.getResults();
         } catch (SQLException e) {
             log.error("Cannot query database for ", e);
             return null;

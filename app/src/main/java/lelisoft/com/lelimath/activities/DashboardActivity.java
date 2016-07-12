@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.fragment.BadgeListFragment;
+import lelisoft.com.lelimath.fragment.ChartsFragment;
 import lelisoft.com.lelimath.fragment.DashboardHomeFragment;
 import lelisoft.com.lelimath.fragment.PlayRecordListFragment;
 
@@ -54,7 +55,7 @@ public class DashboardActivity extends LeliBaseActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -62,7 +63,8 @@ public class DashboardActivity extends LeliBaseActivity {
             switch(i) {
                 case 0: return DashboardHomeFragment.newInstance();
                 case 1: return BadgeListFragment.newInstance();
-                case 2: return PlayRecordListFragment.newInstance();
+                case 2: return ChartsFragment.newInstance();
+                case 3: return PlayRecordListFragment.newInstance();
             }
             return null;
         }
@@ -72,7 +74,8 @@ public class DashboardActivity extends LeliBaseActivity {
             switch(position) {
                 case 0: return getString(R.string.tab_home);
                 case 1: return getString(R.string.tab_badges);
-                case 2: return getString(R.string.tab_log);
+                case 2: return getString(R.string.tab_graphs);
+                case 3: return getString(R.string.tab_log);
             }
             return "";
         }
