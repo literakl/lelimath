@@ -33,7 +33,7 @@ public class PlayRecordAdapter extends RecyclerView.Adapter<PlayRecordAdapter.Ge
     List<Pair<String, PlayRecord>> records;
 
     public PlayRecordAdapter(List<PlayRecord> playRecords) {
-        if (records == null) {
+        if (playRecords == null) {
             records = new ArrayList<>();
             return;
         }
