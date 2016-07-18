@@ -173,6 +173,7 @@ public class PlayRecordProvider {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(since);
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
             String upToStr = format.format(calendar.getTime());
 
             switch (unit) {

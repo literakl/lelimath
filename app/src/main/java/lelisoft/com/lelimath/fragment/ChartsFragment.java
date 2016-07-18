@@ -63,9 +63,7 @@ public class ChartsFragment extends LeliBaseFragment {
         mChart.setDescription("Description");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
-        // enable touch gestures
         mChart.setTouchEnabled(true);
-        // enable scaling and dragging
         mChart.setDragEnabled(true);
 //        mChart.setScaleEnabled(true);
         mChart.setScaleXEnabled(true);
@@ -75,14 +73,13 @@ public class ChartsFragment extends LeliBaseFragment {
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setTypeface(mTfLight);
         xAxis.setDrawGridLines(true);
 //        xAxis.setGranularity(1f); // only intervals of 1 day
 //        xAxis.setLabelCount(7);
 
         long startTime = setData();
         xAxis.setValueFormatter(new DayAxisValueFormatter(mChart, startTime));
-        mChart.animateX(500);
+        mChart.animateX(1500);
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
@@ -91,9 +88,9 @@ public class ChartsFragment extends LeliBaseFragment {
         // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(Legend.LegendForm.LINE);
 
-//        mChart.setVisibleXRangeMaximum(120);
+        mChart.setVisibleXRangeMaximum(90);
 //        mChart.setVisibleXRangeMinimum(7);
-//        mChart.moveViewToX(100);
+        mChart.moveViewToX(mChart.getXChartMax());
 
         Metrics.saveContentDisplayed("dashboard", "charts");
     }

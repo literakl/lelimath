@@ -74,7 +74,7 @@ public class DashboardActivity extends LeliBaseActivity {
             switch(position) {
                 case 0: return getString(R.string.tab_home);
                 case 1: return getString(R.string.tab_badges);
-                case 2: return getString(R.string.tab_graphs);
+                case 2: return getString(R.string.tab_graph);
                 case 3: return getString(R.string.tab_log);
             }
             return "";

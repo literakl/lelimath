@@ -29,11 +29,12 @@
     <string name="level_GENIUS">Strašná</string>
     <string name="tab_home">Úvod</string>
     <string name="tab_badges">Odznáčky</string>
-    <string name="tab_graphs">Grafy</string>
+    <string name="tab_graph">Graf</string>
     <string name="tab_log">Záznam</string>
     <string name="title_games">Hry</string>
     <string name="title_other">Ostatní</string>
     <string name="title_badge">Odznáček</string>
+    <string name="title_chart_points">Získané body</string>
     <string name="caption_progress">Postup</string>
     <string name="caption_awarded">Získáno</string>
     <string name="caption_new">Nový</string>
