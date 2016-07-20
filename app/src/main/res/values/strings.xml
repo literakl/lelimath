@@ -5,6 +5,7 @@
     <string name="action_settings">Nastavení</string>
     <string name="action_game_fast_calc">Rychlé počty</string>
     <string name="action_game_puzzle">Najdi výsledek</string>
+    <string name="action_points">Bodů: <xliff:g id="points" example="10" >%s</xliff:g></string>
     <string name="action_info">Informace</string>
     <string name="action_credits">Poděkování</string>
     <string name="action_changelog">Soupis změn</string>
@@ -29,8 +30,9 @@
     <string name="level_GENIUS">Strašná</string>
     <string name="tab_home">Úvod</string>
     <string name="tab_badges">Odznáčky</string>
-    <string name="tab_graph">Graf</string>
     <string name="tab_log">Záznam</string>
+    <string name="title_score_graph">Graf skóre</string>
+    <string name="title_score">Skóre</string>
     <string name="title_games">Hry</string>
     <string name="title_other">Ostatní</string>
     <string name="title_badge">Odznáček</string>

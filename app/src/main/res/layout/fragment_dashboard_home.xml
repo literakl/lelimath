@@ -13,6 +13,25 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/title_score"
+            android:textAppearance="@style/TextAppearance.Header"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            style="@style/TextComponent.ItemRow"/>
+
+        <TextView
+            android:id="@+id/main.button.points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_points"
+            android:textAppearance="@style/TextAppearance.Item"
+            android:drawableRight="@drawable/ic_arrow_forward_24dp"
+            android:drawableEnd="@drawable/ic_arrow_forward_24dp"
+            style="@style/TextComponent.ItemRow.Selectable"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/title_games"
             android:textAppearance="@style/TextAppearance.Header"
             android:paddingRight="8dp"

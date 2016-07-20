@@ -79,7 +79,7 @@ public class ChartsFragment extends LeliBaseFragment {
 
         long startTime = setData();
         xAxis.setValueFormatter(new DayAxisValueFormatter(mChart, startTime));
-        mChart.animateX(1500);
+        mChart.animateX(500);
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();

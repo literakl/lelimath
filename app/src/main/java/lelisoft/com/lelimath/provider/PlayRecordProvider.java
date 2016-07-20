@@ -195,13 +195,31 @@ public class PlayRecordProvider {
         }
     }
 
+    /**
+     * @return sum of points gathered during the last play
+     */
     public int getLastPlayPoints() {
         try {
             String sql = "select sum(points) from play_record where play_id = (select max(id) from play order by id desc)";
             GenericRawResults<String[]> results = dao.queryRaw(sql);
             return Integer.parseInt(results.getFirstResult()[0]);
         } catch (SQLException e) {
-            log.error("Cannot get last play record date.", e);
+            log.error("Cannot get last play points.", e);
+            return 0;
+        }
+    }
+
+    /**
+     * @param user user
+     * @return sum of all points for this user
+     */
+    public int getUserPoints(User user) {
+        try {
+            String sql = "select sum(points) from play_record where user_id = ?";
+            GenericRawResults<String[]> results = dao.queryRaw(sql, user.getId().toString());
+            return Integer.parseInt(results.getFirstResult()[0]);
+        } catch (SQLException e) {
+            log.error("Cannot get points.", e);
             return 0;
         }
     }
