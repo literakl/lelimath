@@ -1,20 +1,21 @@
 package lelisoft.com.lelimath.helpers;
 
+
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Formats date where value is a index in days from starting point.
  * Created by Leoš on 11.07.2016.
  */
 public class DayAxisValueFormatter implements AxisValueFormatter {
-
-    protected String[] mMonths = new String[]{
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
-    };
+    DateFormat monthYear, dayMonth;
 
     private BarLineChartBase<?> chart;
     long startTime;
@@ -22,6 +23,13 @@ public class DayAxisValueFormatter implements AxisValueFormatter {
     public DayAxisValueFormatter(BarLineChartBase<?> chart, long startTime) {
         this.chart = chart;
         this.startTime = startTime;
+        String monthFormat = "MMM yyyy", dayFormat = "dd MM";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            monthFormat = android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "MM.y");
+            dayFormat = android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "dd.MM.");
+        }
+        monthYear = new SimpleDateFormat(monthFormat);
+        dayMonth = new SimpleDateFormat(dayFormat);
     }
 
     @Override
@@ -30,41 +38,14 @@ public class DayAxisValueFormatter implements AxisValueFormatter {
         calendar.setTimeInMillis(startTime);
         calendar.add(Calendar.DAY_OF_YEAR, (int)value);
 
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        String monthName = mMonths[month % mMonths.length];
-        String yearName = String.valueOf(year);
+//        Logger log = LoggerFactory.getLogger(DayAxisValueFormatter.class);
+//        log.debug("{}", dayMonth.format(calendar.getTime()));
+//        log.debug("{}", monthYear.format(calendar.getTime()));
 
         if (chart.getVisibleXRange() > 30 * axis.getLabelCount()) {
-            return monthName + " " + yearName;
+            return monthYear.format(calendar.getTime());
         } else {
-            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-            String appendix = "th";
-            switch (dayOfMonth) {
-                case 1:
-                    appendix = "st";
-                    break;
-                case 2:
-                    appendix = "nd";
-                    break;
-                case 3:
-                    appendix = "rd";
-                    break;
-                case 21:
-                    appendix = "st";
-                    break;
-                case 22:
-                    appendix = "nd";
-                    break;
-                case 23:
-                    appendix = "rd";
-                    break;
-                case 31:
-                    appendix = "st";
-                    break;
-            }
-
-            return dayOfMonth == 0 ? "" : dayOfMonth + appendix + " " + monthName;
+            return dayMonth.format(calendar.getTime());
         }
     }
 

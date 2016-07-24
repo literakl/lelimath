@@ -3,7 +3,6 @@ package lelisoft.com.lelimath.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,9 +58,8 @@ public class ChartsFragment extends LeliBaseFragment {
         mChart = (LineChart) activity.findViewById(R.id.points_chart);
         mChart.setDrawGridBackground(true);
 
-        // no description text
-        mChart.setDescription("Description");
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
+        mChart.setDescription("");
+        mChart.setNoDataTextDescription(activity.getString(R.string.meesage_chart_no_data));
 
         mChart.setTouchEnabled(true);
         mChart.setDragEnabled(true);
@@ -79,16 +77,13 @@ public class ChartsFragment extends LeliBaseFragment {
 
         long startTime = setData();
         xAxis.setValueFormatter(new DayAxisValueFormatter(mChart, startTime));
-        mChart.animateX(500);
+//        mChart.animateX(500);
 
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
-
-        // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
         l.setForm(Legend.LegendForm.LINE);
 
-        mChart.setVisibleXRangeMaximum(90);
+        mChart.setVisibleXRangeMaximum(60);
 //        mChart.setVisibleXRangeMinimum(7);
         mChart.moveViewToX(mChart.getXChartMax());
 
@@ -138,9 +133,5 @@ public class ChartsFragment extends LeliBaseFragment {
         mChart.setData(data);
 
         return startTime;
-    }
-
-    public static Fragment newInstance() {
-        return new ChartsFragment();
     }
 }
