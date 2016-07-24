@@ -1,6 +1,6 @@
 package lelisoft.com.lelimath.fragment;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,12 +18,13 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.CalcActivity;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.activities.InformationActivity;
-import lelisoft.com.lelimath.activities.LeliFragmentActivity;
 import lelisoft.com.lelimath.activities.PointsChartActivity;
 import lelisoft.com.lelimath.activities.PuzzleActivity;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
+import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.PlayRecordProvider;
+import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 /**
  * Fragment for home tab on Dashboard
@@ -32,6 +33,11 @@ import lelisoft.com.lelimath.provider.PlayRecordProvider;
 public class DashboardHomeFragment extends LeliBaseFragment implements View.OnClickListener {
     private static final Logger log = LoggerFactory.getLogger(DashboardHomeFragment.class);
     FragmentActivity activity;
+    TabSwitcher callback;
+
+    public interface TabSwitcher {
+        void switchToBadgesTab();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,6 +53,8 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
 
         PlayRecordProvider provider = new PlayRecordProvider(activity);
         int points = provider.getUserPoints(LeliMathApp.getInstance().getCurrentUser());
+        BadgeAwardProvider awardProvider = new BadgeAwardProvider(activity);
+        AwardedBadgesCount badgesCount = awardProvider.getBadgesCount();
 
         TextView button = (TextView) activity.findViewById(R.id.main_button_puzzle);
         button.setOnClickListener(this);
@@ -60,6 +68,9 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         button.setOnClickListener(this);
         Resources resources = LeliMathApp.getInstance().getResources();
         button.setText(resources.getString(R.string.action_points, points));
+        button = (TextView) activity.findViewById(R.id.main_button_badges);
+        button.setOnClickListener(this);
+        button.setText(resources.getString(R.string.action_badges, badgesCount.gold, badgesCount.silver, badgesCount.bronze));
 
         Metrics.saveContentDisplayed("dashboard", "home");
     }
@@ -86,6 +97,22 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
             case R.id.main_button_points:
                 PointsChartActivity.start(activity);
                 break;
+
+            case R.id.main_button_badges:
+                callback.switchToBadgesTab();
+                break;
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented the callback interface
+        try {
+            callback = (TabSwitcher) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement TabSwitcher");
         }
     }
 

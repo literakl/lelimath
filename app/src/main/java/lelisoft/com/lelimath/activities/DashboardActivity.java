@@ -13,7 +13,7 @@ import lelisoft.com.lelimath.fragment.BadgeListFragment;
 import lelisoft.com.lelimath.fragment.DashboardHomeFragment;
 import lelisoft.com.lelimath.fragment.PlayRecordListFragment;
 
-public class DashboardActivity extends LeliBaseActivity {
+public class DashboardActivity extends LeliBaseActivity implements DashboardHomeFragment.TabSwitcher {
     ViewPager viewPager;
     int tabPosition = 0;
 
@@ -39,6 +39,11 @@ public class DashboardActivity extends LeliBaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void switchToBadgesTab() {
+        viewPager.setCurrentItem(1);
     }
 
     @Override

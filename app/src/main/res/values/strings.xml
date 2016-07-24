@@ -6,6 +6,11 @@
     <string name="action_game_fast_calc">Rychlé počty</string>
     <string name="action_game_puzzle">Najdi výsledek</string>
     <string name="action_points">Bodů: <xliff:g id="points" example="10" >%s</xliff:g></string>
+    <string name="action_badges">Odznáčků:
+        <xliff:g id="gold" example="0" >%s</xliff:g> -
+        <xliff:g id="silver" example="1" >%s</xliff:g> -
+        <xliff:g id="bronze" example="5" >%s</xliff:g>
+    </string>
     <string name="action_info">Informace</string>
     <string name="action_credits">Poděkování</string>
     <string name="action_changelog">Soupis změn</string>

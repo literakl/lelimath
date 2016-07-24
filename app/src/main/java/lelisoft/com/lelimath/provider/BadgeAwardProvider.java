@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
+import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 /**
  * Database provider for badge awards.
@@ -121,5 +123,22 @@ public class BadgeAwardProvider {
             log.error("Unable to get BadgeAwards from database.", e);
         }
         return null;
+    }
+
+    public AwardedBadgesCount getBadgesCount() {
+        AwardedBadgesCount counts = new AwardedBadgesCount();
+        String sql = "select (select count(*) from badge_award where type=\"B\") as bronze, \n" +
+                "(select count(*) from badge_award where type=\"S\") as silver, \n" +
+                "(select count(*) from badge_award where type=\"G\") as gold";
+        try {
+            GenericRawResults<String[]> results = dao.queryRaw(sql);
+            String[] result = results.getFirstResult();
+            counts.bronze = Integer.parseInt(result[0]);
+            counts.silver = Integer.parseInt(result[1]);
+            counts.gold = Integer.parseInt(result[2]);
+        } catch (SQLException e) {
+            log.error("Unable to get BadgeAward counts from database.", e);
+        }
+        return counts;
     }
 }
