@@ -49,7 +49,6 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                log.debug("onClick getLayoutPosition={} / {}", viewHolder.getAdapterPosition(), viewHolder.getLayoutPosition());
                 listener.onItemClick(v, viewHolder.getLayoutPosition());
             }
         });

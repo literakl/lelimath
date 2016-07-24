@@ -110,4 +110,16 @@ public class BadgeAwardProvider {
         }
         return null;
     }
+
+    public List<BadgeAward> getAllInDescendingOrder() {
+        try {
+            QueryBuilder<BadgeAward, Integer> queryBuilder = dao.queryBuilder();
+            queryBuilder.orderByRaw("id DESC");
+            PreparedQuery<BadgeAward> query = queryBuilder.prepare();
+            return dao.query(query);
+        } catch (SQLException e) {
+            log.error("Unable to get BadgeAwards from database.", e);
+        }
+        return null;
+    }
 }

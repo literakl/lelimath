@@ -15,9 +15,11 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.adapter.PlayRecordAdapter;
+import lelisoft.com.lelimath.adapter.JournalAdapter;
+import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.helpers.Metrics;
+import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.PlayRecordProvider;
 
 /**
@@ -27,21 +29,20 @@ import lelisoft.com.lelimath.provider.PlayRecordProvider;
 public class PlayRecordListFragment extends LeliBaseFragment {
     private static final Logger log = LoggerFactory.getLogger(DashboardHomeFragment.class);
 
-    RecyclerView recyclerView;
-    FragmentActivity activity;
-    PlayRecordProvider recordsProvider;
-    PlayRecordAdapter adapter;
-    List<PlayRecord> records;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log.debug("onCreateView()");
-        recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_dashboard_log, container, false);
-        activity = getActivity();
-        recordsProvider = new PlayRecordProvider(getActivity());
-        records = recordsProvider.getAllInDescendingOrder();
-        adapter = new PlayRecordAdapter(records);
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_dashboard_log, container, false);
+        FragmentActivity activity = getActivity();
+
+        PlayRecordProvider recordsProvider = new PlayRecordProvider(activity);
+        List<PlayRecord> playRecords = recordsProvider.getAllInDescendingOrder();
+        BadgeAwardProvider awardProvider = new BadgeAwardProvider(activity);
+        List<BadgeAward> awardList = awardProvider.getAllInDescendingOrder();
+        JournalAdapter adapter = new JournalAdapter(playRecords, awardList);
         recyclerView.setAdapter(adapter);
+
+        return recyclerView;
 /*
         recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
@@ -73,7 +74,6 @@ public class PlayRecordListFragment extends LeliBaseFragment {
             }
         });
 */
-        return recyclerView;
     }
 
     @Override
