@@ -19,12 +19,10 @@ import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.data.Play;
-import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.provider.BadgeProgressProvider;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 import static lelisoft.com.lelimath.data.BadgeEvaluation.BADGE_COLUMN_NAME;
-import static lelisoft.com.lelimath.data.BadgeEvaluation.USER_COLUMN_NAME;
 
 /**
  * Performs database analysis for certain set of badges and decides if a user is elligible
@@ -49,11 +47,10 @@ public abstract class BadgeEvaluator {
     public abstract BadgeProgress calculateProgress(Badge badge, Context ctx);
 
     @NonNull
-    protected BadgeAward createBadgeAward(Badge badge, User user) {
+    protected BadgeAward createBadgeAward(Badge badge) {
         BadgeAward award = new BadgeAward();
         award.setBadge(badge);
         award.setDate(new Date());
-        award.setUser(user);
         return award;
     }
 
@@ -63,13 +60,11 @@ public abstract class BadgeEvaluator {
      * @param inProgress true when a user is on his way to getting this badge (again)
      * @param current current progress
      * @param total required count to receive this badge
-     * @param user current user
      * @param ctx context
      */
-    protected BadgeProgress saveBadgeProgress(Badge badge, boolean inProgress, int current, int total, User user, Context ctx) {
+    protected BadgeProgress saveBadgeProgress(Badge badge, boolean inProgress, int current, int total, Context ctx) {
         log.debug("saveBadgeProgress({},{},{},{})", badge, inProgress, current, total);
         BadgeProgress progress = new BadgeProgress(badge, inProgress, current, total);
-        progress.setUser(user);
         BadgeProgressProvider provider = new BadgeProgressProvider(ctx);
         provider.createOrUpdate(progress);
 //        log.debug("saveBadgeProgress finished"); // cca 10-20 ms
@@ -89,9 +84,9 @@ public abstract class BadgeEvaluator {
         award.setData(sb.toString());
     }
 
-    protected BadgeEvaluation queryLastEvaluation(Badge badge, User user, Dao<BadgeEvaluation, Integer> dao) throws SQLException {
+    protected BadgeEvaluation queryLastEvaluation(Badge badge, Dao<BadgeEvaluation, Integer> dao) throws SQLException {
         QueryBuilder<BadgeEvaluation, Integer> builder = dao.queryBuilder();
-        builder.where().eq(BADGE_COLUMN_NAME, badge.name()).and().eq(USER_COLUMN_NAME, user.getId());
+        builder.where().eq(BADGE_COLUMN_NAME, badge.name());
         builder.orderBy(BadgeEvaluation.ID_COLUMN_NAME, true).limit(1L);
         return builder.queryForFirst();
     }

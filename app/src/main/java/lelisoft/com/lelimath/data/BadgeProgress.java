@@ -19,8 +19,8 @@ public class BadgeProgress {
     @DatabaseField(canBeNull=false, columnName=BADGE_COLUMN_NAME, id = true)
     String badgeStr;
 
-    public static final String USER_COLUMN_NAME = "user_id";
-    @DatabaseField(canBeNull = false, foreign = true, columnName=USER_COLUMN_NAME)
+    // TODO remove, but sqlite dows not allow to drop a column
+    @DatabaseField(canBeNull = true, columnName="user_id", persisted = false)
     User user;
 
     @DatabaseField(canBeNull = false)
@@ -47,14 +47,6 @@ public class BadgeProgress {
         setBadge(badge);
         this.inProgress = inProgress;
         date = new Date();
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Date getDate() {

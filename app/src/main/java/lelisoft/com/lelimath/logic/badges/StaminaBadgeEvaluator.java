@@ -21,8 +21,6 @@ import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.BadgeProgress;
-import lelisoft.com.lelimath.data.User;
-import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.BadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
@@ -40,7 +38,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
     private static final Logger log = LoggerFactory.getLogger(StaminaBadgeEvaluator.class);
 
     static final String sql = "select strftime('%Y-%m-%d', date), count(*) from play_record where correct=1 " +
-            "and user_id=? and date > ? group by strftime('%Y%m%d', date) order by 1 desc";
+            "and date > ? group by strftime('%Y%m%d', date) order by 1 desc";
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -50,7 +48,6 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             log.debug("evaluate starts");
             BadgeAwardProvider awardProvider = new BadgeAwardProvider(ctx);
             AwardedBadgesCount badgesCount = new AwardedBadgesCount();
-            User user = LeliMathApp.getInstance().getCurrentUser();
             DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
             Dao<BadgeEvaluation, Integer> evaluationDao = helper.getBadgeEvaluationDao();
 
@@ -59,7 +56,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             boolean evaluateSilver = bronzeAwarded && ! silverAwarded;
             boolean evaluateGold = silverAwarded && ! badges.containsKey(MARATHON_RUNNER);
 
-            BadgeEvaluation silverEvaluation = queryLastEvaluation(LONG_DISTANCE_RUNNER, user, evaluationDao);
+            BadgeEvaluation silverEvaluation = queryLastEvaluation(LONG_DISTANCE_RUNNER, evaluationDao);
             if (evaluateSilver && silverEvaluation != null && silverEvaluation.getLastWrongDate() != null) {
                 long diff = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - silverEvaluation.getLastWrongDate().getTime());
                 if (diff < 7) {
@@ -67,7 +64,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
                 }
             }
 
-            BadgeEvaluation goldEvaluation = queryLastEvaluation(MARATHON_RUNNER, user, evaluationDao);
+            BadgeEvaluation goldEvaluation = queryLastEvaluation(MARATHON_RUNNER, evaluationDao);
             if (evaluateGold && goldEvaluation != null && goldEvaluation.getLastWrongId() != null) {
                 long diff = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - goldEvaluation.getLastWrongDate().getTime());
                 if (diff < 30) {
@@ -76,20 +73,20 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             }
 
             if (! bronzeAwarded) {
-                BadgeEvaluation bronzeEvaluation = queryLastEvaluation(RETURNER, user, evaluationDao);
-                if (performEvaluation(RETURNER, 2, bronzeEvaluation, user, awardProvider, evaluationDao, ctx)) {
+                BadgeEvaluation bronzeEvaluation = queryLastEvaluation(RETURNER, evaluationDao);
+                if (performEvaluation(RETURNER, 2, bronzeEvaluation, awardProvider, evaluationDao, ctx)) {
                     badgesCount.bronze++;
                 }
             }
 
             if (evaluateSilver) {
-                if (performEvaluation(LONG_DISTANCE_RUNNER, 7, silverEvaluation, user, awardProvider, evaluationDao, ctx)) {
+                if (performEvaluation(LONG_DISTANCE_RUNNER, 7, silverEvaluation, awardProvider, evaluationDao, ctx)) {
                     badgesCount.silver++;
                 }
             }
 
             if (evaluateGold) {
-                if (performEvaluation(MARATHON_RUNNER, 30, goldEvaluation, user, awardProvider, evaluationDao, ctx)) {
+                if (performEvaluation(MARATHON_RUNNER, 30, goldEvaluation, awardProvider, evaluationDao, ctx)) {
                     badgesCount.gold++;
                 }
             }
@@ -121,12 +118,11 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         }
     }
 
-    private boolean performEvaluation(Badge badge, int count, BadgeEvaluation evaluation, User user,
-                                   BadgeAwardProvider awardProvider, Dao<BadgeEvaluation, Integer> evaluationDao,
-                                   Context ctx) throws SQLException {
+    private boolean performEvaluation(Badge badge, int count, BadgeEvaluation evaluation,
+                                      BadgeAwardProvider awardProvider, Dao<BadgeEvaluation, Integer> evaluationDao,
+                                      Context ctx) throws SQLException {
         if (evaluation == null) {
             evaluation = new BadgeEvaluation();
-            evaluation.setUser(user);
             evaluation.setBadge(badge);
         }
         evaluation.setDate(new Date());
@@ -147,7 +143,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
 //        select strftime('%Y-%m-%d', date), count(*) from play_record where date > date('now','-8 day') group by strftime('%Y%m%d', date);
         String searchedDate = today;
         int processed = 0;
-        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, user.getId().toString(), since);
+        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, since);
         for (String[] dayStats : results) {
             if (! searchedDate.equals(dayStats[0])) {
                 // missing date
@@ -174,9 +170,9 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         if (processed == count) {
             evaluation.setLastWrongDate(null);
             evaluationDao.createOrUpdate(evaluation);
-            BadgeAward award = createBadgeAward(badge, user);
+            BadgeAward award = createBadgeAward(badge);
             awardProvider.create(award);
-            saveBadgeProgress(badge, false, 0, 0, user, ctx);
+            saveBadgeProgress(badge, false, 0, 0, ctx);
             log.debug("Badge {} was awarded", badge);
             return true;
         } else {
@@ -188,7 +184,6 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
     }
 
     private BadgeProgress calculateProgress(Badge badge, int required, Context ctx) throws SQLException {
-        User user = LeliMathApp.getInstance().getCurrentUser();
         BadgeAwardProvider awardProvider = new BadgeAwardProvider(ctx);
         DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
         Dao<BadgeEvaluation, Integer> evaluationDao = helper.getBadgeEvaluationDao();
@@ -196,7 +191,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
         List<BadgeAward> awards = awardProvider.getAwards(badge);
         if (! awards.isEmpty()) {
             // these badges are one time
-            BadgeProgress progress = saveBadgeProgress(badge, false, 0, 0, user, ctx);
+            BadgeProgress progress = saveBadgeProgress(badge, false, 0, 0, ctx);
             log.debug("calculateProgress({}) finished", badge);
             return progress;
         }
@@ -216,7 +211,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
 
         int processed = 0;
         String searchedDate = today;
-        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, user.getId().toString(), since);
+        GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, since);
         for (String[] dayStats : results) {
             if (! searchedDate.equals(dayStats[0])) {
                 // missing date
@@ -233,7 +228,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             searchedDate = format.format(calendar.getTime());
         }
 
-        BadgeProgress progress = saveBadgeProgress(badge, true, processed, required, user, ctx);
+        BadgeProgress progress = saveBadgeProgress(badge, true, processed, required, ctx);
         log.debug("calculateProgress({}) finished", badge);
         return progress;
     }

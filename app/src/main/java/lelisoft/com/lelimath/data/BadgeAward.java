@@ -14,7 +14,8 @@ public class BadgeAward {
     @DatabaseField(generatedId = true)
     Integer id;
 
-    @DatabaseField(canBeNull = false, foreign = true, columnName="user_id")
+    // TODO remove, but sqlite dows not allow to drop a column
+    @DatabaseField(canBeNull = true, columnName="user_id", persisted = false)
     User user;
 
     @DatabaseField(canBeNull = false)
@@ -39,14 +40,6 @@ public class BadgeAward {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Date getDate() {

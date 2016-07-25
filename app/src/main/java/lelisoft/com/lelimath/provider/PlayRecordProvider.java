@@ -16,7 +16,6 @@ import java.util.List;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.TimePeriod;
-import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 
 /**
@@ -153,8 +152,6 @@ public class PlayRecordProvider {
     protected List<String[]> queryPlayRecords(String column, long since, int countBack, TimePeriod unit) {
         try {
             log.debug("queryPlayRecords({},{},{})", column, countBack, unit);
-            User user = LeliMathApp.getInstance().getCurrentUser();
-            String userStr = user.getId().toString();
             String timeExpression;
             switch (unit) {
                 case DAY:
@@ -167,7 +164,7 @@ public class PlayRecordProvider {
                     throw new IllegalArgumentException("Unit " + unit + " is not supported!");
             }
             String sql = "SELECT strftime(" + timeExpression + ", date), " + column +
-                    " FROM play_record WHERE user_id=? AND date >= ? AND date <= ?" +
+                    " FROM play_record WHERE date >= ? AND date <= ?" +
                     " GROUP BY strftime(" + timeExpression + ", date) ORDER BY 1 ASC";
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -186,7 +183,7 @@ public class PlayRecordProvider {
             }
             String sinceStr = format.format(calendar.getTime());
 
-            GenericRawResults<String[]> results = dao.queryRaw(sql, userStr, sinceStr, upToStr);
+            GenericRawResults<String[]> results = dao.queryRaw(sql, sinceStr, upToStr);
             log.debug("queryPlayRecords() finished");
             return results.getResults();
         } catch (SQLException e) {
@@ -210,13 +207,12 @@ public class PlayRecordProvider {
     }
 
     /**
-     * @param user user
-     * @return sum of all points for this user
+     * @return sum of all points
      */
-    public int getUserPoints(User user) {
+    public int getPoints() {
         try {
-            String sql = "select sum(points) from play_record where user_id = ?";
-            GenericRawResults<String[]> results = dao.queryRaw(sql, user.getId().toString());
+            String sql = "select sum(points) from play_record";
+            GenericRawResults<String[]> results = dao.queryRaw(sql);
             return Integer.parseInt(results.getFirstResult()[0]);
         } catch (SQLException e) {
             log.error("Cannot get points.", e);

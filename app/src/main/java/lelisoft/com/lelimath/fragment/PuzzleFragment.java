@@ -130,7 +130,6 @@ public class PuzzleFragment extends LeliBaseFragment {
         play = new Play();
         play.setGame(Game.PUZZLE);
         play.setLevel(logic.getLevel());
-        play.setUser(LeliMathApp.getInstance().getCurrentUser());
         play.setDate(new Date());
         play.setCount(tilesToBeSolved / 2);
 
@@ -209,7 +208,6 @@ public class PuzzleFragment extends LeliBaseFragment {
 
         PlayRecord record = new PlayRecord();
         record.setPlay(play);
-        record.setUser(LeliMathApp.getInstance().getCurrentUser());
         record.setDate(new Date());
         record.setCorrect(correct);
         record.setUnknown(FormulaPart.RESULT);

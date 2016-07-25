@@ -22,7 +22,6 @@ import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
-import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.badges.CorrectnessBadgeEvaluator;
@@ -40,7 +39,6 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(LeliMathApp.class);
 
     DatabaseHelper helper;
-    User user = new User(1);
 
     public void testPlus() throws Exception {
         Dao<Play, Integer> playDao = helper.getPlayDao();
@@ -52,19 +50,19 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         time.set(Calendar.HOUR_OF_DAY, 16);
         time.set(Calendar.MINUTE, 0);
 
-        Play play = new Play(Game.FAST_CALC, GameLogic.Level.HARD, 10, true, 3000L, time.getTime(), user);
+        Play play = new Play(Game.FAST_CALC, GameLogic.Level.HARD, 10, true, 3000L, time.getTime());
         playDao.create(play);
         for (int i = 0; i < 8; i++) {
-            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(1, PLUS, i, 1 + i, FIRST_OPERAND));
-            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, MINUS, 0, i, RESULT)); // ignored
         }
 
         // insert duplicate formulas
-        PlayRecord recordDup1 = new PlayRecord(play, time.getTime(), true, 600L, user);
+        PlayRecord recordDup1 = new PlayRecord(play, time.getTime(), true, 600L);
         recordDao.create(recordDup1.setFormula(1, PLUS, 1, 1, RESULT));
-        PlayRecord recordDup2 = new PlayRecord(play, time.getTime(), true, 600L, user);
+        PlayRecord recordDup2 = new PlayRecord(play, time.getTime(), true, 600L);
         recordDao.create(recordDup2.setFormula(1, PLUS, 2, 3, RESULT));
 
         AwardedBadgesCount result = evaluator.evaluate(badges, getContext());
@@ -84,7 +82,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         assertEquals(0, result.gold);
 
         for (int i = 11; i < 101; i++) {
-            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(1, PLUS, i, 1 + i, FIRST_OPERAND));
         }
 
@@ -94,11 +92,11 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         assertEquals(1, result.gold);
 
         // break the strike
-        PlayRecord badRecord = new PlayRecord(play, time.getTime(), false, 600L, user);
+        PlayRecord badRecord = new PlayRecord(play, time.getTime(), false, 600L);
         recordDao.create(badRecord.setFormula(1, PLUS, 1, 0, RESULT));
 
         for (int i = 102; i < 203; i++) {
-            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(1, PLUS, i, 1 + i, FIRST_OPERAND));
         }
 
@@ -118,14 +116,14 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         time.set(Calendar.HOUR_OF_DAY, 16);
         time.set(Calendar.MINUTE, 0);
 
-        Play play = new Play(Game.FAST_CALC, GameLogic.Level.HARD, 1000, true, 3000L, time.getTime(), user);
+        Play play = new Play(Game.FAST_CALC, GameLogic.Level.HARD, 1000, true, 3000L, time.getTime());
         playDao.create(play);
         for (int i = 0; i < 10; i++) {
-            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, MINUS, 1, i, FIRST_OPERAND));
-            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, MULTIPLY, 1, i, SECOND_OPERAND));
-            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
         }
 
@@ -135,19 +133,19 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         assertEquals(0, result.gold);
 
         // break the strike
-        PlayRecord badRecord = new PlayRecord(play, time.getTime(), false, 600L, user);
+        PlayRecord badRecord = new PlayRecord(play, time.getTime(), false, 600L);
         recordDao.create(badRecord.setFormula(1, MINUS, 1, 0, RESULT));
-        badRecord = new PlayRecord(play, time.getTime(), false, 600L, user);
+        badRecord = new PlayRecord(play, time.getTime(), false, 600L);
         recordDao.create(badRecord.setFormula(1, MULTIPLY, 1, 1, RESULT));
-        badRecord = new PlayRecord(play, time.getTime(), false, 600L, user);
+        badRecord = new PlayRecord(play, time.getTime(), false, 600L);
         recordDao.create(badRecord.setFormula(1, DIVIDE, 1, 1, RESULT));
 
         for (int i = 0; i < 26; i++) {
-            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, MINUS, 1, i, FIRST_OPERAND));
-            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, MULTIPLY, 1, i, SECOND_OPERAND));
-            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
         }
 
@@ -157,11 +155,11 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         assertEquals(0, result.gold);
 
         for (int i = 26; i < 101; i++) {
-            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, MINUS, 1, i, FIRST_OPERAND));
-            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, MULTIPLY, 1, i, SECOND_OPERAND));
-            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
         }
 
@@ -171,11 +169,11 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         assertEquals(3, result.gold);
 
         for (int i = 101; i < 202; i++) {
-            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, MINUS, 1, i, FIRST_OPERAND));
-            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, MULTIPLY, 1, i, SECOND_OPERAND));
-            record = new PlayRecord(play, time.getTime(), true, 600L, user);
+            record = new PlayRecord(play, time.getTime(), true, 600L);
             recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
         }
 

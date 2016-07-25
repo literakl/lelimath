@@ -23,8 +23,8 @@ public class Play implements Parcelable {
     @DatabaseField(canBeNull = false)
     Date date;
 
-    public static final String USER_COLUMN_NAME = "user_id";
-    @DatabaseField(canBeNull = false, foreign = true, columnName=USER_COLUMN_NAME)
+    // TODO remove, but sqlite dows not allow to drop a column
+    @DatabaseField(canBeNull = true, columnName="user_id", persisted = false)
     User user;
 
     @DatabaseField(persisted=false)
@@ -50,13 +50,12 @@ public class Play implements Parcelable {
     public Play() {
     }
 
-    public Play(Game game, GameLogic.Level level, int count, boolean finished, Long timeSpent, Date date, User user) {
+    public Play(Game game, GameLogic.Level level, int count, boolean finished, Long timeSpent, Date date) {
         setGame(game);
         setCount(count);
         setFinished(finished);
         setTimeSpent(timeSpent);
         setDate(date);
-        setUser(user);
     }
 
     public Integer getId() {
@@ -73,14 +72,6 @@ public class Play implements Parcelable {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Game getGame() {
@@ -182,7 +173,6 @@ public class Play implements Parcelable {
         gameStr = in.readString();
         finished = in.readByte() != 0;
         date = new Date(in.readLong());
-        user = new User(in.readInt());
     }
 
     @Override
@@ -193,7 +183,6 @@ public class Play implements Parcelable {
         dest.writeString(gameStr);
         dest.writeByte((byte) (finished ? 1 : 0));
         dest.writeLong(date.getTime());
-        dest.writeInt(user.getId());
     }
 
     @Override

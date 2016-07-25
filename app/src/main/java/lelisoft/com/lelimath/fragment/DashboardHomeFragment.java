@@ -52,7 +52,7 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         activity = getActivity();
 
         PlayRecordProvider provider = new PlayRecordProvider(activity);
-        int points = provider.getUserPoints(LeliMathApp.getInstance().getCurrentUser());
+        int points = provider.getPoints();
         BadgeAwardProvider awardProvider = new BadgeAwardProvider(activity);
         AwardedBadgesCount badgesCount = awardProvider.getBadgesCount();
 

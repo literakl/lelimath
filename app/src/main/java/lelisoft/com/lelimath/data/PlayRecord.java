@@ -23,8 +23,8 @@ public class PlayRecord {
     @DatabaseField(foreign = true, columnName="play_id")
     Play play;
 
-    public static final String USER_COLUMN_NAME = "user_id";
-    @DatabaseField(canBeNull = false, foreign = true, columnName=USER_COLUMN_NAME)
+    // TODO remove, but sqlite dows not allow to drop a column
+    @DatabaseField(canBeNull = true, columnName="user_id", persisted = false)
     User user;
 
     @DatabaseField(canBeNull=true, columnName="first")
@@ -66,10 +66,9 @@ public class PlayRecord {
     public PlayRecord() {
     }
 
-    public PlayRecord(Play play, Date date, boolean correct, Long timeSpent, User user) {
+    public PlayRecord(Play play, Date date, boolean correct, Long timeSpent) {
         setPlay(play);
         setDate(date);
-        setUser(user);
         setCorrect(correct);
         setTimeSpent(timeSpent);
     }
@@ -117,14 +116,6 @@ public class PlayRecord {
 
     public void setPlay(Play play) {
         this.play = play;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Integer getFirstOperand() {
