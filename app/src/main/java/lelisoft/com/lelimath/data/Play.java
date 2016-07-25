@@ -23,10 +23,6 @@ public class Play implements Parcelable {
     @DatabaseField(canBeNull = false)
     Date date;
 
-    // TODO remove, but sqlite dows not allow to drop a column
-    @DatabaseField(canBeNull = true, columnName="user_id", persisted = false)
-    User user;
-
     @DatabaseField(persisted=false)
     Game game;
 
@@ -51,6 +47,7 @@ public class Play implements Parcelable {
     }
 
     public Play(Game game, GameLogic.Level level, int count, boolean finished, Long timeSpent, Date date) {
+        setLevel(level);
         setGame(game);
         setCount(count);
         setFinished(finished);

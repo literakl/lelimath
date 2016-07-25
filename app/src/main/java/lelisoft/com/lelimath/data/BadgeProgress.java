@@ -19,10 +19,6 @@ public class BadgeProgress {
     @DatabaseField(canBeNull=false, columnName=BADGE_COLUMN_NAME, id = true)
     String badgeStr;
 
-    // TODO remove, but sqlite dows not allow to drop a column
-    @DatabaseField(canBeNull = true, columnName="user_id", persisted = false)
-    User user;
-
     @DatabaseField(canBeNull = false)
     Date date;
 

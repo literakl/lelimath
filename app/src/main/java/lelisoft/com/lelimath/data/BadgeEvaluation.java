@@ -15,10 +15,6 @@ public class BadgeEvaluation {
     @DatabaseField(generatedId = true, columnName = ID_COLUMN_NAME)
     Integer id;
 
-    // TODO remove, but sqlite dows not allow to drop a column
-    @DatabaseField(canBeNull = true, columnName="user_id", persisted = false)
-    User user;
-
     @DatabaseField(canBeNull = false)
     Date date;
 
@@ -37,10 +33,6 @@ public class BadgeEvaluation {
 
     @DatabaseField(canBeNull=true, columnName="last_wrong_date")
     Date lastWrongDate;
-
-    // this field is unused but sqlite cannot remove it
-    @DatabaseField(canBeNull=true, columnName="progress")
-    Integer progress;
 
     public Integer getId() {
         return id;

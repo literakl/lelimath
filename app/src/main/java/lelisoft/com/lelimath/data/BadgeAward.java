@@ -14,10 +14,6 @@ public class BadgeAward {
     @DatabaseField(generatedId = true)
     Integer id;
 
-    // TODO remove, but sqlite dows not allow to drop a column
-    @DatabaseField(canBeNull = true, columnName="user_id", persisted = false)
-    User user;
-
     @DatabaseField(canBeNull = false)
     Date date;
 

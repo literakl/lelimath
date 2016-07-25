@@ -23,10 +23,6 @@ public class PlayRecord {
     @DatabaseField(foreign = true, columnName="play_id")
     Play play;
 
-    // TODO remove, but sqlite dows not allow to drop a column
-    @DatabaseField(canBeNull = true, columnName="user_id", persisted = false)
-    User user;
-
     @DatabaseField(canBeNull=true, columnName="first")
     Integer firstOperand;
 
