@@ -39,6 +39,7 @@ public class PlayProvider {
         return 0;
     }
 
+    @SuppressWarnings("unused")
     public Dao.CreateOrUpdateStatus createOrUpdate(Play play) {
         try {
             return dao.createOrUpdate(play);
@@ -48,6 +49,7 @@ public class PlayProvider {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public Play getById(Integer id) {
         try {
             return dao.queryForId(id);
@@ -60,6 +62,7 @@ public class PlayProvider {
         return dao.queryBuilder();
     }
 
+    @SuppressWarnings("unused")
     public List<Play> query(PreparedQuery<Play> query) {
         try {
             return dao.query(query);

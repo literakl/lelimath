@@ -45,6 +45,7 @@ public class BadgeAwardProvider {
         return 0;
     }
 
+    @SuppressWarnings("unused")
     public Dao.CreateOrUpdateStatus createOrUpdate(BadgeAward award) {
         try {
             return dao.createOrUpdate(award);
@@ -54,6 +55,7 @@ public class BadgeAwardProvider {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public BadgeAward getById(Integer id) {
         try {
             return dao.queryForId(id);
@@ -63,6 +65,7 @@ public class BadgeAwardProvider {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public List<BadgeAward> query(PreparedQuery<BadgeAward> query) {
         try {
             return dao.query(query);
@@ -72,6 +75,7 @@ public class BadgeAwardProvider {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public QueryBuilder<BadgeAward, Integer> queryBuilder() {
         return dao.queryBuilder();
     }

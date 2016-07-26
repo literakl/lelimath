@@ -34,6 +34,7 @@ public class BadgeProgress {
     @DatabaseField(canBeNull = false, columnName=IN_PROGRESS_COLUMN_NAME)
     boolean inProgress;
 
+    @SuppressWarnings("unused")
     public BadgeProgress() {
     }
 
@@ -87,6 +88,7 @@ public class BadgeProgress {
         return inProgress;
     }
 
+    @SuppressWarnings("unused")
     public void setInProgress(boolean inProgress) {
         this.inProgress = inProgress;
     }

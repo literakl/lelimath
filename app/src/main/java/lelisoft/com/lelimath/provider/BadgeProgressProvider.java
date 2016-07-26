@@ -8,11 +8,7 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeProgress;
@@ -61,6 +57,7 @@ public class BadgeProgressProvider {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public List<BadgeProgress> query(PreparedQuery<BadgeProgress> query) {
         try {
             return dao.query(query);
@@ -70,6 +67,7 @@ public class BadgeProgressProvider {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public QueryBuilder<BadgeProgress, String> queryBuilder() {
         return dao.queryBuilder();
     }

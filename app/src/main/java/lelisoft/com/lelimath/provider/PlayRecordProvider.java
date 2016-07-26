@@ -16,7 +16,6 @@ import java.util.List;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.TimePeriod;
-import lelisoft.com.lelimath.helpers.LeliMathApp;
 
 /**
  * DB provider for play records
@@ -45,6 +44,7 @@ public class PlayRecordProvider {
         }
     }
 
+    @SuppressWarnings("unused")
     public Dao.CreateOrUpdateStatus createOrUpdate(PlayRecord playRecord) {
         try {
             return dao.createOrUpdate(playRecord);
@@ -54,6 +54,7 @@ public class PlayRecordProvider {
         }
     }
 
+    @SuppressWarnings("unused")
     public List<PlayRecord> getAll() {
         try {
             return dao.queryForAll();
@@ -76,6 +77,7 @@ public class PlayRecordProvider {
         }
     }
 
+    @SuppressWarnings("unused")
     public PlayRecord getById(Integer id) {
         try {
             return dao.queryForId(id);
@@ -85,6 +87,7 @@ public class PlayRecordProvider {
         }
     }
 
+    @SuppressWarnings("unused")
     public List<PlayRecord> getPlayRecords(Play play) {
         try {
             return dao.queryBuilder().where().eq("play_id", play.getId()).query();
@@ -94,10 +97,12 @@ public class PlayRecordProvider {
         }
     }
 
+    @SuppressWarnings("unused")
     public QueryBuilder<PlayRecord, Integer> queryBuilder() {
         return dao.queryBuilder();
     }
 
+    @SuppressWarnings("unused")
     public List<PlayRecord> query(PreparedQuery<PlayRecord> query) {
         try {
             return dao.query(query);
@@ -107,6 +112,7 @@ public class PlayRecordProvider {
         }
     }
 
+    @SuppressWarnings("unused")
     public long getPlayRecordsCount() {
         try {
             return dao.countOf();
@@ -145,6 +151,7 @@ public class PlayRecordProvider {
         return queryPlayRecords("SUM(points)", since, countBack, unit);
     }
 
+    @SuppressWarnings("unused")
     public List<String[]> getPlayRecordsCounts(long since, TimePeriod unit, int countBack) {
         return queryPlayRecords("COUNT(*)", since, countBack, unit);
     }
