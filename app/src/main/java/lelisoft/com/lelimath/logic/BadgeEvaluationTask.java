@@ -7,6 +7,7 @@ import android.widget.Toast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
@@ -27,32 +28,32 @@ import lelisoft.com.lelimath.view.AwardedBadgesCount;
 public class BadgeEvaluationTask extends AsyncTask<Void, Void, BadgeEvaluationTask.Holder> {
     private static final Logger log = LoggerFactory.getLogger(BadgeEvaluationTask.class);
 
-    Context context;
+    WeakReference<Context> context;
 
     public BadgeEvaluationTask(Context context) {
-        this.context = context;
+        this.context = new WeakReference<>(context);
     }
 
     @Override
     protected Holder doInBackground(Void... params) {
         log.debug("doInBackground starts");
-        BadgeAwardProvider provider = new BadgeAwardProvider(context);
+        BadgeAwardProvider provider = new BadgeAwardProvider(context.get());
         Map<Badge, List<BadgeAward>> badges = provider.getAll();
         int points = getPointsForCurrenPlay();
 
         BadgeEvaluator evaluator = new PlayCountBadgeEvaluator();
-        AwardedBadgesCount badgesCount = evaluator.evaluate(badges, context);
+        AwardedBadgesCount badgesCount = evaluator.evaluate(badges, context.get());
         evaluator = new StaminaBadgeEvaluator();
-        badgesCount.add(evaluator.evaluate(badges, context));
+        badgesCount.add(evaluator.evaluate(badges, context.get()));
         evaluator = new CorrectnessBadgeEvaluator();
-        badgesCount.add(evaluator.evaluate(badges, context));
+        badgesCount.add(evaluator.evaluate(badges, context.get()));
 
         log.debug("doInBackground finished with {} points and {} / {} / {} badges", points, badgesCount.gold, badgesCount.silver, badgesCount.bronze);
         return new Holder(badgesCount, points);
     }
 
     private int getPointsForCurrenPlay() {
-        PlayRecordProvider provider = new PlayRecordProvider(context);
+        PlayRecordProvider provider = new PlayRecordProvider(context.get());
         return provider.getLastPlayPoints();
     }
 
@@ -60,8 +61,8 @@ public class BadgeEvaluationTask extends AsyncTask<Void, Void, BadgeEvaluationTa
     protected void onPostExecute(Holder holder) {
         AwardedBadgesCount badgesCount = holder.badgesCount;
         int badges = badgesCount.bronze + badgesCount.silver + badgesCount.gold;
-        String string = context.getString(R.string.message_badge_received, badges, holder.points);
-        Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
+        String string = context.get().getString(R.string.message_badge_received, badges, holder.points);
+        Toast.makeText(context.get(), string, Toast.LENGTH_SHORT).show();
     }
 
     public static class Holder {
