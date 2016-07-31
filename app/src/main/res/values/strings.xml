@@ -6,6 +6,10 @@
     <string name="action_game_fast_calc">Rychlé počty</string>
     <string name="action_game_puzzle">Najdi výsledek</string>
     <string name="action_points">Bodů: <xliff:g id="points" example="10" >%s</xliff:g></string>
+    <string name="action_next_badge">Další:
+        <xliff:g id="badge" example="Page" >%s</xliff:g>
+        (<xliff:g id="progress" example="1" >%s</xliff:g> / <xliff:g id="max" example="10" >%s</xliff:g>)
+    </string>
     <string name="action_badges">Odznáčků:
         <xliff:g id="gold" example="0" >%s</xliff:g> -
         <xliff:g id="silver" example="1" >%s</xliff:g> -

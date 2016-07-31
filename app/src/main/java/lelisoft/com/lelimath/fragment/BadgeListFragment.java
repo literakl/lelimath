@@ -2,7 +2,6 @@ package lelisoft.com.lelimath.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.helpers.Misc;
-import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.view.BadgeView;
 
 /**
@@ -36,6 +34,7 @@ public class BadgeListFragment extends LeliBaseFragment {
     RecyclerView recyclerView;
     FragmentActivity activity;
     BadgeAdapter adapter;
+    Map<Badge, List<BadgeAward>> allAwardedBadges;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,8 +50,6 @@ public class BadgeListFragment extends LeliBaseFragment {
 
     private List<BadgeView> fetchBadgeViews() {
         List<Badge> badges = Arrays.asList(Badge.values());
-        BadgeAwardProvider provider = new BadgeAwardProvider(activity);
-        Map<Badge, List<BadgeAward>> allAwardedBadges = provider.getAll();
         List<BadgeView> views = new ArrayList<>(badges.size());
         for (Badge badge : badges) {
             BadgeView view = new BadgeView(badge);
@@ -79,7 +76,11 @@ public class BadgeListFragment extends LeliBaseFragment {
         Metrics.saveContentDisplayed("dashboard", "badges");
     }
 
-    public static Fragment newInstance() {
+    public void setAllAwardedBadges(Map<Badge, List<BadgeAward>> allAwardedBadges) {
+        this.allAwardedBadges = allAwardedBadges;
+    }
+
+    public static BadgeListFragment newInstance() {
         return new BadgeListFragment();
     }
 }
