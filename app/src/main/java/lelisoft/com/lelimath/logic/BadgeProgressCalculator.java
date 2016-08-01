@@ -2,8 +2,17 @@ package lelisoft.com.lelimath.logic;
 
 import android.content.Context;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeProgress;
@@ -12,6 +21,8 @@ import lelisoft.com.lelimath.logic.badges.CorrectnessBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.PlayCountBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.StaminaBadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeProgressProvider;
+
+import static lelisoft.com.lelimath.data.BadgeProgress.DATE_COLUMN_NAME;
 
 /**
  * Calculates a progress for each badge
@@ -29,15 +40,14 @@ public class BadgeProgressCalculator {
     public static BadgeProgress getProgress(Badge badge, Context ctx) {
         long lastFormula = LeliMathApp.getInstance().getLastFormulaDate();
         BadgeProgressProvider provider = new BadgeProgressProvider(ctx);
-        return getProgress(badge, lastFormula, provider, ctx);
-    }
-
-    protected static BadgeProgress getProgress(Badge badge, long lastFormula, BadgeProgressProvider provider, Context ctx) {
         BadgeProgress progress = provider.getById(badge);
         if (progress != null && progress.getDate().getTime() > lastFormula) {
             return progress;
         }
+        return calculateProgress(badge, ctx);
+    }
 
+    protected static BadgeProgress calculateProgress(Badge badge, Context ctx) {
         switch (badge) {
             case PAGE:
             case KNIGHT:
@@ -75,10 +85,28 @@ public class BadgeProgressCalculator {
         log.debug("refresh() starts");
         long lastFormula = LeliMathApp.getInstance().getLastFormulaDate();
         BadgeProgressProvider provider = new BadgeProgressProvider(ctx);
+        QueryBuilder<BadgeProgress, String> builder = provider.queryBuilder();
+        Map<Badge, Date> badgeDate;
+        try {
+            List<BadgeProgress> list = builder.where().ge(DATE_COLUMN_NAME, new Date(lastFormula)).query();
+            badgeDate = new HashMap<>(list.size() + 1, 1.0f);
+            for (BadgeProgress progress : list) {
+                badgeDate.put(progress.getBadge(), progress.getDate());
+            }
+        } catch (SQLException e) {
+            log.error("Failed to get badge progress", e);
+            badgeDate = Collections.emptyMap();
+        }
 
         for (Badge badge : Badge.values()) {
+            Date date = badgeDate.get(badge);
+            if (date != null) {
+                log.debug("skipped "  + badge);
+                continue;
+            }
+
             try {
-                getProgress(badge, lastFormula, provider, ctx);
+                calculateProgress(badge, ctx);
             } catch (Exception e) {
                 log.error("Calculating progress for badge {} failed", badge, e);
             }

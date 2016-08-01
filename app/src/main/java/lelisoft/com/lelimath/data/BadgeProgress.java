@@ -19,7 +19,8 @@ public class BadgeProgress {
     @DatabaseField(canBeNull=false, columnName=BADGE_COLUMN_NAME, id = true)
     String badgeStr;
 
-    @DatabaseField(canBeNull = false)
+    public static final String DATE_COLUMN_NAME = "date";
+    @DatabaseField(canBeNull = false, columnName = DATE_COLUMN_NAME)
     Date date;
 
     public static final String PROGRESS_COLUMN_NAME = "progress";
