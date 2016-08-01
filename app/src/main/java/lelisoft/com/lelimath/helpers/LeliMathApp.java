@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
@@ -124,6 +123,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         }
     }
 
+    @SuppressWarnings("unused")
     public synchronized User getCurrentUser() {
         if (currentUser == null) {
             try {
@@ -251,14 +251,5 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         PlayRecordProvider provider = new PlayRecordProvider(this);
         this.lastFormulaDate = provider.getLastPlayRecordDate();
         log.debug("setLastFormulaDate() finished");
-    }
-
-    // todo remove
-    private class FeedPreferencesTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void[] params) {
-            LeliMathApp.this.setDefaultPreferences();
-            return null;
-        }
     }
 }

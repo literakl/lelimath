@@ -2,6 +2,9 @@ package lelisoft.com.lelimath.logic;
 
 import android.content.Context;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
@@ -15,6 +18,7 @@ import lelisoft.com.lelimath.provider.BadgeProgressProvider;
  * Created by Leoš on 04.07.2016.
  */
 public class BadgeProgressCalculator {
+    private static final Logger log = LoggerFactory.getLogger(BadgeProgressCalculator.class);
 
     /**
      * Finds a progress for given badge. If it does not exist or it is too old, new progress is calculated.
@@ -25,6 +29,10 @@ public class BadgeProgressCalculator {
     public static BadgeProgress getProgress(Badge badge, Context ctx) {
         long lastFormula = LeliMathApp.getInstance().getLastFormulaDate();
         BadgeProgressProvider provider = new BadgeProgressProvider(ctx);
+        return getProgress(badge, lastFormula, provider, ctx);
+    }
+
+    protected static BadgeProgress getProgress(Badge badge, long lastFormula, BadgeProgressProvider provider, Context ctx) {
         BadgeProgress progress = provider.getById(badge);
         if (progress != null && progress.getDate().getTime() > lastFormula) {
             return progress;
@@ -57,5 +65,24 @@ public class BadgeProgressCalculator {
                 return new CorrectnessBadgeEvaluator().calculateProgress(badge, ctx);
         }
         throw new IllegalArgumentException("Missing handler for badge " + badge);
+    }
+
+    /**
+     * Recalculates badge progress for all badges.
+     * @param ctx context
+     */
+    public static void refresh(Context ctx) {
+        log.debug("refresh() starts");
+        long lastFormula = LeliMathApp.getInstance().getLastFormulaDate();
+        BadgeProgressProvider provider = new BadgeProgressProvider(ctx);
+
+        for (Badge badge : Badge.values()) {
+            try {
+                getProgress(badge, lastFormula, provider, ctx);
+            } catch (Exception e) {
+                log.error("Calculating progress for badge {} failed", badge, e);
+            }
+        }
+        log.debug("refresh() finished");
     }
 }

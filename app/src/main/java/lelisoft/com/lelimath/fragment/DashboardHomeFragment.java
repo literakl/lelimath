@@ -1,8 +1,11 @@
 package lelisoft.com.lelimath.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +19,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,6 +38,7 @@ import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
+import lelisoft.com.lelimath.logic.BadgeProgressCalculator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.BadgeProgressProvider;
 import lelisoft.com.lelimath.provider.PlayRecordProvider;
@@ -74,7 +79,8 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         int points = provider.getPoints();
         BadgeAwardProvider awardProvider = new BadgeAwardProvider(activity);
         AwardedBadgesCount badgesCount = awardProvider.getBadgesCount();
-        setNextAward();
+        setBadgeProgress();
+        displayNextAward();
 
         TextView button = (TextView) activity.findViewById(R.id.main_button_puzzle);
         button.setOnClickListener(this);
@@ -91,6 +97,8 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         button = (TextView) activity.findViewById(R.id.main_button_badges);
         button.setOnClickListener(this);
         button.setText(resources.getString(R.string.action_badges, badgesCount.gold, badgesCount.silver, badgesCount.bronze));
+
+        new RefreshNextBadgeTask(this).execute();
 
         Metrics.saveContentDisplayed("dashboard", "home");
     }
@@ -130,9 +138,8 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         }
     }
 
-    private void setNextAward() {
+    private void displayNextAward() {
         TextView button = (TextView) activity.findViewById(R.id.main_button_next_badge);
-        nextBadge = chooseBadgeProgress();
         if (nextBadge != null) {
             button.setOnClickListener(this);
             Resources resources = LeliMathApp.getInstance().getResources();
@@ -145,27 +152,34 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
 
     /**
      * Choose a badge that is the most easy to gain.
-     * @return BadgeProgress for such badge
      */
-    private BadgeProgress chooseBadgeProgress() {
-        if (! allAwardedBadges.containsKey(PAGE)) {
-            return new BadgeProgress(PAGE, true, 0, 1);
-        } else if (! allAwardedBadges.containsKey(GLADIATOR)) {
-            return new BadgeProgress(GLADIATOR, true, 0, 1);
-        }
-
+    private void setBadgeProgress() {
+        log.debug("setBadgeProgress() starts");
         try {
-            BadgeProgressProvider provider = new BadgeProgressProvider(activity);
-            QueryBuilder<BadgeProgress, String> builder = provider.queryBuilder();
-            List<BadgeProgress> list = builder.where().eq(IN_PROGRESS_COLUMN_NAME, true).query();
-            if (! list.isEmpty()) {
-                Collections.sort(list, new BadgeProgressComparator());
-                return list.get(0);
+            if (! allAwardedBadges.containsKey(PAGE)) {
+                nextBadge = new BadgeProgress(PAGE, true, 0, 1);
+                return;
+            } else if (! allAwardedBadges.containsKey(GLADIATOR)) {
+                nextBadge = new BadgeProgress(GLADIATOR, true, 0, 1);
+                return;
             }
-            return null;
-        } catch (SQLException e) {
-            log.error("Error while fetching the next badge", e);
-            return null;
+
+            try {
+                BadgeProgressProvider provider = new BadgeProgressProvider(activity);
+                QueryBuilder<BadgeProgress, String> builder = provider.queryBuilder();
+                List<BadgeProgress> list = builder.where().eq(IN_PROGRESS_COLUMN_NAME, true).query();
+                if (! list.isEmpty()) {
+                    Collections.sort(list, new BadgeProgressComparator());
+                    nextBadge = list.get(0);
+                    return;
+                }
+                nextBadge = null;
+            } catch (SQLException e) {
+                log.error("Error while fetching the next badge", e);
+                nextBadge = null;
+            }
+        } finally {
+            log.debug("setBadgeProgress() finished");
         }
     }
 
@@ -223,6 +237,42 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
                 default:
                     return lhs.calculateRemainingFormulas() - rhs.calculateRemainingFormulas();
             }
+        }
+    }
+
+    static class RefreshNextBadgeTask extends AsyncTask<Void, Void, Void> {
+        // Weak references will still allow the Activity to be garbage-collected
+        private final WeakReference<DashboardHomeFragment> weakFragment;
+
+        RefreshNextBadgeTask(DashboardHomeFragment fragment) {
+            this.weakFragment = new WeakReference<>(fragment);
+        }
+
+        @Override
+        public Void doInBackground(Void... params) {
+            BadgeProgressCalculator.refresh(weakFragment.get().getActivity());
+            weakFragment.get().setBadgeProgress();
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Void result) {
+            // Re-acquire a strong reference to the activity, and verify
+            // that it still exists and is active.
+            Activity activity = weakFragment.get().getActivity();
+            if (activity == null || activity.isFinishing()) {
+                // activity is no longer valid, don't do anything!
+                return;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if (activity.isDestroyed()) {
+                    // activity is no longer valid, don't do anything!
+                    return;
+                }
+            }
+
+            // The activity is still valid, do main-thread stuff here
+            weakFragment.get().displayNextAward();
         }
     }
 }

@@ -176,8 +176,9 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
         int index = (incorrectRecord != null) ? incorrectRecord.getId() : 0;
         if (evaluation != null && evaluation.getLastAwardedId() > index) {
             // already awarded but strike has not been broken => waiting for mistake to restart
+            BadgeProgress progress = saveBadgeProgress(badge, false, 0, required, ctx);
             log.debug("calculateProgress({}) finished", badge);
-            return null;
+            return progress;
         }
 
         GenericRawResults<String[]> results = evaluationDao.queryRaw(sql, Integer.toString(index), operator.value);
