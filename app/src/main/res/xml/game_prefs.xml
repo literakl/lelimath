@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Hra">
+    <PreferenceCategory android:title="@string/pref_game">
         <ListPreference
             android:key="pref_game_complexity"
-            android:title="Složitost"
+            android:title="@string/pref_game_complexity"
             android:summary="%s"
             android:entries="@array/pref_complexity_entries"
             android:entryValues="@array/pref_complexity_entries_values"
@@ -220,7 +220,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Rychlé počty">
+    <PreferenceCategory android:title="@string/pref_category_game_fast_calc">
 <!--
         <ListPreference
             android:key="pref_game_calc_mode"
@@ -240,6 +240,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_misc">
+        <ListPreference
+            android:key="pref_next_badge"
+            android:title="@string/pref_next_badge"
+            android:summary="%s"
+            />
+
         <PreferenceScreen
             android:key="pref_misc_sound_category"
             android:title="@string/pref_sound_state"

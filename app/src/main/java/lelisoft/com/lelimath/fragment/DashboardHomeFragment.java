@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +35,7 @@ import lelisoft.com.lelimath.activities.PuzzleActivity;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeProgress;
+import lelisoft.com.lelimath.helpers.BadgeProgressComparator;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.logic.BadgeProgressCalculator;
@@ -201,43 +201,6 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
 
     public static DashboardHomeFragment newInstance() {
         return new DashboardHomeFragment();
-    }
-
-    /**
-     * Compares badgeProgress by remaning formulas. Multi-day badges are sorted at the end.
-     */
-    private static class BadgeProgressComparator implements Comparator<BadgeProgress> {
-        @Override
-        public int compare(BadgeProgress lhs, BadgeProgress rhs) {
-            switch (lhs.getBadge()) {
-                case RETURNER: {
-                    switch (rhs.getBadge()) {
-                        case RETURNER: return 0;
-                        case LONG_DISTANCE_RUNNER: return -1;
-                        case MARATHON_RUNNER: return -1;
-                        default: return 1;
-                    }
-                }
-                case LONG_DISTANCE_RUNNER: {
-                    switch (rhs.getBadge()) {
-                        case RETURNER: return 1;
-                        case LONG_DISTANCE_RUNNER: return 0;
-                        case MARATHON_RUNNER: return -1;
-                        default: return 1;
-                    }
-                }
-                case MARATHON_RUNNER: {
-                    switch (rhs.getBadge()) {
-                        case RETURNER: return 1;
-                        case LONG_DISTANCE_RUNNER: return 1;
-                        case MARATHON_RUNNER: return 0;
-                        default: return 1;
-                    }
-                }
-                default:
-                    return lhs.calculateRemainingFormulas() - rhs.calculateRemainingFormulas();
-            }
-        }
     }
 
     static class RefreshNextBadgeTask extends AsyncTask<Void, Void, Void> {

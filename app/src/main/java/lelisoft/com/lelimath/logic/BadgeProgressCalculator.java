@@ -101,7 +101,6 @@ public class BadgeProgressCalculator {
         for (Badge badge : Badge.values()) {
             Date date = badgeDate.get(badge);
             if (date != null) {
-                log.debug("skipped "  + badge);
                 continue;
             }
 

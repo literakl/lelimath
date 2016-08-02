@@ -41,19 +41,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.data.Badge;
+import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.helpers.BadgeProgressComparator;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
 import lelisoft.com.lelimath.helpers.PreferenceInputValidator;
+import lelisoft.com.lelimath.provider.BadgeProgressProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -61,6 +67,8 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
+
+import static lelisoft.com.lelimath.data.BadgeProgress.IN_PROGRESS_COLUMN_NAME;
 
 /**
  * Preferences for a game. Utilizes source code from https://github.com/davcpas1234/MaterialSettings.
@@ -104,6 +112,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         preferenceScreenHelper = new PreferenceHelper(preferenceScreen);
         dependencyMap = new DependencyMap(preferenceScreen.getSharedPreferences());
         dependencyMap.updateDependencies(preferenceScreen);
+        setNextBadgePreference(preferenceScreen);
 
         changeDefinitionsState("plus", preferenceScreen);
         changeDefinitionsState("minus", preferenceScreen);
@@ -119,6 +128,27 @@ public class GamePreferenceActivity extends PreferenceActivity implements
             preference = ((EditTextPreference) preferenceScreen.findPreference("pref_game_" + operation + "_result"));
             new ValuesPreferenceValidator(preference);
         }
+    }
+
+    private void setNextBadgePreference(PreferenceScreen preferenceScreen) {
+        ListPreference preference = ((ListPreference) preferenceScreen.findPreference("pref_next_badge"));
+        BadgeProgressProvider provider = new BadgeProgressProvider(this);
+        ArrayList<String> captions = new ArrayList<>(Badge.values().length);
+        ArrayList<String> values = new ArrayList<>(captions.size());
+        try {
+            List<BadgeProgress> list = provider.queryBuilder().where().eq(IN_PROGRESS_COLUMN_NAME, true).query();
+            Collections.sort(list, new BadgeProgressComparator());
+            for (BadgeProgress progress : list) {
+                captions.add(getString(R.string.pref_badge_progress, progress.getBadge().getTitle(),
+                        progress.getProgress(), progress.getRequired()));
+                values.add(progress.getBadge().name());
+            }
+        } catch (SQLException e) {
+            log.error("Error while fetching badge progress list", e);
+        }
+
+        preference.setEntries(captions.toArray(new CharSequence[captions.size()]));
+        preference.setEntryValues(values.toArray(new CharSequence[values.size()]));
     }
 
     @Override
