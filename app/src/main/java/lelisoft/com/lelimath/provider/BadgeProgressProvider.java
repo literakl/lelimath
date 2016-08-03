@@ -2,6 +2,7 @@ package lelisoft.com.lelimath.provider;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -34,6 +35,7 @@ public class BadgeProgressProvider {
         try {
             return dao.create(progress);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create new BadgeProgress in database. progress=" + progress, e);
         }
         return 0;
@@ -43,6 +45,7 @@ public class BadgeProgressProvider {
         try {
             return dao.createOrUpdate(progress);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create new BadgeProgress in database. progress=" + progress, e);
         }
         return null;
@@ -52,6 +55,7 @@ public class BadgeProgressProvider {
         try {
             return dao.queryForId(badge.name());
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get BadgeProgress by id from database. id=" + badge, e);
         }
         return null;
@@ -62,6 +66,7 @@ public class BadgeProgressProvider {
         try {
             return dao.query(query);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Cannot execute prepared query: " + query, e);
         }
         return null;

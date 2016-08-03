@@ -2,6 +2,7 @@ package lelisoft.com.lelimath.logic.badges;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -122,6 +123,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             log.debug("evaluate finished: {}", badgesCount);
             return badgesCount;
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Evaluation failed", e);
             return new AwardedBadgesCount();
         }
@@ -147,6 +149,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             }
             throw new RuntimeException("Unhandled badge " + badge);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("calculateProgress failed!", e);
             return null;
         }

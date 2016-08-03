@@ -37,6 +37,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -145,6 +147,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
                 values.add(progress.getBadge().name());
             }
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Error while fetching badge progress list", e);
         }
 

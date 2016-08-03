@@ -2,6 +2,7 @@ package lelisoft.com.lelimath.logic;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import org.slf4j.Logger;
@@ -94,6 +95,7 @@ public class BadgeProgressCalculator {
                 badgeDate.put(progress.getBadge(), progress.getDate());
             }
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Failed to get badge progress", e);
             badgeDate = Collections.emptyMap();
         }
@@ -107,6 +109,7 @@ public class BadgeProgressCalculator {
             try {
                 calculateProgress(badge, ctx);
             } catch (Exception e) {
+                Crashlytics.logException(e);
                 log.error("Calculating progress for badge {} failed", badge, e);
             }
         }

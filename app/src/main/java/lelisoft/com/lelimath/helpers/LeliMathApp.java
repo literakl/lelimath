@@ -123,6 +123,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
                 editor.apply();
             }
         } catch (PackageManager.NameNotFoundException e) {
+            Crashlytics.logException(e);
             log.warn("Package search failed!", e);
         }
     }

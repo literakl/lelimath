@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import org.slf4j.Logger;
@@ -192,6 +193,7 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
                 }
                 nextBadge = null;
             } catch (SQLException e) {
+                Crashlytics.logException(e);
                 log.error("Error while fetching the next badge", e);
                 nextBadge = null;
             }

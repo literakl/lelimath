@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.crashlytics.android.Crashlytics;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -110,6 +111,7 @@ public class ChartsFragment extends LeliBaseFragment {
                     values.add(new Entry(days, value, date));
                 }
             } catch (ParseException e) {
+                Crashlytics.logException(e);
                 log.error("Failed to parse {} as date!", dateStr, e);
             }
         }

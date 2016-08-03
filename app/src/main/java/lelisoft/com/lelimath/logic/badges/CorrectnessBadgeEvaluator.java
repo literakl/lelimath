@@ -2,6 +2,7 @@ package lelisoft.com.lelimath.logic.badges;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -77,6 +78,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
             log.debug("evaluate finished: {}", badgesCount);
             return badgesCount;
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("evaluate failed!", e);
             return new AwardedBadgesCount();
         }
@@ -114,6 +116,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
             }
             throw new RuntimeException("Unhandled badge " + badge);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("calculateProgress failed!", e);
             return null;
         }

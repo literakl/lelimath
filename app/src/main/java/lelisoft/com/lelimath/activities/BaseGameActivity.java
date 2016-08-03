@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.dao.Dao;
 
 import org.slf4j.Logger;
@@ -76,6 +77,7 @@ public class BaseGameActivity extends LeliBaseActivity {
 
             LeliMathApp.getInstance().setLastFormulaDate(record.getDate().getTime());
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Failed to store {}", record, e);
         }
     }
@@ -99,6 +101,7 @@ public class BaseGameActivity extends LeliBaseActivity {
                 log.warn("Failed to store {}", play);
             }
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Failed to store {}", play, e);
         }
     }
@@ -189,6 +192,7 @@ public class BaseGameActivity extends LeliBaseActivity {
             try {
                 return Values.parse(sValues);
             } catch (IllegalArgumentException e) {
+                Crashlytics.logException(e);
                 log.warn("Wrong input for key " + key + ", was: " + sValues);
                 return Values.DEMO;
             }

@@ -2,6 +2,7 @@ package lelisoft.com.lelimath.provider;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -32,6 +33,7 @@ public class BadgeAwardProvider {
             DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
             dao = helper.getBadgeAwardDao();
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create BadgeAwardProvider instance", e);
         }
     }
@@ -40,6 +42,7 @@ public class BadgeAwardProvider {
         try {
             return dao.create(award);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create new BadgeAward in database. award=" + award, e);
         }
         return 0;
@@ -50,6 +53,7 @@ public class BadgeAwardProvider {
         try {
             return dao.createOrUpdate(award);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create new BadgeAward in database. award=" + award, e);
         }
         return null;
@@ -60,6 +64,7 @@ public class BadgeAwardProvider {
         try {
             return dao.queryForId(id);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get BadgeAward by id from database. id=" + id, e);
         }
         return null;
@@ -70,6 +75,7 @@ public class BadgeAwardProvider {
         try {
             return dao.query(query);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Cannot execute prepared query: " + query, e);
         }
         return null;
@@ -104,6 +110,7 @@ public class BadgeAwardProvider {
             }
             return badges;
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             throw new RuntimeException("Unable to get all BadgeAwards from a database!", e);
         }
     }
@@ -112,6 +119,7 @@ public class BadgeAwardProvider {
         try {
             return dao.queryForEq(BadgeAward.BADGE_COLUMN_NAME, badge.name());
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get BadgeAwards for {} from database.", badge.name(), e);
         }
         return null;
@@ -124,6 +132,7 @@ public class BadgeAwardProvider {
             PreparedQuery<BadgeAward> query = queryBuilder.prepare();
             return dao.query(query);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get BadgeAwards from database.", e);
         }
         return null;
@@ -141,6 +150,7 @@ public class BadgeAwardProvider {
             counts.silver = Integer.parseInt(result[1]);
             counts.gold = Integer.parseInt(result[2]);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get BadgeAward counts from database.", e);
         }
         return counts;

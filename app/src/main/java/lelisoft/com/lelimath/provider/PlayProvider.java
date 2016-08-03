@@ -2,6 +2,7 @@ package lelisoft.com.lelimath.provider;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -26,6 +27,7 @@ public class PlayProvider {
             DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
             dao = helper.getPlayDao();
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create PlayProvider instance", e);
         }
     }
@@ -34,6 +36,7 @@ public class PlayProvider {
         try {
             return dao.create(play);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create new Play in database. play=" + play, e);
         }
         return 0;
@@ -44,6 +47,7 @@ public class PlayProvider {
         try {
             return dao.createOrUpdate(play);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create new Play in database. play=" + play, e);
         }
         return null;
@@ -54,6 +58,7 @@ public class PlayProvider {
         try {
             return dao.queryForId(id);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get Play by id from database. playRecordId=" + id, e);
         }
         return null;
@@ -67,6 +72,7 @@ public class PlayProvider {
         try {
             return dao.query(query);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Cannot execute prepared query: " + query, e);
         }
         return null;

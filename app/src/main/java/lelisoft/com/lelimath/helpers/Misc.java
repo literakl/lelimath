@@ -5,6 +5,8 @@ import android.graphics.Rect;
 import android.os.Environment;
 import android.text.format.DateUtils;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
@@ -155,6 +157,7 @@ public class Misc {
             }
             return true;
         } catch (IOException e) {
+            Crashlytics.logException(e);
             log.warn("Failed to copy file {} to {}!", source.getAbsolutePath(), dest.getAbsolutePath(), e);
             return false;
         } finally {
@@ -199,6 +202,7 @@ public class Misc {
             result = field.getInt(null);
             return LeliMathApp.resources.getString(result);
         } catch (NoSuchFieldException e) {
+            Crashlytics.logException(e);
             log.warn("Key {} was not found in R.string!", key);
             return key;
         } catch (IllegalAccessException e) {

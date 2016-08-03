@@ -2,6 +2,7 @@ package lelisoft.com.lelimath.provider;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -31,6 +32,7 @@ public class PlayRecordProvider {
             DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
             dao = helper.getPlayRecordDao();
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create PlayRecordProvider instance", e);
         }
     }
@@ -39,6 +41,7 @@ public class PlayRecordProvider {
         try {
             return dao.create(playRecord);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create new PlayRecord in database. playRecord=" + playRecord, e);
             return 0;
         }
@@ -49,6 +52,7 @@ public class PlayRecordProvider {
         try {
             return dao.createOrUpdate(playRecord);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to create new PlayRecord in database. playRecord=" + playRecord, e);
             return null;
         }
@@ -59,6 +63,7 @@ public class PlayRecordProvider {
         try {
             return dao.queryForAll();
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get all PlayRecords from database.", e);
             return null;
         }
@@ -72,6 +77,7 @@ public class PlayRecordProvider {
             PreparedQuery<PlayRecord> query = queryBuilder.prepare();
             return dao.query(query);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get all PlayRecords from database.", e);
             return null;
         }
@@ -82,6 +88,7 @@ public class PlayRecordProvider {
         try {
             return dao.queryForId(id);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get PlayRecord by id from database. playRecordId=" + id, e);
             return null;
         }
@@ -92,6 +99,7 @@ public class PlayRecordProvider {
         try {
             return dao.queryBuilder().where().eq("play_id", play.getId()).query();
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Unable to get PlayRecords for Play from database. play_id=" + play.getId(), e);
             return null;
         }
@@ -107,6 +115,7 @@ public class PlayRecordProvider {
         try {
             return dao.query(query);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Cannot execute prepared query: " + query, e);
             return null;
         }
@@ -117,6 +126,7 @@ public class PlayRecordProvider {
         try {
             return dao.countOf();
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Cannot get count of all PlayRecords stored in DB.", e);
             return -1;
         }
@@ -134,6 +144,7 @@ public class PlayRecordProvider {
                 return record.getDate().getTime();
             }
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Cannot get last play record date.", e);
             return 0;
         }
@@ -194,6 +205,7 @@ public class PlayRecordProvider {
             log.debug("queryPlayRecords() finished");
             return results.getResults();
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Cannot query database for ", e);
             return null;
         }
@@ -208,6 +220,7 @@ public class PlayRecordProvider {
             GenericRawResults<String[]> results = dao.queryRaw(sql);
             return Integer.parseInt(results.getFirstResult()[0]);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Cannot get last play points.", e);
             return 0;
         }
@@ -222,6 +235,7 @@ public class PlayRecordProvider {
             GenericRawResults<String[]> results = dao.queryRaw(sql);
             return Integer.parseInt(results.getFirstResult()[0]);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Cannot get points.", e);
             return 0;
         }

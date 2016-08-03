@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -64,6 +65,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, BadgeEvaluation.class);
             TableUtils.createTable(connectionSource, BadgeProgress.class);
         } catch (SQLException e) {
+            Crashlytics.logException(e);
             log.error("Error creating new database!", e);
         }
     }
@@ -77,6 +79,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 TableUtils.createTable(connectionSource, BadgeProgress.class);
                 oldVersion = 4;
             } catch (SQLException e) {
+                Crashlytics.logException(e);
                 log.error("Error upgrading a database from version 3!", e);
                 throw new RuntimeException("Error upgrading a database from version 3!");
             }
@@ -89,6 +92,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 dao.updateRaw("UPDATE `play_record` SET points = length(first || second || result) - 2 WHERE correct > 0");
                 oldVersion = 5;
             } catch (SQLException e) {
+                Crashlytics.logException(e);
                 log.error("Error upgrading a database from version 4!", e);
                 throw new RuntimeException("Error upgrading a database from version 4!");
             }
@@ -103,6 +107,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 dropColumns(database, connectionSource, "badge_award", new String[]{"user_id"}, BadgeAward.class);
                 dropColumns(database, connectionSource, "badge_progress", new String[]{"user_id"}, BadgeProgress.class);
             } catch (SQLException e) {
+                Crashlytics.logException(e);
                 log.error("Error upgrading a database from version 5!", e);
                 throw new RuntimeException("Error upgrading a database from version 5!");
             }
