@@ -8,21 +8,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import java.util.List;
-import java.util.Map;
-
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.Badge;
-import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.fragment.BadgeListFragment;
 import lelisoft.com.lelimath.fragment.DashboardHomeFragment;
 import lelisoft.com.lelimath.fragment.PlayRecordListFragment;
-import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 
 public class DashboardActivity extends LeliBaseActivity implements DashboardHomeFragment.TabSwitcher {
     ViewPager viewPager;
     int tabPosition = 0;
-    Map<Badge, List<BadgeAward>> allAwardedBadges;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +30,6 @@ public class DashboardActivity extends LeliBaseActivity implements DashboardHome
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tabs);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(tabPosition);
-
-        BadgeAwardProvider provider = new BadgeAwardProvider(this);
-        allAwardedBadges = provider.getAll();
-
     }
 
     @Override
@@ -77,13 +66,9 @@ public class DashboardActivity extends LeliBaseActivity implements DashboardHome
         public Fragment getItem(int i) {
             switch(i) {
                 case 0:
-                    DashboardHomeFragment homeFragment = DashboardHomeFragment.newInstance();
-                    homeFragment.setAllAwardedBadges(allAwardedBadges);
-                    return homeFragment;
+                    return DashboardHomeFragment.newInstance();
                 case 1:
-                    BadgeListFragment badgeListFragment = BadgeListFragment.newInstance();
-                    badgeListFragment.setAllAwardedBadges(allAwardedBadges);
-                    return badgeListFragment;
+                    return BadgeListFragment.newInstance();
                 case 2:
                     return PlayRecordListFragment.newInstance();
             }

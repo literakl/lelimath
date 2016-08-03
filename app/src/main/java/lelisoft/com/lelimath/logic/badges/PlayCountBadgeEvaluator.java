@@ -16,6 +16,7 @@ import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.data.Play;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.BadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.PlayProvider;
@@ -29,8 +30,9 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
     private static final Logger log = LoggerFactory.getLogger(PlayCountBadgeEvaluator.class);
 
     @Override
-    public AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context context) {
+    public AwardedBadgesCount evaluate(Context context) {
         log.debug("evaluate starts");
+        Map<Badge, List<BadgeAward>> badges = LeliMathApp.getInstance().getBadges();
         if (badges.get(Badge.PALADIN) != null && badges.get(Badge.SAMURAI) != null) {
             // already received maximum
             return new AwardedBadgesCount();
@@ -49,6 +51,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
                 queryBuilder.orderBy(Play.ID_COLUMN_NAME, true);
                 setPlayId(award, queryBuilder.queryForFirst());
                 awardProvider.create(award);
+                LeliMathApp.getInstance().addBadgeAward(award);
                 saveBadgeProgress(Badge.PAGE, false, 0, 0, context);
                 badgesCount.bronze++;
                 log.debug("Badge {} was awarded", Badge.PAGE);
@@ -60,6 +63,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
                 queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(25L);
                 setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
+                LeliMathApp.getInstance().addBadgeAward(award);
                 saveBadgeProgress(Badge.KNIGHT, false, 0, 0, context);
                 badgesCount.silver++;
                 log.debug("Badge {} was awarded", Badge.KNIGHT);
@@ -71,6 +75,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
                 queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(100L);
                 setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
+                LeliMathApp.getInstance().addBadgeAward(award);
                 saveBadgeProgress(Badge.PALADIN, false, 0, 0, context);
                 badgesCount.gold++;
                 log.debug("Badge {} was awarded", Badge.PALADIN);
@@ -84,6 +89,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
                 queryBuilder.orderBy(Play.ID_COLUMN_NAME, true);
                 setPlayId(award, queryBuilder.queryForFirst());
                 awardProvider.create(award);
+                LeliMathApp.getInstance().addBadgeAward(award);
                 saveBadgeProgress(Badge.GLADIATOR, false, 0, 0, context);
                 badgesCount.bronze++;
                 log.debug("Badge {} was awarded", Badge.GLADIATOR);
@@ -95,6 +101,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
                 queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(25L);
                 setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
+                LeliMathApp.getInstance().addBadgeAward(award);
                 saveBadgeProgress(Badge.VIKING, false, 0, 0, context);
                 badgesCount.silver++;
                 log.debug("Badge {} was awarded", Badge.VIKING);
@@ -106,6 +113,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
                 queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(100L);
                 setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
+                LeliMathApp.getInstance().addBadgeAward(award);
                 saveBadgeProgress(Badge.SAMURAI, false, 0, 0, context);
                 badgesCount.gold++;
                 log.debug("Badge {} was awarded", Badge.SAMURAI);

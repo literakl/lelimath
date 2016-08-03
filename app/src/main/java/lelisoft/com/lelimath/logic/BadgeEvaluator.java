@@ -33,10 +33,9 @@ public abstract class BadgeEvaluator {
 
     /**
      * Evaluates current FormulaRecords and optionally rewards new badges.
-     * @param badges currently awarded badges
      * @return number of newly awarded badged
      */
-    public abstract AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context context);
+    public abstract AwardedBadgesCount evaluate(Context context);
 
     /**
      * Calculates progress for given badge.
@@ -87,7 +86,7 @@ public abstract class BadgeEvaluator {
     protected BadgeEvaluation queryLastEvaluation(Badge badge, Dao<BadgeEvaluation, Integer> dao) throws SQLException {
         QueryBuilder<BadgeEvaluation, Integer> builder = dao.queryBuilder();
         builder.where().eq(BADGE_COLUMN_NAME, badge.name());
-        builder.orderBy(BadgeEvaluation.ID_COLUMN_NAME, true).limit(1L);
+        builder.orderBy(BadgeEvaluation.ID_COLUMN_NAME, true);
         return builder.queryForFirst();
     }
 }

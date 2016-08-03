@@ -84,6 +84,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     public static final String KEY_UNKNOWN = "pref_game_calc_unknown";
     public static final String KEY_SOUND_ENABLED = "pref_sound_enabled";
     public static final String KEY_SOUND_LEVEL = "pref_sound_level";
+    public static final String KEY_NEXT_BADGE = "pref_next_badge";
 
     private PreferenceHelper preferenceScreenHelper;
     private DependencyMap dependencyMap;

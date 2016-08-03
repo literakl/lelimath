@@ -12,8 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
@@ -21,6 +19,7 @@ import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.PlayRecord;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.BadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
@@ -52,7 +51,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
             "where id > ? and operator=?)";
 
     @Override
-    public AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context context) {
+    public AwardedBadgesCount evaluate(Context context) {
         try {
             log.debug("evaluate starts");
             BadgeAwardProvider awardProvider = new BadgeAwardProvider(context);
@@ -206,6 +205,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
 
         BadgeAward award = createBadgeAward(badge);
         awardProvider.create(award);
+        LeliMathApp.getInstance().addBadgeAward(award);
         log.debug("Badge {} was awarded", badge);
     }
 
@@ -233,7 +233,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
     private PlayRecord findLastIncorrectPlayRecord(Operator operator, Dao<PlayRecord, Integer> playRecordDao) throws SQLException {
         QueryBuilder<PlayRecord, Integer> queryBuilder = playRecordDao.queryBuilder();
         queryBuilder.where().eq(CORRECT_COLUMN_NAME, false).and().eq(OPERATOR_COLUMN_NAME, operator.value);
-        queryBuilder.orderBy(ID_COLUMN_NAME, false).limit(1L);
+        queryBuilder.orderBy(ID_COLUMN_NAME, false);
         return queryBuilder.queryForFirst();
     }
 }

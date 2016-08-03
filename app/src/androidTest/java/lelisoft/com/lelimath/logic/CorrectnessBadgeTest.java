@@ -65,7 +65,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         PlayRecord recordDup2 = new PlayRecord(play, time.getTime(), true, 600L);
         recordDao.create(recordDup2.setFormula(1, PLUS, 2, 3, RESULT));
 
-        AwardedBadgesCount result = evaluator.evaluate(badges, getContext());
+        AwardedBadgesCount result = evaluator.evaluate(getContext());
         assertEquals(0, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(0, result.gold);
@@ -76,7 +76,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         recordDup2.setSecondOperand(10);
         recordDao.update(recordDup2);
 
-        result = evaluator.evaluate(badges, getContext());
+        result = evaluator.evaluate(getContext());
         assertEquals(1, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(0, result.gold);
@@ -86,7 +86,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
             recordDao.create(record.setFormula(1, PLUS, i, 1 + i, FIRST_OPERAND));
         }
 
-        result = evaluator.evaluate(badges, getContext());
+        result = evaluator.evaluate(getContext());
         assertEquals(0, result.bronze);
         assertEquals(1, result.silver);
         assertEquals(1, result.gold);
@@ -100,7 +100,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
             recordDao.create(record.setFormula(1, PLUS, i, 1 + i, FIRST_OPERAND));
         }
 
-        result = evaluator.evaluate(badges, getContext());
+        result = evaluator.evaluate(getContext());
         assertEquals(1, result.bronze);
         assertEquals(1, result.silver);
         assertEquals(1, result.gold);
@@ -127,7 +127,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
             recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
         }
 
-        AwardedBadgesCount result = evaluator.evaluate(badges, getContext());
+        AwardedBadgesCount result = evaluator.evaluate(getContext());
         assertEquals(3, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(0, result.gold);
@@ -149,7 +149,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
             recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
         }
 
-        result = evaluator.evaluate(badges, getContext());
+        result = evaluator.evaluate(getContext());
         assertEquals(3, result.bronze);
         assertEquals(3, result.silver);
         assertEquals(0, result.gold);
@@ -163,7 +163,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
             recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
         }
 
-        result = evaluator.evaluate(badges, getContext());
+        result = evaluator.evaluate(getContext());
         assertEquals(0, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(3, result.gold);
@@ -177,7 +177,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
             recordDao.create(record.setFormula(i, DIVIDE, 1, i, RESULT));
         }
 
-        result = evaluator.evaluate(badges, getContext());
+        result = evaluator.evaluate(getContext());
         assertEquals(0, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(0, result.gold);

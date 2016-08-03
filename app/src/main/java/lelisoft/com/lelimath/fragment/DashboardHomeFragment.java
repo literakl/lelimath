@@ -3,10 +3,12 @@ package lelisoft.com.lelimath.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -44,6 +46,7 @@ import lelisoft.com.lelimath.provider.BadgeProgressProvider;
 import lelisoft.com.lelimath.provider.PlayRecordProvider;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
+import static lelisoft.com.lelimath.activities.GamePreferenceActivity.KEY_NEXT_BADGE;
 import static lelisoft.com.lelimath.data.BadgeProgress.IN_PROGRESS_COLUMN_NAME;
 import static lelisoft.com.lelimath.data.Badge.*;
 
@@ -56,7 +59,6 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
 
     FragmentActivity activity;
     TabSwitcher callback;
-    Map<Badge, List<BadgeAward>> allAwardedBadges;
     BadgeProgress nextBadge;
 
     public interface TabSwitcher {
@@ -155,6 +157,16 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
      */
     private void setBadgeProgress() {
         log.debug("setBadgeProgress() starts");
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        String sValues = sharedPref.getString(KEY_NEXT_BADGE, null);
+        if (sValues != null) {
+            BadgeProgressProvider provider = new BadgeProgressProvider(activity);
+            nextBadge = provider.getById(Badge.valueOf(sValues));
+            return;
+        }
+
+        Map<Badge, List<BadgeAward>> allAwardedBadges = LeliMathApp.getInstance().getBadges();
         try {
             if (! allAwardedBadges.containsKey(PAGE)) {
                 nextBadge = new BadgeProgress(PAGE, true, 0, 1);
@@ -181,10 +193,6 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         } finally {
             log.debug("setBadgeProgress() finished");
         }
-    }
-
-    public void setAllAwardedBadges(Map<Badge, List<BadgeAward>> allAwardedBadges) {
-        this.allAwardedBadges = allAwardedBadges;
     }
 
     @Override

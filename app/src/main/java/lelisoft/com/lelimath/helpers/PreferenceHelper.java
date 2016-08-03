@@ -25,6 +25,7 @@ import java.util.Set;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Badge;
 
+import static lelisoft.com.lelimath.activities.GamePreferenceActivity.KEY_NEXT_BADGE;
 import static lelisoft.com.lelimath.activities.GamePreferenceActivity.KEY_SOUND_ENABLED;
 import static lelisoft.com.lelimath.activities.GamePreferenceActivity.KEY_SOUND_LEVEL;
 
@@ -72,7 +73,7 @@ public class PreferenceHelper {
 				initSummary(group.getPreference(i), sharedPreferences);
 			}
         } else {
-            if ("pref_next_badge".equals(preference.getKey())) {
+            if (KEY_NEXT_BADGE.equals(preference.getKey())) {
                 String value = sharedPreferences.getString("pref_next_badge", "");
                 Badge badge = Badge.valueOf(value);
                 preference.setSummary(badge.getTitle());
@@ -127,7 +128,7 @@ public class PreferenceHelper {
 	    }
 	    addToDefaults(preference);
 
-        if ("pref_next_badge".equals(preference.getKey())) {
+        if (KEY_NEXT_BADGE.equals(preference.getKey())) {
             String value = preference.getSharedPreferences().getString("pref_next_badge", "");
             Badge badge = Badge.valueOf(value);
             preference.setSummary(badge.getTitle());

@@ -21,6 +21,7 @@ import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.BadgeProgress;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.BadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
@@ -43,7 +44,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
-    public AwardedBadgesCount evaluate(Map<Badge, List<BadgeAward>> badges, Context ctx) {
+    public AwardedBadgesCount evaluate(Context ctx) {
         try {
             log.debug("evaluate starts");
             BadgeAwardProvider awardProvider = new BadgeAwardProvider(ctx);
@@ -51,6 +52,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             DatabaseHelper helper = OpenHelperManager.getHelper(ctx, DatabaseHelper.class);
             Dao<BadgeEvaluation, Integer> evaluationDao = helper.getBadgeEvaluationDao();
 
+            Map<Badge, List<BadgeAward>> badges = LeliMathApp.getInstance().getBadges();
             boolean bronzeAwarded = badges.containsKey(RETURNER);
             boolean silverAwarded = badges.containsKey(LONG_DISTANCE_RUNNER);
             boolean evaluateSilver = bronzeAwarded && ! silverAwarded;
@@ -172,6 +174,7 @@ public class StaminaBadgeEvaluator extends BadgeEvaluator {
             evaluationDao.createOrUpdate(evaluation);
             BadgeAward award = createBadgeAward(badge);
             awardProvider.create(award);
+            LeliMathApp.getInstance().addBadgeAward(award);
             saveBadgeProgress(badge, false, 0, 0, ctx);
             log.debug("Badge {} was awarded", badge);
             return true;

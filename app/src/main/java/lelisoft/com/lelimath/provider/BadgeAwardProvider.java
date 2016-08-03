@@ -93,7 +93,7 @@ public class BadgeAwardProvider {
                 if (previous != null) {
                     List<BadgeAward> list = previous;
                     if (previous.size() == 1) {
-                        list = new ArrayList<>(4);
+                        list = new ArrayList<>(3);
                         list.add(previous.get(0));
                         badges.put(badgeAward.getBadge(), list);
                     }

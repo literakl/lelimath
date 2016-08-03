@@ -8,16 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
-import java.util.Map;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.Badge;
-import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.logic.badges.CorrectnessBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.PlayCountBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.StaminaBadgeEvaluator;
-import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.PlayRecordProvider;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
@@ -37,16 +32,14 @@ public class BadgeEvaluationTask extends AsyncTask<Void, Void, BadgeEvaluationTa
     @Override
     protected Holder doInBackground(Void... params) {
         log.debug("doInBackground starts");
-        BadgeAwardProvider provider = new BadgeAwardProvider(context.get());
-        Map<Badge, List<BadgeAward>> badges = provider.getAll();
         int points = getPointsForCurrenPlay();
 
         BadgeEvaluator evaluator = new PlayCountBadgeEvaluator();
-        AwardedBadgesCount badgesCount = evaluator.evaluate(badges, context.get());
+        AwardedBadgesCount badgesCount = evaluator.evaluate(context.get());
         evaluator = new StaminaBadgeEvaluator();
-        badgesCount.add(evaluator.evaluate(badges, context.get()));
+        badgesCount.add(evaluator.evaluate(context.get()));
         evaluator = new CorrectnessBadgeEvaluator();
-        badgesCount.add(evaluator.evaluate(badges, context.get()));
+        badgesCount.add(evaluator.evaluate(context.get()));
 
         log.debug("doInBackground finished with {} points and {} / {} / {} badges", points, badgesCount.gold, badgesCount.silver, badgesCount.bronze);
         return new Holder(badgesCount, points);

@@ -65,6 +65,7 @@ public class LeliBaseFragment extends Fragment {
     /**
      * Get a connection source for this action.
      */
+    @SuppressWarnings("unused")
     public ConnectionSource getConnectionSource() {
         return getHelper().getConnectionSource();
     }

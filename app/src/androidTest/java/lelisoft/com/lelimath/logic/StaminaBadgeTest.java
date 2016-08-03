@@ -67,7 +67,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         record.setCorrect(false);
         recordDao.update(record);
 
-        AwardedBadgesCount result = evaluator.evaluate(badges, getContext());
+        AwardedBadgesCount result = evaluator.evaluate(getContext());
         assertEquals(0, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(0, result.gold);
@@ -75,7 +75,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         record.setCorrect(true);
         recordDao.update(record);
 
-        result = evaluator.evaluate(badges, getContext());
+        result = evaluator.evaluate(getContext());
         assertEquals(0, result.bronze);
         assertEquals(1, result.silver);
         assertEquals(0, result.gold);
@@ -116,7 +116,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
             calendar.add(Calendar.DAY_OF_MONTH, -1);
         }
 
-        AwardedBadgesCount result = evaluator.evaluate(badges, getContext());
+        AwardedBadgesCount result = evaluator.evaluate(getContext());
         assertEquals(0, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(1, result.gold);
@@ -147,7 +147,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
             recordDao.create(record);
         }
 
-        AwardedBadgesCount result = evaluator.evaluate(badges, getContext());
+        AwardedBadgesCount result = evaluator.evaluate(getContext());
         assertEquals(0, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(0, result.gold);
@@ -161,7 +161,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
             recordDao.create(record);
         }
 
-        result = evaluator.evaluate(badges, getContext());
+        result = evaluator.evaluate(getContext());
         assertEquals(0, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(0, result.gold);
@@ -175,7 +175,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
             recordDao.create(record);
         }
 
-        result = evaluator.evaluate(badges, getContext());
+        result = evaluator.evaluate(getContext());
         assertEquals(1, result.bronze);
         assertEquals(0, result.silver);
         assertEquals(0, result.gold);

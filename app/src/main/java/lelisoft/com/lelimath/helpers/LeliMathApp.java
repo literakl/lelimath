@@ -20,7 +20,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ch.qos.logback.classic.Logger;
@@ -32,9 +35,14 @@ import ch.qos.logback.core.FileAppender;
 import lelisoft.com.lelimath.BuildConfig;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
+import lelisoft.com.lelimath.data.Badge;
+import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.User;
+import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
 import lelisoft.com.lelimath.provider.PlayRecordProvider;
+
+import static lelisoft.com.lelimath.activities.GamePreferenceActivity.KEY_NEXT_BADGE;
 
 /**
  * Application handler
@@ -50,7 +58,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     private boolean soundEnabled;
     private float volume;
     private long lastFormulaDate;
-
+    Map<Badge, List<BadgeAward>> badges;
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
     public User currentUser;
 
@@ -74,7 +82,11 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         resources = getResources();
         performUpgrade();
         setDefaultPreferences();
+
+        // it may go to AsyncTask to save some 100 ms but there is potentional synchronization issue
         setLastFormulaDate();
+        BadgeAwardProvider provider = new BadgeAwardProvider(this);
+        badges = provider.getAll();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         soundEnabled = sharedPref.getBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, true);
@@ -104,19 +116,11 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
             log.info("Started version " + packageInfo.versionCode);
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = preferences.edit();
             int version = preferences.getInt(GamePreferenceActivity.KEY_CURRENT_VERSION, 0);
             if (version < packageInfo.versionCode) {
+                SharedPreferences.Editor editor = preferences.edit();
                 editor.putInt(GamePreferenceActivity.KEY_CURRENT_VERSION, packageInfo.versionCode);
                 editor.apply();
-            }
-            if (version == 0) {
-                return; // new installation
-            }
-
-            if (version == 180) {
-                boolean enabled = preferences.getBoolean("pref_sound", true);
-                editor.putBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, enabled);
             }
         } catch (PackageManager.NameNotFoundException e) {
             log.warn("Package search failed!", e);
@@ -251,5 +255,32 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         PlayRecordProvider provider = new PlayRecordProvider(this);
         this.lastFormulaDate = provider.getLastPlayRecordDate();
         log.debug("setLastFormulaDate() finished");
+    }
+
+    public Map<Badge, List<BadgeAward>> getBadges() {
+        return Collections.unmodifiableMap(badges);
+    }
+
+    public void addBadgeAward(BadgeAward badgeAward) {
+        List<BadgeAward> previous = badges.get(badgeAward.getBadge());
+        if (previous != null) {
+            List<BadgeAward> list = previous;
+            if (previous.size() == 1) {
+                list = new ArrayList<>(3);
+                list.add(previous.get(0));
+                badges.put(badgeAward.getBadge(), list);
+            }
+            list.add(badgeAward);
+        } else {
+            badges.put(badgeAward.getBadge(), Collections.singletonList(badgeAward));
+        }
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String sValues = sharedPref.getString(KEY_NEXT_BADGE, null);
+        if (badgeAward.getBadge().name().equals(sValues)) {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.remove(KEY_NEXT_BADGE);
+            editor.apply();
+        }
     }
 }

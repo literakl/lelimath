@@ -125,7 +125,7 @@ public class PlayRecordProvider {
     public long getLastPlayRecordDate() {
         try {
             QueryBuilder<PlayRecord, Integer> queryBuilder = dao.queryBuilder();
-            queryBuilder.orderByRaw("id DESC");
+            queryBuilder.orderBy("id", false);
             PreparedQuery<PlayRecord> query = queryBuilder.prepare();
             PlayRecord record = dao.queryForFirst(query);
             if (record == null) {

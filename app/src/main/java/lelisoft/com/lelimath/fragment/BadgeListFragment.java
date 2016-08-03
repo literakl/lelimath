@@ -20,6 +20,7 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.BadgeAdapter;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.view.BadgeView;
@@ -34,7 +35,6 @@ public class BadgeListFragment extends LeliBaseFragment {
     RecyclerView recyclerView;
     FragmentActivity activity;
     BadgeAdapter adapter;
-    Map<Badge, List<BadgeAward>> allAwardedBadges;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class BadgeListFragment extends LeliBaseFragment {
     private List<BadgeView> fetchBadgeViews() {
         List<Badge> badges = Arrays.asList(Badge.values());
         List<BadgeView> views = new ArrayList<>(badges.size());
+        Map<Badge, List<BadgeAward>> allAwardedBadges = LeliMathApp.getInstance().getBadges();
         for (Badge badge : badges) {
             BadgeView view = new BadgeView(badge);
             List<BadgeAward> awards = allAwardedBadges.get(badge);
@@ -74,10 +75,6 @@ public class BadgeListFragment extends LeliBaseFragment {
         log.debug("onActivityCreated()");
         super.onActivityCreated(state);
         Metrics.saveContentDisplayed("dashboard", "badges");
-    }
-
-    public void setAllAwardedBadges(Map<Badge, List<BadgeAward>> allAwardedBadges) {
-        this.allAwardedBadges = allAwardedBadges;
     }
 
     public static BadgeListFragment newInstance() {
