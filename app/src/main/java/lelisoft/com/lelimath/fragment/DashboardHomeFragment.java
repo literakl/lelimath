@@ -100,9 +100,14 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         button.setOnClickListener(this);
         button.setText(resources.getString(R.string.action_badges, badgesCount.gold, badgesCount.silver, badgesCount.bronze));
 
-        new RefreshNextBadgeTask(this).execute();
-
         Metrics.saveContentDisplayed("dashboard", "home");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        log.debug("onStart()");
+        new RefreshNextBadgeTask(this).execute();
     }
 
     @Override
@@ -197,6 +202,7 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
 
     @Override
     public void onAttach(Context context) {
+        log.debug("onAttach()");
         super.onAttach(context);
 
         // This makes sure that the container activity has implemented the callback interface

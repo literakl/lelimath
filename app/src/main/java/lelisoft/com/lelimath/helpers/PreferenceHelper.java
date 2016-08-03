@@ -74,9 +74,11 @@ public class PreferenceHelper {
 			}
         } else {
             if (KEY_NEXT_BADGE.equals(preference.getKey())) {
-                String value = sharedPreferences.getString("pref_next_badge", "");
-                Badge badge = Badge.valueOf(value);
-                preference.setSummary(badge.getTitle());
+                String value = sharedPreferences.getString("pref_next_badge", null);
+                if (value != null) {
+                    Badge badge = Badge.valueOf(value);
+                    preference.setSummary(badge.getTitle());
+                }
             } else {
                 updatePreferenceSummary(preference);
             }
