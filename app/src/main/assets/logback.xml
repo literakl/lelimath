@@ -1,0 +1,32 @@
+<configuration>
+    <!-- Create a file appender for a log in the application's data directory -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>/data/data/lelisoft.com.lelimath/files/log/lelimath.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOGCAT" class="ch.qos.logback.classic.android.LogcatAppender" >
+        <tagEncoder>
+            <pattern>%logger{15}</pattern>
+        </tagEncoder>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="lelisoft" level="INFO">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="lelisoft" level="DEBUG">
+        <appender-ref ref="LOGCAT" />
+    </logger>
+<!--
+
+    <root level="WARNING">
+        <appender-ref ref="LOGCAT" />
+    </root>
+-->
+</configuration>
