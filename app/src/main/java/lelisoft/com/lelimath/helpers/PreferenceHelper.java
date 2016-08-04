@@ -74,10 +74,12 @@ public class PreferenceHelper {
 			}
         } else {
             if (KEY_NEXT_BADGE.equals(preference.getKey())) {
-                String value = sharedPreferences.getString("pref_next_badge", null);
+                String value = sharedPreferences.getString(KEY_NEXT_BADGE, null);
                 if (value != null) {
                     Badge badge = Badge.valueOf(value);
                     preference.setSummary(badge.getTitle());
+                } else {
+                    preference.setSummary(null);
                 }
             } else {
                 updatePreferenceSummary(preference);
@@ -131,9 +133,13 @@ public class PreferenceHelper {
 	    addToDefaults(preference);
 
         if (KEY_NEXT_BADGE.equals(preference.getKey())) {
-            String value = preference.getSharedPreferences().getString("pref_next_badge", "");
-            Badge badge = Badge.valueOf(value);
-            preference.setSummary(badge.getTitle());
+            String value = preference.getSharedPreferences().getString(KEY_NEXT_BADGE, null);
+            if (value != null) {
+                Badge badge = Badge.valueOf(value);
+                preference.setSummary(badge.getTitle());
+            } else {
+                preference.setSummary(null);
+            }
             return;
         }
 
