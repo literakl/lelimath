@@ -231,9 +231,10 @@ public class PlayRecordProvider {
      */
     public int getPoints() {
         try {
-            String sql = "select sum(points) from play_record";
+            String sql = "select coalesce(max(id),0) from play_record";
             GenericRawResults<String[]> results = dao.queryRaw(sql);
-            return Integer.parseInt(results.getFirstResult()[0]);
+            String[] result = results.getFirstResult();
+            return Integer.parseInt(result[0]);
         } catch (SQLException e) {
             Crashlytics.logException(e);
             log.error("Cannot get points.", e);
