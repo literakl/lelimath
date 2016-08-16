@@ -8,7 +8,7 @@
     <string name="action_points">Bodů: <xliff:g id="points" example="10" >%s</xliff:g></string>
     <string name="action_next_badge">Další:
         <xliff:g id="badge" example="Page" >%s</xliff:g>
-        (<xliff:g id="progress" example="1" >%s</xliff:g> / <xliff:g id="max" example="10" >%s</xliff:g>)
+        <xliff:g id="progress" example="1" >%s</xliff:g>/<xliff:g id="max" example="10" >%s</xliff:g>
     </string>
     <string name="action_badges">Odznáčků:
         <xliff:g id="gold" example="0" >%s</xliff:g> -
@@ -42,7 +42,7 @@
     <string name="tab_log">Záznam</string>
     <string name="title_score_graph">Graf skóre</string>
     <string name="title_score">Skóre</string>
-    <string name="title_games">Hry</string>
+    <string name="title_practice">Procvičování</string>
     <string name="title_other">Ostatní</string>
     <string name="title_badge">Odznáček</string>
     <string name="title_chart_points">Získané body</string>
