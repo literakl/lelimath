@@ -34,14 +34,14 @@ public class FormulaGenerator {
                 FormulaPart partA = parts.get(j);
                 FormulaPart partB = parts.get((j < 2) ? j + 1 : 0);
                 Values valuesA = getValues(operatorDefinition, partA);
-                int valueA = getValue(valuesA);
+                int valueA = valuesA.getRandomValue(random);
                 if (valuesA == Values.UNDEFINED) {
                     log.warn(parts.toString() + "\ni = " + i + ", j = " + j);
                 }
 
                 for (int k = 0; k < 10; k++) {
                     Values valuesB = getValues(operatorDefinition, partB);
-                    int valueB = getValue(valuesB);
+                    int valueB = valuesB.getRandomValue(random);
                     if (valuesB == Values.UNDEFINED) {
                         log.warn(parts.toString() + "\ni = " + i + ", j = " + j + ", k = " + k);
                     }
@@ -169,28 +169,10 @@ public class FormulaGenerator {
     }
 
     /**
-     * Randomly selects a number from given Values. It returns 1 for Undefined Values.
-     * @return select random value from Values
-     */
-    static int getValue(Values values) {
-        if (values.equals(Values.UNDEFINED)) {
-            log.warn("Generating value from Values.Undefined!", new Exception("Stacktrace"));
-            return 1;
-        }
-
-        List<Integer> listing = values.getListing();
-        if (listing != null) {
-            return listing.get(random.nextInt(listing.size()));
-        }
-
-        int diff = values.getMaxValue() - values.getMinValue() + 1;
-        return random.nextInt(diff) + values.getMinValue();
-    }
-
-    /**
      * Reserved for tests where values shall not be so random
      * @param random random value
      */
+    @SuppressWarnings("unused")
     public static void setRandom(Random random) {
         FormulaGenerator.random = random;
     }

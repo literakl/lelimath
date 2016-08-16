@@ -2,32 +2,77 @@ package lelisoft.com.lelimath.data;
 
 import junit.framework.TestCase;
 
-import java.util.Collections;
+import lelisoft.com.lelimath.NotSoRandom;
 
 /**
+ * Tests
  * Created by Leoš on 06.12.2015.
  */
 public class FormulaDefinitionTest extends TestCase {
 
-    public void testFormulaLengthMinMax() {
-        FormulaDefinition fd = new FormulaDefinition();
-        OperatorDefinition od = new OperatorDefinition();
-        od.setFirstOperand(new Values(0, 99));
-        od.setSecondOperand(new Values(-10, -50));
-        od.setResult(new Values(0, 200));
-        fd.setOperatorDefinitions(Collections.singletonList(od));
-        int length = fd.getFormulaMaximumLength();
-        assertEquals("99 + -10 = 200".length(), length);
-    }
+    public void testValues() {
+        Values values;
+        try {
+            values = Values.parse("");
+            fail("Empty is forbidden");
+        } catch (IllegalArgumentException e) { /* ok */ }
 
-    public void testFormulaLengthValues() {
-        FormulaDefinition fd = new FormulaDefinition();
-        OperatorDefinition od = new OperatorDefinition();
-        od.setFirstOperand(new Values(new Integer[] {-100, 0, 1, 10, 101}));
-        od.setSecondOperand(new Values(new Integer[] {10}));
-        od.setResult(new Values(new Integer[] {99999}));
-        fd.setOperatorDefinitions(Collections.singletonList(od));
-        int length = fd.getFormulaMaximumLength();
-        assertEquals("-100 + 10 = 99999".length(), length);
+        try {
+            values = Values.parse("-");
+            fail("Incomplete range is forbidden");
+        } catch (IllegalArgumentException e) { /* ok */ }
+
+        try {
+            values = Values.parse("-3");
+            fail("Incomplete range is forbidden");
+        } catch (IllegalArgumentException e) { /* ok */ }
+
+        try {
+            values = Values.parse("3-");
+            fail("Incomplete range is forbidden");
+        } catch (IllegalArgumentException e) { /* ok */ }
+
+        try {
+            values = Values.parse("3-1");
+            fail("Decreasing is forbidden");
+        } catch (IllegalArgumentException e) { /* ok */ }
+
+        try {
+            values = Values.parse("2,1-3");
+            fail("Decreasing is forbidden");
+        } catch (IllegalArgumentException e) { /* ok */ }
+
+        try {
+            values = Values.parse("1-3,2");
+            fail("Decreasing is forbidden");
+        } catch (IllegalArgumentException e) { /* ok */ }
+
+        try {
+            values = Values.parse("x");
+            fail("Must be numbers");
+        } catch (IllegalArgumentException e) { /* ok */ }
+
+        values = Values.parse("1,2,4-5,7,8-10");
+        assertEquals("size", 8, values.getRange());
+        assertTrue(values.belongs(1));
+        assertTrue(values.belongs(2));
+        assertFalse(values.belongs(3));
+        assertTrue(values.belongs(4));
+        assertTrue(values.belongs(5));
+        assertFalse(values.belongs(6));
+        assertTrue(values.belongs(7));
+        assertTrue(values.belongs(8));
+        assertTrue(values.belongs(9));
+        assertTrue(values.belongs(10));
+
+        NotSoRandom random = new NotSoRandom(0,1,2,3,4,5,6,7);
+        assertEquals(1, values.getRandomValue(random).intValue());
+        assertEquals(2, values.getRandomValue(random).intValue());
+        assertEquals(4, values.getRandomValue(random).intValue());
+        assertEquals(5, values.getRandomValue(random).intValue());
+        assertEquals(7, values.getRandomValue(random).intValue());
+        assertEquals(8, values.getRandomValue(random).intValue());
+        assertEquals(9, values.getRandomValue(random).intValue());
+        assertEquals(10, values.getRandomValue(random).intValue());
     }
 }

@@ -1,13 +1,20 @@
 package lelisoft.com.lelimath.data;
 
+import android.support.annotation.NonNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.helpers.LeliMathApp;
+
+import static lelisoft.com.lelimath.helpers.LeliMathApp.resources;
 
 /**
  * Holder for allowed values. You can either define both minimum and maximum, or set of values.
@@ -15,35 +22,23 @@ import lelisoft.com.lelimath.helpers.LeliMathApp;
  * Created by leos.literak on 26.2.2015.
  */
 public class Values implements Serializable {
-    public static final Values DEMO = new Values(0, 10);
+    private static final Logger log = LoggerFactory.getLogger(Values.class);
+
+    public static final Values DEMO = Values.fromRange(0, 10);
     public static final Values UNDEFINED = new UndefinedValues();
 
-    /** Smallest value */
-    Integer minValue;
-    /** Largest value */
-    Integer maxValue;
-    /** List of values */
-    List<Integer> listing;
+    List<NumbersHolder> values = new ArrayList<>(5);
 
-    public Values(Integer minValue, Integer maxValue) {
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+    public static Values fromRange(Integer minValue, Integer maxValue) {
+        Values result = new Values();
+        result.values.add(new RangeValues(minValue, maxValue));
+        return result;
     }
 
-    public Values(List<Integer> listing) {
-        this.listing = listing;
-    }
-
-    public Values(Integer[] listing) {
-        this.listing = Arrays.asList(listing);
-    }
-
-    public Values(int value) {
-        minValue = value;
-        maxValue = value;
-    }
-
-    public Values() {
+    public static Values fromList(Integer... args) {
+        Values result = new Values();
+        result.values.add(new ListValues(args));
+        return result;
     }
 
     /**
@@ -54,61 +49,100 @@ public class Values implements Serializable {
      */
     public static Values parse(CharSequence sequence) throws IllegalArgumentException {
         if (sequence == null) {
-            throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_empty_argument));
-        }
-        String data = sequence.toString().trim();
-        if (data.length() == 0) {
-            throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_empty_argument));
+            throw new IllegalArgumentException(resources.getString(R.string.error_empty_argument));
         }
 
-        Values values = new Values();
-        int position = data.indexOf('-');
-        if (position != -1) {
-            String sFirst = data.substring(0, position);
-            String sSecond = data.substring(position + 1);
-            values.minValue = parseNumber(sFirst.trim());
-            String secondNumber = sSecond.trim();
-            if (secondNumber.length() > 0) {
-                values.maxValue = parseNumber(secondNumber);
-            } else {
-                throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_values_undefined_second));
-            }
-            if (values.minValue > values.maxValue) {
-                throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_values_swapped));
-            }
-        } else {
-            StringTokenizer stk = new StringTokenizer(data, ",");
-            while(stk.hasMoreElements()) {
-                String s = stk.nextToken().trim();
-                if (s.length() > 0) {
-                    values.add(parseNumber(s));
+        String data = sequence.toString().trim();
+        if (data.length() == 0) {
+            throw new IllegalArgumentException(resources.getString(R.string.error_empty_argument));
+        }
+
+        Values result = new Values();
+        StringTokenizer stk = new StringTokenizer(data, ",-", true);
+        boolean rangeStarted = false;
+        Integer unassignedNumber = null, previousNumber = null;
+        ListValues currentListValues = new ListValues();
+
+        while (stk.hasMoreTokens()) {
+            String part = stk.nextToken();
+            if ("-".equals(part)) {
+                if (rangeStarted) {
+                    throw new IllegalArgumentException(resources.getString(R.string.error_values_undefined_second));
+                } else if (unassignedNumber == null) {
+                    throw new IllegalArgumentException(resources.getString(R.string.error_values_undefined_first));
+                } else {
+                    if (currentListValues.size() > 0) {
+                        result.values.add(currentListValues);
+                        currentListValues = new ListValues();
+                    }
+
+                    rangeStarted = true;
+                    continue;
                 }
             }
+
+            if (",".equals(part)) {
+                if (rangeStarted) {
+                    throw new IllegalArgumentException(resources.getString(R.string.error_values_undefined_second));
+                }
+                if (unassignedNumber != null) {
+                    currentListValues.add(unassignedNumber);
+                    unassignedNumber = null;
+                }
+                continue;
+            }
+
+            int value = parseNumber(part);
+            if (previousNumber != null && previousNumber >= value) {
+                throw new IllegalArgumentException(resources.getString(R.string.error_values_must_be_bigger));
+            }
+            previousNumber = value;
+
+            if (rangeStarted) {
+                result.values.add(new RangeValues(unassignedNumber, value));
+                unassignedNumber = null;
+                rangeStarted = false;
+            } else {
+                if (unassignedNumber != null) {
+                    currentListValues.add(unassignedNumber);
+                }
+                unassignedNumber = value;
+            }
         }
-        return values;
+
+        if (rangeStarted) {
+            throw new IllegalArgumentException(resources.getString(R.string.error_values_undefined_second));
+        }
+
+        if (unassignedNumber != null) {
+            currentListValues.add(unassignedNumber);
+        }
+
+        if (currentListValues.size() > 0) {
+            result.values.add(currentListValues);
+        }
+
+        return result;
     }
 
     private static int parseNumber(String s) {
         try {
             return Integer.parseInt(s);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(LeliMathApp.resources.getString(R.string.error_values_not_number, s));
+            throw new IllegalArgumentException(resources.getString(R.string.error_values_not_number, s));
         }
     }
 
     /**
-     * Compares argument with this Values set.
      * @param value argument
-     * @return true if value is listed or between minimum and maximum.
+     * @return finds if the value is within a definition
      */
     public boolean belongs(Integer value) {
-        if (listing != null && ! listing.isEmpty()) {
-            return listing.contains(value);
+        for (NumbersHolder holder : values) {
+            if (holder.contains(value))
+                return true;
         }
-        if (minValue == null || maxValue == null) {
-            return false;
-        }
-        return value.compareTo(minValue) >= 0 && value.compareTo(maxValue) <= 0;
+        return false;
     }
 
     /**
@@ -116,78 +150,42 @@ public class Values implements Serializable {
      * @return number of values belonging to this Values
      */
     public int getRange() {
-        if (listing != null) {
-            return listing.size();
+        int size = 0;
+        for (NumbersHolder holder : values) {
+            size += holder.size();
         }
-        return maxValue - minValue + 1;
+        return size;
     }
 
-    public Integer getMinValue() {
-        return minValue;
+    public int getMaximumValue() {
+        NumbersHolder holder = values.get(values.size() - 1);
+        return holder.getMaximumValue();
     }
 
-    public void setMinValue(Integer minValue) {
-        assert listing == null;
-        this.minValue = minValue;
-    }
-
-    public Integer getMaxValue() {
-        return maxValue;
-    }
-
-    public void setMaxValue(Integer maxValue) {
-        assert listing == null;
-        this.maxValue = maxValue;
-    }
-
-    public List<Integer> getListing() {
-        return listing;
-    }
-
-    public Values add(Integer value) {
-        assert minValue == null;
-        assert maxValue == null;
-        if (listing == null) {
-            listing = new ArrayList<>(5);
-        }
-        listing.add(value);
-        return this;
-    }
-
-    public void setListing(List<Integer> listing) {
-        assert minValue == null;
-        assert maxValue == null;
-        this.listing = listing;
-    }
-
-    public int getMaximumLength() {
-        if (listing != null && listing.size() > 0) {
-            int max = 0, size;
-            for (Integer number : listing) {
-                size = getNumberLength(number);
-                if (size > max) {
-                    max = size;
-                }
-            }
-            return max;
-        } else {
-            int a = getNumberLength(minValue);
-            int b = getNumberLength(maxValue);
-            return Math.max(a, b);
-        }
-    }
-
-    private int getNumberLength(int number) {
-        if (number == 0) {
+    /**
+     * Randomly selects a number from given Values. It returns 1 for Undefined Values.
+     * @return select random value from Values
+     */
+    public Integer getRandomValue(Random random) {
+        if (this.equals(Values.UNDEFINED)) {
+            log.warn("Generating value from Values.Undefined!", new Exception("Stacktrace"));
             return 1;
         }
-        int size = 0;
-        if (number < 0) {
-            size += 1;
-            number *= -1;
+
+        int size = getRange();
+        int position = random.nextInt(size);
+        int i = 0;
+        for (NumbersHolder holder : values) {
+            int j = holder.size();
+            if (i + j <= position) {
+                i += j;
+                continue;
+            }
+
+            return holder.getValueAtPosition(position - i);
         }
-        size += (int)(Math.log10(number) + 1);
-        return size;
+
+        throw new RuntimeException("Failed to generate random value, position=" + position + " i = " + i + ", values=" + values);
     }
 
     static class UndefinedValues extends Values {
@@ -202,17 +200,7 @@ public class Values implements Serializable {
         }
 
         @Override
-        public Integer getMinValue() {
-            return 0;
-        }
-
-        @Override
-        public Integer getMaxValue() {
-            return Integer.MAX_VALUE;
-        }
-
-        @Override
-        public int getMaximumLength() {
+        public int getMaximumValue() {
             return 0;
         }
 
@@ -227,13 +215,152 @@ public class Values implements Serializable {
         }
     }
 
-    public String toString() {
-        if (listing != null) {
-            return "Values{" +
-                    "listing=" + listing +
-                    '}';
-        } else {
-            return "Values{" + minValue + " - " + maxValue + '}';
+    /**
+     * Defines a set of numbers
+     */
+    public static class ListValues implements NumbersHolder, Serializable {
+        /** List of values */
+        List<Integer> list;
+
+        public ListValues() {
+            this.list = new ArrayList<>();
         }
+
+        @SuppressWarnings("unused")
+        public ListValues(List<Integer> listing) {
+            this.list = new ArrayList<>(listing);
+        }
+
+        public ListValues(Integer[] listing) {
+            this.list = new ArrayList<>(listing.length);
+            Collections.addAll(this.list, listing);
+        }
+
+        public void add(Integer value) {
+            list.add(value);
+        }
+
+        @Override
+        public int size() {
+            return list.size();
+        }
+
+        @Override
+        public boolean contains(Integer value) {
+            return list.contains(value);
+        }
+
+        @Override
+        public Integer getMinimumValue() {
+            return list.get(0);
+        }
+
+        @Override
+        public Integer getMaximumValue() {
+            return list.get(list.size() - 1);
+        }
+
+        @Override
+        public Integer getValueAtPosition(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public String toString() {
+            return "ListValues{" +
+                    "list=" + list +
+                    '}';
+        }
+    }
+
+    /**
+     * Defines a range value (min - max inclusive)
+     */
+    public static class RangeValues implements NumbersHolder, Serializable {
+        /** Smallest value */
+        Integer minValue;
+        /** Largest value */
+        Integer maxValue;
+
+        @SuppressWarnings("unused")
+        public RangeValues() {
+        }
+
+        public RangeValues(Integer minValue, Integer maxValue) {
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+        }
+
+        @Override
+        public int size() {
+            return maxValue - minValue + 1;
+        }
+
+        @Override
+        public boolean contains(@NonNull Integer value) {
+            return value >= minValue && value <= maxValue;
+        }
+
+        @Override
+        public Integer getMinimumValue() {
+            return minValue;
+        }
+
+        @Override
+        public Integer getMaximumValue() {
+            return maxValue;
+        }
+
+        @Override
+        public Integer getValueAtPosition(int position) {
+            return minValue + position;
+        }
+
+        @Override
+        public String toString() {
+            return "RangeValues{" +
+                    "min=" + minValue +
+                    ", max=" + maxValue +
+                    '}';
+        }
+    }
+
+    /**
+     * Interface for different number holders
+     */
+    public interface NumbersHolder {
+        /**
+         * @return number of numbers
+         */
+        int size();
+
+        /**
+         * @param value searched number
+         * @return true if value is part of this value holder
+         */
+        boolean contains(Integer value);
+
+        /**
+         * @return the smallest value
+         */
+        @SuppressWarnings("unused")
+        Integer getMinimumValue();
+
+        /**
+         * @return the biggest value
+         */
+        Integer getMaximumValue();
+
+        /**
+         * @return value at specified position
+         */
+        Integer getValueAtPosition(int position);
+    }
+
+    @Override
+    public String toString() {
+        return "Values{" +
+                "values=" + values +
+                '}';
     }
 }

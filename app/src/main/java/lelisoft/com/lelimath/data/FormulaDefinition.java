@@ -133,47 +133,6 @@ public class FormulaDefinition implements Serializable {
         this.unknowns = unknowns;
     }
 
-    /**
-     * Calculates number of characters neccessary for most long equation.
-     * @return maximum length
-     */
-    @SuppressWarnings("ConstantConditions")
-    public int getFormulaMaximumLength() {
-        int length = 6, i, j, k;
-        int maxFirst = 2, maxSecond = 2, maxResult = 2;
-        for (OperatorDefinition definition : operatorDefinitions) {
-            i = definition.firstOperand.getMaximumLength();
-            j = definition.secondOperand.getMaximumLength();
-            k = definition.result.getMaximumLength();
-
-            if (i == 0) {
-                i = Math.max(j, k);
-            }
-            if (j == 0) {
-                j = Math.max(i, k);
-            }
-            if (k == 0) {
-                switch (definition.getOperator()) {
-                    case MULTIPLY: k = i + j; break;
-                    case PLUS: k = Math.max(i, j) + 1; break;
-                    default: k = Math.max(i, j);
-                }
-            }
-
-            if (i > maxFirst) {
-                maxFirst = i;
-            }
-            if (j > maxSecond) {
-                maxSecond = j;
-            }
-            if (k > maxResult) {
-                maxResult = k;
-            }
-        }
-        length += maxFirst + maxSecond + maxResult;
-        return length;
-    }
-
     public String toString() {
         return "FormulaDefinition{" +
                 "unknowns=" + unknowns +

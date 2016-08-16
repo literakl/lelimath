@@ -54,7 +54,7 @@
     <string name="pref_game">Hra</string>
     <string name="pref_game_complexity">Složitost</string>
     <string name="pref_build_number_title">Datum sestavení</string>
-    <string name="pref_enter_values">Zadejte rozsah oddělený pomlčkou nebo výčet hodnot oddělených čárkou</string>
+    <string name="pref_enter_values">Zadejte povolené hodnoty. Čísla oddělujte čárkou, rozsah definujte pomlčkou.</string>
     <string name="pref_title_operation_plus">Povolit sčítání</string>
     <string name="pref_title_plus_first_arg">První sčítanec</string>
     <string name="pref_title_plus_second_arg">Druhý sčítanec</string>
@@ -91,11 +91,12 @@
         <xliff:g id="badge" example="Page" >%s</xliff:g>
         (<xliff:g id="progress" example="1" >%s</xliff:g> / <xliff:g id="max" example="10" >%s</xliff:g>)
     </string>
-    <string name="error_empty_argument">Prázdný argument není povolen!</string>
-    <string name="error_values_swapped">První číslo nesmí být větší než druhé!</string>
+    <string name="error_empty_argument">Prázdný argument není povolen</string>
+    <string name="error_values_must_be_bigger">Každé číslo musí být větší než předešlé</string>
     <string name="value_allowed_digits">0123456789-,</string>
-    <string name="error_values_not_number">Chybné číslo: \'%s\'!</string>
-    <string name="error_values_undefined_second">Zadejte druhé číslo</string>
+    <string name="error_values_not_number">Chybné číslo: \'%s\'</string>
+    <string name="error_values_undefined_first">Chybí první číslo rozsahu</string>
+    <string name="error_values_undefined_second">Chybí druhé číslo rozsahu</string>
     <string name="error_no_formula_generated">Nebyla vygenerována žádná rovnice. Ověřte nastavení.</string>
     <string name="meesage_chart_no_data">Nejsou žádná data k zobrazení.</string>
     <string name="permission_fs_rationale">Aplikace vyžaduje přístup k disku</string>

@@ -18,9 +18,9 @@ import lelisoft.com.lelimath.data.Values;
 public class FormulaGeneratorTest extends TestCase {
 
     public void testRandomGenerator() {
-        Values left = new Values(0, 90);
-        Values right = new Values(3, 60);
-        Values result = new Values().add(10).add(11).add(12);
+        Values left = Values.fromRange(0, 90);
+        Values right = Values.fromRange(3, 60);
+        Values result = Values.fromList(10, 11, 12);
 
         FormulaDefinition definition = new FormulaDefinition();
         OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
@@ -42,10 +42,9 @@ public class FormulaGeneratorTest extends TestCase {
     }
 
     public void testOrderingFormulaParts() {
-        Values left = new Values(0, 9);
-        Values right = new Values(3, 6);
-        Values result = new Values();
-        result.add(10).add(11).add(12);
+        Values left = Values.fromRange(0, 9);
+        Values right = Values.fromRange(3, 6);
+        Values result = Values.fromList(10, 11, 12);
         assertEquals(10, left.getRange());
         assertEquals(4, right.getRange());
         assertEquals(3, result.getRange());
@@ -57,7 +56,6 @@ public class FormulaGeneratorTest extends TestCase {
         List<FormulaPart> parts = FormulaGenerator.sortFormulaParts(definition);
         assertEquals(FormulaPart.RESULT, parts.get(0));
         assertEquals(FormulaPart.SECOND_OPERAND, parts.get(1));
-        assertEquals(FormulaPart.FIRST_OPERAND, parts.get(1));
-        assertEquals(FormulaPart.RESULT, parts.get(2));
+        assertEquals(FormulaPart.FIRST_OPERAND, parts.get(2));
     }
 }

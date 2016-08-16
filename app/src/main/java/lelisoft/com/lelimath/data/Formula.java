@@ -148,11 +148,16 @@ public class Formula implements Parcelable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append((unknown == FormulaPart.FIRST_OPERAND) ? "?": firstOperand);
-        sb.append(" ").append((unknown == FormulaPart.OPERATOR) ? "?" : operator).append(" ");
-        sb.append((unknown == FormulaPart.SECOND_OPERAND) ? "?": secondOperand);
+        sb.append(firstOperand);
+        if (unknown == FormulaPart.FIRST_OPERAND) sb.append("(?)");
+        sb.append(" ").append(operator);
+        if (unknown == FormulaPart.OPERATOR) sb.append("(?)");
+        sb.append(" ");
+        sb.append(secondOperand);
+        if (unknown == FormulaPart.SECOND_OPERAND) sb.append("(?)");
         sb.append(" = ");
-        sb.append((unknown == FormulaPart.RESULT) ? "?": result);
+        sb.append(result);
+        if (unknown == FormulaPart.RESULT) sb.append("(?)");
         return sb.toString();
     }
 
@@ -160,6 +165,7 @@ public class Formula implements Parcelable {
         return firstOperand;
     }
 
+    @SuppressWarnings("unused")
     public void setFirstOperand(Integer firstOperand) {
         this.firstOperand = firstOperand;
     }
@@ -168,6 +174,7 @@ public class Formula implements Parcelable {
         return secondOperand;
     }
 
+    @SuppressWarnings("unused")
     public void setSecondOperand(Integer secondOperand) {
         this.secondOperand = secondOperand;
     }
