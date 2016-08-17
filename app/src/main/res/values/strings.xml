@@ -51,7 +51,6 @@
     <string name="caption_new">Nový</string>
     <string name="message_badge_progress"><xliff:g id="current" example="1" >%s</xliff:g> ze <xliff:g id="total" example="5" >%s</xliff:g></string>
     <string name="message_badge_not_awarded">Zatím ne</string>
-    <string name="pref_game">Hra</string>
     <string name="pref_game_complexity">Složitost</string>
     <string name="pref_build_number_title">Datum sestavení</string>
     <string name="pref_enter_values">Zadejte povolené hodnoty. Čísla oddělujte čárkou, rozsah definujte pomlčkou.</string>
@@ -76,7 +75,7 @@
     <string name="pref_operation_dependencies">Operaci <xliff:g id="operation" example="Sčítání" >%s</xliff:g> používá: </string>
     <string name="pref_operation_enabled">Povoleno</string>
     <string name="pref_operation_disabled">Nepovoleno</string>
-    <string name="pref_category_game_fast_calc">Rychlé počty</string>
+    <string name="pref_title_fast_calc_unknown">Neznámá v Rychlých počtech</string>
     <string name="pref_category_misc">Různé</string>
     <string name="pref_next_badge">Další odznáček</string>
     <string name="pref_sound_state">Zvuk</string>

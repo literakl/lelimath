@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/pref_game">
+    <PreferenceCategory android:title="@string/title_practice">
         <ListPreference
             android:key="pref_game_complexity"
             android:title="@string/pref_game_complexity"
@@ -218,22 +218,9 @@
                 />
         </PreferenceScreen>
 
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/pref_category_game_fast_calc">
-<!--
-        <ListPreference
-            android:key="pref_game_calc_mode"
-            android:title=""
-            android:entries="@array/pref_calc_entries"
-            android:entryValues="@array/pref_calc_entries"
-            android:defaultValue="STOPWATCH"
-            />
--->
-
         <MultiSelectListPreference
             android:key="pref_game_calc_unknown"
-            android:title="Neznámá část"
+            android:title="@string/pref_title_fast_calc_unknown"
             android:entries="@array/pref_calc_unknown_entries"
             android:entryValues="@array/pref_calc_unknown_entries_values"
             />
