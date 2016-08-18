@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="pref_game_complexity"
+        android:title="@string/pref_game_complexity"
+        android:summary="%s"
+        android:entries="@array/pref_complexity_entries"
+        android:entryValues="@array/pref_complexity_entries_values"
+        android:defaultValue="EASY"
+        />
+
+    <MultiSelectListPreference
+        android:key="pref_game_calc_unknown"
+        android:title="@string/pref_title_fast_calc_unknown"
+        android:entries="@array/pref_calc_unknown_entries"
+        android:entryValues="@array/pref_calc_unknown_entries_values"
+        />
+
+    <PreferenceScreen
+        android:key="pref_game_plus_category"
+        android:title="@string/operation_plus"
+        android:persistent="false">
+
+        <CheckBoxPreference
+            android:key="pref_game_operation_plus"
+            android:title="@string/pref_title_operation_plus"
+            android:defaultValue="true"
+            />
+
+        <ListPreference
+            android:key="pref_game_plus_depends"
+            android:dependency="pref_game_operation_plus"
+            android:title="@string/pref_title_operation_depend_on"
+            android:summary="%s"
+            android:entries="@array/pref_dependency_entries"
+            android:entryValues="@array/pref_dependency_values"
+            android:defaultValue="NONE"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_plus_first_arg"
+            android:dependency="pref_game_operation_plus"
+            android:title="@string/pref_title_plus_first_arg"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-10"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_plus_second_arg"
+            android:dependency="pref_game_operation_plus"
+            android:title="@string/pref_title_plus_second_arg"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-10"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_plus_result"
+            android:dependency="pref_game_operation_plus"
+            android:title="@string/pref_title_plus_result"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-20"
+            />
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:key="pref_game_minus_category"
+        android:title="@string/operation_minus"
+        android:persistent="false">
+
+        <CheckBoxPreference
+            android:key="pref_game_operation_minus"
+            android:title="@string/pref_title_operation_minus"
+            android:defaultValue="true"
+            />
+
+        <ListPreference
+            android:key="pref_game_minus_depends"
+            android:dependency="pref_game_operation_minus"
+            android:title="@string/pref_title_operation_depend_on"
+            android:summary="%s"
+            android:entries="@array/pref_dependency_entries"
+            android:entryValues="@array/pref_dependency_values"
+            android:defaultValue="PLUS"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_minus_first_arg"
+            android:dependency="pref_game_operation_minus"
+            android:title="@string/pref_title_minus_first_arg"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-20"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_minus_second_arg"
+            android:dependency="pref_game_operation_minus"
+            android:title="@string/pref_title_minus_second_arg"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-10"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_minus_result"
+            android:dependency="pref_game_operation_minus"
+            android:title="@string/pref_title_minus_result"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-10"
+            />
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:key="pref_game_multiply_category"
+        android:title="@string/operation_multiply"
+        android:persistent="false">
+
+        <CheckBoxPreference
+            android:key="pref_game_operation_multiply"
+            android:title="@string/pref_title_operation_multiply"
+            android:defaultValue="true"
+            />
+
+        <ListPreference
+            android:key="pref_game_multiply_depends"
+            android:dependency="pref_game_operation_multiply"
+            android:title="@string/pref_title_operation_depend_on"
+            android:summary="%s"
+            android:entries="@array/pref_dependency_entries"
+            android:entryValues="@array/pref_dependency_values"
+            android:defaultValue="DIVIDE"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_multiply_first_arg"
+            android:dependency="pref_game_operation_multiply"
+            android:title="@string/pref_title_multiply_first_arg"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-10"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_multiply_second_arg"
+            android:dependency="pref_game_operation_multiply"
+            android:title="@string/pref_title_multiply_second_arg"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-10"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_multiply_result"
+            android:dependency="pref_game_operation_multiply"
+            android:title="@string/pref_title_multiply_result"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-100"
+            />
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:key="pref_game_divide_category"
+        android:title="@string/operation_divide"
+        android:persistent="false">
+
+        <CheckBoxPreference
+            android:key="pref_game_operation_divide"
+            android:title="@string/pref_title_operation_divide"
+            android:defaultValue="true"
+            />
+
+        <ListPreference
+            android:key="pref_game_divide_depends"
+            android:dependency="pref_game_operation_divide"
+            android:title="@string/pref_title_operation_depend_on"
+            android:summary="%s"
+            android:entries="@array/pref_dependency_entries"
+            android:entryValues="@array/pref_dependency_values"
+            android:defaultValue="NONE"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_divide_first_arg"
+            android:dependency="pref_game_operation_divide"
+            android:title="@string/pref_title_divide_first_arg"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="0-100"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_divide_second_arg"
+            android:dependency="pref_game_operation_divide"
+            android:title="@string/pref_title_divide_second_arg"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="1-10"
+            />
+
+        <EditTextPreference
+            android:key="pref_game_divide_result"
+            android:dependency="pref_game_operation_divide"
+            android:title="@string/pref_title_divide_result"
+            android:dialogMessage="@string/pref_enter_values"
+            android:summary="%s"
+            android:digits="@string/value_allowed_digits"
+            android:defaultValue="1-10"
+            />
+    </PreferenceScreen>
+</PreferenceScreen>

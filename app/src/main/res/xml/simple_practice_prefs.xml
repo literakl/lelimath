@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="pref_game_complexity"
+        android:title="@string/pref_game_complexity"
+        android:summary="%s"
+        android:entries="@array/pref_complexity_entries"
+        android:entryValues="@array/pref_complexity_entries_values"
+        android:defaultValue="EASY"
+        />
+<!--
+
+    <lelisoft.com.lelimath.helpers.SeekBarPreference
+        android:key="pref_practice_simple_first_arg"
+        android:title="@string/pref_title_first_arg"
+        android:defaultValue="100"
+        android:max="100"
+        android:text="%"
+        />
+
+    <lelisoft.com.lelimath.helpers.SeekBarPreference
+        android:key="pref_practice_simple_second_arg"
+        android:title="@string/pref_title_first_arg"
+        android:defaultValue="100"
+        android:max="100"
+        android:text="%"
+        />
+
+    <lelisoft.com.lelimath.helpers.SeekBarPreference
+        android:key="pref_practice_simple_result"
+        android:title="@string/pref_title_result"
+        android:defaultValue="100"
+        android:max="100"
+        android:text="%"
+        />
+-->
+
+</PreferenceScreen>

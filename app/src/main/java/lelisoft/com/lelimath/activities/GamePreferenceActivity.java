@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
@@ -46,21 +45,16 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeProgress;
-import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.helpers.BadgeProgressComparator;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
-import lelisoft.com.lelimath.helpers.PreferenceInputValidator;
 import lelisoft.com.lelimath.provider.BadgeProgressProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
 import permissions.dispatcher.NeedsPermission;
@@ -89,7 +83,6 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     public static final String KEY_NEXT_BADGE = "pref_next_badge";
 
     private PreferenceHelper preferenceScreenHelper;
-    private DependencyMap dependencyMap;
     private long copyDBLastClick = 0;
 
     @Override
@@ -109,28 +102,11 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         });
 
         //noinspection deprecation
-        addPreferencesFromResource(R.xml.game_prefs);
+        addPreferencesFromResource(R.xml.app_prefs);
         //noinspection deprecation
         PreferenceScreen preferenceScreen = getPreferenceScreen();
         preferenceScreenHelper = new PreferenceHelper(preferenceScreen);
-        dependencyMap = new DependencyMap(preferenceScreen.getSharedPreferences());
-        dependencyMap.updateDependencies(preferenceScreen);
         setNextBadgePreference(preferenceScreen);
-
-        changeDefinitionsState("plus", preferenceScreen);
-        changeDefinitionsState("minus", preferenceScreen);
-        changeDefinitionsState("multiply", preferenceScreen);
-        changeDefinitionsState("divide", preferenceScreen);
-
-        String[] operations = new String[]{"plus", "minus", "multiply", "divide"};
-        for (String operation : operations) {
-            EditTextPreference preference = ((EditTextPreference) preferenceScreen.findPreference("pref_game_" + operation + "_first_arg"));
-            new ValuesPreferenceValidator(preference);
-            preference = ((EditTextPreference) preferenceScreen.findPreference("pref_game_" + operation + "_second_arg"));
-            new ValuesPreferenceValidator(preference);
-            preference = ((EditTextPreference) preferenceScreen.findPreference("pref_game_" + operation + "_result"));
-            new ValuesPreferenceValidator(preference);
-        }
     }
 
     private void setNextBadgePreference(PreferenceScreen preferenceScreen) {
@@ -195,47 +171,6 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         return false;
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    public void copyDatabase() {
-        new CopyDatabaseTask().execute();
-    }
-
-    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showRationaleForStorage(final PermissionRequest permissionRequest) {
-        new AlertDialog.Builder(this)
-                .setMessage(R.string.permission_fs_rationale)
-                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        permissionRequest.proceed();
-                    }
-                })
-                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        permissionRequest.cancel();
-                    }
-                })
-                .show();
-    }
-
-    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showDeniedForStorage() {
-        Toast.makeText(this, R.string.permission_fs_denied, Toast.LENGTH_SHORT).show();
-    }
-
-    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showNeverAskForStorage() {
-        Toast.makeText(this, R.string.permission_fs_neverask, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // NOTE: delegate the permission handling to generated method
-        GamePreferenceActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         log.debug("onSharedPreferenceChanged(" + key + ")");
@@ -243,42 +178,6 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         PreferenceScreen preferencesRoot = getPreferenceScreen();
         PreferenceScreen preference;
         switch (key) {
-            case "pref_game_plus_depends":
-                changeDefinitionsState("plus", preferencesRoot);
-                dependencyMap.updateDependencies(preferencesRoot);
-                return;
-
-            case "pref_game_minus_depends":
-                changeDefinitionsState("minus", preferencesRoot);
-                dependencyMap.updateDependencies(preferencesRoot);
-                return;
-
-            case "pref_game_multiply_depends":
-                changeDefinitionsState("multiply", preferencesRoot);
-                dependencyMap.updateDependencies(preferencesRoot);
-                return;
-
-            case "pref_game_divide_depends":
-                changeDefinitionsState("divide", preferencesRoot);
-                dependencyMap.updateDependencies(preferencesRoot);
-                return;
-
-            case "pref_game_operation_plus":
-                preferenceScreenHelper.setScreenSummary("plus", preferencesRoot, sharedPreferences);
-                return;
-
-            case "pref_game_operation_minus":
-                preferenceScreenHelper.setScreenSummary("minus", preferencesRoot, sharedPreferences);
-                return;
-
-            case "pref_game_operation_multiply":
-                preferenceScreenHelper.setScreenSummary("multiply", preferencesRoot, sharedPreferences);
-                return;
-
-            case "pref_game_operation_divide":
-                preferenceScreenHelper.setScreenSummary("divide", preferencesRoot, sharedPreferences);
-                return;
-
             case KEY_SOUND_ENABLED:
                 boolean enabled = sharedPreferences.getBoolean(KEY_SOUND_ENABLED, true);
                 LeliMathApp.getInstance().toggleSound(enabled);
@@ -296,23 +195,6 @@ public class GamePreferenceActivity extends PreferenceActivity implements
 
         //noinspection deprecation
         updatePreferenceSummary(findPreference(key));
-    }
-
-    /**
-     * Enables of disables definition preferences for specified operation.
-     * @param key operation key
-     * @param preferenceScreen root preferences
-     */
-    private void changeDefinitionsState(String key, PreferenceScreen preferenceScreen) {
-        SharedPreferences sharedPreferences = preferenceScreen.getSharedPreferences();
-        String value = sharedPreferences.getString("pref_game_" + key + "_depends", "NONE");
-        dependencyMap.setReuse(key.toUpperCase(), value);
-        log.debug(key + " depends is " + value);
-
-        boolean enabled = "NONE".equals(value);
-        preferenceScreen.findPreference("pref_game_" + key + "_first_arg").setEnabled(enabled);
-        preferenceScreen.findPreference("pref_game_" + key + "_second_arg").setEnabled(enabled);
-        preferenceScreen.findPreference("pref_game_" + key + "_result").setEnabled(enabled);
     }
 
     private void updatePreferenceSummary(Preference preference) {
@@ -373,18 +255,6 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         });
     }
 
-    public class ValuesPreferenceValidator extends PreferenceInputValidator {
-
-        public ValuesPreferenceValidator(EditTextPreference preference) {
-            super(preference);
-        }
-
-        @Override
-        public void isValid(CharSequence s) throws Exception {
-            Values.parse(s);
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -403,117 +273,45 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         c.startActivity(new Intent(c, GamePreferenceActivity.class));
     }
 
-    /**
-     * Handles dependency between operations
-     */
-    private class DependencyMap {
-        Map<String, String> operations = new LinkedHashMap<>(5, 1.0f);
-        Map<String, String> dependencyMapping = new HashMap<>(5, 1.0f);
-        String noReuse;
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    public void copyDatabase() {
+        new CopyDatabaseTask().execute();
+    }
 
-        public DependencyMap(SharedPreferences sharedPreferences) {
-            Resources resources = getResources();
-            noReuse = resources.getString(R.string.pref_value_not_depend);
-            operations.put("PLUS", resources.getString(R.string.operation_plus));
-            operations.put("MINUS", resources.getString(R.string.operation_minus));
-            operations.put("MULTIPLY", resources.getString(R.string.operation_multiply));
-            operations.put("DIVIDE", resources.getString(R.string.operation_divide));
-
-            String value = sharedPreferences.getString("pref_game_plus_depends", "NONE");
-            if (! "NONE".equals(value)) {
-                dependencyMapping.put("PLUS", value);
-            }
-
-            value = sharedPreferences.getString("pref_game_minus_depends", "NONE");
-            if (! "NONE".equals(value)) {
-                dependencyMapping.put("MINUS", value);
-            }
-
-            value = sharedPreferences.getString("pref_game_multiply_depends", "NONE");
-            if (! "NONE".equals(value)) {
-                dependencyMapping.put("MULTIPLY", value);
-            }
-
-            value = sharedPreferences.getString("pref_game_divide_depends", "NONE");
-            if (! "NONE".equals(value)) {
-                dependencyMapping.put("DIVIDE", value);
-            }
-        }
-
-        public void updateDependencies(PreferenceScreen preferenceRoot) {
-            ArrayList<CharSequence> entries;
-            ArrayList<CharSequence> values;
-            for (String operation : operations.keySet()) {
-                String prefOperation = operation.toLowerCase();
-                ListPreference preference = (ListPreference) preferenceRoot.findPreference("pref_game_" + prefOperation + "_depends");
-                List<String> dependencies = getKeys(dependencyMapping, operation);
-                if (! dependencies.isEmpty()) {
-                    preference.setEnabled(false); // dependency target must define definitions itself
-                    StringBuilder sb = new StringBuilder();
-                    String operationCaption = getOperationName(operation);
-                    sb.append(getString(R.string.pref_operation_dependencies, operationCaption));
-                    for (String dependency : dependencies) {
-                        sb.append(getOperationName(dependency));
-                        sb.append(", ");
+    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showRationaleForStorage(final PermissionRequest permissionRequest) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.permission_fs_rationale)
+                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        permissionRequest.proceed();
                     }
-                    sb.setLength(sb.length() - 2);
-                    preference.setSummary(sb);
-                    continue;
-                } else {
-                    preference.setEnabled(true);
-                    preferenceScreenHelper.updatePreferenceSummary(preference);
-                }
-
-                entries = new ArrayList<>(5); entries.add(noReuse);
-                values = new ArrayList<>(5); values.add("NONE");
-
-                for (String targetOperation : operations.keySet()) {
-                    if (operation.equals(targetOperation)) {
-                        continue; // canot create a dependency to self
+                })
+                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        permissionRequest.cancel();
                     }
-                    if (dependencyMapping.containsKey(targetOperation)) {
-                        continue; // cannot create a dependency to operation that already depends on some operation
-                    }
+                })
+                .show();
+    }
 
-                    values.add(targetOperation);
-                    entries.add(operations.get(targetOperation));
-                }
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showDeniedForStorage() {
+        Toast.makeText(this, R.string.permission_fs_denied, Toast.LENGTH_SHORT).show();
+    }
 
-                preference = (ListPreference) preferenceRoot.findPreference("pref_game_" + prefOperation + "_depends");
-                preference.setEntries(entries.toArray(new CharSequence[entries.size()]));
-                preference.setEntryValues(values.toArray(new CharSequence[values.size()]));
-            }
-        }
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showNeverAskForStorage() {
+        Toast.makeText(this, R.string.permission_fs_neverask, Toast.LENGTH_SHORT).show();
+    }
 
-        private String getOperationName(String operation) {
-            try {
-                int id = R.string.class.getField("operation_" + operation.toLowerCase()).getInt(null);
-                return getString(id);
-            } catch (IllegalAccessException e) {
-                log.warn("Cannot find resource: " + "operation_" + operation.toLowerCase(), e);
-            } catch (NoSuchFieldException e) {
-                log.warn("Cannot find resource:  " + "operation_" + operation.toLowerCase(), e);
-            }
-            return operation;
-        }
-
-        public void setReuse(String key, String value) {
-            dependencyMapping.remove(key);
-            if (! "NONE".equals(value)) {
-                dependencyMapping.put(key, value);
-            }
-        }
-
-        private List<String> getKeys(Map<String, String> map, @NonNull String value) {
-            List<String> result = new ArrayList<>(map.size());
-            for (String key : map.keySet()) {
-                String s = map.get(key);
-                if (value.equals(s)) {
-                    result.add(key);
-                }
-            }
-            return result;
-        }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        GamePreferenceActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     private class CopyDatabaseTask extends AsyncTask<Void, Void, Void> {

@@ -40,6 +40,7 @@ public class LeliBaseActivity extends AppCompatActivity {
     /**
      * Get a connection source for this action.
      */
+    @SuppressWarnings("unused")
     public ConnectionSource getConnectionSource() {
         return getHelper().getConnectionSource();
     }

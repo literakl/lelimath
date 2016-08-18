@@ -153,7 +153,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
 
     protected void setDefaultPreferences() {
         log.debug("Loading default values from XML");
-        PreferenceManager.setDefaultValues(LeliMathApp.this, R.xml.game_prefs, false);
+        PreferenceManager.setDefaultValues(LeliMathApp.this, R.xml.app_prefs, false);
         log.debug("Defaults are loaded");
     }
 

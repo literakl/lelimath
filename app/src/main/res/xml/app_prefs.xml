@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_category_settings">
+        <ListPreference
+            android:key="pref_next_badge"
+            android:title="@string/pref_next_badge"
+            android:summary="%s"
+            />
+
+        <PreferenceScreen
+            android:key="pref_misc_sound_category"
+            android:title="@string/pref_sound_state"
+            android:persistent="false">
+
+            <CheckBoxPreference
+                android:key="pref_sound_enabled"
+                android:title="@string/pref_sound_state"
+                android:defaultValue="true"
+                />
+
+            <lelisoft.com.lelimath.helpers.SeekBarPreference
+                android:key="pref_sound_level"
+                android:dependency="pref_sound_enabled"
+                android:title="@string/pref_sound_level"
+                android:defaultValue="50"
+                android:max="100"
+                android:dialogMessage="@string/pref_sound_level_message"
+                android:text="%"
+                />
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_about">
+        <Preference
+            android:key="pref_version"
+            android:title="@string/pref_app_version"
+            android:persistent="false"
+            android:selectable="false"
+            android:summary="@string/app_version"/>
+
+        <Preference
+            android:key="pref_build_number"
+            android:title="@string/pref_build_time"
+            android:persistent="false"
+            android:selectable="true"
+            android:summary="@string/app_build_number" />
+    </PreferenceCategory>
+</PreferenceScreen>

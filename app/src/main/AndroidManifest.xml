@@ -49,6 +49,11 @@
             android:parentActivityName=".activities.DashboardActivity">
         </activity>
         <activity
+            android:name=".activities.PracticeSettingsActivity"
+            android:label="@string/title_badge"
+            android:parentActivityName=".activities.DashboardActivity">
+        </activity>
+        <activity
             android:name=".activities.WebViewerActivity"
             android:label="Prohlížeč"
             android:parentActivityName=".activities.DashboardActivity">
