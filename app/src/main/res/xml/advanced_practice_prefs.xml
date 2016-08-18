@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_simple_practice_settings"
+        android:title="@string/pref_title_simple_settings"
+        android:defaultValue="true"
+        />
+
     <ListPreference
         android:key="pref_game_complexity"
         android:title="@string/pref_game_complexity"
@@ -7,13 +13,6 @@
         android:entries="@array/pref_complexity_entries"
         android:entryValues="@array/pref_complexity_entries_values"
         android:defaultValue="EASY"
-        />
-
-    <MultiSelectListPreference
-        android:key="pref_game_calc_unknown"
-        android:title="@string/pref_title_fast_calc_unknown"
-        android:entries="@array/pref_calc_unknown_entries"
-        android:entryValues="@array/pref_calc_unknown_entries_values"
         />
 
     <PreferenceScreen
@@ -223,4 +222,11 @@
             android:defaultValue="1-10"
             />
     </PreferenceScreen>
+
+    <MultiSelectListPreference
+        android:key="pref_game_calc_unknown"
+        android:title="@string/pref_title_fast_calc_unknown"
+        android:entries="@array/pref_calc_unknown_entries"
+        android:entryValues="@array/pref_calc_unknown_entries_values"
+        />
 </PreferenceScreen>

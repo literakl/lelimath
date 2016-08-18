@@ -29,12 +29,10 @@ public class DependencyMap {
     Resources resources;
     private PreferenceHelper preferenceScreenHelper;
 
-    public DependencyMap(Resources resources, PreferenceHelper preferenceScreenHelper) {
+    public DependencyMap(SharedPreferences sharedPreferences, Resources resources, PreferenceHelper preferenceScreenHelper) {
         this.resources = resources;
         this.preferenceScreenHelper = preferenceScreenHelper;
-    }
 
-    public DependencyMap(SharedPreferences sharedPreferences) {
         noReuse = resources.getString(R.string.pref_value_not_depend);
         operations.put("PLUS", resources.getString(R.string.operation_plus));
         operations.put("MINUS", resources.getString(R.string.operation_minus));

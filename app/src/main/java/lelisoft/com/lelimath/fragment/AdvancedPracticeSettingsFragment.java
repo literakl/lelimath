@@ -1,12 +1,13 @@
 package lelisoft.com.lelimath.fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
-import android.support.v7.preference.PreferenceScreen;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.helpers.DependencyMap;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.PreferenceHelper;
 import lelisoft.com.lelimath.helpers.PreferenceInputValidator;
 
@@ -21,20 +23,23 @@ import lelisoft.com.lelimath.helpers.PreferenceInputValidator;
  * Tune everything preferences
  * Created by Leoš on 17.08.2016.
  */
-public class AdvancedPracticeSettingsFragment extends PreferenceFragmentCompat implements
+public class AdvancedPracticeSettingsFragment extends PreferenceFragment implements
                                                       SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final Logger log = LoggerFactory.getLogger(AdvancedPracticeSettingsFragment.class);
 
     private PreferenceHelper preferenceScreenHelper;
     private DependencyMap dependencyMap;
+    SimplePracticeSettingsFragment.SimpleSettingsBridge callback;
 
     @Override
-    public void onCreatePreferences(Bundle bundle, String s) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.advanced_practice_prefs);
         //noinspection deprecation
         PreferenceScreen preferenceScreen = getPreferenceScreen();
-        dependencyMap = new DependencyMap(preferenceScreen.getSharedPreferences());
+        preferenceScreenHelper = new PreferenceHelper(preferenceScreen);
+        dependencyMap = new DependencyMap(preferenceScreen.getSharedPreferences(), LeliMathApp.resources, preferenceScreenHelper);
         dependencyMap.updateDependencies(preferenceScreen);
 
         changeDefinitionsState("plus", preferenceScreen);
@@ -63,8 +68,11 @@ public class AdvancedPracticeSettingsFragment extends PreferenceFragmentCompat i
         log.debug("onSharedPreferenceChanged(" + key + ")");
         //noinspection deprecation
         PreferenceScreen preferencesRoot = getPreferenceScreen();
-        PreferenceScreen preference;
         switch (key) {
+            case SimplePracticeSettingsFragment.PREF_SIMPLE_PRACTICE_SETTINGS:
+                callback.settingsChanged(true);
+                return;
+
             case "pref_game_plus_depends":
                 changeDefinitionsState("plus", preferencesRoot);
                 dependencyMap.updateDependencies(preferencesRoot);
@@ -156,5 +164,17 @@ public class AdvancedPracticeSettingsFragment extends PreferenceFragmentCompat i
         //noinspection deprecation
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented the callback interface
+        try {
+            callback = (SimplePracticeSettingsFragment.SimpleSettingsBridge) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement SimpleSettingsBridge");
+        }
     }
 }

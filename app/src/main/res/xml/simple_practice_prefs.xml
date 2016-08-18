@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_simple_practice_settings"
+        android:title="@string/pref_title_simple_settings"
+        android:defaultValue="true"
+        />
+
     <ListPreference
         android:key="pref_game_complexity"
         android:title="@string/pref_game_complexity"
@@ -8,7 +14,6 @@
         android:entryValues="@array/pref_complexity_entries_values"
         android:defaultValue="EASY"
         />
-<!--
 
     <lelisoft.com.lelimath.helpers.SeekBarPreference
         android:key="pref_practice_simple_first_arg"
@@ -20,7 +25,7 @@
 
     <lelisoft.com.lelimath.helpers.SeekBarPreference
         android:key="pref_practice_simple_second_arg"
-        android:title="@string/pref_title_first_arg"
+        android:title="@string/pref_title_second_arg"
         android:defaultValue="100"
         android:max="100"
         android:text="%"
@@ -33,6 +38,5 @@
         android:max="100"
         android:text="%"
         />
--->
 
 </PreferenceScreen>

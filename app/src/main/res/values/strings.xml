@@ -79,6 +79,7 @@
     <string name="pref_title_first_arg">První argument</string>
     <string name="pref_title_second_arg">Druhý argument</string>
     <string name="pref_title_result">Výsledek</string>
+    <string name="pref_title_simple_settings">Snadné nastavení</string>
     <string name="pref_category_settings">Nastavení</string>
     <string name="pref_next_badge">Další odznáček</string>
     <string name="pref_sound_state">Zvuk</string>
