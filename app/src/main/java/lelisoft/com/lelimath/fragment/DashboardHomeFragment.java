@@ -34,7 +34,6 @@ import lelisoft.com.lelimath.activities.CalcActivity;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.activities.InformationActivity;
 import lelisoft.com.lelimath.activities.PointsChartActivity;
-import lelisoft.com.lelimath.activities.PracticeSettingsActivity;
 import lelisoft.com.lelimath.activities.PuzzleActivity;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
@@ -128,8 +127,7 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
                 break;
 
             case R.id.main_button_info:
-//                InformationActivity.start(activity); TODO
-                PracticeSettingsActivity.start(activity);
+                InformationActivity.start(activity);
                 break;
 
             case R.id.main_button_points:

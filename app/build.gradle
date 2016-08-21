@@ -80,4 +80,5 @@ dependencies {
         transitive = true;
     }
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
+    compile 'com.pavelsikun:material-seekbar-preference:2.3.0+'
 }

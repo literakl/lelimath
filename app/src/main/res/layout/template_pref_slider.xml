@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://github.com/consp1racy/android-support-preference/blob/master/library/src/main/res/layout/asp_preference_seekbar.xml
+https://github.com/consp1racy/android-support-preference/blob/master/library/src/main/java/net/xpece/android/support/preference/SeekBarPreference.java
+https://github.com/hidroh/materialistic/blob/34/app/src/main/java/io/github/hidroh/materialistic/preference/ThemePreference.java
+https://github.com/hidroh/materialistic/blob/34/app/src/main/res/layout/preference_theme.xml
+http://stackoverflow.com/questions/30170384/custom-inline-seekbarpreference-how-to-set-seekbar-progress-on-the-1st-run
+https://github.com/afarber/android-newbie/blob/q19/MyPrefs/src/de/afarber/myprefs/SeekBarPreference.java
+https://github.com/afarber/android-newbie/blob/q19/MyPrefs/res/layout/preference_seekbar.xml
+https://github.com/MrBIMC/MaterialSeekBarPreference
+
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <SeekBar
+        android:id="@+id/slider_pref"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

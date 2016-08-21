@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sample="http://schemas.android.com/apk/res-auto"
+    >
     <CheckBoxPreference
         android:key="pref_simple_practice_settings"
         android:title="@string/pref_title_simple_settings"
@@ -15,28 +18,31 @@
         android:defaultValue="EASY"
         />
 
-    <lelisoft.com.lelimath.helpers.SeekBarPreference
+    <com.pavelsikun.seekbarpreference.SeekBarPreference
         android:key="pref_practice_simple_first_arg"
         android:title="@string/pref_title_first_arg"
         android:defaultValue="100"
-        android:max="100"
-        android:text="%"
-        />
+        sample:msbp_minValue="0"
+        sample:msbp_maxValue="100"
+        sample:msbp_measurementUnit=""
+        sample:msbp_dialogEnabled="false"/>
 
-    <lelisoft.com.lelimath.helpers.SeekBarPreference
+    <com.pavelsikun.seekbarpreference.SeekBarPreference
         android:key="pref_practice_simple_second_arg"
         android:title="@string/pref_title_second_arg"
         android:defaultValue="100"
-        android:max="100"
-        android:text="%"
-        />
+        sample:msbp_minValue="0"
+        sample:msbp_maxValue="100"
+        sample:msbp_measurementUnit=""
+        sample:msbp_dialogEnabled="false"/>
 
-    <lelisoft.com.lelimath.helpers.SeekBarPreference
+    <com.pavelsikun.seekbarpreference.SeekBarPreference
         android:key="pref_practice_simple_result"
         android:title="@string/pref_title_result"
         android:defaultValue="100"
-        android:max="100"
-        android:text="%"
-        />
+        sample:msbp_minValue="0"
+        sample:msbp_maxValue="100"
+        sample:msbp_measurementUnit=""
+        sample:msbp_dialogEnabled="false"/>
 
 </PreferenceScreen>

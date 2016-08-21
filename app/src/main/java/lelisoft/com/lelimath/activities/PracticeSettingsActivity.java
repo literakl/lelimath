@@ -4,29 +4,34 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.fragment.AdvancedPracticeSettingsFragment;
-import lelisoft.com.lelimath.fragment.SimplePracticeSettingsFragment;
+import lelisoft.com.lelimath.fragment.PracticeAdvancedSettingsFragment;
+import lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment;
 
 /**
  * Display practice preferences
  * Created by Leoš on 17.08.2016.
  */
-public class PracticeSettingsActivity extends LeliBaseActivity implements SimplePracticeSettingsFragment.SimpleSettingsBridge {
+public class PracticeSettingsActivity extends LeliBaseActivity implements PracticeSimpleSettingsFragment.SimpleSettingsBridge {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LeliBaseActivity.class);
 
-    SimplePracticeSettingsFragment simpleSettings;
-    AdvancedPracticeSettingsFragment advancedSettings;
+    PracticeSimpleSettingsFragment simpleSettings;
+    PracticeAdvancedSettingsFragment advancedSettings;
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_practice_settings);
-        simpleSettings = new SimplePracticeSettingsFragment();
-        advancedSettings = new AdvancedPracticeSettingsFragment();
-        displayFragments(false, true);
+        simpleSettings = new PracticeSimpleSettingsFragment();
+        advancedSettings = new PracticeAdvancedSettingsFragment();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean easy = sharedPref.getBoolean(PracticeSimpleSettingsFragment.KEY_SIMPLE_PRACTICE_SETTINGS, true);
+        displayFragments(false, easy);
     }
 
     @Override

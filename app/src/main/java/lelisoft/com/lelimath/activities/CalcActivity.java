@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import org.slf4j.Logger;
@@ -111,6 +113,32 @@ public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcB
         calcFragment = new CalcFragment();
         calcFragment.setLogic((CalcLogic) gameLogic);
         initializeCalcFragment(true);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        initializeGameLogic();
+        restartGame();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.practice_settings:
+                Intent intent = new Intent(this, PracticeSettingsActivity.class);
+                startActivityForResult(intent, 1);
+                return true;
+
+            default: return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_practice, menu);
+        return true;
     }
 
     public static void start(Context c) {

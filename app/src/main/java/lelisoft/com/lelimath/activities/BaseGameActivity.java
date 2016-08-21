@@ -28,6 +28,11 @@ import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.GameLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 
+import static lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment.KEY_SIMPLE_PRACTICE_SETTINGS;
+import static lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment.KEY_FIRST_ARG;
+import static lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment.KEY_SECOND_ARG;
+import static lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment.KEY_RESULT;
+
 /**
  * Base class for game activities. It has an action bar, it can load FormulaDefinition
  * from SharedPreferences and it can measure time.
@@ -113,13 +118,54 @@ public class BaseGameActivity extends LeliBaseActivity {
         FormulaDefinition definition = new FormulaDefinition().addUnknown(FormulaPart.RESULT);
         gameLogic.setFormulaDefinition(definition);
 
-        Map<String,OperatorDefinition> operatorDefinitions = new HashMap<>();
+        boolean easy = sharedPref.getBoolean(KEY_SIMPLE_PRACTICE_SETTINGS, true);
+        if (easy) {
+            initializeFromSimpleSettings(definition);
+        } else {
+            initializeFromAdvancedSettings(definition);
+        }
+        log.debug(definition.toString());
+    }
+
+    private void initializeFromSimpleSettings(FormulaDefinition definition) {
+        OperatorDefinition operatorPlus = new OperatorDefinition(Operator.PLUS);
+        definition.addOperator(operatorPlus);
+        OperatorDefinition operatorMinus = new OperatorDefinition(Operator.MINUS);
+        definition.addOperator(operatorMinus);
+        OperatorDefinition operatorMultiply = new OperatorDefinition(Operator.MULTIPLY);
+        definition.addOperator(operatorMultiply);
+        OperatorDefinition operatorDivide = new OperatorDefinition(Operator.DIVIDE);
+        definition.addOperator(operatorDivide);
+
+        Values firstArgValues = readSimpleValues(KEY_FIRST_ARG);
+        Values secondArgValues = readSimpleValues(KEY_SECOND_ARG);
+        Values resultValues = readSimpleValues(KEY_RESULT);
+
+        operatorPlus.setFirstOperand(firstArgValues);
+        operatorPlus.setSecondOperand(secondArgValues);
+        operatorPlus.setResult(resultValues);
+
+        operatorMinus.setFirstOperand(resultValues);
+        operatorMinus.setSecondOperand(secondArgValues);
+        operatorMinus.setResult(firstArgValues);
+
+        operatorMultiply.setFirstOperand(firstArgValues);
+        operatorMultiply.setSecondOperand(secondArgValues);
+        operatorMultiply.setResult(resultValues);
+
+        operatorDivide.setFirstOperand(resultValues);
+        operatorDivide.setSecondOperand(secondArgValues);
+        operatorDivide.setResult(firstArgValues);
+    }
+
+    private void initializeFromAdvancedSettings(FormulaDefinition definition) {
+        Map<String,OperatorDefinition> definitions = new HashMap<>();
         Map<String, String> dependencies = new HashMap<>();
 
         String[] operations = new String[]{"plus", "minus", "multiply", "divide"};
         for (String operation : operations) {
             OperatorDefinition operator = new OperatorDefinition(Operator.valueOf(operation.toUpperCase()));
-            operatorDefinitions.put(operation, operator);
+            definitions.put(operation, operator);
 
             String dependsOn = sharedPref.getString("pref_game_" + operation + "_depends", "NONE");
             if ("NONE".equals(dependsOn)) {
@@ -144,9 +190,9 @@ public class BaseGameActivity extends LeliBaseActivity {
  */
 
         for (String operation : dependencies.keySet()) {
-            OperatorDefinition dependingOperatorDef = operatorDefinitions.get(operation);
+            OperatorDefinition dependingOperatorDef = definitions.get(operation);
             String targetKey = dependencies.get(operation);
-            OperatorDefinition targetOperatorDef = operatorDefinitions.get(targetKey);
+            OperatorDefinition targetOperatorDef = definitions.get(targetKey);
             if (targetOperatorDef == null) {
                 log.error("Dependency <" + operation + "," + targetKey + "> is missing!");
                 continue;
@@ -178,15 +224,14 @@ public class BaseGameActivity extends LeliBaseActivity {
 
         for (String operation : operations) {
             if (! sharedPref.getBoolean("pref_game_operation_" + operation, true)) {
-                operatorDefinitions.remove(operation);
+                definitions.remove(operation);
             }
         }
 
-        definition.setOperatorDefinitions(new ArrayList<>(operatorDefinitions.values()));
-        log.debug(definition.toString());
+        definition.setOperatorDefinitions(new ArrayList<>(definitions.values()));
     }
 
-    public Values readValues(String key) {
+    protected Values readValues(String key) {
         String sValues = sharedPref.getString(key, null);
         if (sValues != null && sValues.trim().length() > 0) {
             try {
@@ -198,6 +243,11 @@ public class BaseGameActivity extends LeliBaseActivity {
             }
         }
         return Values.UNDEFINED;
+    }
+
+    protected Values readSimpleValues(String key) {
+        int value = sharedPref.getInt(key, 10);
+        return Values.fromRange(0, value);
     }
 
     public void setGameLogic(GameLogic gameLogic) {

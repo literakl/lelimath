@@ -16,11 +16,14 @@ import lelisoft.com.lelimath.R;
  * Easy to set preferences
  * Created by Leoš on 17.08.2016.
  */
-public class SimplePracticeSettingsFragment extends PreferenceFragment implements
+public class PracticeSimpleSettingsFragment extends PreferenceFragment implements
                                                     SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final Logger log = LoggerFactory.getLogger(SimplePracticeSettingsFragment.class);
+    private static final Logger log = LoggerFactory.getLogger(PracticeSimpleSettingsFragment.class);
 
-    public static final String PREF_SIMPLE_PRACTICE_SETTINGS = "pref_simple_practice_settings";
+    public static final String KEY_SIMPLE_PRACTICE_SETTINGS = "pref_simple_practice_settings";
+    public static final String KEY_FIRST_ARG = "pref_practice_simple_first_arg";
+    public static final String KEY_SECOND_ARG = "pref_practice_simple_second_arg";
+    public static final String KEY_RESULT = "pref_practice_simple_result";
 
     SimpleSettingsBridge callback;
 
@@ -39,7 +42,7 @@ public class SimplePracticeSettingsFragment extends PreferenceFragment implement
         log.debug("onSharedPreferenceChanged(" + key + ")");
         //noinspection deprecation
         PreferenceScreen preferencesRoot = getPreferenceScreen();
-        if (PREF_SIMPLE_PRACTICE_SETTINGS.equals(key)) {
+        if (KEY_SIMPLE_PRACTICE_SETTINGS.equals(key)) {
             callback.settingsChanged(false);
         }
     }

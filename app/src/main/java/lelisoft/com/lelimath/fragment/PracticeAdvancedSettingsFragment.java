@@ -23,14 +23,14 @@ import lelisoft.com.lelimath.helpers.PreferenceInputValidator;
  * Tune everything preferences
  * Created by Leoš on 17.08.2016.
  */
-public class AdvancedPracticeSettingsFragment extends PreferenceFragment implements
+public class PracticeAdvancedSettingsFragment extends PreferenceFragment implements
                                                       SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final Logger log = LoggerFactory.getLogger(AdvancedPracticeSettingsFragment.class);
+    private static final Logger log = LoggerFactory.getLogger(PracticeAdvancedSettingsFragment.class);
 
     private PreferenceHelper preferenceScreenHelper;
     private DependencyMap dependencyMap;
-    SimplePracticeSettingsFragment.SimpleSettingsBridge callback;
+    PracticeSimpleSettingsFragment.SimpleSettingsBridge callback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class AdvancedPracticeSettingsFragment extends PreferenceFragment impleme
         //noinspection deprecation
         PreferenceScreen preferencesRoot = getPreferenceScreen();
         switch (key) {
-            case SimplePracticeSettingsFragment.PREF_SIMPLE_PRACTICE_SETTINGS:
+            case PracticeSimpleSettingsFragment.KEY_SIMPLE_PRACTICE_SETTINGS:
                 callback.settingsChanged(true);
                 return;
 
@@ -172,7 +172,7 @@ public class AdvancedPracticeSettingsFragment extends PreferenceFragment impleme
 
         // This makes sure that the container activity has implemented the callback interface
         try {
-            callback = (SimplePracticeSettingsFragment.SimpleSettingsBridge) context;
+            callback = (PracticeSimpleSettingsFragment.SimpleSettingsBridge) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement SimpleSettingsBridge");
         }
