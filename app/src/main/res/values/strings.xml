@@ -28,10 +28,13 @@
     <string name="action_level">Složitost</string>
     <string name="action_next_formula">Další</string>
     <string name="action_next_game">Další hra</string>
+    <string name="operation_all">Všechny</string>
     <string name="operation_plus">Sčítání</string>
     <string name="operation_minus">Odečítání</string>
+    <string name="operation_plus_minus">Sčítání a odečítání</string>
     <string name="operation_multiply">Násobení</string>
     <string name="operation_divide">Dělení</string>
+    <string name="operation_multiply_divide">Násobení a dělení</string>
     <string name="level_TRIVIAL">Lehká</string>
     <string name="level_EASY">Snadná</string>
     <string name="level_NORMAL">Běžná</string>
@@ -52,6 +55,7 @@
     <string name="message_badge_progress"><xliff:g id="current" example="1" >%s</xliff:g> ze <xliff:g id="total" example="5" >%s</xliff:g></string>
     <string name="message_badge_not_awarded">Zatím ne</string>
     <string name="pref_game_complexity">Složitost</string>
+    <string name="pref_title_operations">Operace</string>
     <string name="pref_build_number_title">Datum sestavení</string>
     <string name="pref_enter_values">Zadejte povolené hodnoty. Čísla oddělujte čárkou, rozsah definujte pomlčkou.</string>
     <string name="pref_title_operation_plus">Povolit sčítání</string>

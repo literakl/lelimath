@@ -26,6 +26,24 @@
         <item>MULTIPLY</item>
         <item>DIVIDE</item>
     </string-array>
+    <string-array name="pref_practice_operations_entries">
+        <item>@string/operation_all</item>
+        <item>@string/operation_plus</item>
+        <item>@string/operation_minus</item>
+        <item>@string/operation_plus_minus</item>
+        <item>@string/operation_multiply</item>
+        <item>@string/operation_divide</item>
+        <item>@string/operation_multiply_divide</item>
+    </string-array>
+    <string-array name="pref_practice_operations_entries_values">
+        <item>ALL</item>
+        <item>PLUS</item>
+        <item>MINUS</item>
+        <item>PLUS,MINUS</item>
+        <item>MULTIPLY</item>
+        <item>DIVIDE</item>
+        <item>MULTIPLY,DIVIDE</item>
+    </string-array>
     <string-array name="pref_calc_entries">
         <item>Obrázek</item>
         <item>Stopky</item>

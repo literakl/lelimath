@@ -23,6 +23,7 @@ import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.GameLogic;
@@ -128,34 +129,63 @@ public class BaseGameActivity extends LeliBaseActivity {
     }
 
     private void initializeFromSimpleSettings(FormulaDefinition definition) {
-        OperatorDefinition operatorPlus = new OperatorDefinition(Operator.PLUS);
-        definition.addOperator(operatorPlus);
-        OperatorDefinition operatorMinus = new OperatorDefinition(Operator.MINUS);
-        definition.addOperator(operatorMinus);
-        OperatorDefinition operatorMultiply = new OperatorDefinition(Operator.MULTIPLY);
-        definition.addOperator(operatorMultiply);
-        OperatorDefinition operatorDivide = new OperatorDefinition(Operator.DIVIDE);
-        definition.addOperator(operatorDivide);
-
         Values firstArgValues = readSimpleValues(KEY_FIRST_ARG);
         Values secondArgValues = readSimpleValues(KEY_SECOND_ARG);
         Values resultValues = readSimpleValues(KEY_RESULT);
+        boolean[] allowedOperators = readAllowedOperators();
 
-        operatorPlus.setFirstOperand(firstArgValues);
-        operatorPlus.setSecondOperand(secondArgValues);
-        operatorPlus.setResult(resultValues);
+        if (allowedOperators[0]) {
+            OperatorDefinition operatorPlus = new OperatorDefinition(Operator.PLUS);
+            definition.addOperator(operatorPlus);
+            operatorPlus.setFirstOperand(firstArgValues);
+            operatorPlus.setSecondOperand(secondArgValues);
+            operatorPlus.setResult(resultValues);
+        }
 
-        operatorMinus.setFirstOperand(resultValues);
-        operatorMinus.setSecondOperand(secondArgValues);
-        operatorMinus.setResult(firstArgValues);
+        if (allowedOperators[1]) {
+            OperatorDefinition operatorMinus = new OperatorDefinition(Operator.MINUS);
+            definition.addOperator(operatorMinus);
+            operatorMinus.setFirstOperand(resultValues);
+            operatorMinus.setSecondOperand(secondArgValues);
+            operatorMinus.setResult(firstArgValues);
+        }
 
-        operatorMultiply.setFirstOperand(firstArgValues);
-        operatorMultiply.setSecondOperand(secondArgValues);
-        operatorMultiply.setResult(resultValues);
+        if (allowedOperators[2]) {
+            OperatorDefinition operatorMultiply = new OperatorDefinition(Operator.MULTIPLY);
+            definition.addOperator(operatorMultiply);
+            operatorMultiply.setFirstOperand(firstArgValues);
+            operatorMultiply.setSecondOperand(secondArgValues);
+            operatorMultiply.setResult(resultValues);
+        }
 
-        operatorDivide.setFirstOperand(resultValues);
-        operatorDivide.setSecondOperand(secondArgValues);
-        operatorDivide.setResult(firstArgValues);
+        if (allowedOperators[3]) {
+            OperatorDefinition operatorDivide = new OperatorDefinition(Operator.DIVIDE);
+            definition.addOperator(operatorDivide);
+            operatorDivide.setFirstOperand(resultValues);
+            operatorDivide.setSecondOperand(secondArgValues);
+            operatorDivide.setResult(firstArgValues);
+        }
+    }
+
+    private boolean[] readAllowedOperators() {
+        boolean[] result = new boolean[4];
+        String pref = sharedPref.getString(PracticeSimpleSettingsFragment.KEY_OPERATIONS, "ALL");
+        if ("ALL".equals(pref)) {
+            result[0] = result[1] = result[2] = result[3] = true;
+        } else if ("PLUS,MINUS".equals(pref)) {
+            result[0] = result[1] = true;
+        } else if ("MULTIPLY,DIVIDE".equals(pref)) {
+            result[2] = result[3] = true;
+        } else if ("PLUS".equals(pref)) {
+            result[0] = true;
+        } else if ("MINUS".equals(pref)) {
+            result[1] = true;
+        } else if ("MULTIPLY".equals(pref)) {
+            result[2] = true;
+        } else if ("DIVIDE".equals(pref)) {
+            result[3] = true;
+        }
+        return result;
     }
 
     private void initializeFromAdvancedSettings(FormulaDefinition definition) {

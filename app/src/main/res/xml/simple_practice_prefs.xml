@@ -18,6 +18,15 @@
         android:defaultValue="EASY"
         />
 
+    <ListPreference
+        android:key="pref_practice_operations"
+        android:title="@string/pref_title_operations"
+        android:summary="%s"
+        android:entries="@array/pref_practice_operations_entries"
+        android:entryValues="@array/pref_practice_operations_entries_values"
+        android:defaultValue="ALL"
+        />
+
     <com.pavelsikun.seekbarpreference.SeekBarPreference
         android:key="pref_practice_simple_first_arg"
         android:title="@string/pref_title_first_arg"

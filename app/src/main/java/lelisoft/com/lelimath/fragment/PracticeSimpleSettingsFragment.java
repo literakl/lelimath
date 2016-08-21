@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +23,7 @@ public class PracticeSimpleSettingsFragment extends PreferenceFragment implement
     public static final String KEY_FIRST_ARG = "pref_practice_simple_first_arg";
     public static final String KEY_SECOND_ARG = "pref_practice_simple_second_arg";
     public static final String KEY_RESULT = "pref_practice_simple_result";
+    public static final String KEY_OPERATIONS = "pref_practice_operations";
 
     SimpleSettingsBridge callback;
 
@@ -41,7 +41,6 @@ public class PracticeSimpleSettingsFragment extends PreferenceFragment implement
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         log.debug("onSharedPreferenceChanged(" + key + ")");
         //noinspection deprecation
-        PreferenceScreen preferencesRoot = getPreferenceScreen();
         if (KEY_SIMPLE_PRACTICE_SETTINGS.equals(key)) {
             callback.settingsChanged(false);
         }
