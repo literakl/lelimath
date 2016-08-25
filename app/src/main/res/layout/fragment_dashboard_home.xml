@@ -12,6 +12,35 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/title_practice"
+            android:textAppearance="@style/TextAppearance.Header"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            style="@style/TextComponent.ItemRow"/>
+
+        <TextView
+            android:id="@+id/main.button.puzzle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_game_puzzle"
+            android:textAppearance="@style/TextAppearance.Item"
+            android:drawableRight="@drawable/ic_arrow_forward_24dp"
+            android:drawableEnd="@drawable/ic_arrow_forward_24dp"
+            style="@style/TextComponent.ItemRow.Selectable"/>
+
+        <TextView
+            android:id="@+id/main.button.calc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_game_fast_calc"
+            android:textAppearance="@style/TextAppearance.Item"
+            android:drawableRight="@drawable/ic_arrow_forward_24dp"
+            android:drawableEnd="@drawable/ic_arrow_forward_24dp"
+            style="@style/TextComponent.ItemRow.Selectable"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/title_score"
             android:textAppearance="@style/TextAppearance.Header"
             android:paddingRight="8dp"
@@ -43,35 +72,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/action_next_badge"
-            android:textAppearance="@style/TextAppearance.Item"
-            android:drawableRight="@drawable/ic_arrow_forward_24dp"
-            android:drawableEnd="@drawable/ic_arrow_forward_24dp"
-            style="@style/TextComponent.ItemRow.Selectable"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_practice"
-            android:textAppearance="@style/TextAppearance.Header"
-            android:paddingRight="8dp"
-            android:paddingLeft="8dp"
-            style="@style/TextComponent.ItemRow"/>
-
-        <TextView
-            android:id="@+id/main.button.puzzle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/action_game_puzzle"
-            android:textAppearance="@style/TextAppearance.Item"
-            android:drawableRight="@drawable/ic_arrow_forward_24dp"
-            android:drawableEnd="@drawable/ic_arrow_forward_24dp"
-            style="@style/TextComponent.ItemRow.Selectable"/>
-
-        <TextView
-            android:id="@+id/main.button.calc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/action_game_fast_calc"
             android:textAppearance="@style/TextAppearance.Item"
             android:drawableRight="@drawable/ic_arrow_forward_24dp"
             android:drawableEnd="@drawable/ic_arrow_forward_24dp"
