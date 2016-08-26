@@ -64,8 +64,8 @@
             android:parentActivityName=".activities.DashboardActivity">
         </activity>
         <activity
-            android:name=".activities.PointsChartActivity"
-            android:label="@string/title_score_graph"
+            android:name=".activities.DressUpActivity"
+            android:label="@string/title_dress_up"
             android:parentActivityName=".activities.DashboardActivity">
         </activity>
         <meta-data
