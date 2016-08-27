@@ -9,7 +9,7 @@
         android:name=".helpers.LeliMathApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
@@ -66,7 +66,9 @@
         <activity
             android:name=".activities.DressUpActivity"
             android:label="@string/title_dress_up"
-            android:parentActivityName=".activities.DashboardActivity">
+            android:parentActivityName=".activities.DashboardActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen">
         </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
