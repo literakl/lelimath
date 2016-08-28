@@ -51,7 +51,7 @@
             android:id="@+id/main.button.points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/action_points"
+            android:text="@string/action_dress_up"
             android:textAppearance="@style/TextAppearance.Item"
             android:drawableRight="@drawable/ic_arrow_forward_24dp"
             android:drawableEnd="@drawable/ic_arrow_forward_24dp"

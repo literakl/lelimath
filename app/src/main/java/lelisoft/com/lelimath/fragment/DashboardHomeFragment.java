@@ -31,9 +31,9 @@ import java.util.Map;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.BadgeAwardActivity;
 import lelisoft.com.lelimath.activities.CalcActivity;
+import lelisoft.com.lelimath.activities.DressUpActivity;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.activities.InformationActivity;
-import lelisoft.com.lelimath.activities.PointsChartActivity;
 import lelisoft.com.lelimath.activities.PuzzleActivity;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
@@ -96,7 +96,7 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         button = (TextView) activity.findViewById(R.id.main_button_points);
         button.setOnClickListener(this);
         Resources resources = LeliMathApp.getInstance().getResources();
-        button.setText(resources.getString(R.string.action_points, points));
+        button.setText(resources.getString(R.string.action_dress_up, points));
         button = (TextView) activity.findViewById(R.id.main_button_badges);
         button.setOnClickListener(this);
         button.setText(resources.getString(R.string.action_badges, badgesCount.gold, badgesCount.silver, badgesCount.bronze));
@@ -131,7 +131,8 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
                 break;
 
             case R.id.main_button_points:
-                PointsChartActivity.start(activity);
+                DressUpActivity.start(activity);
+//                PointsChartActivity.start(activity);
                 break;
 
             case R.id.main_button_badges:
