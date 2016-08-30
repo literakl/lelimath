@@ -34,7 +34,7 @@ public class PictureFragment extends Fragment implements View.OnClickListener {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         log.debug("onCreateView()");
-        return inflater.inflate(R.layout.fragment_picture, container, false);
+        return inflater.inflate(R.layout.frg_picture, container, false);
     }
 
     @Override

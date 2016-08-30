@@ -25,7 +25,7 @@ public class InformationActivity extends AppCompatActivity implements View.OnCli
     public void onCreate(Bundle savedInstanceState) {
         log.debug("onCreate()");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_information);
+        setContentView(R.layout.act_information);
         TextView button = (TextView) findViewById(R.id.main_button_blog);
         button.setOnClickListener(this);
         button = (TextView) findViewById(R.id.main_button_bugtracker);

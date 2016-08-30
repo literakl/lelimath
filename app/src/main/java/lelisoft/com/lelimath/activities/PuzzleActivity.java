@@ -37,7 +37,7 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
         log.debug("onCreate()");
         super.onCreate(state);
 
-        setContentView(R.layout.activity_puzzle);
+        setContentView(R.layout.act_puzzle);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarPuzzle);
         if (toolbar != null) {
             setSupportActionBar(toolbar);

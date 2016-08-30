@@ -69,7 +69,7 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log.debug("onCreateView()");
-        return inflater.inflate(R.layout.fragment_dashboard_home, container, false);
+        return inflater.inflate(R.layout.frg_dashboard_home, container, false);
     }
 
     @Override

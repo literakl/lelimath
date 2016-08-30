@@ -58,7 +58,7 @@ public class PuzzleFragment extends LeliBaseFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         log.debug("onCreateView()");
-        return inflater.inflate(R.layout.fragment_puzzle, container, false);
+        return inflater.inflate(R.layout.frg_puzzle, container, false);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class PuzzleFragment extends LeliBaseFragment {
 
     @NonNull
     private AppCompatButton inflateButton(Tile tile, LayoutInflater inflater) {
-        AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.template_puzzle_tile, puzzleGrid, false);
+        AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.tmpl_puzzle_tile, puzzleGrid, false);
         button.setBackgroundResource((tile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
         button.setOnClickListener(clickHandler);
         button.setText(tile.getText());
@@ -254,7 +254,7 @@ public class PuzzleFragment extends LeliBaseFragment {
             puzzleGrid.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.template_puzzle_tile, puzzleGrid, false);
+            AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.tmpl_puzzle_tile, puzzleGrid, false);
             button.setText(logic.getSampleFormula());
             button.measure(500, 500);
             int tileWidth = button.getMeasuredWidth();

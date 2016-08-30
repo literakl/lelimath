@@ -20,7 +20,7 @@ public class DashboardActivity extends LeliBaseActivity implements DashboardHome
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.act_dashboard);
 
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         collapsingToolbarLayout.setTitle(getString(R.string.app_name));

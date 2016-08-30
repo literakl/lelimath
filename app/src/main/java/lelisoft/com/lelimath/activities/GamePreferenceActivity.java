@@ -91,7 +91,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         super.onPostCreate(savedInstanceState);
 
         ViewGroup root = (ViewGroup) findViewById(android.R.id.list).getParent().getParent().getParent();
-        AppBarLayout appBar = (AppBarLayout) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+        AppBarLayout appBar = (AppBarLayout) LayoutInflater.from(this).inflate(R.layout.act_settings_toolbar, root, false);
         root.addView(appBar, 0);
 
         Toolbar toolbar = (Toolbar) appBar.getChildAt(0);
@@ -237,7 +237,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
     public void setUpNestedScreen(PreferenceScreen preferenceScreen) {
         final Dialog dialog = preferenceScreen.getDialog();
         LinearLayout root = (LinearLayout) dialog.findViewById(android.R.id.list).getParent();
-        AppBarLayout appBar = (AppBarLayout) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+        AppBarLayout appBar = (AppBarLayout) LayoutInflater.from(this).inflate(R.layout.act_settings_toolbar, root, false);
         root.addView(appBar, 0);
 
         View listRoot = dialog.findViewById(android.R.id.list);

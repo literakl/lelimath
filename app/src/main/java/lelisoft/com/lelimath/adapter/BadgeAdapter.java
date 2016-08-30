@@ -43,7 +43,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
     @Override
     public BadgeAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.template_list_badge, viewGroup, false);
+                .inflate(R.layout.tmpl_list_badge, viewGroup, false);
 
         final ViewHolder viewHolder = new ViewHolder(itemView);
         itemView.setOnClickListener(new View.OnClickListener() {

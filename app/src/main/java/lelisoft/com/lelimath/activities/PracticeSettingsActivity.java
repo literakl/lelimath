@@ -25,7 +25,7 @@ public class PracticeSettingsActivity extends LeliBaseActivity implements Practi
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(R.layout.activity_practice_settings);
+        setContentView(R.layout.act_practice_settings);
         simpleSettings = new PracticeSimpleSettingsFragment();
         advancedSettings = new PracticeAdvancedSettingsFragment();
 

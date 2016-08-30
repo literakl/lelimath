@@ -39,7 +39,7 @@ public class BadgeListFragment extends LeliBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log.debug("onCreateView()");
-        recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_dashboard_badges, container, false);
+        recyclerView = (RecyclerView) inflater.inflate(R.layout.frg_dashboard_badges, container, false);
         activity = getActivity();
         List<BadgeView> records = fetchBadgeViews();
         adapter = new BadgeAdapter(records);

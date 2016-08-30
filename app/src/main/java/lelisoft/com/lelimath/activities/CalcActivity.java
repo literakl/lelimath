@@ -38,7 +38,7 @@ public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcB
         log.debug("onCreate()");
         super.onCreate(state);
 
-        setContentView(R.layout.activity_calc);
+        setContentView(R.layout.act_calc);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
         if (toolbar != null) {
             setSupportActionBar(toolbar);

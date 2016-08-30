@@ -31,7 +31,7 @@ public class BadgeAwardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(R.layout.activity_badge_award);
+        setContentView(R.layout.act_badge_award);
         TextView titleView = (TextView) findViewById(R.id.badge_title);
         TextView descView = (TextView) findViewById(R.id.badge_description);
         TextView progressCaptionView = (TextView) findViewById(R.id.badge_progress_caption);
@@ -56,12 +56,12 @@ public class BadgeAwardActivity extends AppCompatActivity {
         }
 
         if (awards.isEmpty()) {
-            TextView view = (TextView) getLayoutInflater().inflate(R.layout.template_earned_badge, earnedView, false);
+            TextView view = (TextView) getLayoutInflater().inflate(R.layout.tmpl_earned_badge, earnedView, false);
             view.setText(getText(R.string.message_badge_not_awarded));
             earnedView.addView(view);
         } else {
             for (BadgeAward badgeAward : awards) {
-                TextView view = (TextView) getLayoutInflater().inflate(R.layout.template_earned_badge, earnedView, false);
+                TextView view = (TextView) getLayoutInflater().inflate(R.layout.tmpl_earned_badge, earnedView, false);
                 view.setText(Misc.format(badgeAward.getDate(), getApplicationContext()));
                 earnedView.addView(view);
             }

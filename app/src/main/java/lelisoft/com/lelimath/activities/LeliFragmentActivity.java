@@ -21,7 +21,7 @@ public abstract class LeliFragmentActivity extends LeliBaseActivity {
         log.debug("onCreate()");
         super.onCreate(state);
 
-        setContentView(R.layout.activity_with_fragment);
+        setContentView(R.layout.act_with_fragment);
         if (state == null) {
             loadFragment(null);
         } else {

@@ -84,15 +84,15 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         switch (viewType) {
             case 1: {
-                View itemView = inflater.inflate(R.layout.template_list_formula_record, viewGroup, false);
+                View itemView = inflater.inflate(R.layout.tmpl_list_formula_record, viewGroup, false);
                 return new PlayRecordViewHolder(itemView);
             }
             case 0: {
-                View itemView = inflater.inflate(R.layout.template_list_date_header, viewGroup, false);
+                View itemView = inflater.inflate(R.layout.tmpl_list_date_header, viewGroup, false);
                 return new SectionViewHolder(itemView);
             }
             default: {
-                View itemView = inflater.inflate(R.layout.template_list_badge_journal, viewGroup, false);
+                View itemView = inflater.inflate(R.layout.tmpl_list_badge_journal, viewGroup, false);
                 final BadgeViewHolder viewHolder = new BadgeViewHolder(itemView);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

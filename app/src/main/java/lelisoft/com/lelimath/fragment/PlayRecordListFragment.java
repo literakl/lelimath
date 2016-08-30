@@ -32,7 +32,7 @@ public class PlayRecordListFragment extends LeliBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log.debug("onCreateView()");
-        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_dashboard_log, container, false);
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.frg_dashboard_log, container, false);
         FragmentActivity activity = getActivity();
 
         PlayRecordProvider recordsProvider = new PlayRecordProvider(activity);

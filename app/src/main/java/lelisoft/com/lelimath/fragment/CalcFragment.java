@@ -65,7 +65,7 @@ public class CalcFragment extends LeliBaseFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         log.debug("onCreateView()");
-        return inflater.inflate(R.layout.fragment_calc, container, false);
+        return inflater.inflate(R.layout.frg_calc, container, false);
     }
 
     @Override
@@ -226,12 +226,12 @@ public class CalcFragment extends LeliBaseFragment {
         TextView view = getUnknownWidget(formula);
         LinearLayout parent = (LinearLayout) view.getParent();
         if (unknown == null) {
-            replaceView((TextView) parent.getChildAt(4), R.layout.template_value, parent);
+            replaceView((TextView) parent.getChildAt(4), R.layout.tmpl_value, parent);
         } else if (unknown.getId() != view.getId()) {
-            replaceView(unknown, R.layout.template_value, parent);
+            replaceView(unknown, R.layout.tmpl_value, parent);
         }
 
-        unknown = replaceView(view, R.layout.template_unknown_value, parent);
+        unknown = replaceView(view, R.layout.tmpl_unknown_value, parent);
         unknown.setText(formula.getUserInput());
 
         if (unknown.getId() != R.id.operandFirst) {
