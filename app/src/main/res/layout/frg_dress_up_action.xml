@@ -10,24 +10,14 @@
         android:layout_weight="2"
         >
         <TextView
+            android:id="@+id/header.points.count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
-            android:id="@+id/textView" />
+            />
     </LinearLayout>
 
-    <!--
-        <ImageView
-            android:id="@+id/figureView"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/default_gap"
-            android:layout_marginBottom="@dimen/default_gap"
-            android:src="@drawable/amelia"
-            />
-    -->
     <lelisoft.com.lelimath.gui.FigureView
         android:id="@+id/figureView"
         android:layout_width="0px"

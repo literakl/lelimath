@@ -6,21 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import lelisoft.com.lelimath.view.DressPart;
 import lelisoft.com.lelimath.view.Figure;
@@ -38,7 +29,6 @@ public class FigureView extends View {
     Bitmap canvasBitmap;
     Paint canvasPaint;
     Rect scaledRect = new Rect();
-    Target target;
     Figure figure;
 
     public FigureView(Context context) {
@@ -79,7 +69,6 @@ public class FigureView extends View {
         this.h = h;
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
-//        drawCanvas.drawColor(Color.WHITE);
     }
 
     @Override
@@ -112,18 +101,7 @@ public class FigureView extends View {
     }
 
     private void setupResources() {
-        target = new LoadPictureTarget();
-        Picasso.with(getContext()).load("file:///android_asset/amalka.png").into(target);
         canvasPaint = new Paint(Paint.DITHER_FLAG);
-
-        try {
-            Gson gson = new Gson();
-            InputStream is = getContext().getAssets().open("dress_up.json");
-            InputStreamReader reader = new InputStreamReader(is);
-            figure = gson.fromJson(reader, Figure.class);
-        } catch (IOException e) {
-            log.error("Failed to read JSON asset", e);
-        }
     }
 
     @Override
@@ -141,24 +119,11 @@ public class FigureView extends View {
         destroyDrawingCache();
     }
 
-    class LoadPictureTarget implements Target {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            log.debug("Loaded figure bitmap {} x {}", bitmap.getWidth(), bitmap.getHeight());
-            baseBitmap = bitmap;
-            invalidate();
-            target = null;
-        }
+    public void setBitmap(Bitmap bitmap) {
+        this.baseBitmap = bitmap;
+    }
 
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
-            log.debug("onBitmapFailed");
-            target = null;
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-            log.debug("onPrepareLoad");
-        }
+    public void setFigure(Figure figure) {
+        this.figure = figure;
     }
 }
