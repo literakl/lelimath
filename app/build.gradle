@@ -80,5 +80,6 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.6@aar') {
         transitive = true;
     }
-    compile 'com.pavelsikun:material-seekbar-preference:2.3.0+'
+    compile 'com.pavelsikun:material-seekbar-preference:2.3.0'
+    compile 'com.google.code.gson:gson:2.4';
 }
