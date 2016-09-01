@@ -13,6 +13,8 @@ import android.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
+
 import lelisoft.com.lelimath.view.DressPart;
 import lelisoft.com.lelimath.view.Figure;
 
@@ -30,6 +32,8 @@ public class FigureView extends View {
     Paint canvasPaint;
     Rect scaledRect = new Rect();
     Figure figure;
+    Set<String> displayedParts;
+    boolean takeScreenshot;
 
     public FigureView(Context context) {
         super(context);
@@ -80,10 +84,15 @@ public class FigureView extends View {
             int sw = (int) (scale * figure.getW());
             int x = ((w - sw) >> 1);
             figure.setX(x);
+
             paintDressPart(canvas, figure, figure.getMain());
-            paintDressPart(canvas, figure, figure.getParts()[0]);
-            paintDressPart(canvas, figure, figure.getParts()[1]);
-            paintDressPart(canvas, figure, figure.getParts()[2]);
+            if (displayedParts != null) {
+                for (DressPart dressPart : figure.getParts()) {
+                    if (displayedParts.contains(dressPart.getId())) {
+                        paintDressPart(canvas, figure, dressPart);
+                    }
+                }
+            }
         }
     }
 
@@ -102,6 +111,11 @@ public class FigureView extends View {
 
     private void setupResources() {
         canvasPaint = new Paint(Paint.DITHER_FLAG);
+    }
+
+    public void displayParts(Set<String> parts, boolean takeScreenshot) {
+        this.displayedParts = parts;
+        this.takeScreenshot = takeScreenshot;
     }
 
     @Override

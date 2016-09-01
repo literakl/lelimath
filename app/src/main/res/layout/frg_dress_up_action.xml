@@ -11,11 +11,12 @@
         >
         <TextView
             android:id="@+id/header.points.count"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            />
+            android:text="@string/title_available_points"
+            android:layout_marginTop="16dp"
+            android:textAlignment="center" />
     </LinearLayout>
 
     <lelisoft.com.lelimath.gui.FigureView

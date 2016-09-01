@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -22,6 +23,7 @@ import java.io.InputStreamReader;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.gui.FigureView;
 import lelisoft.com.lelimath.helpers.Metrics;
+import lelisoft.com.lelimath.provider.PlayRecordProvider;
 import lelisoft.com.lelimath.view.Figure;
 
 /**
@@ -40,6 +42,10 @@ public class DressFigureFragment extends LeliBaseFragment {
         log.debug("onCreateView()");
         View view = inflater.inflate(R.layout.frg_dress_up_action, container, false);
         figureView = (FigureView) view.findViewById(R.id.figureView);
+        TextView textView = (TextView) view.findViewById(R.id.header_points_count);
+        PlayRecordProvider provider = new PlayRecordProvider(getContext());
+        int points = provider.getPoints();
+        textView.setText(getString(R.string.title_available_points, points));
         setupResources();
         return view;
     }
