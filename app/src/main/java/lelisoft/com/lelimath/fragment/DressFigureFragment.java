@@ -14,15 +14,21 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.Set;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.DressPartAdapter;
+import lelisoft.com.lelimath.event.DressPartSelectedEvent;
 import lelisoft.com.lelimath.gui.FigureView;
 import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.view.Figure;
@@ -38,6 +44,7 @@ public class DressFigureFragment extends LeliBaseFragment {
     Figure figure;
     FigureView figureView;
     RecyclerView recyclerView;
+    Set<String> parts = new HashSet<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,6 +92,28 @@ public class DressFigureFragment extends LeliBaseFragment {
         } catch (IOException e) {
             log.error("Failed to read JSON asset", e);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDressPartSelected(DressPartSelectedEvent event) {
+        log.debug("onDressPartSelected");
+        if (! parts.remove(event.getPart().getId())) {
+            parts.add(event.getPart().getId());
+        }
+        figureView.displayParts(parts);
+        figureView.invalidate();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
     }
 
     class LoadPictureTarget implements Target {

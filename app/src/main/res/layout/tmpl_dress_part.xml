@@ -2,9 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="5dp"
     android:orientation="vertical"
-    tools:ignore="UseCompoundDrawables">
+    android:clickable="true"
+    android:background="?attr/selectableItemBackground"
+    tools:ignore="UseCompoundDrawables"
+    android:paddingLeft="20dp"
+    android:paddingTop="15dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="15dp">
 
     <ImageView
         android:id="@+id/part_image"
@@ -12,12 +17,12 @@
         android:layout_height="50dp">
     </ImageView>
 
-    <Button
+    <TextView
         android:id="@+id/part_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:textSize="12sp" >
-    </Button>
+    </TextView>
 
 </LinearLayout>

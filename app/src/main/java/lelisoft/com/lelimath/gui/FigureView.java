@@ -33,28 +33,23 @@ public class FigureView extends View {
     Rect scaledRect = new Rect();
     Figure figure;
     Set<String> displayedParts;
-    boolean takeScreenshot;
 
     public FigureView(Context context) {
         super(context);
-        log.debug("FigureView");
     }
 
     public FigureView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        log.debug("FigureView");
     }
 
     public FigureView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        log.debug("FigureView");
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressWarnings("unused")
     public FigureView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        log.debug("FigureView");
     }
 
     @Override
@@ -113,9 +108,8 @@ public class FigureView extends View {
         canvasPaint = new Paint(Paint.DITHER_FLAG);
     }
 
-    public void displayParts(Set<String> parts, boolean takeScreenshot) {
+    public void displayParts(Set<String> parts) {
         this.displayedParts = parts;
-        this.takeScreenshot = takeScreenshot;
     }
 
     @Override

@@ -4,13 +4,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.event.DressPartSelectedEvent;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.view.DressPart;
 
@@ -25,6 +27,8 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
         @Override
         public void onItemClick(View view, int position) {
             log.debug("onItemClick {}", position);
+            DressPart part = parts[position];
+            EventBus.getDefault().post(new DressPartSelectedEvent(part));
         }
     };
 
@@ -64,12 +68,12 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
      * This class simply holds view of an item in list
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
-        Button priceView;
+        TextView priceView;
         ImageView imageView;
 
         public ViewHolder(View view) {
             super(view);
-            priceView = (Button) view.findViewById(R.id.part_price);
+            priceView = (TextView) view.findViewById(R.id.part_price);
             imageView = (ImageView) view.findViewById(R.id.part_image);
         }
     }
