@@ -2,7 +2,6 @@ package lelisoft.com.lelimath.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,17 +31,12 @@ import lelisoft.com.lelimath.view.BadgeView;
 public class BadgeListFragment extends LeliBaseFragment {
     private static final Logger log = LoggerFactory.getLogger(BadgeListFragment.class);
 
-    RecyclerView recyclerView;
-    FragmentActivity activity;
-    BadgeAdapter adapter;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log.debug("onCreateView()");
-        recyclerView = (RecyclerView) inflater.inflate(R.layout.frg_dashboard_badges, container, false);
-        activity = getActivity();
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.frg_dashboard_badges, container, false);
         List<BadgeView> records = fetchBadgeViews();
-        adapter = new BadgeAdapter(records);
+        BadgeAdapter adapter = new BadgeAdapter(records);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         return recyclerView;

@@ -4,10 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -21,9 +22,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.adapter.DressPartAdapter;
 import lelisoft.com.lelimath.gui.FigureView;
 import lelisoft.com.lelimath.helpers.Metrics;
-import lelisoft.com.lelimath.provider.PlayRecordProvider;
 import lelisoft.com.lelimath.view.Figure;
 
 /**
@@ -36,16 +37,20 @@ public class DressFigureFragment extends LeliBaseFragment {
     Target target;
     Figure figure;
     FigureView figureView;
+    RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log.debug("onCreateView()");
         View view = inflater.inflate(R.layout.frg_dress_up_action, container, false);
-        figureView = (FigureView) view.findViewById(R.id.figureView);
-        TextView textView = (TextView) view.findViewById(R.id.header_points_count);
-        PlayRecordProvider provider = new PlayRecordProvider(getContext());
-        int points = provider.getPoints();
-        textView.setText(getString(R.string.title_available_points, points));
+        figureView = (FigureView) view.findViewById(R.id.figure_view);
+
+        recyclerView = (RecyclerView)view.findViewById(R.id.dress_parts_selection);
+        recyclerView.setHasFixedSize(true);
+        int columns = getResources().getInteger(R.integer.dress_parts_columns);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), columns);
+        recyclerView.setLayoutManager(layoutManager);
+
         setupResources();
         return view;
     }
@@ -73,6 +78,10 @@ public class DressFigureFragment extends LeliBaseFragment {
 
             target = new LoadPictureTarget();
             Picasso.with(getContext()).load(figure.getPath()).into(target);
+
+            DressPartAdapter adapter = new DressPartAdapter(figure.getParts());
+            recyclerView.setAdapter(adapter);
+            recyclerView.setHasFixedSize(true);
         } catch (IOException e) {
             log.error("Failed to read JSON asset", e);
         }

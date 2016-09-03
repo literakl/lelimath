@@ -15,13 +15,14 @@ public abstract class LeliFragmentActivity extends LeliBaseActivity {
     private static final Logger log = LoggerFactory.getLogger(LeliFragmentActivity.class);
 
     protected final String FRAGMENT_TAG = "main_fragment";
+    protected boolean withToolbar;
 
     @Override
     protected void onCreate(Bundle state) {
         log.debug("onCreate()");
         super.onCreate(state);
 
-        setContentView(R.layout.act_with_fragment);
+        setContentView(withToolbar ? R.layout.act_with_fragment_toolbar : R.layout.act_with_fragment);
         if (state == null) {
             loadFragment(null);
         } else {

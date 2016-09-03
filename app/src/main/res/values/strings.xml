@@ -49,6 +49,7 @@
     <string name="title_badge">Odznáček</string>
     <string name="title_dress_up">Oblékání</string>
     <string name="title_available_points">Bodů: <xliff:g id="points" example="10" >%s</xliff:g></string>
+    <string name="caption_price">Cena: <xliff:g id="points" example="10" >%s</xliff:g></string>
     <string name="caption_progress">Postup</string>
     <string name="caption_awarded">Získáno</string>
     <string name="caption_new">Nový</string>
