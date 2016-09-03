@@ -9,8 +9,8 @@ import java.io.Serializable;
  * Created by Leoš on 30.08.2016.
  */
 public class DressPart implements Serializable {
-    String  id;
-    String[] equivalents;
+    String  id, icon;
+    String[] alternatives;
     int price;
     int x, y, w, h, destX, destY;
 
@@ -49,6 +49,17 @@ public class DressPart implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * @return path to icon in parts selection
+     */
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     @SuppressWarnings("unused")
@@ -103,17 +114,19 @@ public class DressPart implements Serializable {
         return destX;
     }
 
+    @SuppressWarnings("unused")
     public void setDestX(int destX) {
         this.destX = destX;
-    }
-
-    public int getDestY() {
-        return destY;
     }
 
     /**
      * @return Y offset against 0,0 of complete picture
      */
+    public int getDestY() {
+        return destY;
+    }
+
+    @SuppressWarnings("unused")
     public void setDestY(int destY) {
         this.destY = destY;
     }
@@ -122,15 +135,22 @@ public class DressPart implements Serializable {
         return new Rect(x, y, x + w, y + h);
     }
 
-    public void setEquivalents(String[] equivalents) {
-        this.equivalents = equivalents;
+    public void setAlternatives(String[] alternatives) {
+        this.alternatives = alternatives;
     }
 
     /**
      * @return id of other DressParts that are mutually exclusive with this part
      */
     @SuppressWarnings("unused")
-    public String[] getEquivalents() {
-        return equivalents;
+    public String[] getAlternatives() {
+        return alternatives;
+    }
+
+    @Override
+    public String toString() {
+        return "DressPart{" +
+                "id='" + id + '\'' +
+                '}';
     }
 }

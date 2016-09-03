@@ -1,0 +1,149 @@
+{
+  "id": "Vilma",
+  "path" : "file:///android_asset/dress/vilma/hres/parts.png",
+  "w": 277,
+  "h": 789,
+  "main": {
+    "id": "main",
+    "price": 0,
+    "x": 1,
+    "y": 1,
+    "w": 278,
+    "h": 786,
+    "destX": 0,
+    "destY": 0
+  },
+  "parts": [
+    {
+      "id": "top",
+      "icon": "file:///android_asset/dress/vilma/hres/top.png",
+      "price": 50,
+      "alternatives": [],
+      "x": 289,
+      "y": 2,
+      "w": 116,
+      "h": 139,
+      "destX": 100,
+      "destY": 209
+    },
+    {
+      "id": "shoes",
+      "icon": "file:///android_asset/dress/vilma/hres/shoes.png",
+      "price": 100,
+      "x": 547,
+      "y": 737,
+      "w": 86,
+      "h": 45,
+      "destX": 113,
+      "destY": 746
+    },
+    {
+      "id": "skirt",
+      "icon": "file:///android_asset/dress/vilma/hres/skirt.png",
+      "price": 50,
+      "alternatives": [],
+      "x": 284,
+      "y": 158,
+      "w": 146,
+      "h": 127,
+      "destX": 84,
+      "destY": 328
+    },
+    {
+      "id": "trousers",
+      "icon": "file:///android_asset/dress/vilma/hres/trousers.png",
+      "price": 50,
+      "alternatives": [],
+      "x": 283,
+      "y": 309,
+      "w": 145,
+      "h": 376,
+      "destX": 84,
+      "destY": 328
+    },
+    {
+      "id": "belt",
+      "icon": "file:///android_asset/dress/vilma/hres/belt.png",
+      "price": 100,
+      "alternatives": [],
+      "x": 293,
+      "y": 710,
+      "w": 116,
+      "h": 29,
+      "destX": 97,
+      "destY": 326
+    },
+    {
+      "id": "tshirt",
+      "icon": "file:///android_asset/dress/vilma/hres/tshirt.png",
+      "price": 50,
+      "alternatives": [],
+      "x": 438,
+      "y": 3,
+      "w": 183,
+      "h": 194,
+      "destX": 78,
+      "destY": 158
+    },
+    {
+      "id": "blouse",
+      "icon": "file:///android_asset/dress/vilma/hres/blouse.png",
+      "price": 50,
+      "alternatives": [],
+      "x": 435,
+      "y": 217,
+      "w": 244,
+      "h": 263,
+      "destX": 37,
+      "destY": 155
+    },
+    {
+      "id": "charm",
+      "icon": "file:///android_asset/dress/vilma/hres/charm.png",
+      "price": 50,
+      "alternatives": [],
+      "x": 589,
+      "y": 665,
+      "w": 65,
+      "h": 57,
+      "destX": 125,
+      "destY": 152
+    },
+    {
+      "id": "glasses",
+      "icon": "file:///android_asset/dress/vilma/hres/glasses.png",
+      "price": 50,
+      "alternatives": [],
+      "x": 308,
+      "y": 753,
+      "w": 75,
+      "h": 27,
+      "destX": 120,
+      "destY": 88
+    },
+    {
+      "id": "scarf",
+      "icon": "file:///android_asset/dress/vilma/hres/scarf.png",
+      "price": 50,
+      "alternatives": [],
+      "x": 435,
+      "y": 706,
+      "w": 92,
+      "h": 75,
+      "destX": 116,
+      "destY": 131
+    },
+    {
+      "id": "vest",
+      "icon": "file:///android_asset/dress/vilma/hres/vest.png",
+      "price": 50,
+      "alternatives": [],
+      "x": 435,
+      "y": 495,
+      "w": 133,
+      "h": 198,
+      "destX": 92,
+      "destY": 163
+    }
+  ]
+}

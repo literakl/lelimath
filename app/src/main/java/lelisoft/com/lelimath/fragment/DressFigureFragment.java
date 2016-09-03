@@ -78,7 +78,7 @@ public class DressFigureFragment extends LeliBaseFragment {
     private void setupResources() {
         try {
             Gson gson = new Gson();
-            InputStream is = getContext().getAssets().open("dress_up.json");
+            InputStream is = getContext().getAssets().open("dress/default.json");
             InputStreamReader reader = new InputStreamReader(is);
             figure = gson.fromJson(reader, Figure.class);
             figureView.setFigure(figure);
@@ -86,7 +86,7 @@ public class DressFigureFragment extends LeliBaseFragment {
             target = new LoadPictureTarget();
             Picasso.with(getContext()).load(figure.getPath()).into(target);
 
-            DressPartAdapter adapter = new DressPartAdapter(figure.getParts());
+            DressPartAdapter adapter = new DressPartAdapter(getContext(), figure.getParts());
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);
         } catch (IOException e) {

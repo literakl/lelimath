@@ -20,8 +20,8 @@ public class DressUpTest extends TestCase {
         blondHair.setCoordinates(15, 0, 30, 50);
         DressPart greenHair = new DressPart("gh", 100);
         greenHair.setCoordinates(15, 0, 30, 50);
-        blondHair.setEquivalents(new String[] {greenHair.getId()});
-        greenHair.setEquivalents(new String[] {blondHair.getId()});
+        blondHair.setAlternatives(new String[] {greenHair.getId()});
+        greenHair.setAlternatives(new String[] {blondHair.getId()});
         DressPart skirt = new DressPart("sk", 100);
         skirt.setCoordinates(15, 0, 30, 50);
 
