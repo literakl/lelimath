@@ -78,7 +78,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         // it may go to AsyncTask to save some 100 ms but there is potentional synchronization issue
         setLastFormulaDate();
         BadgeAwardProvider provider = new BadgeAwardProvider(this);
-        badges = provider.getAll();
+        badges = new HashMap<>(provider.getAll());
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         soundEnabled = sharedPref.getBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, true);
