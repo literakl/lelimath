@@ -11,7 +11,13 @@
     <color name="gray_35">#ff232323</color>
     <color name="gray_46">#ff2e2e2e</color>
     <color name="gray_79">#ff4f4f4f</color>
+    <color name="gray_81">#CFCFCF</color>
+    <color name="gray_84">#D6D6D6</color>
     <color name="gray_215">#ffd7d4cc</color>
+    <color name="green_lime">#32CD32</color>
+    <color name="green_sap">#308014</color>
+    <color name="green_kelly">#4CBB17</color>
+    <color name="green_nerf">#49E20E</color>
     <color name="green_215">#f00fff00</color>
     <color name="transparent">#00000000</color>
     <color name="white">#ffffffff</color>

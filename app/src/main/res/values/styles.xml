@@ -63,7 +63,7 @@
     </style>
 
     <style name="FormulaUnknownValue" parent="@style/FormulaValue">
-        <item name="android:background">@drawable/unknown_box</item>
+        <item name="android:background">@drawable/bg_unknown_box</item>
     </style>
 
     <style name="FormulaEqualSign" parent="FormulaValue">
@@ -77,6 +77,18 @@
     <style name="PlayRecordTime" parent="@style/Base.TextAppearance.AppCompat.Caption">
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textColor">@color/gray_79</item>
+    </style>
+
+    <style name="DressPriceOK" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/bg_price_ok</item>
+    </style>
+
+    <style name="DressPriceDisabled" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/bg_price_disabled</item>
     </style>
 
     <style name="TextAppearance" parent="TextAppearance.AppCompat">

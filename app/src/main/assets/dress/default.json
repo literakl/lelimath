@@ -17,7 +17,7 @@
     {
       "id": "top",
       "icon": "file:///android_asset/dress/vilma/hres/top.png",
-      "price": 50,
+      "price": 60,
       "alternatives": [],
       "x": 289,
       "y": 2,
@@ -29,7 +29,7 @@
     {
       "id": "shoes",
       "icon": "file:///android_asset/dress/vilma/hres/shoes.png",
-      "price": 100,
+      "price": 40,
       "x": 547,
       "y": 737,
       "w": 86,
@@ -40,7 +40,7 @@
     {
       "id": "skirt",
       "icon": "file:///android_asset/dress/vilma/hres/skirt.png",
-      "price": 50,
+      "price": 60,
       "alternatives": [],
       "x": 284,
       "y": 158,
@@ -50,9 +50,21 @@
       "destY": 328
     },
     {
+      "id": "tshirt",
+      "icon": "file:///android_asset/dress/vilma/hres/tshirt.png",
+      "price": 65,
+      "alternatives": [],
+      "x": 438,
+      "y": 3,
+      "w": 183,
+      "h": 194,
+      "destX": 78,
+      "destY": 158
+    },
+    {
       "id": "trousers",
       "icon": "file:///android_asset/dress/vilma/hres/trousers.png",
-      "price": 50,
+      "price": 90,
       "alternatives": [],
       "x": 283,
       "y": 309,
@@ -64,7 +76,7 @@
     {
       "id": "belt",
       "icon": "file:///android_asset/dress/vilma/hres/belt.png",
-      "price": 100,
+      "price": 35,
       "alternatives": [],
       "x": 293,
       "y": 710,
@@ -74,21 +86,9 @@
       "destY": 326
     },
     {
-      "id": "tshirt",
-      "icon": "file:///android_asset/dress/vilma/hres/tshirt.png",
-      "price": 50,
-      "alternatives": [],
-      "x": 438,
-      "y": 3,
-      "w": 183,
-      "h": 194,
-      "destX": 78,
-      "destY": 158
-    },
-    {
       "id": "blouse",
       "icon": "file:///android_asset/dress/vilma/hres/blouse.png",
-      "price": 50,
+      "price": 95,
       "alternatives": [],
       "x": 435,
       "y": 217,
@@ -100,7 +100,7 @@
     {
       "id": "charm",
       "icon": "file:///android_asset/dress/vilma/hres/charm.png",
-      "price": 50,
+      "price": 120,
       "alternatives": [],
       "x": 589,
       "y": 665,
@@ -112,7 +112,7 @@
     {
       "id": "glasses",
       "icon": "file:///android_asset/dress/vilma/hres/glasses.png",
-      "price": 50,
+      "price": 20,
       "alternatives": [],
       "x": 308,
       "y": 753,
@@ -124,7 +124,7 @@
     {
       "id": "scarf",
       "icon": "file:///android_asset/dress/vilma/hres/scarf.png",
-      "price": 50,
+      "price": 75,
       "alternatives": [],
       "x": 435,
       "y": 706,
@@ -136,7 +136,7 @@
     {
       "id": "vest",
       "icon": "file:///android_asset/dress/vilma/hres/vest.png",
-      "price": 50,
+      "price": 75,
       "alternatives": [],
       "x": 435,
       "y": 495,

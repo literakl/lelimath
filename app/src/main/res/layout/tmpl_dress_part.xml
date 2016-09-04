@@ -4,17 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:clickable="true"
+    android:padding="10dp"
     android:background="?attr/selectableItemBackground"
     tools:ignore="UseCompoundDrawables"
-    android:paddingLeft="20dp"
-    android:paddingTop="15dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="15dp">
+    >
 
     <ImageView
         android:id="@+id/part_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp">
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        tools:ignore="ContentDescription">
     </ImageView>
 
     <TextView
@@ -22,7 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:textSize="12sp" >
+        android:padding="12dp"
+        style="@style/DressPriceDisabled"
+        >
     </TextView>
-
 </LinearLayout>

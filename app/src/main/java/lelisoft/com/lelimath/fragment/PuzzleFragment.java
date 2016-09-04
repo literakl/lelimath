@@ -96,7 +96,7 @@ public class PuzzleFragment extends LeliBaseFragment {
     @NonNull
     private AppCompatButton inflateButton(Tile tile, LayoutInflater inflater) {
         AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.tmpl_puzzle_tile, puzzleGrid, false);
-        button.setBackgroundResource((tile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
+        button.setBackgroundResource((tile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
         button.setOnClickListener(clickHandler);
         button.setText(tile.getText());
         button.setTag(R.id.button_tile, tile);
@@ -149,7 +149,7 @@ public class PuzzleFragment extends LeliBaseFragment {
             startRecordingSpentTime();
 
             if (view == selectedButton) {
-                currentButton.setBackgroundResource((currentTile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
+                currentButton.setBackgroundResource((currentTile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
                 selectedButton = null;
             } else {
                 if (selectedButton != null) {
@@ -171,11 +171,11 @@ public class PuzzleFragment extends LeliBaseFragment {
                             LeliMathApp.getInstance().playSound(R.raw.correct);
 
                             currentButton.setText("");
-                            currentButton.setBackgroundResource(R.drawable.tile_solved);
+                            currentButton.setBackgroundResource(R.drawable.bg_tile_solved);
                             currentButton.setClickable(false);
 
                             selectedButton.setText("");
-                            selectedButton.setBackgroundResource(R.drawable.tile_solved);
+                            selectedButton.setBackgroundResource(R.drawable.bg_tile_solved);
                             selectedButton.setClickable(false);
                             selectedButton = null;
                         }
@@ -188,14 +188,14 @@ public class PuzzleFragment extends LeliBaseFragment {
                         }
                         LeliMathApp.getInstance().playSound(R.raw.incorrect);
 
-                        selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.tile_formula : R.drawable.tile_result);
+                        selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
                         selectedButton.startAnimation(shake);
                         selectedButton = null;
                         currentButton.startAnimation(shake);
                     }
                 } else {
                     selectedButton = currentButton;
-                    currentButton.setBackgroundResource(R.drawable.tile_selected);
+                    currentButton.setBackgroundResource(R.drawable.bg_tile_selected);
                 }
             }
         }
