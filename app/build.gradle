@@ -24,6 +24,7 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "lelisoft.com.lelimath"
+        resValue 'string', 'app_name', 'LeliMath DEV'
         minSdkVersion 16
         targetSdkVersion 24
         versionCode 250
@@ -36,9 +37,17 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+/*
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            zipAlignEnabled true
+*/
         }
 
         debug {
+            applicationIdSuffix ".debug"
+            resValue 'string', 'app_name', 'LeliMath DEV'
         }
     }
 //    productFlavors {
