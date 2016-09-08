@@ -40,6 +40,7 @@ import lelisoft.com.lelimath.view.Figure;
 public class DressFigureFragment extends LeliBaseFragment {
     private static final Logger log = LoggerFactory.getLogger(DressFigureFragment.class);
 
+    int balance;
     Target target;
     Figure figure;
     FigureView figureView;
@@ -86,7 +87,7 @@ public class DressFigureFragment extends LeliBaseFragment {
             target = new LoadPictureTarget();
             Picasso.with(getContext()).load(figure.getPath()).into(target);
 
-            DressPartAdapter adapter = new DressPartAdapter(getContext(), figure.getParts());
+            DressPartAdapter adapter = new DressPartAdapter(getContext(), figure.getParts(), balance);
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);
         } catch (IOException e) {
@@ -102,6 +103,10 @@ public class DressFigureFragment extends LeliBaseFragment {
         }
         figureView.displayParts(parts);
         figureView.invalidate();
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
     @Override

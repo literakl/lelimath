@@ -40,6 +40,7 @@ public class DressUpActivity extends LeliFragmentActivity {
         PlayRecordProvider provider = new PlayRecordProvider(this);
         int points = provider.getPoints();
         textView.setText(getString(R.string.title_available_points, points));
+        ((DressFigureFragment) currentFragment).setBalance(points);
     }
 
     @Override

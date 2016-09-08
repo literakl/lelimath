@@ -28,6 +28,7 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
 
     DressPart[] parts;
     Context context;
+    int balance;
 
     CustomItemClickListener listener = new CustomItemClickListener() {
         @Override
@@ -38,9 +39,10 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
         }
     };
 
-    public DressPartAdapter(Context context, DressPart[]parts) {
+    public DressPartAdapter(Context context, DressPart[] parts, int balance) {
         this.parts = parts;
         this.context = context;
+        this.balance = balance;
     }
 
     @Override
@@ -63,7 +65,7 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
     public void onBindViewHolder(DressPartAdapter.ViewHolder vh, int position) {
         DressPart dressPart = parts[position];
         vh.priceView.setText(LeliMathApp.resources.getString(R.string.caption_price, dressPart.getPrice()));
-        boolean enabled = dressPart.getPrice() < 60;
+        boolean enabled = dressPart.getPrice() <= balance;
         vh.itemView.setClickable(enabled);
         vh.priceView.setEnabled(enabled);
         Picasso.with(context).load(dressPart.getIcon()).into(vh.imageView);
