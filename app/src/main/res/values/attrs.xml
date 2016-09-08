@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="state_price_enabled" />
 
     <declare-styleable name="TileGroupLayoutLP">
         <attr name="android:layout_gravity" />

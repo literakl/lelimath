@@ -88,7 +88,7 @@
     <style name="DressPriceDisabled" parent="TextAppearance.AppCompat">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:background">@drawable/bg_price_disabled</item>
+        <item name="android:background">@drawable/bg_price</item>
     </style>
 
     <style name="TextAppearance" parent="TextAppearance.AppCompat">

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -16,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.event.DressPartSelectedEvent;
+import lelisoft.com.lelimath.gui.DressPartPriceView;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.view.DressPart;
 
@@ -63,6 +63,9 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
     public void onBindViewHolder(DressPartAdapter.ViewHolder vh, int position) {
         DressPart dressPart = parts[position];
         vh.priceView.setText(LeliMathApp.resources.getString(R.string.caption_price, dressPart.getPrice()));
+        boolean enabled = dressPart.getPrice() < 60;
+        vh.itemView.setClickable(enabled);
+        vh.priceView.setEnabled(enabled);
         Picasso.with(context).load(dressPart.getIcon()).into(vh.imageView);
     }
 
@@ -75,12 +78,12 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
      * This class simply holds view of an item in list
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView priceView;
+        DressPartPriceView priceView;
         ImageView imageView;
 
         public ViewHolder(View view) {
             super(view);
-            priceView = (TextView) view.findViewById(R.id.part_price);
+            priceView = (DressPartPriceView) view.findViewById(R.id.part_price);
             imageView = (ImageView) view.findViewById(R.id.part_image);
         }
     }
