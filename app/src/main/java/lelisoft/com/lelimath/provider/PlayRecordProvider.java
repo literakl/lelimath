@@ -231,7 +231,7 @@ public class PlayRecordProvider {
      */
     public int getPoints() {
         try {
-            String sql = "select coalesce(max(id),0) from play_record";
+            String sql = "select coalesce(sum(points), 0) from play_record";
             GenericRawResults<String[]> results = dao.queryRaw(sql);
             String[] result = results.getFirstResult();
             return Integer.parseInt(result[0]);
