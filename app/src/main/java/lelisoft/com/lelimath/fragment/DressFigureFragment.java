@@ -53,6 +53,7 @@ public class DressFigureFragment extends LeliBaseFragment {
     Figure figure;
     TextView balanceView;
     FigureView figureView;
+    DressPartAdapter adapter;
     RecyclerView recyclerView;
     SharedPreferences sharedPref;
     List<String> boughtParts = new ArrayList<>();
@@ -117,7 +118,7 @@ public class DressFigureFragment extends LeliBaseFragment {
             target = new LoadPictureTarget();
             Picasso.with(getContext()).load(figure.getPath()).into(target);
 
-            DressPartAdapter adapter = new DressPartAdapter(getContext(), availableParts, balance);
+            adapter = new DressPartAdapter(getContext(), availableParts, balance);
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);
         } catch (IOException e) {
@@ -129,6 +130,8 @@ public class DressFigureFragment extends LeliBaseFragment {
     public void onDressPartSelected(DressPartSelectedEvent event) {
         log.debug("onDressPartSelected");
         availableParts.remove(event.getPart());
+        adapter.notifyItemRemoved(event.getPosition());
+
         boughtParts.add(event.getPart().getId());
         figureView.displayParts(boughtParts);
         figureView.invalidate();

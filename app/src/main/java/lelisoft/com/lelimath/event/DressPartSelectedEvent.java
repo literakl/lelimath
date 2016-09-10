@@ -8,13 +8,19 @@ import lelisoft.com.lelimath.view.DressPart;
  */
 public class DressPartSelectedEvent {
     DressPart part;
+    int position;
 
-    public DressPartSelectedEvent(DressPart part) {
+    public DressPartSelectedEvent(DressPart part, int position) {
         this.part = part;
+        this.position = position;
     }
 
     public DressPart getPart() {
         return part;
+    }
+
+    public int getPosition() {
+        return position;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
         public void onItemClick(View view, int position) {
             log.debug("onItemClick {}", position);
             DressPart part = parts.get(position);
-            EventBus.getDefault().post(new DressPartSelectedEvent(part));
+            EventBus.getDefault().post(new DressPartSelectedEvent(part, position));
         }
     };
 
