@@ -1,19 +1,17 @@
 package lelisoft.com.lelimath.gui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Set;
+import java.util.List;
 
 import lelisoft.com.lelimath.view.DressPart;
 import lelisoft.com.lelimath.view.Figure;
@@ -32,24 +30,10 @@ public class FigureView extends View {
     Paint canvasPaint;
     Rect scaledRect = new Rect();
     Figure figure;
-    Set<String> displayedParts;
-
-    public FigureView(Context context) {
-        super(context);
-    }
+    List<String> displayedParts;
 
     public FigureView(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public FigureView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @SuppressWarnings("unused")
-    public FigureView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
@@ -108,7 +92,7 @@ public class FigureView extends View {
         canvasPaint = new Paint(Paint.DITHER_FLAG);
     }
 
-    public void displayParts(Set<String> parts) {
+    public void displayParts(List<String> parts) {
         this.displayedParts = parts;
     }
 

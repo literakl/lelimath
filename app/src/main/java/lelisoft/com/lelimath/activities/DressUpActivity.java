@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.fragment.DressFigureFragment;
-import lelisoft.com.lelimath.provider.PlayRecordProvider;
 
 /**
  * Display list of figures, their current dress and alow user to buy new items.
@@ -37,10 +36,7 @@ public class DressUpActivity extends LeliFragmentActivity {
         textView.setTextSize(14);
         Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Gravity.CENTER_HORIZONTAL);
         toolbar.addView(textView, layoutParams);
-        PlayRecordProvider provider = new PlayRecordProvider(this);
-        int points = provider.getPoints();
-        textView.setText(getString(R.string.title_available_points, points));
-        ((DressFigureFragment) currentFragment).setBalance(points);
+        ((DressFigureFragment) currentFragment).setBalanceView(textView);
     }
 
     @Override

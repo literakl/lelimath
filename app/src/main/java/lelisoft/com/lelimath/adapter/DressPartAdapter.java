@@ -13,6 +13,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.event.DressPartSelectedEvent;
 import lelisoft.com.lelimath.gui.DressPartPriceView;
@@ -26,7 +28,7 @@ import lelisoft.com.lelimath.view.DressPart;
 public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.ViewHolder> {
     private static final Logger log = LoggerFactory.getLogger(DressPartAdapter.class);
 
-    DressPart[] parts;
+    List<DressPart> parts;
     Context context;
     int balance;
 
@@ -34,12 +36,12 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
         @Override
         public void onItemClick(View view, int position) {
             log.debug("onItemClick {}", position);
-            DressPart part = parts[position];
+            DressPart part = parts.get(position);
             EventBus.getDefault().post(new DressPartSelectedEvent(part));
         }
     };
 
-    public DressPartAdapter(Context context, DressPart[] parts, int balance) {
+    public DressPartAdapter(Context context, List<DressPart> parts, int balance) {
         this.parts = parts;
         this.context = context;
         this.balance = balance;
@@ -63,7 +65,7 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
 
     @Override
     public void onBindViewHolder(DressPartAdapter.ViewHolder vh, int position) {
-        DressPart dressPart = parts[position];
+        DressPart dressPart = parts.get(position);
         vh.priceView.setText(LeliMathApp.resources.getString(R.string.caption_price, dressPart.getPrice()));
         boolean enabled = dressPart.getPrice() <= balance;
         vh.itemView.setClickable(enabled);
@@ -73,7 +75,7 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
 
     @Override
     public int getItemCount() {
-        return parts.length;
+        return parts.size();
     }
 
     /**

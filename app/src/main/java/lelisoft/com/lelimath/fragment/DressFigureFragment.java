@@ -1,14 +1,17 @@
 package lelisoft.com.lelimath.fragment;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -23,14 +26,17 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.DressPartAdapter;
 import lelisoft.com.lelimath.event.DressPartSelectedEvent;
 import lelisoft.com.lelimath.gui.FigureView;
 import lelisoft.com.lelimath.helpers.Metrics;
+import lelisoft.com.lelimath.provider.PlayRecordProvider;
+import lelisoft.com.lelimath.view.DressPart;
 import lelisoft.com.lelimath.view.Figure;
 
 /**
@@ -40,18 +46,28 @@ import lelisoft.com.lelimath.view.Figure;
 public class DressFigureFragment extends LeliBaseFragment {
     private static final Logger log = LoggerFactory.getLogger(DressFigureFragment.class);
 
+    public static final String KEY_BOUGHT_PARTS = "bought.parts.";
+
     int balance;
     Target target;
     Figure figure;
+    TextView balanceView;
     FigureView figureView;
     RecyclerView recyclerView;
-    Set<String> parts = new HashSet<>();
+    SharedPreferences sharedPref;
+    List<String> boughtParts = new ArrayList<>();
+    List<DressPart> availableParts = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log.debug("onCreateView()");
         View view = inflater.inflate(R.layout.frg_dress_up_action, container, false);
         figureView = (FigureView) view.findViewById(R.id.figure_view);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        PlayRecordProvider provider = new PlayRecordProvider(getContext());
+        balance = provider.getPoints();balance = 500;
+        balanceView.setText(getString(R.string.title_available_points, balance));
 
         recyclerView = (RecyclerView)view.findViewById(R.id.dress_parts_selection);
         recyclerView.setHasFixedSize(true);
@@ -84,10 +100,24 @@ public class DressFigureFragment extends LeliBaseFragment {
             figure = gson.fromJson(reader, Figure.class);
             figureView.setFigure(figure);
 
+            String values = sharedPref.getString(KEY_BOUGHT_PARTS, "");
+            StringTokenizer stk = new StringTokenizer(values, ",");
+            while (stk.hasMoreTokens()) {
+                boughtParts.add(stk.nextToken());
+            }
+
+            availableParts = new ArrayList<>();
+            for (int i = 0; i < figure.getParts().length; i++) {
+                DressPart part = figure.getParts()[i];
+                if (! boughtParts.contains(part.getId())) {
+                    availableParts.add(part);
+                }
+            }
+
             target = new LoadPictureTarget();
             Picasso.with(getContext()).load(figure.getPath()).into(target);
 
-            DressPartAdapter adapter = new DressPartAdapter(getContext(), figure.getParts(), balance);
+            DressPartAdapter adapter = new DressPartAdapter(getContext(), availableParts, balance);
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(true);
         } catch (IOException e) {
@@ -98,15 +128,10 @@ public class DressFigureFragment extends LeliBaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDressPartSelected(DressPartSelectedEvent event) {
         log.debug("onDressPartSelected");
-        if (! parts.remove(event.getPart().getId())) {
-            parts.add(event.getPart().getId());
-        }
-        figureView.displayParts(parts);
+        availableParts.remove(event.getPart());
+        boughtParts.add(event.getPart().getId());
+        figureView.displayParts(boughtParts);
         figureView.invalidate();
-    }
-
-    public void setBalance(int balance) {
-        this.balance = balance;
     }
 
     @Override
@@ -119,6 +144,10 @@ public class DressFigureFragment extends LeliBaseFragment {
     public void onPause() {
         EventBus.getDefault().unregister(this);
         super.onPause();
+    }
+
+    public void setBalanceView(TextView balanceView) {
+        this.balanceView = balanceView;
     }
 
     class LoadPictureTarget implements Target {
