@@ -19,6 +19,7 @@ public class BalanceHelper {
     public static final String KEY_POINTS_BALANCE = "points.balance";
 
     SharedPreferences sharedPref;
+    boolean readOnly;
     int balance;
 
     public BalanceHelper(Context context) {
@@ -41,12 +42,23 @@ public class BalanceHelper {
      */
     public int add(int points) {
         balance += points;
-/*TODO
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(KEY_POINTS_BALANCE, balance);
-        editor.apply();
-*/
+        if (! readOnly) {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt(KEY_POINTS_BALANCE, balance);
+            editor.apply();
+        }
         return balance;
+    }
+
+    /**
+     * For debugging purposes only
+     * @param readOnly changes will be not persisted
+     * @param balance new balance
+     */
+    @SuppressWarnings("unused")
+    public void setDeveloperMode(boolean readOnly, int balance) {
+        this.readOnly = readOnly;
+        this.balance = balance;
     }
 
     private void initializeBalance(Context context) {
