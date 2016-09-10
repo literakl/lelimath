@@ -78,6 +78,10 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
         return parts.size();
     }
 
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
     /**
      * This class simply holds view of an item in list
      */

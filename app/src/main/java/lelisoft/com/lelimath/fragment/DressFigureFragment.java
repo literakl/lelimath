@@ -34,8 +34,9 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.DressPartAdapter;
 import lelisoft.com.lelimath.event.DressPartSelectedEvent;
 import lelisoft.com.lelimath.gui.FigureView;
+import lelisoft.com.lelimath.helpers.BalanceHelper;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
-import lelisoft.com.lelimath.provider.PlayRecordProvider;
 import lelisoft.com.lelimath.view.DressPart;
 import lelisoft.com.lelimath.view.Figure;
 
@@ -48,13 +49,13 @@ public class DressFigureFragment extends LeliBaseFragment {
 
     public static final String KEY_BOUGHT_PARTS = "bought.parts.";
 
-    int balance;
     Target target;
     Figure figure;
     TextView balanceView;
     FigureView figureView;
     DressPartAdapter adapter;
     RecyclerView recyclerView;
+    BalanceHelper balanceHelper;
     SharedPreferences sharedPref;
     List<String> boughtParts = new ArrayList<>();
     List<DressPart> availableParts = new ArrayList<>();
@@ -66,8 +67,8 @@ public class DressFigureFragment extends LeliBaseFragment {
         figureView = (FigureView) view.findViewById(R.id.figure_view);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        PlayRecordProvider provider = new PlayRecordProvider(getContext());
-        balance = provider.getPoints();balance = 500;
+        balanceHelper = LeliMathApp.getBalanceHelper();
+        int balance = balanceHelper.getBalance();
         balanceView.setText(getString(R.string.title_available_points, balance));
 
         recyclerView = (RecyclerView)view.findViewById(R.id.dress_parts_selection);
@@ -76,7 +77,7 @@ public class DressFigureFragment extends LeliBaseFragment {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), columns);
         recyclerView.setLayoutManager(layoutManager);
 
-        setupResources();
+        setupResources(balance);
         return view;
     }
 
@@ -93,7 +94,7 @@ public class DressFigureFragment extends LeliBaseFragment {
         Metrics.saveContentDisplayed("dress", "figure");
     }
 
-    private void setupResources() {
+    private void setupResources(int balance) {
         try {
             Gson gson = new Gson();
             InputStream is = getContext().getAssets().open("dress/default.json");
@@ -129,12 +130,16 @@ public class DressFigureFragment extends LeliBaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDressPartSelected(DressPartSelectedEvent event) {
         log.debug("onDressPartSelected");
+        int balance = balanceHelper.add(-1 * event.getPart().getPrice());
         availableParts.remove(event.getPart());
-        adapter.notifyItemRemoved(event.getPosition());
+        adapter.setBalance(balance);
+        adapter.notifyDataSetChanged();
 
         boughtParts.add(event.getPart().getId());
         figureView.displayParts(boughtParts);
         figureView.invalidate();
+
+        balanceView.setText(getString(R.string.title_available_points, balance));
     }
 
     @Override

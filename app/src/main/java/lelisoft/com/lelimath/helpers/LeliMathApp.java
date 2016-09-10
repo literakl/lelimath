@@ -13,12 +13,10 @@ import android.preference.PreferenceManager;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
 
 import io.fabric.sdk.android.Fabric;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +28,6 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
-import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.DatabaseHelper;
 import lelisoft.com.lelimath.provider.PlayRecordProvider;
@@ -51,9 +48,10 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     private boolean soundEnabled;
     private float volume;
     private long lastFormulaDate;
+    SharedPreferences sharedPref;
+    private BalanceHelper balanceHelper;
     Map<Badge, List<BadgeAward>> badges;
     private Thread.UncaughtExceptionHandler androidExceptionHandler;
-    public User currentUser;
 
     @Override
     public void onCreate() {
@@ -71,16 +69,18 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
             Fabric.with(this, new Crashlytics.Builder().core(core).build());
         }
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        balanceHelper = new BalanceHelper(this);
         resources = getResources();
         performUpgrade();
-        setDefaultPreferences();
+        log.debug("Loading default preference values from XML");
+        PreferenceManager.setDefaultValues(LeliMathApp.this, R.xml.app_prefs, false);
 
         // it may go to AsyncTask to save some 100 ms but there is potentional synchronization issue
         setLastFormulaDate();
         BadgeAwardProvider provider = new BadgeAwardProvider(this);
         badges = new HashMap<>(provider.getAll());
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         soundEnabled = sharedPref.getBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, true);
         setVolume(sharedPref.getInt(GamePreferenceActivity.KEY_SOUND_LEVEL, 50));
         toggleSound(soundEnabled);
@@ -107,10 +107,9 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
             PackageInfo packageInfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
             log.info("Started version " + packageInfo.versionCode);
 
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            int version = preferences.getInt(GamePreferenceActivity.KEY_CURRENT_VERSION, 0);
+            int version = sharedPref.getInt(GamePreferenceActivity.KEY_CURRENT_VERSION, 0);
             if (version < packageInfo.versionCode) {
-                SharedPreferences.Editor editor = preferences.edit();
+                SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putInt(GamePreferenceActivity.KEY_CURRENT_VERSION, packageInfo.versionCode);
                 editor.apply();
             }
@@ -120,17 +119,11 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         }
     }
 
-    @SuppressWarnings("unused")
-    public synchronized User getCurrentUser() {
-        if (currentUser == null) {
-            try {
-                Dao<User, Integer> dao = getDatabaseHelper().getUserDao();
-                currentUser = dao.queryForId(1);
-            } catch (SQLException e) {
-                log.error("Cannot load user!", e);
-            }
-        }
-        return currentUser;
+    /**
+     * @return tools managing current balance
+     */
+    public static BalanceHelper getBalanceHelper() {
+        return instance.balanceHelper;
     }
 
     @Override
@@ -147,14 +140,8 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     /**
      * @return shared database helper instance
      */
-    public DatabaseHelper getDatabaseHelper() {
-        return OpenHelperManager.getHelper(this, DatabaseHelper.class);
-    }
-
-    protected void setDefaultPreferences() {
-        log.debug("Loading default values from XML");
-        PreferenceManager.setDefaultValues(LeliMathApp.this, R.xml.app_prefs, false);
-        log.debug("Defaults are loaded");
+    public static DatabaseHelper getDatabaseHelper() {
+        return OpenHelperManager.getHelper(instance, DatabaseHelper.class);
     }
 
     public void toggleSound(boolean state) {
