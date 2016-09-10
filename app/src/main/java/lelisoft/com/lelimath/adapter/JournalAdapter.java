@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -50,8 +51,8 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
 
     public JournalAdapter(List<PlayRecord> playRecords, List<BadgeAward> awardList) {
         log.debug("JournalAdapter()");
-        if (playRecords == null) {
-            records = new ArrayList<>();
+        if (playRecords == null || playRecords.isEmpty()) {
+            records = Collections.emptyList();
             return;
         }
 
