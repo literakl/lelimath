@@ -44,7 +44,6 @@ import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.logic.BadgeProgressCalculator;
 import lelisoft.com.lelimath.provider.BadgeAwardProvider;
 import lelisoft.com.lelimath.provider.BadgeProgressProvider;
-import lelisoft.com.lelimath.provider.PlayRecordProvider;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 import static lelisoft.com.lelimath.activities.GamePreferenceActivity.KEY_NEXT_BADGE;
@@ -78,8 +77,6 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         super.onActivityCreated(state);
         activity = getActivity();
 
-        PlayRecordProvider provider = new PlayRecordProvider(activity);
-        int points = provider.getPoints();
         BadgeAwardProvider awardProvider = new BadgeAwardProvider(activity);
         AwardedBadgesCount badgesCount = awardProvider.getBadgesCount();
         setBadgeProgress();
@@ -95,11 +92,11 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         button.setOnClickListener(this);
         button = (TextView) activity.findViewById(R.id.main_button_points);
         button.setOnClickListener(this);
-        Resources resources = LeliMathApp.getInstance().getResources();
-        button.setText(resources.getString(R.string.action_dress_up, points));
+        int balance = LeliMathApp.getBalanceHelper().getBalance();
+        button.setText(LeliMathApp.resources.getString(R.string.action_dress_up, balance));
         button = (TextView) activity.findViewById(R.id.main_button_badges);
         button.setOnClickListener(this);
-        button.setText(resources.getString(R.string.action_badges, badgesCount.gold, badgesCount.silver, badgesCount.bronze));
+        button.setText(LeliMathApp.resources.getString(R.string.action_badges, badgesCount.gold, badgesCount.silver, badgesCount.bronze));
 
         Metrics.saveContentDisplayed("dashboard", "home");
     }
@@ -108,6 +105,9 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
     public void onStart() {
         super.onStart();
         log.debug("onStart()");
+        int balance = LeliMathApp.getBalanceHelper().getBalance();
+        TextView button = (TextView) activity.findViewById(R.id.main_button_points);
+        button.setText(LeliMathApp.resources.getString(R.string.action_dress_up, balance));
         new RefreshNextBadgeTask(this).execute();
     }
 

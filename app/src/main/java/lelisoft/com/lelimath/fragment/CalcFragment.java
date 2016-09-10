@@ -200,8 +200,9 @@ public class CalcFragment extends LeliBaseFragment {
     protected void setPoints(PlayRecord record) {
         StringBuilder sb = new StringBuilder().append(record.getFirstOperand());
         sb.append(record.getSecondOperand()).append(record.getResult());
-        record.setPoints(Math.max(1, sb.length() - 3));
-        log.debug("{} za {}", record.getPoints(), record.getFormulaString());
+        int points = Math.max(1, sb.length() - 3);
+        record.setPoints(points);
+        LeliMathApp.getBalanceHelper().add(points);
     }
 
     protected void updateSpentTime(PlayRecord playRecord) {

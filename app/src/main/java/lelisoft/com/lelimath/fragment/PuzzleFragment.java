@@ -233,14 +233,15 @@ public class PuzzleFragment extends LeliBaseFragment {
     protected void setPoints(PlayRecord record, Play play) {
         StringBuilder sb = new StringBuilder().append(record.getFirstOperand());
         sb.append(record.getSecondOperand()).append(record.getResult());
-        int length = sb.length();
+        int length = sb.length(), points;
         if (play.getCount() >= 10) {
-            record.setPoints(Math.max(1, length / 2 - 1));
-            log.debug("{} za {} hard", record.getPoints(), record.getFormulaString());
+            points = Math.max(1, length / 2 - 1);
         } else {
-            record.setPoints(Math.max(1, length / 3 - 2));
-            log.debug("{} za {} eas", record.getPoints(), record.getFormulaString());
+            points = Math.max(1, length / 3 - 2);
         }
+
+        record.setPoints(points);
+        LeliMathApp.getBalanceHelper().add(points);
     }
 
     protected void updateSpentTime(PlayRecord playRecord) {
