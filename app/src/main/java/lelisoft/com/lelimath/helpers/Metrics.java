@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.CustomEvent;
 import com.crashlytics.android.answers.LevelEndEvent;
 import com.crashlytics.android.answers.LevelStartEvent;
 
@@ -40,5 +41,14 @@ public class Metrics {
             event.putContentName(name);
         }
         Answers.getInstance().logContentView(event);
+    }
+
+    public static void saveFigureDressed(@NonNull String figure, @NonNull String part) {
+        if (BuildConfig.DEBUG)
+            return;
+        CustomEvent event = new CustomEvent("Dress")
+                .putCustomAttribute("figure", figure)
+                .putCustomAttribute("part", part);
+        Answers.getInstance().logCustom(event);
     }
 }

@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.fragment;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -7,11 +8,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -71,7 +76,7 @@ public class DressFigureFragment extends LeliBaseFragment {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         balanceHelper = LeliMathApp.getBalanceHelper();
-//        balanceHelper.setDeveloperMode(true, 1000);
+        balanceHelper.setDeveloperMode(true, 1000);
         int balance = balanceHelper.getBalance();
         balanceView.setText(getString(R.string.title_available_points, balance));
 
@@ -141,12 +146,44 @@ public class DressFigureFragment extends LeliBaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onDressPartSelected(DressPartSelectedEvent event) {
+    public void onDressPartSelected(final DressPartSelectedEvent event) {
         log.debug("onDressPartSelected");
-        int balance = balanceHelper.add(-1 * event.getPart().getPrice());
-        availableParts.remove(event.getPart());
-
         boughtParts.add(event.getPart().getId());
+        figureView.displayParts(boughtParts);
+        figureView.invalidate();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                onDressPartBought(event.getPart());
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                onDressPartCancelled(event.getPart());
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.setTitle(R.string.dialog_buy_part);
+
+        Window window = dialog.getWindow();
+        window.setDimAmount(0.2f);
+        window.getAttributes().x = (int) Misc.pxFromDp(getContext(), 5);
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.LEFT;
+        wlp.flags &= ~ WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+
+        dialog.show();
+        window.setLayout((int) Misc.pxFromDp(getContext(), 200), ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    public void onDressPartBought(DressPart part) {
+        log.debug("onDressPartBought");
+        int balance = balanceHelper.add(-1 * part.getPrice());
+        availableParts.remove(part);
+
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getPrefKey(), Misc.toCSV(boughtParts));
         editor.apply();
@@ -162,15 +199,20 @@ public class DressFigureFragment extends LeliBaseFragment {
             adapter.notifyDataSetChanged();
         }
 
+        balanceView.setText(getString(R.string.title_available_points, balance));
+        Metrics.saveFigureDressed(figure.getId(), part.getId());
+    }
+
+    public void onDressPartCancelled(DressPart part) {
+        log.debug("onDressPartCancelled");
+        boughtParts.remove(part.getId());
         figureView.displayParts(boughtParts);
         figureView.invalidate();
-
-        balanceView.setText(getString(R.string.title_available_points, balance));
     }
 
     private String getPrefKey() {
-        return KEY_BOUGHT_PARTS + figure.getId();
-//        return KEY_BOUGHT_PARTS + figure.getId()+"u";
+//        return KEY_BOUGHT_PARTS + figure.getId();
+        return KEY_BOUGHT_PARTS + figure.getId()+"uw";
     }
 
     @Override
