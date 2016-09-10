@@ -10,7 +10,7 @@
         android:id="@+id/dress.parts.selection"
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="@integer/dress_parts_weight_selection"
         android:scrollbars="vertical"
         />
 
@@ -18,7 +18,7 @@
         android:id="@+id/figure_view"
         android:layout_width="0px"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="@integer/dress_parts_weight_figure"
         android:layout_marginTop="@dimen/default_gap"
         android:layout_marginBottom="@dimen/default_gap"
         />

@@ -1,6 +1,7 @@
 package lelisoft.com.lelimath.fragment;
 
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -37,6 +39,7 @@ import lelisoft.com.lelimath.gui.FigureView;
 import lelisoft.com.lelimath.helpers.BalanceHelper;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.view.DressPart;
 import lelisoft.com.lelimath.view.Figure;
 
@@ -68,6 +71,7 @@ public class DressFigureFragment extends LeliBaseFragment {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         balanceHelper = LeliMathApp.getBalanceHelper();
+//        balanceHelper.setDeveloperMode(true, 1000);
         int balance = balanceHelper.getBalance();
         balanceView.setText(getString(R.string.title_available_points, balance));
 
@@ -102,11 +106,12 @@ public class DressFigureFragment extends LeliBaseFragment {
             figure = gson.fromJson(reader, Figure.class);
             figureView.setFigure(figure);
 
-            String values = sharedPref.getString(KEY_BOUGHT_PARTS, "");
+            String values = sharedPref.getString(getPrefKey(), "");
             StringTokenizer stk = new StringTokenizer(values, ",");
             while (stk.hasMoreTokens()) {
                 boughtParts.add(stk.nextToken());
             }
+            figureView.displayParts(boughtParts);
 
             availableParts = new ArrayList<>();
             for (int i = 0; i < figure.getParts().length; i++) {
@@ -116,14 +121,22 @@ public class DressFigureFragment extends LeliBaseFragment {
                 }
             }
 
+            if (availableParts.isEmpty()) {
+                if (getActivity().getResources().getConfiguration().orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                adapter = new DressPartAdapter(getContext(), availableParts, balance);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setHasFixedSize(true);
+            }
+
             target = new LoadPictureTarget();
             Picasso.with(getContext()).load(figure.getPath()).into(target);
-
-            adapter = new DressPartAdapter(getContext(), availableParts, balance);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setHasFixedSize(true);
         } catch (IOException e) {
             log.error("Failed to read JSON asset", e);
+            Crashlytics.logException(e);
         }
     }
 
@@ -132,14 +145,32 @@ public class DressFigureFragment extends LeliBaseFragment {
         log.debug("onDressPartSelected");
         int balance = balanceHelper.add(-1 * event.getPart().getPrice());
         availableParts.remove(event.getPart());
-        adapter.setBalance(balance);
-        adapter.notifyDataSetChanged();
 
         boughtParts.add(event.getPart().getId());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getPrefKey(), Misc.toCSV(boughtParts));
+        editor.apply();
+
+        if (availableParts.isEmpty()) {
+            if (getActivity().getResources().getConfiguration().orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                return; // fragment will be destroyed and recreated
+            }
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            adapter.setBalance(balance);
+            adapter.notifyDataSetChanged();
+        }
+
         figureView.displayParts(boughtParts);
         figureView.invalidate();
 
         balanceView.setText(getString(R.string.title_available_points, balance));
+    }
+
+    private String getPrefKey() {
+        return KEY_BOUGHT_PARTS + figure.getId();
+//        return KEY_BOUGHT_PARTS + figure.getId()+"u";
     }
 
     @Override

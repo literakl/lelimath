@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Random;
 
@@ -129,6 +130,20 @@ public class Misc {
             }
         }
         return text.toString();
+    }
+
+    /**
+     * Converts collection of strings to strings separated by comma
+     * @param list collection
+     * @return CSV
+     */
+    public static String toCSV(Collection<String> list) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : list) {
+            sb.append(s).append(',');
+        }
+        sb.setLength(sb.length() - 1);
+        return sb.toString();
     }
 
     public static String format(Date date, Context context) {
