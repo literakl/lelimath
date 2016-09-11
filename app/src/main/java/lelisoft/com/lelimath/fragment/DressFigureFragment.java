@@ -76,7 +76,7 @@ public class DressFigureFragment extends LeliBaseFragment {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         balanceHelper = LeliMathApp.getBalanceHelper();
-        balanceHelper.setDeveloperMode(true, 1000);
+//        balanceHelper.setDeveloperMode(true, 1000);
         int balance = balanceHelper.getBalance();
         balanceView.setText(getString(R.string.title_available_points, balance));
 

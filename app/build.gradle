@@ -24,11 +24,11 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "lelisoft.com.lelimath"
-        resValue 'string', 'app_name', 'LeliMath DEV'
+        resValue 'string', 'app_name', 'LeliMath'
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 260
-        versionName '2.6.0'
+        versionCode 261
+        versionName '2.6.1'
         resValue "string", "app_build_number", getDate();
         resValue "string", "app_version", versionName;
 //        vectorDrawables.useSupportLibrary = true
