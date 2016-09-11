@@ -26,6 +26,7 @@ import lelisoft.com.lelimath.helpers.PreferenceInputValidator;
 public class PracticeAdvancedSettingsFragment extends PreferenceFragment implements
                                                       SharedPreferences.OnSharedPreferenceChangeListener {
 
+    public static final String KEY_UNKNOWN = "pref_game_calc_unknown";
     private static final Logger log = LoggerFactory.getLogger(PracticeAdvancedSettingsFragment.class);
 
     private PreferenceHelper preferenceScreenHelper;

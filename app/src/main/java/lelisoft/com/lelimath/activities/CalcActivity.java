@@ -22,6 +22,7 @@ import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.fragment.CalcFragment;
 import lelisoft.com.lelimath.fragment.PictureFragment;
+import lelisoft.com.lelimath.fragment.PracticeAdvancedSettingsFragment;
 import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
 import lelisoft.com.lelimath.logic.CalcLogic;
 import lelisoft.com.lelimath.logic.CalcLogicImpl;
@@ -97,7 +98,7 @@ public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcB
         FormulaDefinition definition = gameLogic.getFormulaDefinition();
         definition.setUnknowns(null);
 
-        Set<String> mValues = sharedPref.getStringSet(GamePreferenceActivity.KEY_UNKNOWN, null);
+        Set<String> mValues = sharedPref.getStringSet(PracticeAdvancedSettingsFragment.KEY_UNKNOWN, null);
         if (mValues != null) {
             for (String value : mValues) {
                 definition.addUnknown(FormulaPart.valueOf(value));
