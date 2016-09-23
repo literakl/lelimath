@@ -61,7 +61,7 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
         long startOfDay = calendar.getTimeInMillis();
 
         Iterator<BadgeAward> iterator = awardList.iterator();
-        BadgeAward award = iterator.next();
+        BadgeAward award = iterator.hasNext() ? iterator.next() : null;
         for (PlayRecord record : playRecords) {
             if (record.getDate().getTime() < startOfDay) {
                 calendar.setTime(record.getDate());
