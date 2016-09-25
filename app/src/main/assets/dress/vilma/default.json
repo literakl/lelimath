@@ -1,0 +1,82 @@
+{
+  "id": "Vilma",
+  "main": {
+    "id": "main",
+    "path": "drawable/drs_vilma_base",
+    "price": 0
+  },
+  "parts": [
+    {
+      "id": "top",
+      "icon": "drawable/drs_vilma_top_ic",
+      "path": "drawable/drs_vilma_top",
+      "price": 30
+    },
+    {
+      "id": "shoes",
+      "icon": "drawable/drs_vilma_shoes_ic",
+      "path": "drawable/drs_vilma_shoes",
+      "price": 70
+    },
+    {
+      "id": "skirt",
+      "icon": "drawable/drs_vilma_skirt_ic",
+      "path": "drawable/drs_vilma_skirt",
+      "price": 50
+    },
+    {
+      "id": "tshirt",
+      "icon": "drawable/drs_vilma_tshirt_ic",
+      "path": "drawable/drs_vilma_tshirt",
+      "price": 50
+    },
+    {
+      "id": "trousers",
+      "icon": "drawable/drs_vilma_trousers_ic",
+      "path": "drawable/drs_vilma_trousers",
+      "price": 80
+    },
+    {
+      "id": "belt",
+      "icon": "drawable/drs_vilma_belt_ic",
+      "path": "drawable/drs_vilma_belt",
+      "price": 40
+    },
+    {
+      "id": "blouse",
+      "icon": "drawable/drs_vilma_blouse_ic",
+      "path": "drawable/drs_vilma_blouse",
+      "price": 100
+    },
+    {
+      "id": "charm",
+      "icon": "drawable/drs_vilma_charm_ic",
+      "path": "drawable/drs_vilma_charm",
+      "price": 120
+    },
+    {
+      "id": "glasses",
+      "icon": "drawable/drs_vilma_glasses_ic",
+      "path": "drawable/drs_vilma_glasses",
+      "price": 20
+    },
+    {
+      "id": "scarf",
+      "icon": "drawable/drs_vilma_scarf_ic",
+      "path": "drawable/drs_vilma_scarf",
+      "price": 50
+    },
+    {
+      "id": "vest",
+      "icon": "drawable/drs_vilma_vest_ic",
+      "path": "drawable/drs_vilma_vest",
+      "price": 100
+    },
+    {
+      "id": "bag",
+      "icon": "drawable/drs_vilma_bag_ic",
+      "path": "drawable/drs_vilma_bag",
+      "price": 150
+    }
+  ]
+}

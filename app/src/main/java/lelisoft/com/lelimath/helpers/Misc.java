@@ -68,6 +68,26 @@ public class Misc {
         return dp * density;
     }
 
+    public static String getDensityName(Context context) {
+        float density = context.getResources().getDisplayMetrics().density;
+        if (density >= 4.0) {
+            return "xxxhdpi";
+        }
+        if (density >= 3.0) {
+            return "xxhdpi";
+        }
+        if (density >= 2.0) {
+            return "xhdpi";
+        }
+        if (density >= 1.5) {
+            return "hdpi";
+        }
+        if (density >= 1.0) {
+            return "mdpi";
+        }
+        return "ldpi";
+    }
+
     /**
      * Calculate the bounds of an image to fit inside a view after scaling and keeping the aspect ratio.
      * http://stackoverflow.com/questions/2740059/ and Android for Busy coders (Mirror)
@@ -223,6 +243,10 @@ public class Misc {
         } catch (IllegalAccessException e) {
             return key;
         }
+    }
+
+    public static int getResourceId(String key) {
+        return LeliMathApp.resources.getIdentifier(key, "drawable", LeliMathApp.getInstance().getPackageName());
     }
 
     public static int getBadgeImage(Badge badge) {

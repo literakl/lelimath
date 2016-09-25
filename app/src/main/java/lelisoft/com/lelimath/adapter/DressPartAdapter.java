@@ -19,6 +19,7 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.event.DressPartSelectedEvent;
 import lelisoft.com.lelimath.gui.DressPartPriceView;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.view.DressPart;
 
 /**
@@ -70,7 +71,7 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
         boolean enabled = dressPart.getPrice() <= balance;
         vh.itemView.setClickable(enabled);
         vh.priceView.setEnabled(enabled);
-        Picasso.with(context).load(dressPart.getIcon()).into(vh.imageView);
+        Picasso.with(context).load(Misc.getResourceId(dressPart.getIcon())).into(vh.imageView);
     }
 
     @Override

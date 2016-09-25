@@ -23,13 +23,12 @@ import lelisoft.com.lelimath.view.Figure;
 public class FigureView extends View {
     private static final Logger log = LoggerFactory.getLogger(FigureView.class);
 
-    Bitmap baseBitmap;
     int w, h;
     Canvas drawCanvas;
     Bitmap canvasBitmap;
     Paint canvasPaint;
-    Rect scaledRect = new Rect();
     Figure figure;
+    Rect srcRect = new Rect(), destRect = new Rect();
     List<String> displayedParts;
 
     public FigureView(Context context, AttributeSet attrs) {
@@ -57,42 +56,36 @@ public class FigureView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         log.debug("onDraw()");
-        if (baseBitmap != null) {
-            double scale = Math.min((double) w / (double) figure.getW(), (double) h / (double) figure.getH());
-            figure.setScaleRatio(scale);
-            int sw = (int) (scale * figure.getW());
+        if (figure.isLoadingCompleted()) {
+            int fw = figure.getMain().getBitmap().getWidth();
+            int fh = figure.getMain().getBitmap().getHeight();
+            double scale = Math.min((double) w / (double) fw, (double) h / (double) fh);
+            int sw = (int) (scale * fw);
+            int sh = (int) (scale * fh);
             int x = ((w - sw) >> 1);
-            figure.setX(x);
+            int y = ((h - sh) >> 1);
+            log.debug("figure {} x {} px", fw, fh);
+            log.debug("scaled {} x {} px", sw, sh);
+            srcRect.set(0, 0, fw, fh);
+            destRect.set(x, y, x + sw, y + sh);
+//            destRect.set(figure.getX() + sdx, sdy, figure.getX() + sw + sdx, sh + sdy);
 
-            paintDressPart(canvas, figure, figure.getMain());
+            canvas.drawBitmap(figure.getMain().getBitmap(), srcRect, destRect, canvasPaint);
             if (displayedParts != null) {
                 for (DressPart dressPart : figure.getParts()) {
                     if (displayedParts.contains(dressPart.getId())) {
-                        paintDressPart(canvas, figure, dressPart);
+                        canvas.drawBitmap(dressPart.getBitmap(), srcRect, destRect, canvasPaint);
                     }
                 }
             }
         }
     }
 
-    private void paintDressPart(Canvas canvas, Figure figure, DressPart part) {
-        double scale = figure.getScaleRatio();
-        int sh = (int) (scale * part.getH());
-        int sw = (int) (scale * part.getW());
-        int sdx = (int) (scale * part.getDestX());
-        int sdy = (int) (scale * part.getDestY());
-        scaledRect.set(figure.getX() + sdx, sdy, figure.getX() + sw + sdx, sh + sdy);
-        Rect partRect = part.getRect();
-        log.debug("part {}", partRect);
-        log.debug("scaled {}", scaledRect);
-        canvas.drawBitmap(baseBitmap, partRect, scaledRect, canvasPaint);
-    }
-
     private void setupResources() {
         canvasPaint = new Paint(Paint.DITHER_FLAG);
     }
 
-    public void displayParts(List<String> parts) {
+    public void setDisplayedParts(List<String> parts) {
         this.displayedParts = parts;
     }
 
@@ -109,10 +102,6 @@ public class FigureView extends View {
 //        Bitmap cache = getDrawingCache();
 //        saveBitmap(cache);
         destroyDrawingCache();
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.baseBitmap = bitmap;
     }
 
     public void setFigure(Figure figure) {

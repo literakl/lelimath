@@ -56,6 +56,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     @Override
     public void onCreate() {
         log.debug("onCreate()");
+//        log.debug("\n\n\ndensity: {}\n\n", Misc.getDensityName(this));
         super.onCreate();
         instance = this;
 
@@ -140,6 +141,7 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
     /**
      * @return shared database helper instance
      */
+    @SuppressWarnings("unused")
     public static DatabaseHelper getDatabaseHelper() {
         return OpenHelperManager.getHelper(instance, DatabaseHelper.class);
     }

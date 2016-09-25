@@ -1,8 +1,8 @@
 package lelisoft.com.lelimath.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -57,8 +57,8 @@ public class DressFigureFragment extends LeliBaseFragment {
 
     public static final String KEY_BOUGHT_PARTS = "bought.parts.";
 
-    Target target;
     Figure figure;
+    String prefKey;
     TextView balanceView;
     FigureView figureView;
     DressPartAdapter adapter;
@@ -67,6 +67,7 @@ public class DressFigureFragment extends LeliBaseFragment {
     SharedPreferences sharedPref;
     List<String> boughtParts = new ArrayList<>();
     List<DressPart> availableParts = new ArrayList<>();
+    List<Target> targets;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,18 +76,33 @@ public class DressFigureFragment extends LeliBaseFragment {
         figureView = (FigureView) view.findViewById(R.id.figure_view);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        balanceHelper = LeliMathApp.getBalanceHelper();
-//        balanceHelper.setDeveloperMode(true, 1000);
-        int balance = balanceHelper.getBalance();
-        balanceView.setText(getString(R.string.title_available_points, balance));
-
         recyclerView = (RecyclerView)view.findViewById(R.id.dress_parts_selection);
         recyclerView.setHasFixedSize(true);
         int columns = getResources().getInteger(R.integer.dress_parts_columns);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), columns);
         recyclerView.setLayoutManager(layoutManager);
 
+        balanceHelper = LeliMathApp.getBalanceHelper();
+
+/*
+        // TODO necommitovat !!!!
+        balanceHelper.setDeveloperMode(true, 1000);
+*/
+
+        int balance = balanceHelper.getBalance();
+        balanceView.setText(getString(R.string.title_available_points, balance));
         setupResources(balance);
+        prefKey = KEY_BOUGHT_PARTS + figure.getId();
+
+/*
+        // TODO necommitovat !!!!
+        prefKey = prefKey + "aa";
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(prefKey);
+//        editor.putString(prefKey, "skirt");
+        editor.apply();
+*/
+
         return view;
     }
 
@@ -106,17 +122,28 @@ public class DressFigureFragment extends LeliBaseFragment {
     private void setupResources(int balance) {
         try {
             Gson gson = new Gson();
-            InputStream is = getContext().getAssets().open("dress/default.json");
+            InputStream is = getContext().getAssets().open("dress/vilma/default.json");
             InputStreamReader reader = new InputStreamReader(is);
             figure = gson.fromJson(reader, Figure.class);
             figureView.setFigure(figure);
 
-            String values = sharedPref.getString(getPrefKey(), "");
+            targets = new ArrayList<>(figure.getParts().length + 1);
+            Picasso.with(getContext()).setLoggingEnabled(true);
+            Target target = new LoadPictureTarget(figure.getMain());
+            Picasso.with(getContext()).load(Misc.getResourceId(figure.getMain().getPath())).into(target);
+            targets.add(target);
+            for (DressPart part : figure.getParts()) {
+                target = new LoadPictureTarget(part);
+                Picasso.with(getContext()).load(Misc.getResourceId(part.getPath())).into(target);
+                targets.add(target);
+            }
+
+            String values = sharedPref.getString(prefKey, "");
             StringTokenizer stk = new StringTokenizer(values, ",");
             while (stk.hasMoreTokens()) {
                 boughtParts.add(stk.nextToken());
             }
-            figureView.displayParts(boughtParts);
+            figureView.setDisplayedParts(boughtParts);
 
             availableParts = new ArrayList<>();
             for (int i = 0; i < figure.getParts().length; i++) {
@@ -127,29 +154,26 @@ public class DressFigureFragment extends LeliBaseFragment {
             }
 
             if (availableParts.isEmpty()) {
-                if (getActivity().getResources().getConfiguration().orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                }
                 recyclerView.setVisibility(View.GONE);
+                figureView.invalidate();
             } else {
                 adapter = new DressPartAdapter(getContext(), availableParts, balance);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setHasFixedSize(true);
             }
-
-            target = new LoadPictureTarget();
-            Picasso.with(getContext()).load(figure.getPath()).into(target);
         } catch (IOException e) {
             log.error("Failed to read JSON asset", e);
             Crashlytics.logException(e);
         }
     }
 
+    @SuppressLint("RtlHardcoded")
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void onDressPartSelected(final DressPartSelectedEvent event) {
         log.debug("onDressPartSelected");
         boughtParts.add(event.getPart().getId());
-        figureView.displayParts(boughtParts);
+        figureView.setDisplayedParts(boughtParts);
         figureView.invalidate();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -185,15 +209,12 @@ public class DressFigureFragment extends LeliBaseFragment {
         availableParts.remove(part);
 
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getPrefKey(), Misc.toCSV(boughtParts));
+        editor.putString(prefKey, Misc.toCSV(boughtParts));
         editor.apply();
 
         if (availableParts.isEmpty()) {
-            if (getActivity().getResources().getConfiguration().orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                return; // fragment will be destroyed and recreated
-            }
             recyclerView.setVisibility(View.GONE);
+            figureView.invalidate();
         } else {
             adapter.setBalance(balance);
             adapter.notifyDataSetChanged();
@@ -206,13 +227,8 @@ public class DressFigureFragment extends LeliBaseFragment {
     public void onDressPartCancelled(DressPart part) {
         log.debug("onDressPartCancelled");
         boughtParts.remove(part.getId());
-        figureView.displayParts(boughtParts);
+        figureView.setDisplayedParts(boughtParts);
         figureView.invalidate();
-    }
-
-    private String getPrefKey() {
-//        return KEY_BOUGHT_PARTS + figure.getId();
-        return KEY_BOUGHT_PARTS + figure.getId()+"uw";
     }
 
     @Override
@@ -232,23 +248,29 @@ public class DressFigureFragment extends LeliBaseFragment {
     }
 
     class LoadPictureTarget implements Target {
+        DressPart part;
+
+        public LoadPictureTarget(DressPart part) {
+            this.part = part;
+        }
+
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            log.debug("Loaded figure bitmap {} x {}", bitmap.getWidth(), bitmap.getHeight());
-            figureView.setBitmap(bitmap);
-            figureView.invalidate();
-            target = null;
+            log.debug("Loaded figure bitmap {}, size {} x {} px", part.getId(), bitmap.getWidth(), bitmap.getHeight());
+            part.setBitmap(bitmap);
+            if (figure.isLoadingCompleted()) {
+                figureView.invalidate();
+            }
+            targets.remove(this);
         }
 
         @Override
         public void onBitmapFailed(Drawable errorDrawable) {
             log.debug("onBitmapFailed");
-            target = null;
+            targets.remove(this);
         }
 
         @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-            log.debug("onPrepareLoad");
-        }
+        public void onPrepareLoad(Drawable placeHolderDrawable) {}
     }
 }

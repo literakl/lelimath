@@ -1,6 +1,6 @@
 package lelisoft.com.lelimath.view;
 
-import android.graphics.Rect;
+import android.graphics.Bitmap;
 
 import java.io.Serializable;
 
@@ -9,10 +9,10 @@ import java.io.Serializable;
  * Created by Leoš on 30.08.2016.
  */
 public class DressPart implements Serializable {
-    String  id, icon;
+    String  id, icon, path;
     String[] alternatives;
     int price;
-    int x, y, w, h, destX, destY;
+    Bitmap bitmap;
 
     @SuppressWarnings("unused")
     public DressPart() {
@@ -23,32 +23,20 @@ public class DressPart implements Serializable {
         this.price = price;
     }
 
-    public void setCoordinates(int x, int y,int w, int h) {
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-    }
-
-    /**
-     * @return height of this component
-     */
-    @SuppressWarnings("unused")
-    public int getH() {
-        return h;
-    }
-
-    @SuppressWarnings("unused")
-    public void setH(int h) {
-        this.h = h;
-    }
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     /**
@@ -62,6 +50,18 @@ public class DressPart implements Serializable {
         this.icon = icon;
     }
 
+    /**
+     * @return path to this part picture
+     */
+    public String getPath() {
+        return path;
+    }
+
+    @SuppressWarnings("unused")
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @SuppressWarnings("unused")
     public int getPrice() {
         return price;
@@ -70,69 +70,6 @@ public class DressPart implements Serializable {
     @SuppressWarnings("unused")
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    /**
-     * @return width of this component
-     */
-    @SuppressWarnings("unused")
-    public int getW() {
-        return w;
-    }
-
-    @SuppressWarnings("unused")
-    public void setW(int w) {
-        this.w = w;
-    }
-
-    /**
-     * @return starting X position within the parts picture
-     */
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    /**
-     * @return starting Y position within the parts picture
-     */
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    /**
-     * @return X offset against 0,0 of complete picture
-     */
-    public int getDestX() {
-        return destX;
-    }
-
-    @SuppressWarnings("unused")
-    public void setDestX(int destX) {
-        this.destX = destX;
-    }
-
-    /**
-     * @return Y offset against 0,0 of complete picture
-     */
-    public int getDestY() {
-        return destY;
-    }
-
-    @SuppressWarnings("unused")
-    public void setDestY(int destY) {
-        this.destY = destY;
-    }
-
-    public Rect getRect() {
-        return new Rect(x, y, x + w, y + h);
     }
 
     public void setAlternatives(String[] alternatives) {

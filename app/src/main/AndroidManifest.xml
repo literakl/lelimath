@@ -68,6 +68,7 @@
             android:label="@string/title_dress_up"
             android:parentActivityName=".activities.DashboardActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="landscape"
             >
             <!--android:theme="@style/AppTheme.FullScreen"-->
         </activity>
