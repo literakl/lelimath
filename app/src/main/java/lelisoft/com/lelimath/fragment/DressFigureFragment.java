@@ -92,7 +92,6 @@ public class DressFigureFragment extends LeliBaseFragment {
         int balance = balanceHelper.getBalance();
         balanceView.setText(getString(R.string.title_available_points, balance));
         setupResources(balance);
-        prefKey = KEY_BOUGHT_PARTS + figure.getId();
 
 /*
         // TODO necommitovat !!!!
@@ -126,6 +125,7 @@ public class DressFigureFragment extends LeliBaseFragment {
             InputStreamReader reader = new InputStreamReader(is);
             figure = gson.fromJson(reader, Figure.class);
             figureView.setFigure(figure);
+            prefKey = KEY_BOUGHT_PARTS + figure.getId();
 
             targets = new ArrayList<>(figure.getParts().length + 1);
             Picasso.with(getContext()).setLoggingEnabled(true);
