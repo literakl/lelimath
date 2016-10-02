@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -64,15 +65,15 @@ public class PracticeSimpleSettingsFragment extends PreferenceFragment implement
         super.onPause();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
         // This makes sure that the container activity has implemented the callback interface
         try {
-            callback = (SimpleSettingsBridge) context;
+            callback = (SimpleSettingsBridge) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement SimpleSettingsBridge");
+            throw new ClassCastException(activity.toString() + " must implement SimpleSettingsBridge");
         }
     }
 }
