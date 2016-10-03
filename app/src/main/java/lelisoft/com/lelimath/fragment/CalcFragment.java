@@ -73,6 +73,21 @@ public class CalcFragment extends LeliBaseFragment {
         log.debug("onActivityCreated({})", state);
         super.onActivityCreated(state);
 
+        if (state != null) {
+            log.debug("onActivityCreated() - initializing from the bundle");
+            formulas = state.getParcelableArrayList("formulas");
+            formulaPosition = state.getInt("formulaPosition");
+            formula = formulas.get(formulaPosition);
+            play = state.getParcelable("play");
+            started = state.getLong("started");
+            stopped = state.getLong("stopped");
+            totalTimeSpent = state.getLong("timeSpent");
+        } else {
+            setupPlay();
+            prepareNewFormula();
+            Metrics.saveGameStarted(Game.FAST_CALC, logic.getLevel());
+        }
+
         activity = getActivity();
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
         mProgress = (DonutProgress) activity.findViewById(R.id.progressBar);
@@ -82,23 +97,8 @@ public class CalcFragment extends LeliBaseFragment {
 
         clickHandler = new HandleClick();
         attachClickListener();
-
-        setupPlay();
-        prepareNewFormula();
         mProgress.setMax(formulas.size());
         mProgress.setProgress(0);
-
-        if (state != null) {
-            formulas = state.getParcelableArrayList("formulas");
-            formulaPosition = state.getInt("formulaPosition");
-            formula = formulas.get(formulaPosition);
-            play = state.getParcelable("play");
-            started = state.getLong("started");
-            stopped = state.getLong("stopped");
-            totalTimeSpent = state.getLong("timeSpent");
-        } else {
-            Metrics.saveGameStarted(Game.FAST_CALC, logic.getLevel());
-        }
     }
 
     public class HandleClick implements View.OnClickListener {

@@ -67,6 +67,7 @@ public class PuzzleFragment extends LeliBaseFragment {
         super.onActivityCreated(state);
 
         if (state != null) {
+            log.debug("onActivityCreated() - initializing from the bundle");
             logic = (PuzzleLogic) state.getSerializable("logic");
             started = state.getLong("started");
             stopped = state.getLong("stopped");
