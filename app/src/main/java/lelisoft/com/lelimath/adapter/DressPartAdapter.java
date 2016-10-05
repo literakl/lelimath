@@ -69,9 +69,21 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
         DressPart dressPart = parts.get(position);
         vh.priceView.setText(LeliMathApp.resources.getString(R.string.caption_price, dressPart.getPrice()));
         boolean enabled = dressPart.getPrice() <= balance;
+        if (dressPart.getDepends() != null && contains(parts, dressPart.getDepends())) {
+            enabled = false;
+        }
         vh.itemView.setClickable(enabled);
         vh.priceView.setEnabled(enabled);
         Picasso.with(context).load(Misc.getResourceId(dressPart.getIcon())).into(vh.imageView);
+    }
+
+    private boolean contains(List<DressPart> parts, String depends) {
+        for (DressPart part : parts) {
+            if (part.getId().equals(depends)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

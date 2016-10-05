@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by Leoš on 30.08.2016.
  */
 public class DressPart implements Serializable {
-    String  id, icon, path;
+    String  id, icon, path, depends;
     String[] alternatives;
     int price;
     Bitmap bitmap;
@@ -72,6 +72,20 @@ public class DressPart implements Serializable {
         this.price = price;
     }
 
+    /**
+     * @return id of mandatory DressPart that must be bought before this one
+     */
+    @SuppressWarnings("unused")
+    public String getDepends() {
+        return depends;
+    }
+
+    @SuppressWarnings("unused")
+    public void setDepends(String depends) {
+        this.depends = depends;
+    }
+
+    @SuppressWarnings("unused")
     public void setAlternatives(String[] alternatives) {
         this.alternatives = alternatives;
     }

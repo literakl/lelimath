@@ -1,0 +1,72 @@
+{
+  "id": "Pirate",
+  "main": {
+    "id": "main",
+    "path": "drawable/drs_pirate_base",
+    "price": 0
+  },
+  "parts": [
+    {
+      "id": "eye_band",
+      "icon": "drawable/drs_pirate_eye_band_ic",
+      "path": "drawable/drs_pirate_eye_band",
+      "price": 30
+    },
+    {
+      "id": "shirt",
+      "icon": "drawable/drs_pirate_shirt_ic",
+      "path": "drawable/drs_pirate_shirt",
+      "price": 50
+    },
+    {
+      "id": "trousers",
+      "icon": "drawable/drs_pirate_trousers_ic",
+      "path": "drawable/drs_pirate_trousers",
+      "price": 80
+    },
+    {
+      "id": "gun",
+      "depends": "belt",
+      "icon": "drawable/drs_pirate_gun_ic",
+      "path": "drawable/drs_pirate_gun",
+      "price": 150
+    },
+    {
+      "id": "belt",
+      "icon": "drawable/drs_pirate_belt_ic",
+      "path": "drawable/drs_pirate_belt",
+      "price": 40
+    },
+    {
+      "id": "ribbon",
+      "depends": "trousers",
+      "icon": "drawable/drs_pirate_ribbon_ic",
+      "path": "drawable/drs_pirate_ribbon",
+      "price": 20
+    },
+    {
+      "id": "sabre",
+      "icon": "drawable/drs_pirate_sabre_ic",
+      "path": "drawable/drs_pirate_sabre",
+      "price": 120
+    },
+    {
+      "id": "hat",
+      "icon": "drawable/drs_pirate_hat_ic",
+      "path": "drawable/drs_pirate_hat",
+      "price": 60
+    },
+    {
+      "id": "earring",
+      "icon": "drawable/drs_pirate_earring_ic",
+      "path": "drawable/drs_pirate_earring",
+      "price": 120
+    },
+    {
+      "id": "shoes",
+      "icon": "drawable/drs_pirate_shoes_ic",
+      "path": "drawable/drs_pirate_shoes",
+      "price": 70
+    }
+  ]
+}
