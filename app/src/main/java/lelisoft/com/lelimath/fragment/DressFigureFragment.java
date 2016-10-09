@@ -128,7 +128,7 @@ public class DressFigureFragment extends LeliBaseFragment {
             prefKey = KEY_BOUGHT_PARTS + figure.getId();
 
             targets = new ArrayList<>(figure.getParts().length + 1);
-            Picasso.with(getContext()).setLoggingEnabled(true);
+//            Picasso.with(getContext()).setLoggingEnabled(true);
             Target target = new LoadPictureTarget(figure.getMain());
             Picasso.with(getContext()).load(Misc.getResourceId(figure.getMain().getPath())).into(target);
             targets.add(target);
@@ -187,9 +187,16 @@ public class DressFigureFragment extends LeliBaseFragment {
                 onDressPartCancelled(event.getPart());
             }
         });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                onDressPartCancelled(event.getPart());
+            }
+        });
 
         AlertDialog dialog = builder.create();
         dialog.setTitle(R.string.dialog_buy_part);
+        dialog.setCanceledOnTouchOutside(true);
 
         Window window = dialog.getWindow();
         window.setDimAmount(0.2f);
