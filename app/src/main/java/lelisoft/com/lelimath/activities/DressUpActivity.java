@@ -17,6 +17,7 @@ import lelisoft.com.lelimath.fragment.DressFigureFragment;
  */
 public class DressUpActivity extends LeliFragmentActivity {
     private Fragment currentFragment;
+    private TextView balanceTextView;
 
     public DressUpActivity() {
         super();
@@ -26,17 +27,23 @@ public class DressUpActivity extends LeliFragmentActivity {
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
+        setToolbar();
+        DressFigureFragment dressFigureFragment = (DressFigureFragment) this.currentFragment;
+        dressFigureFragment.setBalanceView(balanceTextView);
+        dressFigureFragment.setFigurePath("dress/vilma/default.json");
+    }
+
+    private void setToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        TextView textView = new TextView(this);
+        balanceTextView = new TextView(this);
         //noinspection deprecation
-        textView.setTextColor(getResources().getColor(R.color.colorTitleText));
-        textView.setPadding(5, 0, 5, 0);
-//        textView.setTypeface(null, Typeface.BOLD);
-        textView.setTextSize(14);
+        balanceTextView.setTextColor(getResources().getColor(R.color.colorTitleText));
+        balanceTextView.setPadding(5, 0, 5, 0);
+//        balanceTextView.setTypeface(null, Typeface.BOLD);
+        balanceTextView.setTextSize(14);
         Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Gravity.CENTER_HORIZONTAL);
-        toolbar.addView(textView, layoutParams);
-        ((DressFigureFragment) currentFragment).setBalanceView(textView);
+        toolbar.addView(balanceTextView, layoutParams);
     }
 
     @Override

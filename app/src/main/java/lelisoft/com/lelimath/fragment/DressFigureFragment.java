@@ -68,9 +68,10 @@ public class DressFigureFragment extends LeliBaseFragment {
     List<String> boughtParts = new ArrayList<>();
     List<DressPart> availableParts = new ArrayList<>();
     List<Target> targets;
+    private String figurePath;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle bundle) {
         log.debug("onCreateView()");
         View view = inflater.inflate(R.layout.frg_dress_up_action, container, false);
         figureView = (FigureView) view.findViewById(R.id.figure_view);
@@ -109,19 +110,13 @@ public class DressFigureFragment extends LeliBaseFragment {
     public void onActivityCreated(@Nullable Bundle state) {
         log.debug("onActivityCreated()");
         super.onActivityCreated(state);
-        figureView.post(new Runnable() {
-            @Override
-            public void run() {
-                log.debug("size {} {}", figureView.getWidth(), figureView.getHeight());
-            }
-        });
         Metrics.saveContentDisplayed("dress", "figure");
     }
 
     private void setupResources(int balance) {
         try {
             Gson gson = new Gson();
-            InputStream is = getContext().getAssets().open("dress/vilma/default.json");
+            InputStream is = getContext().getAssets().open(figurePath);
             InputStreamReader reader = new InputStreamReader(is);
             figure = gson.fromJson(reader, Figure.class);
             figureView.setFigure(figure);
@@ -212,6 +207,7 @@ public class DressFigureFragment extends LeliBaseFragment {
 
     public void onDressPartBought(DressPart part) {
         log.debug("onDressPartBought");
+        figureView.takeScreenshot();
         int balance = balanceHelper.add(-1 * part.getPrice());
         availableParts.remove(part);
 
@@ -250,6 +246,11 @@ public class DressFigureFragment extends LeliBaseFragment {
         super.onPause();
     }
 
+    // maybe rather use bundle to pass this parameter?
+    public void setFigurePath(String figurePath) {
+        this.figurePath = figurePath;
+    }
+
     public void setBalanceView(TextView balanceView) {
         this.balanceView = balanceView;
     }
@@ -257,7 +258,7 @@ public class DressFigureFragment extends LeliBaseFragment {
     class LoadPictureTarget implements Target {
         DressPart part;
 
-        public LoadPictureTarget(DressPart part) {
+        LoadPictureTarget(DressPart part) {
             this.part = part;
         }
 

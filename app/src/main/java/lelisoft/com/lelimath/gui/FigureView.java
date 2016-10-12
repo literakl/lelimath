@@ -1,16 +1,23 @@
 package lelisoft.com.lelimath.gui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.crashlytics.android.Crashlytics;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import lelisoft.com.lelimath.view.DressPart;
@@ -23,12 +30,12 @@ import lelisoft.com.lelimath.view.Figure;
 public class FigureView extends View {
     private static final Logger log = LoggerFactory.getLogger(FigureView.class);
 
-    int w, h;
+    int w, h, sw, sh;
+    Rect srcRect = new Rect(), destRect = new Rect();
     Canvas drawCanvas;
     Bitmap canvasBitmap;
     Paint canvasPaint;
     Figure figure;
-    Rect srcRect = new Rect(), destRect = new Rect();
     List<String> displayedParts;
 
     public FigureView(Context context, AttributeSet attrs) {
@@ -57,18 +64,19 @@ public class FigureView extends View {
     protected void onDraw(Canvas canvas) {
         log.debug("onDraw()");
         if (figure.isLoadingCompleted()) {
-            int fw = figure.getMain().getBitmap().getWidth();
-            int fh = figure.getMain().getBitmap().getHeight();
-            double scale = Math.min((double) w / (double) fw, (double) h / (double) fh);
-            int sw = (int) (scale * fw);
-            int sh = (int) (scale * fh);
-            int x = ((w - sw) >> 1);
-            int y = ((h - sh) >> 1);
-            log.debug("figure {} x {} px", fw, fh);
-            log.debug("scaled {} x {} px", sw, sh);
-            srcRect.set(0, 0, fw, fh);
-            destRect.set(x, y, x + sw, y + sh);
-//            destRect.set(figure.getX() + sdx, sdy, figure.getX() + sw + sdx, sh + sdy);
+            if (srcRect.isEmpty()) {
+                int fw = figure.getMain().getBitmap().getWidth();
+                int fh = figure.getMain().getBitmap().getHeight();
+                double scale = Math.min((double) w / (double) fw, (double) h / (double) fh);
+                sw = (int) (scale * fw);
+                sh = (int) (scale * fh);
+                int x = ((w - sw) >> 1);
+                int y = ((h - sh) >> 1);
+                srcRect.set(0, 0, fw, fh);
+                destRect.set(x, y, x + sw, y + sh);
+                log.debug("figure {} x {} px", fw, fh);
+                log.debug("scaled {} x {} px", sw, sh);
+            }
 
             canvas.drawBitmap(figure.getMain().getBitmap(), srcRect, destRect, canvasPaint);
             if (displayedParts != null) {
@@ -96,12 +104,38 @@ public class FigureView extends View {
         super.onAttachedToWindow();
     }
 
+    @SuppressLint("SetWorldReadable")
     @SuppressWarnings("unused")
     public void takeScreenshot() {
-        buildDrawingCache();
-//        Bitmap cache = getDrawingCache();
-//        saveBitmap(cache);
-        destroyDrawingCache();
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+        Bitmap bmp = Bitmap.createBitmap(destRect.width(), destRect.height(), conf);
+        Canvas canvas = new Canvas(bmp);
+        Rect destRect = new Rect(0, 0, sw, sh);
+
+        canvas.drawBitmap(figure.getMain().getBitmap(), srcRect, destRect, canvasPaint);
+        if (displayedParts != null) {
+            for (DressPart dressPart : figure.getParts()) {
+                if (displayedParts.contains(dressPart.getId())) {
+                    canvas.drawBitmap(dressPart.getBitmap(), srcRect, destRect, canvasPaint);
+                }
+            }
+        }
+
+        FileOutputStream fos;
+        try {
+//            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), figure.getId() + ".png");
+//            file.setReadable(true, false);
+            File file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), figure.getId() + ".png");
+            fos = new FileOutputStream(file);
+            log.debug("Saving picture bitmap to " + file.getAbsolutePath());
+            bmp.compress(Bitmap.CompressFormat.PNG, 95, fos);
+            fos.close();
+        } catch (IOException e) {
+            log.debug("Failed to save figure bitmap", e);
+            Crashlytics.logException(e);
+        } finally {
+            destroyDrawingCache();
+        }
     }
 
     public void setFigure(Figure figure) {
