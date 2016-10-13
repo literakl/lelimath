@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.provider;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
@@ -25,7 +26,7 @@ import lelisoft.com.lelimath.data.TimePeriod;
 public class PlayRecordProvider {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PlayRecordProvider.class);
 
-    Dao<PlayRecord, Integer> dao;
+    private Dao<PlayRecord, Integer> dao;
 
     public PlayRecordProvider(Context ctx) {
         try {
@@ -158,6 +159,7 @@ public class PlayRecordProvider {
      * @param countBack number of time units to be returned preceding <code>since</code> date
      * @return list of string array
      */
+    @SuppressWarnings("unused")
     public List<String[]> getPlayRecordsPointSums(long since, TimePeriod unit, int countBack) {
         return queryPlayRecords("SUM(points)", since, countBack, unit);
     }
@@ -167,7 +169,7 @@ public class PlayRecordProvider {
         return queryPlayRecords("COUNT(*)", since, countBack, unit);
     }
 
-    protected List<String[]> queryPlayRecords(String column, long since, int countBack, TimePeriod unit) {
+    private List<String[]> queryPlayRecords(String column, long since, int countBack, TimePeriod unit) {
         try {
             log.debug("queryPlayRecords({},{},{})", column, countBack, unit);
             String timeExpression;
@@ -185,6 +187,7 @@ public class PlayRecordProvider {
                     " FROM play_record WHERE date >= ? AND date <= ?" +
                     " GROUP BY strftime(" + timeExpression + ", date) ORDER BY 1 ASC";
 
+            @SuppressLint("SimpleDateFormat")
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(since);
@@ -218,7 +221,11 @@ public class PlayRecordProvider {
         try {
             String sql = "select sum(points) from play_record where play_id = (select max(id) from play order by id desc)";
             GenericRawResults<String[]> results = dao.queryRaw(sql);
-            return Integer.parseInt(results.getFirstResult()[0]);
+            String[] firstResult = results.getFirstResult();
+            if (firstResult == null || firstResult.length == 0 || firstResult[0] == null) {
+                return 0;
+            }
+            return Integer.parseInt(firstResult[0]);
         } catch (SQLException e) {
             Crashlytics.logException(e);
             log.error("Cannot get last play points.", e);
