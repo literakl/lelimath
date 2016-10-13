@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.fragment.DressFigureFragment;
+import lelisoft.com.lelimath.fragment.DressListFragment;
 
 /**
  * Display list of figures, their current dress and alow user to buy new items.
  * Created by Leoš on 23.08.2016.
  */
-public class DressUpActivity extends LeliFragmentActivity {
+public class DressUpActivity extends LeliFragmentActivity implements DressListFragment.FragmentSwitcher {
+    private DressFigureFragment dressFigureFragment;
     private Fragment currentFragment;
     private TextView balanceTextView;
 
@@ -28,9 +30,6 @@ public class DressUpActivity extends LeliFragmentActivity {
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         setToolbar();
-        DressFigureFragment dressFigureFragment = (DressFigureFragment) this.currentFragment;
-        dressFigureFragment.setBalanceView(balanceTextView);
-        dressFigureFragment.setFigurePath("dress/vilma/default.json");
     }
 
     private void setToolbar() {
@@ -49,11 +48,33 @@ public class DressUpActivity extends LeliFragmentActivity {
     @Override
     protected Object getFragmentToLoad(Object oldFragment) {
         if (oldFragment == null) {
-            currentFragment = new DressFigureFragment();
+            if (dressFigureFragment != null) {
+                currentFragment = dressFigureFragment;
+            } else {
+                currentFragment = new DressListFragment();
+            }
         } else {
             currentFragment = (Fragment) oldFragment;
         }
         return currentFragment;
+    }
+
+    @Override
+    public void startDressingFragment(String figureDefinition) {
+        dressFigureFragment = new DressFigureFragment();
+        dressFigureFragment.setBalanceView(balanceTextView);
+        dressFigureFragment.setFigurePath(figureDefinition);
+        loadFragment(null);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment instanceof DressFigureFragment) {
+            dressFigureFragment = null;
+            loadFragment(null);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public static void start(Context c) {

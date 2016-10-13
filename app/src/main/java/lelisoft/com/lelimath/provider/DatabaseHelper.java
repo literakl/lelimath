@@ -167,6 +167,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @SuppressLint("SetWorldReadable")
     private static void backupDatabase() {
         File in = getDatabasePath();
+        @SuppressLint("SimpleDateFormat")
         String timestamp = new SimpleDateFormat("yyMMdd_HHmm").format(new Date());
         File out = new File(Environment.getExternalStorageDirectory(), timestamp + "_" + in.getName());
         //noinspection ResultOfMethodCallIgnored

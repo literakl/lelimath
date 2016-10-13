@@ -47,7 +47,7 @@ public abstract class LeliFragmentActivity extends LeliBaseActivity {
         return getFragmentManager().findFragmentById(R.id.fragment_container);
     }
 
-    private void loadFragment(Object oldFragment) {
+    protected void loadFragment(Object oldFragment) {
         Object fragment = getFragmentToLoad(oldFragment);
         if (fragment == oldFragment) {
             return;

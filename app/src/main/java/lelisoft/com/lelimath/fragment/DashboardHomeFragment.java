@@ -132,7 +132,6 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
 
             case R.id.main_button_points:
                 DressUpActivity.start(activity);
-//                PointsChartActivity.start(activity);
                 break;
 
             case R.id.main_button_badges:
