@@ -4,15 +4,15 @@
     <string name="action_settings">Nastavení</string>
     <string name="action_game_fast_calc">Rychlé počty</string>
     <string name="action_game_puzzle">Najdi výsledek</string>
-    <string name="action_dress_up">Oblékání (bodů: <xliff:g id="points" example="10" >%s</xliff:g>)</string>
+    <string name="action_dress_up">Oblékání (bodů: <xliff:g id="points" example="10" >%d</xliff:g>)</string>
     <string name="action_next_badge">Další:
         <xliff:g id="badge" example="Page" >%s</xliff:g>
-        <xliff:g id="progress" example="1" >%s</xliff:g>/<xliff:g id="max" example="10" >%s</xliff:g>
+        <xliff:g id="progress" example="1" >%d</xliff:g>/<xliff:g id="max" example="10" >%d</xliff:g>
     </string>
     <string name="action_badges">Odznáčků:
-        <xliff:g id="gold" example="0" >%s</xliff:g> -
-        <xliff:g id="silver" example="1" >%s</xliff:g> -
-        <xliff:g id="bronze" example="5" >%s</xliff:g>
+        <xliff:g id="gold" example="0" >%d</xliff:g> -
+        <xliff:g id="silver" example="1" >%d</xliff:g> -
+        <xliff:g id="bronze" example="5" >%d</xliff:g>
     </string>
     <string name="action_info">Informace</string>
     <string name="action_credits">Poděkování</string>
@@ -53,7 +53,7 @@
     <string name="caption_progress">Postup</string>
     <string name="caption_awarded">Získáno</string>
     <string name="caption_new">Nový</string>
-    <string name="message_badge_progress"><xliff:g id="current" example="1" >%s</xliff:g> ze <xliff:g id="total" example="5" >%s</xliff:g></string>
+    <string name="message_badge_progress"><xliff:g id="current" example="1" >%d</xliff:g> ze <xliff:g id="total" example="5" >%d</xliff:g></string>
     <string name="message_badge_not_awarded">Zatím ne</string>
     <string name="pref_game_complexity">Složitost</string>
     <string name="pref_title_operations">Operace</string>
@@ -89,7 +89,7 @@
     <string name="pref_next_badge">Další odznáček</string>
     <string name="pref_sound_state">Zvuk</string>
     <string name="pref_sound_muted">Vypnut</string>
-    <string name="pref_sound_current_level">Hlasitost <xliff:g id="level" example="33" >%s</xliff:g>%%</string>
+    <string name="pref_sound_current_level">Hlasitost <xliff:g id="level" example="33" >%d</xliff:g>%%</string>
     <string name="pref_sound_level">Hlasitost</string>
     <string name="pref_sound_level_message">Nastavte hlasitost pro zvukové efekty</string>
     <string name="pref_category_about">O aplikaci</string>
@@ -98,7 +98,7 @@
     <string name="pref_operation_help_title">Nápověda</string>
     <string name="pref_badge_progress">
         <xliff:g id="badge" example="Page" >%s</xliff:g>
-        (<xliff:g id="progress" example="1" >%s</xliff:g> / <xliff:g id="max" example="10" >%s</xliff:g>)
+        (<xliff:g id="progress" example="1" >%d</xliff:g> / <xliff:g id="max" example="10" >%d</xliff:g>)
     </string>
     <string name="error_empty_argument">Prázdný argument není povolen</string>
     <string name="error_values_must_be_bigger">Každé číslo musí být větší než předešlé</string>
