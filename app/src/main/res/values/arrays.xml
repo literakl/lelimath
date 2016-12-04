@@ -44,23 +44,11 @@
         <item>DIVIDE</item>
         <item>MULTIPLY,DIVIDE</item>
     </string-array>
-    <string-array name="pref_calc_entries">
-        <item>Obrázek</item>
-        <item>Stopky</item>
-        <item>Odpočet</item>
-        <item>Skrýt</item>
-    </string-array>
-    <string-array name="pref_calc_entries_values">
-        <item>PICTURE</item>
-        <item>STOPWATCH</item>
-        <item>COUNTDOWN</item>
-        <item>NONE</item>
-    </string-array>
     <string-array name="pref_calc_unknown_entries">
-        <item>První argument</item>
-        <item>Operace</item>
-        <item>Druhý argument</item>
-        <item>Výsledek</item>
+        <item>@string/pref_title_first_arg</item>
+        <item>@string/pref_title_operation</item>
+        <item>@string/pref_title_second_arg</item>
+        <item>@string/pref_title_result</item>
     </string-array>
     <string-array name="pref_calc_unknown_entries_values">
         <item>FIRST_OPERAND</item>
