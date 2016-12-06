@@ -1,7 +1,6 @@
 package lelisoft.com.lelimath.fragment;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -40,10 +39,6 @@ import lelisoft.com.lelimath.provider.PlayProvider;
 public class CalcFragment extends LeliBaseFragment {
     private static final Logger log = LoggerFactory.getLogger(CalcFragment.class);
 
-    private static final int SPEED_FAST = 5;
-    private static final int SPEED_SLOW = 10;
-    private static final int SPEED_MAX = 20000;
-
     FragmentActivity activity;
     CalcBridge callback;
     HandleClick clickHandler;
@@ -52,9 +47,7 @@ public class CalcFragment extends LeliBaseFragment {
     TextView unknown;
     Animation shake;
     DonutProgress mProgress;
-    long totalTimeSpent;
     int formulaPosition = 0;
-    Drawable iconSlow, iconNormal, iconFast;
     CalcLogic logic;
     Play play;
 
@@ -81,7 +74,6 @@ public class CalcFragment extends LeliBaseFragment {
             play = state.getParcelable("play");
             started = state.getLong("started");
             stopped = state.getLong("stopped");
-            totalTimeSpent = state.getLong("timeSpent");
         } else {
             setupPlay();
             prepareNewFormula();
@@ -91,9 +83,6 @@ public class CalcFragment extends LeliBaseFragment {
         activity = getActivity();
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
         mProgress = (DonutProgress) activity.findViewById(R.id.progressBar);
-//        iconSlow = ContextCompat.getDrawable(this, R.drawable.ic_action_turtle);
-//        iconNormal = ContextCompat.getDrawable(this, R.drawable.ic_action_cat);
-//        iconFast = ContextCompat.getDrawable(this, R.drawable.ic_action_running_rabbit);
 
         clickHandler = new HandleClick();
         attachClickListener();
@@ -208,19 +197,6 @@ public class CalcFragment extends LeliBaseFragment {
     protected void updateSpentTime(PlayRecord playRecord) {
         super.updateSpentTime(playRecord);
         play.addTimeSpent(playRecord.getTimeSpent());
-/*
-        totalTimeSpent += playRecord.getTimeSpent();
-        long averageTime = (totalTimeSpent) / (1000 * formulaPosition);
-
-        View speedIndicator = findViewById(R.id.speedIndicator);
-        if (averageTime < SPEED_FAST) {
-            ((ActionMenuItemView) speedIndicator).setIcon(iconFast);
-        } else if (averageTime > SPEED_SLOW) {
-            ((ActionMenuItemView) speedIndicator).setIcon(iconSlow);
-        } else {
-            ((ActionMenuItemView) speedIndicator).setIcon(iconNormal);
-        }
-*/
     }
 
     protected void displayFormula() {
@@ -316,7 +292,6 @@ public class CalcFragment extends LeliBaseFragment {
         state.putParcelable("play", play);
         state.putLong("started", started);
         state.putLong("stopped", stopped);
-        state.putLong("timeSpent", totalTimeSpent);
     }
 
     public void setLogic(CalcLogic logic) {
