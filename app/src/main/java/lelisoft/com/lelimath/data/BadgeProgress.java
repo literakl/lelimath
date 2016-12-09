@@ -15,24 +15,19 @@ public class BadgeProgress {
     @DatabaseField(persisted = false)
     Badge badge;
 
-    public static final String BADGE_COLUMN_NAME = "badge";
-    @DatabaseField(canBeNull=false, columnName=BADGE_COLUMN_NAME, id = true)
+    @DatabaseField(canBeNull=false, columnName= Columns.BADGE, id = true)
     String badgeStr;
 
-    public static final String DATE_COLUMN_NAME = "date";
-    @DatabaseField(canBeNull = false, columnName = DATE_COLUMN_NAME)
+    @DatabaseField(canBeNull = false, columnName = Columns.DATE)
     Date date;
 
-    public static final String PROGRESS_COLUMN_NAME = "progress";
-    @DatabaseField(canBeNull = false, columnName=PROGRESS_COLUMN_NAME)
+    @DatabaseField(canBeNull = false, columnName= Columns.PROGRESS)
     int progress;
 
-    public static final String REQUIRED_COLUMN_NAME = "required";
-    @DatabaseField(canBeNull = false, columnName=REQUIRED_COLUMN_NAME)
+    @DatabaseField(canBeNull = false, columnName= Columns.REQUIRED)
     int required;
 
-    public static final String IN_PROGRESS_COLUMN_NAME = "in_progress";
-    @DatabaseField(canBeNull = false, columnName=IN_PROGRESS_COLUMN_NAME)
+    @DatabaseField(canBeNull = false, columnName= Columns.IN_PROGRESS)
     boolean inProgress;
 
     @SuppressWarnings("unused")

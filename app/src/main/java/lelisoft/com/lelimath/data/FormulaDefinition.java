@@ -10,48 +10,12 @@ import java.util.List;
  * Created by leos.literak on 26.2.2015.
  */
 public class FormulaDefinition implements Serializable {
-    /** Primary key that shall never change */
-    String id;
-    /** Name of this test, it shall be short */
-    String title;
-    /** Description of this test */
-    String description;
     /** Number of questions */
     int count;
-    /** Count of correct answers to succeed */
-    int minimumCorrectAnswers;
-    /** Maximum allowed time, in seconds */
-    int testTimeLimit;
-    /** Maximum time to receive speed badge, in seconds */
-    int badgeTimeLimit;
     /** Allowed formula's operators and their definition. If unset demo PLUS 0-9 will be used */
     List<OperatorDefinition> operatorDefinitions;
-    /** allowed formula's unknowns. If unset RESULT will be used */
+    /** allowed formula's unknowns. If unset the RESULT will be used */
     List<FormulaPart> unknowns;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public int getCount() {
         return count;
@@ -59,30 +23,6 @@ public class FormulaDefinition implements Serializable {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public int getMinimumCorrectAnswers() {
-        return minimumCorrectAnswers;
-    }
-
-    public void setMinimumCorrectAnswers(int minimumCorrectAnswers) {
-        this.minimumCorrectAnswers = minimumCorrectAnswers;
-    }
-
-    public int getTestTimeLimit() {
-        return testTimeLimit;
-    }
-
-    public void setTestTimeLimit(int testTimeLimit) {
-        this.testTimeLimit = testTimeLimit;
-    }
-
-    public int getBadgeTimeLimit() {
-        return badgeTimeLimit;
-    }
-
-    public void setBadgeTimeLimit(int badgeTimeLimit) {
-        this.badgeTimeLimit = badgeTimeLimit;
     }
 
     public void setOperatorDefinitions(List<OperatorDefinition> operatorDefinitions) {

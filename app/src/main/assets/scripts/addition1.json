@@ -1,0 +1,32 @@
+{
+  "id": "ADD10",
+  "title": "První sčítání",
+  "items": [
+    {
+      "id": "10",
+      "length": 10,
+      "games": "PZ",
+      "operators": [
+        {
+          "operators": "+",
+          "first": "1-5",
+          "second": "1-5",
+          "result": "1-5"
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "length": 10,
+      "games": "PZ,FC",
+      "operators": [
+        {
+          "operators": "+,-",
+          "first": "0-5",
+          "second": "0-5",
+          "result": "0-10"
+        }
+      ]
+    }
+  ]
+}

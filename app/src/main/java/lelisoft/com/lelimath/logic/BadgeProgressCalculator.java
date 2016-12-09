@@ -23,7 +23,7 @@ import lelisoft.com.lelimath.logic.badges.PlayCountBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.StaminaBadgeEvaluator;
 import lelisoft.com.lelimath.provider.BadgeProgressProvider;
 
-import static lelisoft.com.lelimath.data.BadgeProgress.DATE_COLUMN_NAME;
+import static lelisoft.com.lelimath.data.Columns.DATE;
 
 /**
  * Calculates a progress for each badge
@@ -89,7 +89,7 @@ public class BadgeProgressCalculator {
         QueryBuilder<BadgeProgress, String> builder = provider.queryBuilder();
         Map<Badge, Date> badgeDate;
         try {
-            List<BadgeProgress> list = builder.where().ge(DATE_COLUMN_NAME, new Date(lastFormula)).query();
+            List<BadgeProgress> list = builder.where().ge(DATE, new Date(lastFormula)).query();
             badgeDate = new HashMap<>(list.size() + 1, 1.0f);
             for (BadgeProgress progress : list) {
                 badgeDate.put(progress.getBadge(), progress.getDate());

@@ -12,17 +12,17 @@ import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.BadgeProgress;
+import lelisoft.com.lelimath.data.Columns;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.provider.BadgeProgressProvider;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
-import static lelisoft.com.lelimath.data.BadgeEvaluation.BADGE_COLUMN_NAME;
+import static lelisoft.com.lelimath.data.Columns.BADGE;
 
 /**
  * Performs database analysis for certain set of badges and decides if a user is elligible
@@ -85,8 +85,8 @@ public abstract class BadgeEvaluator {
 
     protected BadgeEvaluation queryLastEvaluation(Badge badge, Dao<BadgeEvaluation, Integer> dao) throws SQLException {
         QueryBuilder<BadgeEvaluation, Integer> builder = dao.queryBuilder();
-        builder.where().eq(BADGE_COLUMN_NAME, badge.name());
-        builder.orderBy(BadgeEvaluation.ID_COLUMN_NAME, true);
+        builder.where().eq(BADGE, badge.name());
+        builder.orderBy(Columns.ID, true);
         return builder.queryForFirst();
     }
 }

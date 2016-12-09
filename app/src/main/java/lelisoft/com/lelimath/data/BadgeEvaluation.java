@@ -11,8 +11,7 @@ import java.util.Date;
  */
 @DatabaseTable(tableName = "badge_eval")
 public class BadgeEvaluation {
-    public static final String ID_COLUMN_NAME = "id";
-    @DatabaseField(generatedId = true, columnName = ID_COLUMN_NAME)
+    @DatabaseField(generatedId = true, columnName = Columns.ID)
     Integer id;
 
     @DatabaseField(canBeNull = false)
@@ -21,17 +20,16 @@ public class BadgeEvaluation {
     @DatabaseField(persisted = false)
     Badge badge;
 
-    public static final String BADGE_COLUMN_NAME = "badge";
-    @DatabaseField(canBeNull=false, columnName=BADGE_COLUMN_NAME)
+    @DatabaseField(canBeNull=false, columnName= Columns.BADGE)
     String badgeStr;
 
-    @DatabaseField(canBeNull=true, columnName="last_awarded_id")
+    @DatabaseField(canBeNull=true, columnName=Columns.LAST_AWARDED_ID)
     Integer lastAwardedId;
 
-    @DatabaseField(canBeNull=true, columnName="last_wrong_id")
+    @DatabaseField(canBeNull=true, columnName=Columns.LAST_WRONG_ID)
     Integer lastWrongId;
 
-    @DatabaseField(canBeNull=true, columnName="last_wrong_date")
+    @DatabaseField(canBeNull=true, columnName=Columns.LAST_WRONG_DATE)
     Date lastWrongDate;
 
     public Integer getId() {

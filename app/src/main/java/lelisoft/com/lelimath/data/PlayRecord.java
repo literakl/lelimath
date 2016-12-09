@@ -13,50 +13,46 @@ import java.util.Date;
  */
 @DatabaseTable(tableName = "play_record")
 public class PlayRecord {
-    public static final String ID_COLUMN_NAME = "id";
-    @DatabaseField(generatedId = true, columnName = ID_COLUMN_NAME)
+    @DatabaseField(generatedId = true, columnName = Columns.ID)
     Integer id;
 
     @DatabaseField(canBeNull = false)
     Date date;
 
-    @DatabaseField(foreign = true, columnName="play_id")
+    @DatabaseField(foreign = true, columnName=Columns.PLAY_ID)
     Play play;
 
-    @DatabaseField(canBeNull=true, columnName="first")
+    @DatabaseField(canBeNull=true, columnName=Columns.FIRST_OPERAND)
     Integer firstOperand;
 
-    @DatabaseField(canBeNull=true, columnName="second")
+    @DatabaseField(canBeNull=true, columnName=Columns.SECOND_OPERAND)
     Integer secondOperand;
 
-    @DatabaseField(canBeNull=true, columnName="result")
+    @DatabaseField(canBeNull=true, columnName=Columns.RESULT)
     Integer result;
 
     @DatabaseField(persisted = false)
     Operator operator;
 
-    public static final String OPERATOR_COLUMN_NAME = "operator";
-    @DatabaseField(canBeNull=true, columnName=OPERATOR_COLUMN_NAME, width = 1)
+    @DatabaseField(canBeNull=true, columnName= Columns.OPERATOR, width = 1)
     String operatorStr;
 
     @DatabaseField(persisted = false)
     FormulaPart unknown;
 
-    @DatabaseField(canBeNull=true, columnName="unknown", width = 2)
+    @DatabaseField(canBeNull=true, columnName=Columns.UNKNOWN, width = 2)
     String unknownStr;
 
-    public static final String CORRECT_COLUMN_NAME = "correct";
-    @DatabaseField(canBeNull=true, columnName=CORRECT_COLUMN_NAME)
+    @DatabaseField(canBeNull=true, columnName= Columns.CORRECT)
     boolean correct;
 
-    @DatabaseField(canBeNull=true, columnName="wrong_value")
+    @DatabaseField(canBeNull=true, columnName=Columns.WRONG_VALUE)
     String wrongValue;
 
-    @DatabaseField(canBeNull=true, columnName="spent")
+    @DatabaseField(canBeNull=true, columnName=Columns.SPENT)
     Long timeSpent;
 
-    public static final String POINTS_COLUMN_NAME = "points";
-    @DatabaseField(canBeNull=false, defaultValue = "0", columnName=POINTS_COLUMN_NAME)
+    @DatabaseField(canBeNull=false, defaultValue = "0", columnName= Columns.POINTS)
     Integer points;
 
     public PlayRecord() {

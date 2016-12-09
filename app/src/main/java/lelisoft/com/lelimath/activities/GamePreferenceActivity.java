@@ -64,7 +64,7 @@ import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
-import static lelisoft.com.lelimath.data.BadgeProgress.IN_PROGRESS_COLUMN_NAME;
+import static lelisoft.com.lelimath.data.Columns.IN_PROGRESS;
 
 /**
  * Preferences for a game. Utilizes source code from https://github.com/davcpas1234/MaterialSettings.
@@ -114,7 +114,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         ArrayList<String> captions = new ArrayList<>(Badge.values().length);
         ArrayList<String> values = new ArrayList<>(captions.size());
         try {
-            List<BadgeProgress> list = provider.queryBuilder().where().eq(IN_PROGRESS_COLUMN_NAME, true).query();
+            List<BadgeProgress> list = provider.queryBuilder().where().eq(IN_PROGRESS, true).query();
             Collections.sort(list, new BadgeProgressComparator());
             for (BadgeProgress progress : list) {
                 captions.add(getString(R.string.pref_badge_progress, progress.getBadge().getTitle(),

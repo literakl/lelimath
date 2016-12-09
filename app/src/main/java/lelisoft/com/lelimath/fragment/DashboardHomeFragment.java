@@ -47,7 +47,7 @@ import lelisoft.com.lelimath.provider.BadgeProgressProvider;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 import static lelisoft.com.lelimath.activities.GamePreferenceActivity.KEY_NEXT_BADGE;
-import static lelisoft.com.lelimath.data.BadgeProgress.IN_PROGRESS_COLUMN_NAME;
+import static lelisoft.com.lelimath.data.Columns.IN_PROGRESS;
 import static lelisoft.com.lelimath.data.Badge.*;
 
 /**
@@ -185,7 +185,7 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
             try {
                 BadgeProgressProvider provider = new BadgeProgressProvider(activity);
                 QueryBuilder<BadgeProgress, String> builder = provider.queryBuilder();
-                List<BadgeProgress> list = builder.where().eq(IN_PROGRESS_COLUMN_NAME, true).query();
+                List<BadgeProgress> list = builder.where().eq(IN_PROGRESS, true).query();
                 if (! list.isEmpty()) {
                     Collections.sort(list, new BadgeProgressComparator());
                     nextBadge = list.get(0);

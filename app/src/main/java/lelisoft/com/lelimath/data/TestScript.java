@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Test script holds a group of FormulaDefinitions.
- * Created by leos.literak on 26.2.2015.
+ * Script holding test items.
+ * Created by Leoš on 08.12.2016.
  */
+
 public class TestScript {
-    /** Primary key that shall never change */
+    /** Key that shall never change */
     String id;
     /** Name of this test, it shall be short */
     String title;
-    /** Description of this test */
-    String description;
-    /** List of formula definitions */
-    List<FormulaDefinition> definitions;
+    /** List of formula items */
+    List<TestItem> items;
 
     public String getId() {
         return id;
@@ -33,26 +32,25 @@ public class TestScript {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public List<TestItem> getItems() {
+        return items;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<FormulaDefinition> getDefinitions() {
-        return definitions;
-    }
-
-    public void add(FormulaDefinition value) {
-        if (definitions == null) {
-            definitions = new ArrayList<>(5);
+    public void add(TestItem value) {
+        if (items == null) {
+            items = new ArrayList<>(5);
         }
-        definitions.add(value);
+        items.add(value);
     }
 
-    public void setDefinitions(List<FormulaDefinition> definitions) {
-        this.definitions = definitions;
+    public void setItems(List<TestItem> items) {
+        this.items = items;
+    }
+
+    @Override
+    public String toString() {
+        return "TestScript{" +
+                "id='" + id + '\'' +
+                '}';
     }
 }

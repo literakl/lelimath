@@ -18,6 +18,7 @@ import java.util.Map;
 
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
+import lelisoft.com.lelimath.data.Columns;
 import lelisoft.com.lelimath.view.AwardedBadgesCount;
 
 /**
@@ -117,7 +118,7 @@ public class BadgeAwardProvider {
 
     public List<BadgeAward> getAwards(Badge badge) {
         try {
-            return dao.queryForEq(BadgeAward.BADGE_COLUMN_NAME, badge.name());
+            return dao.queryForEq(Columns.BADGE, badge.name());
         } catch (SQLException e) {
             Crashlytics.logException(e);
             log.error("Unable to get BadgeAwards for {} from database.", badge.name(), e);

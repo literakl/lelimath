@@ -18,6 +18,7 @@ import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.BadgeProgress;
+import lelisoft.com.lelimath.data.Columns;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
@@ -39,7 +40,6 @@ import static lelisoft.com.lelimath.data.Badge.GREAT_MULTIPLICATION;
 import static lelisoft.com.lelimath.data.Badge.GREAT_SUBTRACTION;
 import static lelisoft.com.lelimath.data.Badge.GREAT_SUMMATION;
 import static lelisoft.com.lelimath.data.Operator.*;
-import static lelisoft.com.lelimath.data.PlayRecord.*;
 
 /**
  * Logic for badges awarding faultlessness.
@@ -227,16 +227,16 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
 /*
     private long countCorrectSince(Operator operator, int lastIncorrectId, User user, Dao<PlayRecord, Integer> playRecordDao) throws SQLException {
         // select count(*) from play_record where id > coalesce((select id from play_record where correct = 0), 0)
-        return playRecordDao.queryBuilder().where().gt(ID_COLUMN_NAME, lastIncorrectId).and()
-                .eq(USER_COLUMN_NAME, user.getId()). and().eq(OPERATOR_COLUMN_NAME, operator.value)
+        return playRecordDao.queryBuilder().where().gt(ID, lastIncorrectId).and()
+                .eq(USER_COLUMN_NAME, user.getId()). and().eq(OPERATOR, operator.value)
                 .countOf();
     }
 */
 
     private PlayRecord findLastIncorrectPlayRecord(Operator operator, Dao<PlayRecord, Integer> playRecordDao) throws SQLException {
         QueryBuilder<PlayRecord, Integer> queryBuilder = playRecordDao.queryBuilder();
-        queryBuilder.where().eq(CORRECT_COLUMN_NAME, false).and().eq(OPERATOR_COLUMN_NAME, operator.value);
-        queryBuilder.orderBy(ID_COLUMN_NAME, false);
+        queryBuilder.where().eq(Columns.CORRECT, false).and().eq(Columns.OPERATOR, operator.value);
+        queryBuilder.orderBy(Columns.ID, false);
         return queryBuilder.queryForFirst();
     }
 }

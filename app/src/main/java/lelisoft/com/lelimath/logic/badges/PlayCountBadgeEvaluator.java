@@ -16,6 +16,7 @@ import java.util.Map;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeProgress;
+import lelisoft.com.lelimath.data.Columns;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.logic.BadgeEvaluator;
@@ -49,7 +50,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             if (count > 0 && badges.get(Badge.PAGE) == null) {
                 BadgeAward award = createBadgeAward(Badge.PAGE);
                 queryBuilder = setPlayConditions(playProvider, true);
-                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true);
+                queryBuilder.orderBy(Columns.ID, true);
                 setPlayId(award, queryBuilder.queryForFirst());
                 awardProvider.create(award);
                 LeliMathApp.getInstance().addBadgeAward(award);
@@ -61,7 +62,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             if (count >= 25 && badges.get(Badge.KNIGHT) == null) {
                 BadgeAward award = createBadgeAward(Badge.KNIGHT);
                 queryBuilder = setPlayConditions(playProvider, true);
-                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(25L);
+                queryBuilder.orderBy(Columns.ID, true).limit(25L);
                 setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
                 LeliMathApp.getInstance().addBadgeAward(award);
@@ -73,7 +74,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             if (count >= 100 && badges.get(Badge.PALADIN) == null) {
                 BadgeAward award = createBadgeAward(Badge.PALADIN);
                 queryBuilder = setPlayConditions(playProvider, true);
-                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(100L);
+                queryBuilder.orderBy(Columns.ID, true).limit(100L);
                 setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
                 LeliMathApp.getInstance().addBadgeAward(award);
@@ -87,7 +88,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             if (count > 0 && badges.get(Badge.GLADIATOR) == null) {
                 BadgeAward award = createBadgeAward(Badge.GLADIATOR);
                 queryBuilder = setPlayConditions(playProvider, false);
-                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true);
+                queryBuilder.orderBy(Columns.ID, true);
                 setPlayId(award, queryBuilder.queryForFirst());
                 awardProvider.create(award);
                 LeliMathApp.getInstance().addBadgeAward(award);
@@ -99,7 +100,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             if (count >= 25 && badges.get(Badge.VIKING) == null) {
                 BadgeAward award = createBadgeAward(Badge.VIKING);
                 queryBuilder = setPlayConditions(playProvider, false);
-                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(25L);
+                queryBuilder.orderBy(Columns.ID, true).limit(25L);
                 setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
                 LeliMathApp.getInstance().addBadgeAward(award);
@@ -111,7 +112,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             if (count >= 100 && badges.get(Badge.SAMURAI) == null) {
                 BadgeAward award = createBadgeAward(Badge.SAMURAI);
                 queryBuilder = setPlayConditions(playProvider, false);
-                queryBuilder.orderBy(Play.ID_COLUMN_NAME, true).limit(100L);
+                queryBuilder.orderBy(Columns.ID, true).limit(100L);
                 setPlayIds(award, queryBuilder.query());
                 awardProvider.create(award);
                 LeliMathApp.getInstance().addBadgeAward(award);
@@ -178,11 +179,11 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
         QueryBuilder<Play, Integer> builder = provider.queryBuilder();
         Where<Play, Integer> where = builder.where();
         if (easy) {
-            where.le(Play.LEVEL_COLUMN_NAME, 6);
+            where.le(Columns.LEVEL, 6);
         } else {
-            where.ge(Play.LEVEL_COLUMN_NAME, 9);
+            where.ge(Columns.LEVEL, 9);
         }
-        where.and().eq(Play.FINISHED_COLUMN_NAME, true);
+        where.and().eq(Columns.FINISHED, true);
         return builder;
     }
 }

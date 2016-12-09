@@ -16,8 +16,7 @@ import lelisoft.com.lelimath.logic.GameLogic;
  */
 @DatabaseTable(tableName = "play")
 public class Play implements Parcelable {
-    public static final String ID_COLUMN_NAME = "id";
-    @DatabaseField(generatedId = true, columnName = ID_COLUMN_NAME)
+    @DatabaseField(generatedId = true, columnName = Columns.ID)
     Integer id;
 
     @DatabaseField(canBeNull = false)
@@ -26,21 +25,19 @@ public class Play implements Parcelable {
     @DatabaseField(persisted=false)
     Game game;
 
-    @DatabaseField(canBeNull=false, columnName="game", width = 2)
+    @DatabaseField(canBeNull=false, columnName=Columns.GAME, width = 2)
     String gameStr;
 
-    public static final String LEVEL_COLUMN_NAME = "level";
-    @DatabaseField(canBeNull = false, columnName = LEVEL_COLUMN_NAME)
+    @DatabaseField(canBeNull = false, columnName = Columns.LEVEL)
     int level;
 
     @DatabaseField(canBeNull = false)
     int count;
 
-    public static final String FINISHED_COLUMN_NAME = "finished";
-    @DatabaseField(canBeNull = false, columnName = FINISHED_COLUMN_NAME)
+    @DatabaseField(canBeNull = false, columnName = Columns.FINISHED)
     boolean finished = false;
 
-    @DatabaseField(canBeNull=true, columnName="spent")
+    @DatabaseField(canBeNull=true, columnName=Columns.SPENT)
     Long timeSpent;
 
     public Play() {

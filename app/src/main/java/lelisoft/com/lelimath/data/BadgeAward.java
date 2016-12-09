@@ -20,14 +20,13 @@ public class BadgeAward {
     @DatabaseField(persisted = false)
     Badge badge;
 
-    public static final String BADGE_COLUMN_NAME = "badge";
-    @DatabaseField(canBeNull=false, columnName=BADGE_COLUMN_NAME)
+    @DatabaseField(canBeNull=false, columnName= Columns.BADGE)
     String badgeStr;
 
-    @DatabaseField(canBeNull=false, columnName="type", width = 1)
+    @DatabaseField(canBeNull=false, columnName=Columns.TYPE, width = 1)
     String type;
 
-    @DatabaseField(canBeNull=true, columnName="data")
+    @DatabaseField(canBeNull=true, columnName=Columns.DATA)
     String data;
 
     public Integer getId() {
