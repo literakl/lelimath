@@ -11,8 +11,10 @@ import java.util.List;
 public class TestScript {
     /** Key that shall never change */
     String id;
-    /** Name of this test, it shall be short */
+    /** Name of this test, it shall be very short */
     String title;
+    /** Drawable for this script */
+    String picture;
     /** List of formula items */
     List<TestItem> items;
 
@@ -30,6 +32,14 @@ public class TestScript {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public List<TestItem> getItems() {
