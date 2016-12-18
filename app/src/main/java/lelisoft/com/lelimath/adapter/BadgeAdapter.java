@@ -16,6 +16,7 @@ import java.util.List;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.activities.BadgeAwardActivity;
+import lelisoft.com.lelimath.helpers.CustomItemClickListener;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.view.BadgeView;
 
@@ -25,8 +26,8 @@ import lelisoft.com.lelimath.view.BadgeView;
  */
 public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> {
     private static final Logger log = LoggerFactory.getLogger(BadgeAdapter.class);
-    List<BadgeView> records;
-    CustomItemClickListener listener = new CustomItemClickListener() {
+    private List<BadgeView> records;
+    private CustomItemClickListener listener = new CustomItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             Context context = view.getRootView().getContext();
@@ -37,6 +38,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
     };
 
     public BadgeAdapter(List<BadgeView> records) {
+        log.debug("BadgeAdapter()");
         this.records = records;
     }
 
@@ -77,7 +79,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
          * Creates new ViewHolder and init look with data from Badge
          * @param view view its views will be injected to these fields
          */
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             formulaView = (TextView) view.findViewById(R.id.badge_title);
             newView = (TextView) view.findViewById(R.id.badge_new);
@@ -89,7 +91,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
          * Update views (if necessary) that are hold by this ViewHolder
          * @param badgeView badge to be displayed on the view
          */
-        public void update(BadgeView badgeView) {
+        void update(BadgeView badgeView) {
             formulaView.setText(badgeView.badge.getTitle());
             typeView.setImageResource(Misc.getBadgeImage(badgeView.badge));
             if (badgeView.awarded) {
@@ -103,9 +105,5 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.ViewHolder> 
                 newView.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    public interface CustomItemClickListener {
-        void onItemClick(View v, int position);
     }
 }

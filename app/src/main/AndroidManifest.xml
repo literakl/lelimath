@@ -72,6 +72,11 @@
             >
             <!--android:theme="@style/AppTheme.FullScreen"-->
         </activity>
+        <activity
+            android:name=".activities.ScriptListActivity"
+            android:label="@string/action_academy"
+            android:parentActivityName=".activities.DashboardActivity">
+        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7c7bf17a7ad99a3376db27a6dbcbcd2720f8e933" />

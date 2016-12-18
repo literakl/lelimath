@@ -27,6 +27,7 @@ import lelisoft.com.lelimath.activities.BadgeAwardActivity;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.PlayRecord;
+import lelisoft.com.lelimath.helpers.CustomItemClickListener;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
 
@@ -37,9 +38,9 @@ import lelisoft.com.lelimath.helpers.Misc;
 public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericViewHolder> {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(JournalAdapter.class);
 
-    List<JournalItem> records;
+    private List<JournalItem> records;
 
-    CustomItemClickListener listener = new CustomItemClickListener() {
+    private CustomItemClickListener listener = new CustomItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             Context context = view.getRootView().getContext();
@@ -122,8 +123,8 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
     }
 
     // http://stackoverflow.com/questions/26245139/how-to-create-recyclerview-with-multiple-view-type
-    public abstract class GenericViewHolder extends RecyclerView.ViewHolder {
-        public GenericViewHolder(View itemView) {
+    abstract class GenericViewHolder extends RecyclerView.ViewHolder {
+        GenericViewHolder(View itemView) {
             super(itemView);
         }
 
@@ -133,14 +134,14 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
     /**
      * This class simply holds view of an item in list
      */
-    public class SectionViewHolder extends GenericViewHolder {
+    private class SectionViewHolder extends GenericViewHolder {
         TextView dateView;
 
         /**
          * Creates new ViewHolder and init look with data from playRecord
          * @param view view its views will be injected to these fields
          */
-        public SectionViewHolder(View view) {
+        SectionViewHolder(View view) {
             super(view);
             dateView = (TextView) view.findViewById(R.id.fr_date);
         }
@@ -155,7 +156,7 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
     /**
      * This class simply holds view of an item in list
      */
-    public class PlayRecordViewHolder extends GenericViewHolder {
+    private class PlayRecordViewHolder extends GenericViewHolder {
         TextView formulaView;
         ImageView statusView;
 
@@ -163,7 +164,7 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
          * Creates new ViewHolder and init look with data from playRecord
          * @param view view its views will be injected to these fields
          */
-        public PlayRecordViewHolder(View view) {
+        PlayRecordViewHolder(View view) {
             super(view);
             formulaView = (TextView) view.findViewById(R.id.fr_formula);
             statusView = (ImageView) view.findViewById(R.id.fr_status);
@@ -212,7 +213,7 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
     /**
      * This class simply holds view of an item in list
      */
-    public class BadgeViewHolder extends GenericViewHolder {
+    private class BadgeViewHolder extends GenericViewHolder {
         ImageView typeView;
         TextView nameView;
 
@@ -220,7 +221,7 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
          * Creates new ViewHolder and init look with data from playRecord
          * @param view view its views will be injected to these fields
          */
-        public BadgeViewHolder(View view) {
+        BadgeViewHolder(View view) {
             super(view);
             typeView = (ImageView) view.findViewById(R.id.badge_type);
             nameView = (TextView) view.findViewById(R.id.badge_title);
@@ -234,8 +235,8 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
         }
     }
 
-    public static class Caption {
-        public long millis;
+    private static class Caption {
+        long millis;
         public String text;
 
         public Caption(String text, long millis) {
@@ -244,24 +245,24 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
         }
     }
 
-    public static class JournalItem implements Comparable {
-        public Caption caption;
-        public PlayRecord playRecord;
-        public BadgeAward badgeAward;
+    private static class JournalItem implements Comparable {
+        Caption caption;
+        PlayRecord playRecord;
+        BadgeAward badgeAward;
 
-        public JournalItem(PlayRecord record) {
+        JournalItem(PlayRecord record) {
             this.playRecord = record;
         }
 
-        public JournalItem(Caption caption) {
+        JournalItem(Caption caption) {
             this.caption = caption;
         }
 
-        public JournalItem(BadgeAward badgeAward) {
+        JournalItem(BadgeAward badgeAward) {
             this.badgeAward = badgeAward;
         }
 
-        public int getViewType() {
+        int getViewType() {
             if (playRecord != null) {
                 return 1;
             }
@@ -286,9 +287,5 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.GenericV
             }
             return badgeAward.getDate().getTime();
         }
-    }
-
-    public interface CustomItemClickListener {
-        void onItemClick(View v, int position);
     }
 }

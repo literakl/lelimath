@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="300dp"
     android:layout_height="300dp"
-    android:layout_margin="7dp"
     android:background="@drawable/game_border"
     android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.6"
+        android:layout_height="45dp"
+        android:layout_marginTop="15dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Novice"
             android:textColor="#404fb3"
-            android:textSize="24dp" />
+            android:textSize="28sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="140dp"
         android:layout_marginTop="10dp"
-        android:layout_weight="1.2"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/im1"
+            android:id="@+id/picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/pic_lion" />
@@ -41,31 +40,31 @@
 
     <LinearLayout
         android:layout_width="250dp"
-        android:layout_height="0dp"
-        android:layout_weight="0.4"
+        android:layout_height="30dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3/15"
             android:textColor="#404fb3"
-            android:textSize="24dp" />
+            android:textSize="28sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="250dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="0.5"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="49dp"
+            android:id="@+id/star1"
+            android:layout_width="40dp"
+            android:layout_height="39dp"
             android:src="@drawable/star_on" />
 
         <Space
@@ -73,17 +72,19 @@
             android:layout_height="wrap_content"/>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="49dp"
-            android:src="@drawable/star_on" />
+            android:id="@+id/star2"
+            android:layout_width="40dp"
+            android:layout_height="39dp"
+            android:src="@drawable/star_off" />
 
         <Space
             android:layout_width="25dp"
             android:layout_height="wrap_content"/>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="49dp"
+            android:id="@+id/star3"
+            android:layout_width="40dp"
+            android:layout_height="39dp"
             android:src="@drawable/star_off" />
 
     </LinearLayout>

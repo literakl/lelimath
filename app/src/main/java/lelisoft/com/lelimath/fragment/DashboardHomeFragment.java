@@ -35,6 +35,7 @@ import lelisoft.com.lelimath.activities.DressUpActivity;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.activities.InformationActivity;
 import lelisoft.com.lelimath.activities.PuzzleActivity;
+import lelisoft.com.lelimath.activities.ScriptListActivity;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeProgress;
@@ -82,7 +83,9 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         setBadgeProgress();
         displayNextAward();
 
-        TextView button = (TextView) activity.findViewById(R.id.main_button_puzzle);
+        TextView button = (TextView) activity.findViewById(R.id.main_button_academy);
+        button.setOnClickListener(this);
+        button = (TextView) activity.findViewById(R.id.main_button_puzzle);
         button.setOnClickListener(this);
         button = (TextView) activity.findViewById(R.id.main_button_calc);
         button.setOnClickListener(this);
@@ -116,6 +119,10 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         switch (v.getId()) {
             case R.id.main_button_puzzle:
                 PuzzleActivity.start(activity);
+                break;
+
+            case R.id.main_button_academy:
+                ScriptListActivity.start(activity);
                 break;
 
             case R.id.main_button_calc:

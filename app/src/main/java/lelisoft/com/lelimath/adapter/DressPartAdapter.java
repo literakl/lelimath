@@ -18,6 +18,7 @@ import java.util.List;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.event.DressPartSelectedEvent;
 import lelisoft.com.lelimath.gui.DressPartPriceView;
+import lelisoft.com.lelimath.helpers.CustomItemClickListener;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.view.DressPart;
@@ -29,11 +30,11 @@ import lelisoft.com.lelimath.view.DressPart;
 public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.ViewHolder> {
     private static final Logger log = LoggerFactory.getLogger(DressPartAdapter.class);
 
-    List<DressPart> parts;
-    Context context;
-    int balance;
+    private List<DressPart> parts;
+    private Context context;
+    private int balance;
 
-    CustomItemClickListener listener = new CustomItemClickListener() {
+    private CustomItemClickListener listener = new CustomItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             log.debug("onItemClick {}", position);
@@ -102,14 +103,10 @@ public class DressPartAdapter extends RecyclerView.Adapter<DressPartAdapter.View
         DressPartPriceView priceView;
         ImageView imageView;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             priceView = (DressPartPriceView) view.findViewById(R.id.part_price);
             imageView = (ImageView) view.findViewById(R.id.part_image);
         }
-    }
-
-    public interface CustomItemClickListener {
-        void onItemClick(View v, int position);
     }
 }

@@ -17,6 +17,16 @@ public class TestScript {
     String picture;
     /** List of formula items */
     List<TestItem> items;
+    /** Computed value, how many items have been finished already */
+    int finished;
+    /** Computed value, average score of finished items: 1 is no error, 0 is worst */
+    float score;
+
+    public TestScript(String caption, int finished, int count, float score) {
+        this.title = caption;
+        this.finished = finished;
+        this.score = score;
+    }
 
     public String getId() {
         return id;
@@ -46,6 +56,10 @@ public class TestScript {
         return items;
     }
 
+    public int getCount() {
+        return (items == null) ? 0 : items.size();
+    }
+
     public void add(TestItem value) {
         if (items == null) {
             items = new ArrayList<>(5);
@@ -55,6 +69,22 @@ public class TestScript {
 
     public void setItems(List<TestItem> items) {
         this.items = items;
+    }
+
+    public int getFinished() {
+        return finished;
+    }
+
+    public void setFinished(int finished) {
+        this.finished = finished;
+    }
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
     }
 
     @Override
