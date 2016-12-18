@@ -92,7 +92,6 @@ public class TestScriptAdapter extends RecyclerView.Adapter<TestScriptAdapter.Sc
                 0.6 - 0.8999 - 2 stars
                 0.9 - 1 - 3 stars
              */
-            log.debug("#{}: {}", position, score);
             if (score >= 0.6) {
                 star2.setImageResource(R.drawable.star_on);
                 if (score >= 0.9) {

@@ -6,8 +6,12 @@
     android:id="@+id/scripts_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:numColumns="auto_fit"
-    android:scrollbars="vertical"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginStart="20dp"
+    android:clipToPadding="false"
     android:orientation="vertical"
-    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-    tools:listitem="@layout/tmpl_script"/>
+    app:layoutManager="android.support.v7.widget.GridLayoutManager"
+    tools:listitem="@layout/tmpl_script"
+    />

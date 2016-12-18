@@ -3,4 +3,5 @@
     <integer name="dress_parts_weight_selection">3</integer>
     <integer name="dress_parts_weight_figure">2</integer>
     <integer name="dress_parts_columns">3</integer>
+    <integer name="scripts_columns">3</integer>
 </resources>

@@ -62,7 +62,8 @@ public class ScriptListActivity extends LeliBaseActivity {
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.scripts_recycler_view);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        int columns = getResources().getInteger(R.integer.scripts_columns);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setHasFixedSize(true);
     }
 

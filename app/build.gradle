@@ -20,15 +20,15 @@ apply plugin: 'android-apt'
 android {
     signingConfigs {
     }
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "lelisoft.com.lelimath"
         resValue 'string', 'app_name', 'LeliMath'
         minSdkVersion 16
-        targetSdkVersion 24
-        versionCode 280
-        versionName '2.8.0'
+        targetSdkVersion 25
+        versionCode 300
+        versionName '3.0.0'
         resValue "string", "app_build_number", getDate();
         resValue "string", "app_version", versionName;
 //        vectorDrawables.useSupportLibrary = true
