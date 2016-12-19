@@ -65,11 +65,11 @@ def getDate() {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:gridlayout-v7:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
-    compile 'com.android.support:cardview-v7:24.2.0'
-    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:gridlayout-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:cardview-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
     compile('com.github.tony19:logback-android-classic:1.1.1-4') {
         exclude module: 'android'
     }
