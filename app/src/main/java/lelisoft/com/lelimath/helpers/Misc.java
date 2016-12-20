@@ -1,13 +1,17 @@
 package lelisoft.com.lelimath.helpers;
 
 import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.graphics.Rect;
 import android.os.Environment;
+import android.support.annotation.LayoutRes;
 import android.text.format.DateUtils;
+import android.view.ViewGroup;
 
 import com.crashlytics.android.Crashlytics;
 
 import org.slf4j.LoggerFactory;
+import org.xmlpull.v1.XmlPullParser;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -247,6 +251,26 @@ public class Misc {
 
     public static int getResourceId(String key) {
         return LeliMathApp.resources.getIdentifier(key, "drawable", LeliMathApp.getInstance().getPackageName());
+    }
+
+    /**
+     * Parses given layout and generates layout parameters from it. See http://stackoverflow.com/a/7018328/1639556
+     * @param viewGroup parent view group
+     * @param params layout to be parsed
+     * @return LayoutParams
+     */
+    public static ViewGroup.LayoutParams generateLayoutParams(ViewGroup viewGroup, @LayoutRes int params) {
+        try {
+            XmlResourceParser parser = LeliMathApp.resources.getLayout(params);
+            //noinspection StatementWithEmptyBody
+            while(parser.nextToken() != XmlPullParser.START_TAG) {
+                // Skip everything until the view tag.
+            }
+            return viewGroup.generateLayoutParams(parser);
+        } catch (Exception e) {
+            log.error("Failed to generate layout parameters from {}", params, e);
+        }
+        return null;
     }
 
     public static int getBadgeImage(Badge badge) {

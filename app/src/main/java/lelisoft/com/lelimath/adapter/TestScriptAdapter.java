@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,10 +22,38 @@ import lelisoft.com.lelimath.helpers.LeliMathApp;
  * Created by Leoš on 18.12.2016.
  */
 
-public class TestScriptAdapter extends RecyclerView.Adapter<TestScriptAdapter.ScriptViewHolder> {
+public class TestScriptAdapter extends BaseAdapter {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TestScriptAdapter.class);
 
     private List<TestScript> records;
+
+    @Override
+    public int getCount() {
+        return records.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View itemView = null;
+        if (convertView == null) {
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script, parent, false);
+            final ScriptViewHolder viewHolder = new ScriptViewHolder(itemView);
+            viewHolder.setDataOnView(position);
+        } else {
+            itemView = convertView;
+        }
+        return itemView;
+    }
 
     private CustomItemClickListener listener = new CustomItemClickListener() {
         @Override
@@ -41,9 +70,9 @@ public class TestScriptAdapter extends RecyclerView.Adapter<TestScriptAdapter.Sc
         this.records = records;
     }
 
-    @Override
     public ScriptViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tmpl_script, viewGroup, false);
+//        itemView.setLayoutParams(new RecyclerView.LayoutParams(width, width));
 
         final ScriptViewHolder viewHolder = new ScriptViewHolder(itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -56,13 +85,11 @@ public class TestScriptAdapter extends RecyclerView.Adapter<TestScriptAdapter.Sc
 
     }
 
-    @Override
     public void onBindViewHolder(ScriptViewHolder vh, int position) {
         vh.setDataOnView(position);
         vh.itemView.setClickable(true);
     }
 
-    @Override
     public int getItemCount() {
         return records.size();
     }

@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.GridView;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.TestScriptAdapter;
+import lelisoft.com.lelimath.adapter.TestScriptAdapter2;
 import lelisoft.com.lelimath.data.TestScript;
 import lelisoft.com.lelimath.helpers.Misc;
 
@@ -60,11 +62,9 @@ public class ScriptListActivity extends LeliBaseActivity {
         records.add(new TestScript("Nasobilka deseti", 10, 10, Misc.getRandom().nextFloat()));
         TestScriptAdapter adapter = new TestScriptAdapter(records);
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.scripts_recycler_view);
-        recyclerView.setAdapter(adapter);
-        int columns = getResources().getInteger(R.integer.scripts_columns);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        recyclerView.setHasFixedSize(true);
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new TestScriptAdapter2(records));
+
     }
 
     public static void start(Context c) {
