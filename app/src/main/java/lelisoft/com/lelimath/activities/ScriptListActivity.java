@@ -18,7 +18,6 @@ import java.util.List;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.TestScriptAdapter;
-import lelisoft.com.lelimath.adapter.TestScriptAdapter2;
 import lelisoft.com.lelimath.data.TestScript;
 import lelisoft.com.lelimath.helpers.Misc;
 
@@ -63,7 +62,7 @@ public class ScriptListActivity extends LeliBaseActivity {
         TestScriptAdapter adapter = new TestScriptAdapter(records);
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new TestScriptAdapter2(records));
+        gridview.setAdapter(new TestScriptAdapter(records));
 
     }
 
