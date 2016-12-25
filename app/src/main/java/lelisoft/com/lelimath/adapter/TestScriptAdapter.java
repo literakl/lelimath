@@ -1,7 +1,5 @@
 package lelisoft.com.lelimath.adapter;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +12,8 @@ import java.util.List;
 
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.TestScript;
-import lelisoft.com.lelimath.helpers.CustomItemClickListener;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
+import lelisoft.com.lelimath.helpers.Misc;
 
 /**
  * Provides TestScript data.
@@ -44,9 +42,10 @@ public class TestScriptAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View itemView = null;
+        View itemView;
         if (convertView == null) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script, parent, false);
+//            itemView.setLayoutParams(new GridView.LayoutParams(85, 85));
             final ScriptViewHolder viewHolder = new ScriptViewHolder(itemView);
             viewHolder.setDataOnView(position);
         } else {
@@ -55,46 +54,12 @@ public class TestScriptAdapter extends BaseAdapter {
         return itemView;
     }
 
-    private CustomItemClickListener listener = new CustomItemClickListener() {
-        @Override
-        public void onItemClick(View view, int position) {
-            Context context = view.getRootView().getContext();
-//            Intent intent = new Intent(context, BadgeAwardActivity.class);
-//            intent.putExtra(BadgeAwardActivity.KEY_BADGE, records.get(position).badgeAward.getBadge());
-//            context.startActivity(intent);
-        }
-    };
-
     public TestScriptAdapter(List<TestScript> records) {
         log.debug("TestScriptAdapter()");
         this.records = records;
     }
 
-    public ScriptViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tmpl_script, viewGroup, false);
-//        itemView.setLayoutParams(new RecyclerView.LayoutParams(width, width));
-
-        final ScriptViewHolder viewHolder = new ScriptViewHolder(itemView);
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClick(v, viewHolder.getLayoutPosition());
-            }
-        });
-        return viewHolder;
-
-    }
-
-    public void onBindViewHolder(ScriptViewHolder vh, int position) {
-        vh.setDataOnView(position);
-        vh.itemView.setClickable(true);
-    }
-
-    public int getItemCount() {
-        return records.size();
-    }
-
-    class ScriptViewHolder extends RecyclerView.ViewHolder {
+    private class ScriptViewHolder extends RecyclerView.ViewHolder {
         TextView caption, stats;
         ImageView picture, star1, star2, star3;
 
@@ -111,6 +76,11 @@ public class TestScriptAdapter extends BaseAdapter {
         void setDataOnView(int position) {
             TestScript item = records.get(position);
             caption.setText(item.getTitle());
+            String picture = item.getPicture();
+            if (picture == null) {
+                picture = "pic_kitten";
+            }
+            this.picture.setImageResource(Misc.getResourceId(picture));
             stats.setText(LeliMathApp.resources.getString(R.string.script_progress, item.getFinished(), item.getCount()));
             float score = item.getScore();
             /*

@@ -12,7 +12,7 @@ import java.util.List;
 public class FormulaDefinition implements Serializable {
     /** Number of questions */
     int count;
-    /** Allowed formula's operators and their definition. If unset demo PLUS 0-9 will be used */
+    /** Allowed formula's operators and their definition. If unset a demo PLUS 0-9 will be used */
     List<OperatorDefinition> operatorDefinitions;
     /** allowed formula's unknowns. If unset the RESULT will be used */
     List<FormulaPart> unknowns;

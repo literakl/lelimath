@@ -1,32 +1,46 @@
 {
   "id": "ADD10",
   "title": "První sčítání",
+  "picture": "pic_dragon",
   "items": [
     {
       "id": "10",
-      "length": 10,
-      "games": "PZ",
-      "operators": [
-        {
-          "operators": "+",
-          "first": "1-5",
-          "second": "1-5",
-          "result": "1-5"
-        }
-      ]
+      "games": ["PZ"],
+      "definition":
+      {
+        "count": 10,
+        "operatorDefinitions": [
+          {
+            "operators": ["+"],
+            "first": "1-5",
+            "second": "1-5",
+            "result": "2-5"
+          }
+        ]
+      }
     },
     {
       "id": "20",
-      "length": 10,
-      "games": "PZ,FC",
-      "operators": [
-        {
-          "operators": "+,-",
-          "first": "0-5",
-          "second": "0-5",
-          "result": "0-10"
-        }
-      ]
+      "games": ["PZ","FC"],
+      "definition":
+      {
+        "count": 10,
+        "unknowns": ["RS"],
+        "operatorDefinitions": [
+          {
+            "operators": ["+"],
+            "first": "1-5",
+            "second": "1-5",
+            "result": "2-5"
+          },
+          {
+            "operators": ["-"],
+            "first": "3-5",
+            "second": "1,2",
+            "result": "1-3"
+          }
+        ]
+      }
     }
   ]
 }

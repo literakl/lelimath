@@ -37,8 +37,10 @@ public enum Operator {
                 return PLUS;
             case "-":
                 return MINUS;
+            case "*":
             case "\u22C5":
                 return MULTIPLY;
+            case "/":
             case ":":
                 return DIVIDE;
             default:

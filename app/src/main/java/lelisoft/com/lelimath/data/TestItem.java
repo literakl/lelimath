@@ -9,13 +9,13 @@ import java.util.List;
  */
 public class TestItem {
     /** Key that shall never change */
-    String id;
+    private String id;
     /** Name of this test, it shall be short */
-    FormulaDefinition definition;
+    private FormulaDefinition definition;
     /** list of allowed games */
-    List<Game> games;
+    private List<Game> games;
     /** record of finished execution of this item. it must be singleton - overwritten if this test is played again */
-    TestRecord record;
+    private TestRecord record;
 
     public String getId() {
         return id;

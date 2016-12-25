@@ -1,11 +1,14 @@
 package lelisoft.com.lelimath.data;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Game types
  * Created by Leoš on 29.04.2016.
  */
 public enum Game {
-    PUZZLE("PZ"), FAST_CALC("FC");
+    @SerializedName("PZ") PUZZLE("PZ"),
+    @SerializedName("FC") FAST_CALC("FC");
 
     final String key;
 

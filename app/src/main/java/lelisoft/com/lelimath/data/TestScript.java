@@ -10,17 +10,20 @@ import java.util.List;
 
 public class TestScript {
     /** Key that shall never change */
-    String id;
+    private String id;
     /** Name of this test, it shall be very short */
-    String title;
+    private String title;
     /** Drawable for this script */
-    String picture;
+    private String picture;
     /** List of formula items */
-    List<TestItem> items;
+    private List<TestItem> items;
     /** Computed value, how many items have been finished already */
-    int finished;
+    private int finished;
     /** Computed value, average score of finished items: 1 is no error, 0 is worst */
-    float score;
+    private float score;
+
+    public TestScript() {
+    }
 
     public TestScript(String caption, int finished, int count, float score) {
         this.title = caption;

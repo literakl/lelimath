@@ -4,15 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.TestScriptAdapter;
 import lelisoft.com.lelimath.data.TestScript;
 import lelisoft.com.lelimath.helpers.Misc;
+import lelisoft.com.lelimath.logic.ScriptParser;
 
 /**
  * Lists available scripts.
@@ -48,6 +51,15 @@ public class ScriptListActivity extends LeliBaseActivity {
         }
 
         List<TestScript> records = new ArrayList<>();
+
+        try {
+            InputStream is = getAssets().open("scripts/addition1.json");
+            TestScript script = ScriptParser.parse(is);
+            records.add(script);
+        } catch (IOException e) {
+            log.error("chyba", e);
+        }
+
         records.add(new TestScript("Prvnacek", 3, 15, 0.6962372f));
         records.add(new TestScript("Pocitame zpameti", 0, 9, Misc.getRandom().nextFloat()));
         records.add(new TestScript("Scitani a odecitani do peti", 0, 9, Misc.getRandom().nextFloat()));
@@ -59,11 +71,15 @@ public class ScriptListActivity extends LeliBaseActivity {
         records.add(new TestScript("Nasobilka trojky", 3, 33, Misc.getRandom().nextFloat()));
         records.add(new TestScript("Nasobilka peti", 4, 15, Misc.getRandom().nextFloat()));
         records.add(new TestScript("Nasobilka deseti", 10, 10, Misc.getRandom().nextFloat()));
-        TestScriptAdapter adapter = new TestScriptAdapter(records);
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new TestScriptAdapter(records));
-
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(ScriptListActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public static void start(Context c) {

@@ -1,11 +1,18 @@
 package lelisoft.com.lelimath.data;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Enum identifying individual parts of formula.
  * Created by Leoš on 4. 2. 2015.
  */
 public enum FormulaPart {
-    FIRST_OPERAND("FO"), SECOND_OPERAND("SO"), RESULT("RS"), OPERATOR("OP"), EXPRESSION("EX");
+    @SerializedName("FO") FIRST_OPERAND("FO"),
+    @SerializedName("SO") SECOND_OPERAND("SO"),
+    @SerializedName("RS") RESULT("RS"),
+    @SerializedName("OP") OPERATOR("OP"),
+    @SerializedName("EX") EXPRESSION("EX");
+
     String key;
 
     FormulaPart(String key) {
