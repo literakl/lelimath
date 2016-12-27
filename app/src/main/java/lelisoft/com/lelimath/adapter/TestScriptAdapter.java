@@ -46,11 +46,12 @@ public class TestScriptAdapter extends BaseAdapter {
         if (convertView == null) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script, parent, false);
 //            itemView.setLayoutParams(new GridView.LayoutParams(85, 85));
-            final ScriptViewHolder viewHolder = new ScriptViewHolder(itemView);
-            viewHolder.setDataOnView(position);
         } else {
             itemView = convertView;
         }
+
+        final ScriptViewHolder viewHolder = new ScriptViewHolder(itemView);
+        viewHolder.setDataOnView(position);
         return itemView;
     }
 
