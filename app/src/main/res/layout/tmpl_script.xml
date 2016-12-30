@@ -23,18 +23,20 @@
         android:text="Novice can become master"
         android:textColor="#404fb3"
         android:textSize="20sp"
+        android:fontFamily="sans-serif-condensed"
+        android:maxLength="30"
+        android:textStyle="bold"
         android:textAllCaps="true"
-        android:hyphenationFrequency="full"
+        android:breakStrategy="balanced"
+        android:hyphenationFrequency="normal"
         android:gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:fontFamily="casual"
-        android:maxLength="30"
-        android:textStyle="bold"
-        android:padding="8dp" />
+        android:padding="8dp"
+        />
 
     <LinearLayout
         android:id="@+id/stars"
