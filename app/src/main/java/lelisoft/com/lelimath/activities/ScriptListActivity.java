@@ -67,7 +67,7 @@ public class ScriptListActivity extends LeliBaseActivity {
         records.add(new TestScript("Scitani a odecitani do peti", 0, 9, Misc.getRandom().nextFloat()));
         records.add(new TestScript("Scitani pres desitku", 2, 7, Misc.getRandom().nextFloat()));
         records.add(new TestScript("Odecitani pres desitku", 11, 16, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Odecitani trojky", 0, 8, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("ABCD EFGHI JKLMN OPQRS TUVWX YZ", 0, 8, Misc.getRandom().nextFloat()));
         records.add(new TestScript("Odecitani desitky", 4, 14, Misc.getRandom().nextFloat()));
         records.add(new TestScript("Nasobilka trojky", 3, 33, Misc.getRandom().nextFloat()));
         records.add(new TestScript("Nasobilka peti", 4, 15, Misc.getRandom().nextFloat()));

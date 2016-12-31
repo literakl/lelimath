@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="120dp"
-    android:layout_height="300dp"
+    android:layout_height="180dp"
     app:layout_gravity="center"
     >
 
@@ -22,20 +22,24 @@
         android:id="@+id/caption"
         android:text="Novice can become master"
         android:textColor="#404fb3"
-        android:textSize="20sp"
+        android:textSize="14sp"
+        android:maxLines="3"
+        android:ellipsize="end"
         android:fontFamily="sans-serif-condensed"
-        android:maxLength="30"
         android:textStyle="bold"
         android:textAllCaps="true"
         android:breakStrategy="balanced"
         android:hyphenationFrequency="normal"
         android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="116dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:padding="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         />
 
     <LinearLayout
@@ -52,28 +56,28 @@
 
         <ImageView
             android:id="@+id/star1"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:src="@drawable/star_on" />
 
         <Space
-            android:layout_width="11dp"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"/>
 
         <ImageView
             android:id="@+id/star2"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:src="@drawable/star_off" />
 
         <Space
-            android:layout_width="11dp"
+            android:layout_width="12dp"
             android:layout_height="wrap_content"/>
 
         <ImageView
             android:id="@+id/star3"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:src="@drawable/star_off" />
     </LinearLayout>
 
@@ -81,7 +85,9 @@
         android:id="@+id/stats"
         android:text="3/15"
         android:textColor="#404fb3"
-        android:textSize="28sp"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/stars"
