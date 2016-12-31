@@ -77,11 +77,11 @@ public class TestScriptAdapter extends BaseAdapter {
         void setDataOnView(int position) {
             TestScript item = records.get(position);
             caption.setText(item.getTitle());
-            String picture = item.getPicture();
-            if (picture == null) {
-                picture = "pic_kitten";
+            String pictureName = item.getPicture();
+            if (pictureName != null) {
+                int resourceId = Misc.getResourceId(pictureName);
+                picture.setImageResource(resourceId);
             }
-            super.itemView.setBackgroundResource(Misc.getResourceId(picture));
             stats.setText(LeliMathApp.resources.getString(R.string.script_progress, item.getFinished(), item.getCount()));
             float score = item.getScore();
             /*
