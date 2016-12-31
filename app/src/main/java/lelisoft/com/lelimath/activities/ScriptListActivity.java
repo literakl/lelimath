@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
@@ -54,8 +55,8 @@ public class ScriptListActivity extends LeliBaseActivity {
 
         try {
             InputStream is = getAssets().open("scripts/addition1.json");
-            TestScript script = ScriptParser.parse(is);
-            records.add(script);
+            TestScript[] scripts = ScriptParser.parse(is);
+            Collections.addAll(records, scripts);
         } catch (IOException e) {
             log.error("chyba", e);
         }

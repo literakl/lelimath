@@ -21,13 +21,13 @@ import lelisoft.com.lelimath.helpers.FormulaDefinitionGsonAdapter;
 public class ScriptParser {
     private static final Logger log = LoggerFactory.getLogger(ScriptParser.class);
 
-    public static TestScript parse(InputStream is) {
+    public static TestScript[] parse(InputStream is) {
         log.debug("Starting to parse");
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(FormulaDefinition.class, new FormulaDefinitionGsonAdapter());
         Gson gson = gsonBuilder.create();
         InputStreamReader reader = new InputStreamReader(is);
-        TestScript script = gson.fromJson(reader, TestScript.class);
+        TestScript[] script = gson.fromJson(reader, TestScript[].class);
         log.debug("finished");
         return script;
     }

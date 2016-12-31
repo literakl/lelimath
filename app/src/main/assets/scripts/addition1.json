@@ -1,3 +1,4 @@
+[
 {
   "id": "ADD10",
   "title": "První sčítání",
@@ -43,4 +44,28 @@
       }
     }
   ]
+},
+{
+  "id": "SUB10",
+  "title": "První odečítání",
+  "picture": "pic_puppy",
+  "items": [
+    {
+      "id": "10",
+      "games": ["PZ"],
+      "definition":
+      {
+        "count": 10,
+        "operatorDefinitions": [
+          {
+            "operators": ["-"],
+            "first": "2-5",
+            "second": "0-5",
+            "result": "0-5"
+          }
+        ]
+      }
+    }
+  ]
 }
+]
