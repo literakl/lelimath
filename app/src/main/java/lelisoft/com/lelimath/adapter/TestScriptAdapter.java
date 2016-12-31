@@ -77,23 +77,29 @@ public class TestScriptAdapter extends BaseAdapter {
         void setDataOnView(int position) {
             TestScript item = records.get(position);
             caption.setText(item.getTitle());
+
             String pictureName = item.getPicture();
             if (pictureName != null) {
                 int resourceId = Misc.getResourceId(pictureName);
                 picture.setImageResource(resourceId);
             }
+
             stats.setText(LeliMathApp.resources.getString(R.string.script_progress, item.getFinished(), item.getCount()));
-            float score = item.getScore();
+
             /*
-                in progress - 0 stars
+                no progress - 0 stars
                 0.0 - 0.5999 - 1 star
                 0.6 - 0.8999 - 2 stars
                 0.9 - 1 - 3 stars
              */
-            if (score >= 0.6) {
-                star2.setImageResource(R.drawable.star_on);
-                if (score >= 0.9) {
-                    star3.setImageResource(R.drawable.star_on);
+            if (item.getFinished() > 0) {
+                star1.setImageResource(R.drawable.star_on);
+                float score = item.getScore();
+                if (score >= 0.6) {
+                    star2.setImageResource(R.drawable.star_on);
+                    if (score >= 0.9) {
+                        star3.setImageResource(R.drawable.star_on);
+                    }
                 }
             }
         }

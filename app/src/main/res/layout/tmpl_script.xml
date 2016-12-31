@@ -23,7 +23,7 @@
         android:id="@+id/caption"
         android:text="Novice can become master"
         android:textColor="#404fb3"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:maxLines="3"
         android:ellipsize="end"
         android:fontFamily="sans-serif-condensed"
@@ -59,7 +59,7 @@
             android:id="@+id/star1"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@drawable/star_on" />
+            android:src="@drawable/star_off" />
 
         <Space
             android:layout_width="10dp"
