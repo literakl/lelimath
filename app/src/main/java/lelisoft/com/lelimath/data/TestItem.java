@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * One item of test script holding single FormulaDefinition.
  * Created by leos.literak on 26.2.2015.
  */
-public class TestItem {
+public class TestItem implements Serializable {
     /** Key that shall never change */
     private String id;
     /** Name of this test, it shall be short */

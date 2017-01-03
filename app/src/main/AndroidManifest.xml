@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="lelisoft.com.lelimath">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -11,7 +12,8 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity
             android:name=".activities.DashboardActivity"
@@ -76,6 +78,11 @@
             android:name=".activities.ScriptListActivity"
             android:label="@string/action_academy"
             android:parentActivityName=".activities.DashboardActivity">
+        </activity>
+        <activity
+            android:name=".activities.TestItemsActivity"
+            android:label="@string/action_academy"
+            android:parentActivityName=".activities.ScriptListActivity">
         </activity>
         <meta-data
             android:name="io.fabric.ApiKey"

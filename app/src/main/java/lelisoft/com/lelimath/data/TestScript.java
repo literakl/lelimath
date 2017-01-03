@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * Created by Leoš on 08.12.2016.
  */
 
-public class TestScript {
+public class TestScript implements Serializable {
     /** Key that shall never change */
     private String id;
     /** Name of this test, it shall be very short */
@@ -25,7 +26,7 @@ public class TestScript {
     public TestScript() {
     }
 
-    public TestScript(String caption, int finished, int count, float score) {
+    public TestScript(String caption, int finished, float score) {
         this.title = caption;
         this.finished = finished;
         this.score = score;

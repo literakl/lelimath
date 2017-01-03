@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +32,8 @@ import lelisoft.com.lelimath.logic.ScriptParser;
 public class ScriptListActivity extends LeliBaseActivity {
     private static final Logger log = LoggerFactory.getLogger(CalcActivity.class);
 
+    protected static final String KEY_SCRIPT = "SCRIPT";
+
     @Override
     protected void onCreate(Bundle state) {
         log.debug("onCreate()");
@@ -51,7 +52,7 @@ public class ScriptListActivity extends LeliBaseActivity {
             });
         }
 
-        List<TestScript> records = new ArrayList<>();
+        final List<TestScript> records = new ArrayList<>();
 
         try {
             InputStream is = getAssets().open("scripts/addition1.json");
@@ -61,25 +62,26 @@ public class ScriptListActivity extends LeliBaseActivity {
             log.error("chyba", e);
         }
 
-        records.add(new TestScript("Prvnacek", 3, 15, 0.6962372f));
-        records.add(new TestScript("Pocitame z pameti", 0, 9, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Scitani dvou\u00ADcifernych cisel", 15, 33, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Scitani dvou\u200bcifernych cisel", 15, 33, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Scitani a odecitani do peti", 0, 9, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Scitani pres desitku", 2, 7, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Odecitani pres desitku", 11, 16, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("ABCD EFGHI JKLMN OPQRS TUVWX YZ", 0, 8, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Odecitani desitky", 4, 14, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Nasobilka trojky", 3, 33, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Nasobilka peti", 4, 15, Misc.getRandom().nextFloat()));
-        records.add(new TestScript("Nasobilka deseti", 10, 10, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Prvnacek", 3, 0.6962372f));
+        records.add(new TestScript("Pocitame z pameti", 0, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Scitani dvou\u00ADcifernych cisel", 15, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Scitani dvou\u200bcifernych cisel", 15, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Scitani a odecitani do peti", 0, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Scitani pres desitku", 2, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Odecitani pres desitku", 11, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("ABCD EFGHI JKLMN OPQRS TUVWX YZ", 0, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Odecitani desitky", 4, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Nasobilka trojky", 3, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Nasobilka peti", 4, Misc.getRandom().nextFloat()));
+        records.add(new TestScript("Nasobilka deseti", 10, Misc.getRandom().nextFloat()));
 
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new TestScriptAdapter(records));
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(ScriptListActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+        GridView gridView = (GridView) findViewById(R.id.gridview);
+        gridView.setAdapter(new TestScriptAdapter(records));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Intent intent = new Intent(ScriptListActivity.this, TestItemsActivity.class);
+                intent.putExtra(KEY_SCRIPT, records.get(position));
+                ScriptListActivity.this.startActivity(intent);
             }
         });
     }
