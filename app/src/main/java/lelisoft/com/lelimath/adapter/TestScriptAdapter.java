@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
+
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
@@ -63,12 +65,14 @@ public class TestScriptAdapter extends BaseAdapter {
     private class ScriptViewHolder extends RecyclerView.ViewHolder {
         TextView caption, stats;
         ImageView picture, star1, star2, star3;
+        RoundedImageView roundedPicture;
 
         ScriptViewHolder(View view) {
             super(view);
             caption = (TextView) view.findViewById(R.id.caption);
             stats = (TextView) view.findViewById(R.id.stats);
-            picture = (ImageView) view.findViewById(R.id.picture);
+//            picture = (ImageView) view.findViewById(R.id.picture);
+            roundedPicture = (RoundedImageView) view.findViewById(R.id.picture);
             star1 = (ImageView) view.findViewById(R.id.star1);
             star2 = (ImageView) view.findViewById(R.id.star2);
             star3 = (ImageView) view.findViewById(R.id.star3);
@@ -81,7 +85,9 @@ public class TestScriptAdapter extends BaseAdapter {
             String pictureName = item.getPicture();
             if (pictureName != null) {
                 int resourceId = Misc.getResourceId(pictureName);
-                picture.setImageResource(resourceId);
+                roundedPicture.setImageResource(resourceId);
+            } else {
+                roundedPicture.setImageResource(R.drawable.scr_metal);
             }
 
             stats.setText(LeliMathApp.resources.getString(R.string.script_progress, item.getFinished(), item.getCount()));
