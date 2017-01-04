@@ -2,7 +2,7 @@
 {
   "id": "ADD10",
   "title": "První sčítání",
-  "picture": "pic_kitten",
+  "picture": "scr_silk",
   "items": [
     {
       "id": "10",
@@ -48,7 +48,7 @@
 {
   "id": "SUB10",
   "title": "První odečítání",
-  "picture": "pic_puppy",
+  "picture": "scr_metal",
   "items": [
     {
       "id": "10",

@@ -94,4 +94,5 @@ dependencies {
     compile 'com.pavelsikun:material-seekbar-preference:2.3.0'
     compile 'com.google.code.gson:gson:2.8.0';
     compile 'org.greenrobot:eventbus:3.0.0';
+    compile 'com.makeramen:roundedimageview:2.3.0';
 }

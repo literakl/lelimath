@@ -7,25 +7,23 @@
     app:layout_gravity="center"
     >
 
-    <FrameLayout
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/picture"
         android:layout_width="120dp"
         android:layout_height="180dp"
-        android:background="@drawable/game_border"
-        android:padding="4dp"
+        android:src="@drawable/pic_lion"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/picture"
-            android:layout_width="120dp"
-            android:layout_height="180dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/game_border"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/bgt_bell_flower" />
-    </FrameLayout>
+        android:scaleType="fitCenter"
+        app:riv_corner_radius="10dip"
+        app:riv_border_width="2dip"
+        app:riv_border_color="#333333"
+        app:riv_mutate_background="true"
+        app:riv_tile_mode="repeat"
+        app:riv_oval="false" />
 
     <TextView
         android:id="@+id/caption"
