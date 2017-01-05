@@ -25,14 +25,16 @@
         app:riv_tile_mode="repeat"
         app:riv_oval="false" />
 
-    <TextView
+    <lelisoft.com.lelimath.gui.OutlineTextView
         android:id="@+id/caption"
         android:text="Novice can become master"
-        android:textColor="#404fb3"
-        android:textSize="16sp"
-        android:maxLines="3"
+        android:textColor="@color/white"
+        app:outlineSize="2dp"
+        app:outlineColor="@color/gray_35"
+        android:textSize="12sp"
+        android:maxLines="4"
         android:ellipsize="end"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="sans-serif"
         android:textStyle="bold"
         android:textAllCaps="true"
         android:breakStrategy="balanced"
@@ -44,7 +46,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:padding="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         />
@@ -88,11 +90,12 @@
             android:src="@drawable/star_off" />
     </LinearLayout>
 
-    <TextView
+    <lelisoft.com.lelimath.gui.OutlineTextView
         android:id="@+id/stats"
         android:text="3/15"
-        android:textColor="#404fb3"
-        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:outlineSize="2dp"
+        app:outlineColor="@color/gray_35"
         android:fontFamily="sans-serif-condensed"
         android:textStyle="bold"
         android:layout_width="wrap_content"
