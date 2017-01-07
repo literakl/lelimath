@@ -67,6 +67,7 @@ public class OutlineTextView extends TextView {
                 mShadowDy = a.getFloat(R.styleable.TextViewOutline_android_shadowDy, 0);
                 mShadowColor = a.getColor(R.styleable.TextViewOutline_android_shadowColor, Color.TRANSPARENT);
             }
+            a.recycle();
         }
 
         log.debug("mOutlineSize = {}, mOutlineColor = {}" + mOutlineSize, mOutlineColor);
