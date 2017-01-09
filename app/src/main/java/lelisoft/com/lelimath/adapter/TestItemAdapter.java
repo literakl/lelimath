@@ -23,6 +23,7 @@ public class TestItemAdapter extends BaseAdapter {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TestItemAdapter.class);
 
     private List<TestItem> records;
+    private int current;
 
     @Override
     public int getCount() {
@@ -31,7 +32,7 @@ public class TestItemAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return records.get(position);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class TestItemAdapter extends BaseAdapter {
         TextView caption;
 
         if (convertView == null) {
-            if (item.getRecord() != null) {
+            if (item.getRecord() != null || position == current) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script_item, parent, false);
             } else {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script_locked, parent, false);
@@ -54,7 +55,7 @@ public class TestItemAdapter extends BaseAdapter {
         } else {
             view = convertView;
             caption = (TextView) view.findViewById(R.id.caption);
-            if (item.getRecord() != null) {
+            if (item.getRecord() != null || position == current) {
                 if (caption == null) { // recycling wrong view, we must replace it anyway
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script_item, parent, false);
                 }
@@ -96,6 +97,15 @@ public class TestItemAdapter extends BaseAdapter {
         this.records = script.getItems();
         if (records == null) {
             records = Collections.emptyList();
+        }
+
+        // find the first unfinished item
+        for (int i = 0; i < records.size(); i++) {
+            TestItem item = records.get(i);
+            if (! item.isFinished()) {
+                current = i;
+                break;
+            }
         }
     }
 }

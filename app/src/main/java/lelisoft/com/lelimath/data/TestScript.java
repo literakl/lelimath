@@ -26,10 +26,11 @@ public class TestScript implements Serializable {
     public TestScript() {
     }
 
-    public TestScript(String caption, int finished, float score) {
+    public TestScript(String caption, int finished, float score, String picture) {
         this.title = caption;
         this.finished = finished;
         this.score = score;
+        this.picture = picture;
     }
 
     public String getId() {
@@ -61,7 +62,7 @@ public class TestScript implements Serializable {
     }
 
     public int getCount() {
-        return (items == null) ? 0 : items.size();
+        return (items == null) ? finished + 1 : items.size();
     }
 
     public void add(TestItem value) {
