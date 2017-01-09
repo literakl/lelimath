@@ -10,14 +10,13 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.adapter.TestScriptAdapter;
 
 /**
  * Created by Leoš on 05.01.2017. Author: http://stackoverflow.com/a/35682776/1639556
  */
 
 public class OutlineTextView extends TextView {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TestScriptAdapter.class);
+//    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TestScriptAdapter.class);
 
     // constants
     private static final int DEFAULT_OUTLINE_SIZE = 0;
@@ -69,8 +68,7 @@ public class OutlineTextView extends TextView {
             }
             a.recycle();
         }
-
-        log.debug("mOutlineSize = {}, mOutlineColor = {}" + mOutlineSize, mOutlineColor);
+//        log.debug("mOutlineSize = {}, mOutlineColor = {}" + mOutlineSize, mOutlineColor);
     }
 
     private void setPaintToOutline(){

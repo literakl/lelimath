@@ -54,7 +54,6 @@ public class ScriptListActivity extends LeliBaseActivity {
 
         final List<TestScript> records = new ArrayList<>();
 
-/*
         try {
             InputStream is = getAssets().open("scripts/addition1.json");
             TestScript[] scripts = ScriptParser.parse(is);
@@ -62,7 +61,6 @@ public class ScriptListActivity extends LeliBaseActivity {
         } catch (IOException e) {
             log.error("chyba", e);
         }
-*/
 
         records.add(new TestScript("abstract_pattern_background", 3, 0.69f, "abstract_pattern_background")); // hezke
         records.add(new TestScript("blue_flowers", 0, 0.1f, "blue_flowers")); // ujde
