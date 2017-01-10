@@ -2,7 +2,7 @@
 {
   "id": "ADD10",
   "title": "První sčítání",
-  "picture": "scr_silk",
+  "picture": "bgt_bed_linen",
   "items": [
     {
       "id": "10",
@@ -48,7 +48,7 @@
 {
   "id": "SUB10",
   "title": "První odečítání",
-  "picture": "scr_metal",
+  "picture": "bgt_gradient_salmon",
   "items": [
     {
       "id": "10",

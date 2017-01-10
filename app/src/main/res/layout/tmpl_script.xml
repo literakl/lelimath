@@ -12,7 +12,7 @@
         android:id="@+id/picture"
         android:layout_width="120dp"
         android:layout_height="180dp"
-        android:src="@drawable/scr_metal"
+        android:src="@drawable/bgt_pyramids"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -86,7 +86,7 @@ public class TestScriptAdapter extends BaseAdapter {
                 int resourceId = Misc.getResourceId(pictureName);
                 roundedPicture.setImageResource(resourceId);
             } else {
-                roundedPicture.setImageResource(R.drawable.scr_metal);
+                roundedPicture.setImageResource(R.drawable.bgt_gradient_salmon);
             }
 
             stats.setText(LeliMathApp.resources.getString(R.string.script_progress, item.getFinished(), item.getCount()));
