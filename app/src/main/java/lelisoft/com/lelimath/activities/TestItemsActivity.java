@@ -67,7 +67,6 @@ public class TestItemsActivity extends LeliBaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle state) {
-        state.putInt("a", 0);
         state.putSerializable(ScriptListActivity.KEY_SCRIPT, script);
         super.onSaveInstanceState(state);
     }

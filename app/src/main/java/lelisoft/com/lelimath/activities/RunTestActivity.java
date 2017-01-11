@@ -2,7 +2,6 @@ package lelisoft.com.lelimath.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -51,10 +50,6 @@ public class RunTestActivity extends BaseGameActivity {
         position = intent.getIntExtra(KEY_POSITION, 0);
         testItem = script.getItems().get(position);
 
-    }
-
-    public void onBackPressed() {
-        moveTaskToBack(true);
     }
 
     @Override
