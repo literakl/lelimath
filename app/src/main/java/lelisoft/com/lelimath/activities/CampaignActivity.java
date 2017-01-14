@@ -10,42 +10,42 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.adapter.TestItemAdapter;
-import lelisoft.com.lelimath.data.TestScript;
+import lelisoft.com.lelimath.adapter.CampaignAdapter;
+import lelisoft.com.lelimath.data.Campaign;
 
 /**
  * Lists TestItems of selected TestScript
  * Created by Leoš on 31.12.2016.
  */
 
-public class TestItemsActivity extends LeliBaseActivity {
-    private static final Logger log = LoggerFactory.getLogger(TestItemsActivity.class);
+public class CampaignActivity extends LeliBaseActivity {
+    private static final Logger log = LoggerFactory.getLogger(CampaignActivity.class);
 
-    TestScript script;
+    Campaign campaign;
 
     @Override
     protected void onCreate(Bundle state) {
         log.debug("onCreate()");
         super.onCreate(state);
 
-        setContentView(R.layout.act_script_items);
+        setContentView(R.layout.act_campaign);
         GridView gridView = (GridView) findViewById(R.id.gridview);
 
         if (state != null) {
             log.debug("load state");
-            script = (TestScript) state.getSerializable(ScriptListActivity.KEY_SCRIPT);
+            campaign = (Campaign) state.getSerializable(CampaignListActivity.KEY_CAMPAIGN);
         } else {
-            script = (TestScript) getIntent().getSerializableExtra(ScriptListActivity.KEY_SCRIPT);
+            campaign = (Campaign) getIntent().getSerializableExtra(CampaignListActivity.KEY_CAMPAIGN);
         }
 
-        TestItemAdapter adapter = new TestItemAdapter(script);
+        CampaignAdapter adapter = new CampaignAdapter(campaign);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(TestItemsActivity.this, RunTestActivity.class);
+                Intent intent = new Intent(CampaignActivity.this, RunTestActivity.class);
                 intent.putExtra(RunTestActivity.KEY_POSITION, position);
-                intent.putExtra(ScriptListActivity.KEY_SCRIPT, script);
-                TestItemsActivity.this.startActivity(intent);
+                intent.putExtra(CampaignListActivity.KEY_CAMPAIGN, campaign);
+                CampaignActivity.this.startActivity(intent);
             }
         });
     }
@@ -53,13 +53,13 @@ public class TestItemsActivity extends LeliBaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle state) {
-        state.putSerializable(ScriptListActivity.KEY_SCRIPT, script);
+        state.putSerializable(CampaignListActivity.KEY_CAMPAIGN, campaign);
         super.onSaveInstanceState(state);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
-        script = (TestScript) state.getSerializable(ScriptListActivity.KEY_SCRIPT);
+        campaign = (Campaign) state.getSerializable(CampaignListActivity.KEY_CAMPAIGN);
     }
 }

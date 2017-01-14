@@ -35,7 +35,7 @@ import lelisoft.com.lelimath.activities.DressUpActivity;
 import lelisoft.com.lelimath.activities.GamePreferenceActivity;
 import lelisoft.com.lelimath.activities.InformationActivity;
 import lelisoft.com.lelimath.activities.PuzzleActivity;
-import lelisoft.com.lelimath.activities.ScriptListActivity;
+import lelisoft.com.lelimath.activities.CampaignListActivity;
 import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeProgress;
@@ -122,7 +122,7 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
                 break;
 
             case R.id.main_button_academy:
-                ScriptListActivity.start(activity);
+                CampaignListActivity.start(activity);
                 break;
 
             case R.id.main_button_calc:

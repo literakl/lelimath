@@ -13,7 +13,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.TestScript;
+import lelisoft.com.lelimath.data.Campaign;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
 
@@ -22,10 +22,10 @@ import lelisoft.com.lelimath.helpers.Misc;
  * Created by Leoš on 18.12.2016.
  */
 
-public class TestScriptAdapter extends BaseAdapter {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TestScriptAdapter.class);
+public class CampaignListAdapter extends BaseAdapter {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(CampaignListAdapter.class);
 
-    private List<TestScript> records;
+    private List<Campaign> records;
 
     @Override
     public int getCount() {
@@ -46,7 +46,7 @@ public class TestScriptAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View itemView;
         if (convertView == null) {
-            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script, parent, false);
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_campaign, parent, false);
 //            itemView.setLayoutParams(new GridView.LayoutParams(85, 85));
         } else {
             itemView = convertView;
@@ -57,8 +57,8 @@ public class TestScriptAdapter extends BaseAdapter {
         return itemView;
     }
 
-    public TestScriptAdapter(List<TestScript> records) {
-        log.debug("TestScriptAdapter()");
+    public CampaignListAdapter(List<Campaign> records) {
+        log.debug("CampaignListAdapter()");
         this.records = records;
     }
 
@@ -78,7 +78,7 @@ public class TestScriptAdapter extends BaseAdapter {
         }
 
         void setDataOnView(int position) {
-            TestScript item = records.get(position);
+            Campaign item = records.get(position);
             caption.setText(item.getTitle());
 
             String pictureName = item.getPicture();

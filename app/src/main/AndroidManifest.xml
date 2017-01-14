@@ -75,12 +75,12 @@
             <!--android:theme="@style/AppTheme.FullScreen"-->
         </activity>
         <activity
-            android:name=".activities.ScriptListActivity"
+            android:name=".activities.CampaignListActivity"
             android:label="@string/action_academy"
             android:parentActivityName=".activities.DashboardActivity">
         </activity>
         <activity
-            android:name=".activities.TestItemsActivity"
+            android:name=".activities.CampaignActivity"
             android:label="@string/action_academy"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

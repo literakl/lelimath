@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lelisoft.com.lelimath.R;
-import lelisoft.com.lelimath.data.TestItem;
-import lelisoft.com.lelimath.data.TestScript;
+import lelisoft.com.lelimath.data.Test;
+import lelisoft.com.lelimath.data.Campaign;
 
 /**
  * Responsible for starting tests.
@@ -20,8 +20,8 @@ public class RunTestActivity extends BaseGameActivity {
 
     public static final String KEY_POSITION = "POSITION";
 
-    TestScript script;
-    TestItem testItem;
+    Campaign script;
+    Test test;
     int position;
 
     @Override
@@ -32,9 +32,9 @@ public class RunTestActivity extends BaseGameActivity {
         setContentView(R.layout.act_with_fragment);
 
         Intent intent = getIntent();
-        script = (TestScript) intent.getSerializableExtra(ScriptListActivity.KEY_SCRIPT);
+        script = (Campaign) intent.getSerializableExtra(CampaignListActivity.KEY_CAMPAIGN);
         position = intent.getIntExtra(KEY_POSITION, 0);
-        testItem = script.getItems().get(position);
+        test = script.getItems().get(position);
 
     }
 
@@ -42,14 +42,14 @@ public class RunTestActivity extends BaseGameActivity {
     protected void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
         state.putInt(KEY_POSITION, position);
-        state.putSerializable(ScriptListActivity.KEY_SCRIPT, script);
+        state.putSerializable(CampaignListActivity.KEY_CAMPAIGN, script);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
-        script = (TestScript) state.getSerializable(ScriptListActivity.KEY_SCRIPT);
+        script = (Campaign) state.getSerializable(CampaignListActivity.KEY_CAMPAIGN);
         position = state.getInt(KEY_POSITION, 0);
-        testItem = script.getItems().get(position);
+        test = script.getItems().get(position);
     }
 }

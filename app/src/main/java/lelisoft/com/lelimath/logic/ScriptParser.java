@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import lelisoft.com.lelimath.data.FormulaDefinition;
-import lelisoft.com.lelimath.data.TestScript;
+import lelisoft.com.lelimath.data.Campaign;
 import lelisoft.com.lelimath.helpers.FormulaDefinitionGsonAdapter;
 
 /**
@@ -21,13 +21,13 @@ import lelisoft.com.lelimath.helpers.FormulaDefinitionGsonAdapter;
 public class ScriptParser {
     private static final Logger log = LoggerFactory.getLogger(ScriptParser.class);
 
-    public static TestScript[] parse(InputStream is) {
+    public static Campaign[] parse(InputStream is) {
         log.debug("Starting to parse");
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(FormulaDefinition.class, new FormulaDefinitionGsonAdapter());
         Gson gson = gsonBuilder.create();
         InputStreamReader reader = new InputStreamReader(is);
-        TestScript[] script = gson.fromJson(reader, TestScript[].class);
+        Campaign[] script = gson.fromJson(reader, Campaign[].class);
         log.debug("finished");
         return script;
     }

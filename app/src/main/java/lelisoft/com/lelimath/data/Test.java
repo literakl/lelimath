@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * One item of test script holding single FormulaDefinition.
+ * One item of campaign holding single FormulaDefinition.
  * Created by leos.literak on 26.2.2015.
  */
-public class TestItem implements Serializable {
+public class Test implements Serializable {
     /** Key that shall never change */
     private String id;
     /** Name of this test, it shall be short */
@@ -63,7 +63,7 @@ public class TestItem implements Serializable {
 
     @Override
     public String toString() {
-        return "TestItem{" +
+        return "Test{" +
                 "id='" + id + '\'' +
                 '}';
     }
