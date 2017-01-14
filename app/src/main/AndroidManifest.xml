@@ -82,12 +82,12 @@
         <activity
             android:name=".activities.TestItemsActivity"
             android:label="@string/action_academy"
-            android:parentActivityName=".activities.ScriptListActivity">
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".activities.RunTestActivity"
             android:label="@string/action_academy"
-            android:parentActivityName=".activities.TestItemsActivity">
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <meta-data
             android:name="io.fabric.ApiKey"

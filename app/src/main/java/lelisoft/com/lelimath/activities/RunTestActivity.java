@@ -2,8 +2,6 @@ package lelisoft.com.lelimath.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,19 +29,7 @@ public class RunTestActivity extends BaseGameActivity {
         log.debug("onCreate()");
         super.onCreate(state);
 
-        setContentView(R.layout.act_script_items);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    moveTaskToBack(true);
-//                    NavUtils.navigateUpFromSameTask(RunTestActivity.this);
-                }
-            });
-        }
+        setContentView(R.layout.act_with_fragment);
 
         Intent intent = getIntent();
         script = (TestScript) intent.getSerializableExtra(ScriptListActivity.KEY_SCRIPT);

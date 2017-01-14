@@ -2,8 +2,6 @@ package lelisoft.com.lelimath.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -32,18 +30,6 @@ public class TestItemsActivity extends LeliBaseActivity {
 
         setContentView(R.layout.act_script_items);
         GridView gridView = (GridView) findViewById(R.id.gridview);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NavUtils.navigateUpFromSameTask(TestItemsActivity.this);
-                }
-            });
-        }
 
         if (state != null) {
             log.debug("load state");

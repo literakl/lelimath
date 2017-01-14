@@ -3,8 +3,6 @@ package lelisoft.com.lelimath.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -38,19 +36,7 @@ public class ScriptListActivity extends LeliBaseActivity {
     protected void onCreate(Bundle state) {
         log.debug("onCreate()");
         super.onCreate(state);
-
         setContentView(R.layout.act_scripts);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCalc);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NavUtils.navigateUpFromSameTask(ScriptListActivity.this);
-                }
-            });
-        }
 
         final List<TestScript> records = new ArrayList<>();
 
