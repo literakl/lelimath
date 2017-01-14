@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
@@ -23,7 +24,7 @@ public class TestItemAdapter extends BaseAdapter {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TestItemAdapter.class);
 
     private List<TestItem> records;
-    private int current;
+    private int currentPosition;
 
     @Override
     public int getCount() {
@@ -40,22 +41,24 @@ public class TestItemAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         TestItem item = records.get(position);
         View view;
-        TextView caption;
+        TextView caption = null;
 
         if (convertView == null) {
-            if (item.getRecord() != null || position == current) {
+            if (item.isFinished() || position <= currentPosition) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script_item, parent, false);
+                caption = (TextView) view.findViewById(R.id.caption);
             } else {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script_locked, parent, false);
             }
         } else {
             view = convertView;
             caption = (TextView) view.findViewById(R.id.caption);
-            if (item.getRecord() != null || position == current) {
+            if (item.isFinished() || position <= currentPosition) {
                 if (caption == null) { // recycling wrong view, we must replace it anyway
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_script_item, parent, false);
                 }
@@ -66,13 +69,14 @@ public class TestItemAdapter extends BaseAdapter {
             }
         }
 
-        if (item.getRecord() != null) {
+        if (caption != null) {
+            caption.setText(Integer.toString(position + 1));
+        }
+
+        if (item.isFinished()) {
             ImageView star1 = (ImageView) view.findViewById(R.id.star1);
             ImageView star2 = (ImageView) view.findViewById(R.id.star2);
             ImageView star3 = (ImageView) view.findViewById(R.id.star3);
-
-            caption = (TextView) view.findViewById(R.id.caption);
-            caption.setText(position);
 
         /*
             no progress - 0 stars
@@ -89,21 +93,32 @@ public class TestItemAdapter extends BaseAdapter {
                 }
             }
         }
+
+
         return view;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        TestItem item = records.get(position);
+        return item.isFinished() || position <= currentPosition;
     }
 
     public TestItemAdapter(TestScript script) {
         log.debug("TestItemAdapter()");
         this.records = script.getItems();
         if (records == null) {
-            records = Collections.emptyList();
+            records = new ArrayList<>();
+        }
+        for (int i=0;i<30;i++){
+            records.add(new TestItem());
         }
 
         // find the first unfinished item
         for (int i = 0; i < records.size(); i++) {
             TestItem item = records.get(i);
             if (! item.isFinished()) {
-                current = i;
+                currentPosition = i;
                 break;
             }
         }
