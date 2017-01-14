@@ -110,9 +110,6 @@ public class TestItemAdapter extends BaseAdapter {
         if (records == null) {
             records = new ArrayList<>();
         }
-        for (int i=0;i<30;i++){
-            records.add(new TestItem());
-        }
 
         // find the first unfinished item
         for (int i = 0; i < records.size(); i++) {
