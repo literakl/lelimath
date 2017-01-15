@@ -29,7 +29,7 @@ import lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.GameLogic;
-import lelisoft.com.lelimath.logic.PuzzleLogic;
+import lelisoft.com.lelimath.logic.Level;
 
 import static lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment.KEY_SIMPLE_PRACTICE_SETTINGS;
 import static lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment.KEY_FIRST_ARG;
@@ -126,7 +126,7 @@ public class BaseGameActivity extends LeliBaseActivity {
 
     protected void initializeGameLogic() {
         String prefComplexity = sharedPref.getString(GamePreferenceActivity.KEY_COMPLEXITY, "EASY");
-        gameLogic.setLevel(PuzzleLogic.Level.valueOf(prefComplexity));
+        gameLogic.setLevel(Level.valueOf(prefComplexity));
 
         FormulaDefinition definition = new FormulaDefinition().addUnknown(FormulaPart.RESULT);
         gameLogic.setFormulaDefinition(definition);

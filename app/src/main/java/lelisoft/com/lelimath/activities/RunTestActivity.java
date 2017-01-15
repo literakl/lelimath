@@ -16,6 +16,7 @@ import lelisoft.com.lelimath.data.Campaign;
 import lelisoft.com.lelimath.fragment.LeliGameFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
+import lelisoft.com.lelimath.logic.Level;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
 
@@ -58,7 +59,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     public void gameFinished() {
         log.debug("puzzleFinished()");
         new BadgeEvaluationTask(this).execute();
-        Toast.makeText(this, "Finished", Toast.LENGTH_LONG);
+        Toast.makeText(this, "Finished", Toast.LENGTH_LONG).show();
 
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -75,9 +76,8 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
 
     @Override
     protected void initializeGameLogic() {
-//        gameLogic.setLevel(PuzzleLogic.Level.);
-
         FormulaDefinition definition = test.getDefinition();
+        gameLogic.setLevel(Level.getCustom(definition.getCount()));
         gameLogic.setFormulaDefinition(definition);
         log.debug(definition.toString());
     }

@@ -50,7 +50,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         time.set(Calendar.HOUR_OF_DAY, 16);
         time.set(Calendar.MINUTE, 0);
 
-        Play play = new Play(Game.FAST_CALC, GameLogic.Level.HARD, 10, true, 3000L, time.getTime());
+        Play play = new Play(Game.FAST_CALC, Level.HARD, 10, true, 3000L, time.getTime());
         playDao.create(play);
         for (int i = 0; i < 8; i++) {
             PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L);
@@ -116,7 +116,7 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         time.set(Calendar.HOUR_OF_DAY, 16);
         time.set(Calendar.MINUTE, 0);
 
-        Play play = new Play(Game.FAST_CALC, GameLogic.Level.HARD, 1000, true, 3000L, time.getTime());
+        Play play = new Play(Game.FAST_CALC, Level.HARD, 1000, true, 3000L, time.getTime());
         playDao.create(play);
         for (int i = 0; i < 10; i++) {
             PlayRecord record = new PlayRecord(play, time.getTime(), true, 600L);

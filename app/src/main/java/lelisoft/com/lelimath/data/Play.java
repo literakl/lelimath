@@ -8,7 +8,9 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
-import lelisoft.com.lelimath.logic.GameLogic;
+import lelisoft.com.lelimath.logic.Level;
+
+import static lelisoft.com.lelimath.logic.Level.*;
 
 /**
  * Holder for one play of same game
@@ -20,30 +22,30 @@ public class Play implements Parcelable {
     Integer id;
 
     @DatabaseField(canBeNull = false)
-    Date date;
+    private Date date;
 
     @DatabaseField(persisted=false)
-    Game game;
+    private Game game;
 
     @DatabaseField(canBeNull=false, columnName=Columns.GAME, width = 2)
-    String gameStr;
+    private String gameStr;
 
     @DatabaseField(canBeNull = false, columnName = Columns.LEVEL)
-    int level;
+    private int level;
 
     @DatabaseField(canBeNull = false)
-    int count;
+    private int count;
 
     @DatabaseField(canBeNull = false, columnName = Columns.FINISHED)
-    boolean finished = false;
+    private boolean finished = false;
 
-    @DatabaseField(canBeNull=true, columnName=Columns.SPENT)
-    Long timeSpent;
+    @DatabaseField(columnName=Columns.SPENT)
+    private Long timeSpent;
 
     public Play() {
     }
 
-    public Play(Game game, GameLogic.Level level, int count, boolean finished, Long timeSpent, Date date) {
+    public Play(Game game, Level level, int count, boolean finished, Long timeSpent, Date date) {
         setLevel(level);
         setGame(game);
         setCount(count);
@@ -86,35 +88,45 @@ public class Play implements Parcelable {
      * Level.TRIVIAL = 0, Level.GENIUS = 12
      * @return numeric value for GameLogic.Level
      */
-    public GameLogic.Level getLevel() {
+    public Level getLevel() {
         switch (level) {
             case 0:
-                return GameLogic.Level.TRIVIAL;
+                return TRIVIAL;
             case 3:
-                return GameLogic.Level.EASY;
+                return Level.EASY;
             case 6:
-                return GameLogic.Level.NORMAL;
+                return Level.NORMAL;
             case 9:
-                return GameLogic.Level.HARD;
+                return Level.HARD;
             case 12:
-                return GameLogic.Level.GENIUS;
+                return Level.GENIUS;
         }
-        return null;
+        return null; // custom or unknown Levels
     }
 
-    public void setLevel(GameLogic.Level level) {
-        switch (level) {
-            case TRIVIAL:
-                this.level = 0; break;
-            case EASY:
-                this.level = 3; break;
-            case NORMAL:
-                this.level = 6; break;
-            case HARD:
-                this.level = 9; break;
-            case GENIUS:
-                this.level = 12; break;
+    public void setLevel(Level level) {
+        if (level.equals(TRIVIAL)) {
+            this.level = 0;
+            return;
         }
+        if (level.equals(EASY)) {
+            this.level = 3;
+            return;
+        }
+        if (level.equals(NORMAL)) {
+            this.level = 6;
+            return;
+        }
+        if (level.equals(HARD)) {
+            this.level = 9;
+            return;
+        }
+        if (level.equals(GENIUS)) {
+            this.level = 12;
+            return;
+        }
+        // custom
+        this.level = 99;
     }
 
     public int getCount() {
@@ -133,10 +145,12 @@ public class Play implements Parcelable {
         this.finished = finished;
     }
 
+    @SuppressWarnings("unused")
     public Long getTimeSpent() {
         return timeSpent;
     }
 
+    @SuppressWarnings("all")
     public void setTimeSpent(Long timeSpent) {
         this.timeSpent = timeSpent;
     }

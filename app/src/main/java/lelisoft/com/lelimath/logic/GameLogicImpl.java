@@ -17,11 +17,11 @@ import lelisoft.com.lelimath.view.FormulaResultPair;
  * Base class
  * Created by Leoš on 09.04.2016.
  */
-public class GameLogicImpl implements GameLogic, Serializable {
+class GameLogicImpl implements GameLogic, Serializable {
     private static final Logger log = LoggerFactory.getLogger(GameLogicImpl.class);
 
     FormulaDefinition definition;
-    PuzzleLogic.Level level;
+    private Level level;
 
     public FormulaDefinition getFormulaDefinition() {
         return definition;
@@ -65,14 +65,7 @@ public class GameLogicImpl implements GameLogic, Serializable {
     }
 
     public ArrayList<Formula> generateFormulas() {
-        int count = 1;
-        switch (level) {
-            case TRIVIAL: count = 3; break;
-            case EASY: count = 5; break;
-            case NORMAL: count = 10; break;
-            case HARD: count = 20; break;
-            case GENIUS: count = 30; break;
-        }
+        int count = level.count;
         log.debug("generateFormulas: " + definition + ", count = " + count);
 
         ArrayList<Formula> list = new ArrayList<>(count + 1);

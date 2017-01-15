@@ -52,7 +52,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         for (int i = 0; i < 7; i++) {
             calendar.add(Calendar.MINUTE, -10);
             Date time = calendar.getTime();
-            Play play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 10, true, 3000L, time);
+            Play play = new Play(Game.PUZZLE, Level.EASY, 10, true, 3000L, time);
             playDao.create(play);
             for (int j = 0; j < play.getCount(); j++) {
                 calendar.add(Calendar.MINUTE, 1);
@@ -105,7 +105,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
         for (int i = 0; i < 30; i++) {
             calendar.add(Calendar.MINUTE, -10);
             Date time = calendar.getTime();
-            Play play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 10, true, 3000L, time);
+            Play play = new Play(Game.PUZZLE, Level.EASY, 10, true, 3000L, time);
             playDao.create(play);
             for (int j = 0; j < play.getCount(); j++) {
                 calendar.add(Calendar.MINUTE, 1);
@@ -131,7 +131,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
 
         calendar.add(Calendar.MINUTE, -5);
         Date time = calendar.getTime();
-        Play play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 5, true, 3000L, time);
+        Play play = new Play(Game.PUZZLE, Level.EASY, 5, true, 3000L, time);
         playDao.create(play);
         for (int i = 0; i < play.getCount(); i++) {
             PlayRecord record = new PlayRecord(play, time, true, 600L);
@@ -140,7 +140,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
 
         calendar.add(Calendar.MINUTE, +2);
         time = calendar.getTime();
-        play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 5, true, 2000L, time);
+        play = new Play(Game.PUZZLE, Level.EASY, 5, true, 2000L, time);
         playDao.create(play);
         for (int i = 0; i < play.getCount(); i++) {
             PlayRecord record = new PlayRecord(play, time, true, 400L);
@@ -154,7 +154,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
 
         calendar.add(Calendar.DATE, -1);
         time = calendar.getTime();
-        play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 8, true, 3000L, time);
+        play = new Play(Game.PUZZLE, Level.EASY, 8, true, 3000L, time);
         playDao.create(play);
         for (int i = 0; i < play.getCount(); i++) {
             PlayRecord record = new PlayRecord(play, time, true, 600L);
@@ -168,7 +168,7 @@ public class StaminaBadgeTest extends AndroidTestCase {
 
         calendar.add(Calendar.MINUTE, +2);
         time = calendar.getTime();
-        play = new Play(Game.PUZZLE, GameLogic.Level.EASY, 5, true, 2000L, time);
+        play = new Play(Game.PUZZLE, Level.EASY, 5, true, 2000L, time);
         playDao.create(play);
         for (int i = 0; i < play.getCount(); i++) {
             PlayRecord record = new PlayRecord(play, time, true, 400L);

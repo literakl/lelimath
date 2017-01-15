@@ -11,7 +11,6 @@ import com.crashlytics.android.answers.LevelStartEvent;
 
 import lelisoft.com.lelimath.BuildConfig;
 import lelisoft.com.lelimath.data.Game;
-import lelisoft.com.lelimath.logic.GameLogic;
 
 /**
  * Answers helper class
@@ -19,18 +18,16 @@ import lelisoft.com.lelimath.logic.GameLogic;
  */
 public class Metrics {
 
-    public static void saveGameStarted(Game game, GameLogic.Level level) {
+    public static void saveGameStarted(Game game) {
         if (BuildConfig.DEBUG)
             return;
-        Answers.getInstance().logLevelStart(new LevelStartEvent().putLevelName(game.name())
-                .putCustomAttribute("level", level.name()));
+        Answers.getInstance().logLevelStart(new LevelStartEvent().putLevelName(game.name()));
     }
 
-    public static void saveGameFinished(Game game, GameLogic.Level level) {
+    public static void saveGameFinished(Game game) {
         if (BuildConfig.DEBUG)
             return;
-        Answers.getInstance().logLevelEnd(new LevelEndEvent().putLevelName(game.name())
-                .putCustomAttribute("level", level.name()));
+        Answers.getInstance().logLevelEnd(new LevelEndEvent().putLevelName(game.name()));
     }
 
     public static void saveContentDisplayed(@NonNull String type, @Nullable String name) {

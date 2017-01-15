@@ -72,7 +72,7 @@ public class CalcFragment extends LeliGameFragment {
         } else {
             setupPlay();
             prepareNewFormula();
-            Metrics.saveGameStarted(Game.FAST_CALC, logic.getLevel());
+            Metrics.saveGameStarted(Game.FAST_CALC);
         }
 
         activity = getActivity();
@@ -146,7 +146,7 @@ public class CalcFragment extends LeliGameFragment {
                 play.setFinished(true);
                 callback.savePlayRecord(play, record);
                 callback.gameFinished();
-                Metrics.saveGameFinished(Game.FAST_CALC, logic.getLevel());
+                Metrics.saveGameFinished(Game.FAST_CALC);
             } else {
                 callback.savePlayRecord(play, record);
                 LeliMathApp.getInstance().playSound(R.raw.correct);

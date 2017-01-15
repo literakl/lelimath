@@ -68,7 +68,7 @@ public class PuzzleFragment extends LeliGameFragment {
             stopped = state.getLong("stopped");
             play = state.getParcelable("play");
         } else {
-            Metrics.saveGameStarted(Game.PUZZLE, logic.getLevel());
+            Metrics.saveGameStarted(Game.PUZZLE);
         }
 
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
@@ -161,7 +161,7 @@ public class PuzzleFragment extends LeliGameFragment {
                             play.setFinished(true);
                             callback.savePlayRecord(play, record);
                             callback.gameFinished();
-                            Metrics.saveGameFinished(Game.PUZZLE, logic.getLevel());
+                            Metrics.saveGameFinished(Game.PUZZLE);
                         } else {
                             callback.savePlayRecord(play, record);
                             LeliMathApp.getInstance().playSound(R.raw.correct);
