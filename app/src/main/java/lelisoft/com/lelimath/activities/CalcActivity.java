@@ -21,6 +21,7 @@ import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.fragment.CalcFragment;
+import lelisoft.com.lelimath.fragment.LeliGameFragment;
 import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.fragment.PracticeAdvancedSettingsFragment;
 import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
@@ -28,7 +29,7 @@ import lelisoft.com.lelimath.logic.CalcLogic;
 import lelisoft.com.lelimath.logic.CalcLogicImpl;
 
 
-public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcBridge, PictureFragment.PictureBridge {
+public class CalcActivity extends BaseGameActivity implements LeliGameFragment.GameBridge, PictureFragment.PictureBridge {
     private static final Logger log = LoggerFactory.getLogger(CalcActivity.class);
 
     CalcFragment calcFragment;
@@ -57,11 +58,11 @@ public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcB
 
         calcFragment = new CalcFragment();
         calcFragment.setLogic((CalcLogic) gameLogic);
-        initializeCalcFragment(false);
+        displayFragment(R.id.calc_content, calcFragment, false);
     }
 
     @Override
-    public void calcFinished() {
+    public void gameFinished() {
         log.debug("calcFinished()");
         new BadgeEvaluationTask(this).execute();
 
@@ -81,16 +82,6 @@ public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcB
         // todo in background bug #42
         storePlay(play);
         storePlayRecord(record);
-    }
-
-    private void initializeCalcFragment(boolean replace) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (replace) {
-            transaction.replace(R.id.calc_content, calcFragment);
-        } else {
-            transaction.add(R.id.calc_content, calcFragment);
-        }
-        transaction.commit();
     }
 
     protected void initializeGameLogic() {
@@ -113,7 +104,7 @@ public class CalcActivity extends BaseGameActivity implements CalcFragment.CalcB
         log.debug("restartGame()");
         calcFragment = new CalcFragment();
         calcFragment.setLogic((CalcLogic) gameLogic);
-        initializeCalcFragment(true);
+        displayFragment(R.id.calc_content, calcFragment, true);
     }
 
     @Override

@@ -36,11 +36,11 @@ import lelisoft.com.lelimath.provider.PlayProvider;
  * Calc game view
  * Created by Leoš on 17.04.2016.
  */
-public class CalcFragment extends LeliBaseFragment {
+public class CalcFragment extends LeliGameFragment {
     private static final Logger log = LoggerFactory.getLogger(CalcFragment.class);
 
     FragmentActivity activity;
-    CalcBridge callback;
+    GameBridge callback;
     HandleClick clickHandler;
     ArrayList<Formula> formulas;
     Formula formula;
@@ -50,11 +50,6 @@ public class CalcFragment extends LeliBaseFragment {
     int formulaPosition = 0;
     CalcLogic logic;
     Play play;
-
-    public interface CalcBridge {
-        void calcFinished();
-        void savePlayRecord(Play play, PlayRecord record);
-    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         log.debug("onCreateView()");
@@ -150,7 +145,7 @@ public class CalcFragment extends LeliBaseFragment {
             if (formulaPosition == formulas.size()) {
                 play.setFinished(true);
                 callback.savePlayRecord(play, record);
-                callback.calcFinished();
+                callback.gameFinished();
                 Metrics.saveGameFinished(Game.FAST_CALC, logic.getLevel());
             } else {
                 callback.savePlayRecord(play, record);
@@ -341,9 +336,9 @@ public class CalcFragment extends LeliBaseFragment {
 
         // This makes sure that the container activity has implemented the callback interface
         try {
-            callback = (CalcBridge) context;
+            callback = (GameBridge) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement CalcBridge");
+            throw new ClassCastException(context.toString() + " must implement GameBridge");
         }
     }
 }

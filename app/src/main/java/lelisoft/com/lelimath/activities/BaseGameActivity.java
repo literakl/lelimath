@@ -3,6 +3,7 @@ package lelisoft.com.lelimath.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.crashlytics.android.Crashlytics;
 import com.j256.ormlite.dao.Dao;
@@ -23,6 +24,7 @@ import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.fragment.LeliGameFragment;
 import lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
@@ -66,6 +68,16 @@ public class BaseGameActivity extends LeliBaseActivity {
             R.drawable.pic_sitting_panda,
             R.drawable.pic_treasure
     };
+
+    protected void displayFragment(int containerViewId, LeliGameFragment fragment, boolean replace) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (replace) {
+            transaction.replace(containerViewId, fragment);
+        } else {
+            transaction.add(containerViewId, fragment);
+        }
+        transaction.commit();
+    }
 
     protected void storePlayRecord(PlayRecord record) {
         try {

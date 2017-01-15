@@ -38,10 +38,10 @@ import lelisoft.com.lelimath.view.Tile;
  * Puzzle view
  * Created by Leoš on 23.01.2016.
  */
-public class PuzzleFragment extends LeliBaseFragment {
+public class PuzzleFragment extends LeliGameFragment {
     private static final Logger log = LoggerFactory.getLogger(PuzzleFragment.class);
 
-    PuzzleBridge callback;
+    GameBridge callback;
     HandleClick clickHandler;
     GridLayout puzzleGrid;
     AppCompatButton selectedButton;
@@ -50,11 +50,6 @@ public class PuzzleFragment extends LeliBaseFragment {
     PuzzleLogic logic;
     Play play;
     long started, stopped;
-
-    public interface PuzzleBridge {
-        void puzzleFinished();
-        void savePlayRecord(Play play, PlayRecord record);
-    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         log.debug("onCreateView()");
@@ -165,7 +160,7 @@ public class PuzzleFragment extends LeliBaseFragment {
                         if (tilesToBeSolved <= 0) {
                             play.setFinished(true);
                             callback.savePlayRecord(play, record);
-                            callback.puzzleFinished();
+                            callback.gameFinished();
                             Metrics.saveGameFinished(Game.PUZZLE, logic.getLevel());
                         } else {
                             callback.savePlayRecord(play, record);
@@ -280,9 +275,9 @@ public class PuzzleFragment extends LeliBaseFragment {
 
         // This makes sure that the container activity has implemented the callback interface
         try {
-            callback = (PuzzleBridge) context;
+            callback = (GameBridge) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement PuzzleBridge");
+            throw new ClassCastException(context.toString() + " must implement GameBridge");
         }
     }
 }

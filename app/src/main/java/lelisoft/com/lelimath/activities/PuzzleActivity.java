@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
+import lelisoft.com.lelimath.fragment.LeliGameFragment;
 import lelisoft.com.lelimath.fragment.PictureFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
@@ -26,7 +27,7 @@ import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
  * Guess picture type of activity
  * Author leos.literak on 18.10.2015.
  */
-public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.PuzzleBridge, PictureFragment.PictureBridge {
+public class PuzzleActivity extends BaseGameActivity implements LeliGameFragment.GameBridge, PictureFragment.PictureBridge {
     private static final Logger log = LoggerFactory.getLogger(PuzzleActivity.class);
 
     PuzzleFragment puzzleFragment;
@@ -55,11 +56,11 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
 
         puzzleFragment = new PuzzleFragment();
         puzzleFragment.setLogic((PuzzleLogic) gameLogic);
-        initializePuzzleFragment(false);
+        displayFragment(R.id.puzzle_content, puzzleFragment, false);
     }
 
     @Override
-    public void puzzleFinished() {
+    public void gameFinished() {
         log.debug("puzzleFinished()");
         new BadgeEvaluationTask(this).execute();
 
@@ -83,16 +84,6 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
         storePlayRecord(record);
     }
 
-    private void initializePuzzleFragment(boolean replace) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (replace) {
-            transaction.replace(R.id.puzzle_content, puzzleFragment);
-        } else {
-            transaction.add(R.id.puzzle_content, puzzleFragment);
-        }
-        transaction.commit();
-    }
-
     /**
      * Restarts game. If PuzzleFragment is not displayed it will be restored.
      */
@@ -101,7 +92,7 @@ public class PuzzleActivity extends BaseGameActivity implements PuzzleFragment.P
         log.debug("restartGame(), puzzleFragment " + ((puzzleFragment == null) ? "is not null" : "is null"));
         puzzleFragment = new PuzzleFragment();
         puzzleFragment.setLogic((PuzzleLogic) gameLogic);
-        initializePuzzleFragment(true);
+        displayFragment(R.id.puzzle_content, puzzleFragment, true);
     }
 
     @Override
