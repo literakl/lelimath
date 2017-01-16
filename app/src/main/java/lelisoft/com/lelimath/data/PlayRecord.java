@@ -17,43 +17,43 @@ public class PlayRecord {
     Integer id;
 
     @DatabaseField(canBeNull = false)
-    Date date;
+    private Date date;
 
     @DatabaseField(foreign = true, columnName=Columns.PLAY_ID)
-    Play play;
+    private Play play;
 
-    @DatabaseField(canBeNull=true, columnName=Columns.FIRST_OPERAND)
-    Integer firstOperand;
+    @DatabaseField(columnName=Columns.FIRST_OPERAND)
+    private Integer firstOperand;
 
-    @DatabaseField(canBeNull=true, columnName=Columns.SECOND_OPERAND)
-    Integer secondOperand;
+    @DatabaseField(columnName=Columns.SECOND_OPERAND)
+    private Integer secondOperand;
 
-    @DatabaseField(canBeNull=true, columnName=Columns.RESULT)
-    Integer result;
-
-    @DatabaseField(persisted = false)
-    Operator operator;
-
-    @DatabaseField(canBeNull=true, columnName= Columns.OPERATOR, width = 1)
-    String operatorStr;
+    @DatabaseField(columnName=Columns.RESULT)
+    private Integer result;
 
     @DatabaseField(persisted = false)
-    FormulaPart unknown;
+    private Operator operator;
 
-    @DatabaseField(canBeNull=true, columnName=Columns.UNKNOWN, width = 2)
-    String unknownStr;
+    @DatabaseField(columnName= Columns.OPERATOR, width = 1)
+    private String operatorStr;
 
-    @DatabaseField(canBeNull=true, columnName= Columns.CORRECT)
-    boolean correct;
+    @DatabaseField(persisted = false)
+    private FormulaPart unknown;
 
-    @DatabaseField(canBeNull=true, columnName=Columns.WRONG_VALUE)
-    String wrongValue;
+    @DatabaseField(columnName=Columns.UNKNOWN, width = 2)
+    private String unknownStr;
 
-    @DatabaseField(canBeNull=true, columnName=Columns.SPENT)
-    Long timeSpent;
+    @DatabaseField(columnName= Columns.CORRECT)
+    private boolean correct;
+
+    @DatabaseField(columnName=Columns.WRONG_VALUE)
+    private String wrongValue;
+
+    @DatabaseField(columnName=Columns.SPENT)
+    private Long timeSpent;
 
     @DatabaseField(canBeNull=false, defaultValue = "0", columnName= Columns.POINTS)
-    Integer points;
+    private Integer points;
 
     public PlayRecord() {
     }
@@ -114,6 +114,7 @@ public class PlayRecord {
         return firstOperand;
     }
 
+    @SuppressWarnings("unused")
     public void setFirstOperand(Integer firstOperand) {
         this.firstOperand = firstOperand;
     }

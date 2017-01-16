@@ -3,8 +3,6 @@ package lelisoft.com.lelimath.data;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.util.Date;
-
 /**
  * Holder for the reference to the last Play started from TestFolder
  * Created by Leoš on 08.12.2016.
@@ -16,16 +14,16 @@ public class TestRecord {
     Integer id;
 
     @DatabaseField(foreign = true, columnName= Columns.PLAY_ID)
-    Play play;
+    private Play play;
 
     @DatabaseField(canBeNull = false, columnName = Columns.SCORE)
-    Integer score;
+    private Integer score;
 
     @DatabaseField(canBeNull = false, columnName = Columns.TEST_ID)
-    String testId;
+    private String testId;
 
     @DatabaseField(canBeNull = false, columnName = Columns.SCRIPT_ID)
-    String scriptId;
+    private String campaignId;
 
     public Integer getId() {
         return id;
@@ -51,6 +49,7 @@ public class TestRecord {
         this.score = score;
     }
 
+    @SuppressWarnings("unused")
     public String getTestId() {
         return testId;
     }
@@ -59,19 +58,20 @@ public class TestRecord {
         this.testId = testId;
     }
 
-    public String getScriptId() {
-        return scriptId;
+    @SuppressWarnings("unused")
+    public String getCampaignId() {
+        return campaignId;
     }
 
-    public void setScriptId(String scriptId) {
-        this.scriptId = scriptId;
+    public void setCampaignId(String campaignId) {
+        this.campaignId = campaignId;
     }
 
     @Override
     public String toString() {
         return "TestRecord{" +
                 "testId='" + testId + '\'' +
-                ", scriptId='" + scriptId + '\'' +
+                ", campaignId='" + campaignId + '\'' +
                 ", score=" + score +
                 '}';
     }

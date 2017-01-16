@@ -62,7 +62,7 @@ public class CalcActivity extends BaseGameActivity implements LeliGameFragment.G
     }
 
     @Override
-    public void gameFinished() {
+    public void gameFinished(Play play) {
         log.debug("calcFinished()");
         new BadgeEvaluationTask(this).execute();
 

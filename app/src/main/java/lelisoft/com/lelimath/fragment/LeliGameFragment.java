@@ -11,7 +11,7 @@ import lelisoft.com.lelimath.data.PlayRecord;
 public class LeliGameFragment extends LeliBaseFragment {
 
     public interface GameBridge {
-        void gameFinished();
+        void gameFinished(Play play);
         void savePlayRecord(Play play, PlayRecord record);
     }
 }

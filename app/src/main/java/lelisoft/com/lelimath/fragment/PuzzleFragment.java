@@ -160,7 +160,7 @@ public class PuzzleFragment extends LeliGameFragment {
                         if (tilesToBeSolved <= 0) {
                             play.setFinished(true);
                             callback.savePlayRecord(play, record);
-                            callback.gameFinished();
+                            callback.gameFinished(play);
                             Metrics.saveGameFinished(Game.PUZZLE);
                         } else {
                             callback.savePlayRecord(play, record);

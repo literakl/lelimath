@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -145,7 +146,7 @@ public class CalcFragment extends LeliGameFragment {
             if (formulaPosition == formulas.size()) {
                 play.setFinished(true);
                 callback.savePlayRecord(play, record);
-                callback.gameFinished();
+                callback.gameFinished(play);
                 Metrics.saveGameFinished(Game.FAST_CALC);
             } else {
                 callback.savePlayRecord(play, record);
@@ -194,6 +195,7 @@ public class CalcFragment extends LeliGameFragment {
         play.addTimeSpent(playRecord.getTimeSpent());
     }
 
+    @SuppressLint("SetTextI18n")
     protected void displayFormula() {
         TextView view = getUnknownWidget(formula);
         LinearLayout parent = (LinearLayout) view.getParent();

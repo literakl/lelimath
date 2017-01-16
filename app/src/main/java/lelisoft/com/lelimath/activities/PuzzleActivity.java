@@ -60,7 +60,7 @@ public class PuzzleActivity extends BaseGameActivity implements LeliGameFragment
     }
 
     @Override
-    public void gameFinished() {
+    public void gameFinished(Play play) {
         log.debug("puzzleFinished()");
         new BadgeEvaluationTask(this).execute();
 

@@ -28,6 +28,7 @@ import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.BadgeProgress;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
+import lelisoft.com.lelimath.data.TestRecord;
 import lelisoft.com.lelimath.data.User;
 import lelisoft.com.lelimath.helpers.Misc;
 
@@ -40,7 +41,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(DatabaseHelper.class);
 
     private static final String DEFAULT_DATABASE_NAME = "lelimath.sqlite";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static File path;
     private static String databaseName = DEFAULT_DATABASE_NAME;
 
@@ -64,6 +65,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, BadgeAward.class);
             TableUtils.createTable(connectionSource, BadgeEvaluation.class);
             TableUtils.createTable(connectionSource, BadgeProgress.class);
+            TableUtils.createTable(connectionSource, TestRecord.class);
         } catch (SQLException e) {
             Crashlytics.logException(e);
             log.error("Error creating new database!", e);
@@ -106,10 +108,21 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 dropColumns(database, connectionSource, "badge_eval", new String[]{"user_id", "progress"}, BadgeEvaluation.class);
                 dropColumns(database, connectionSource, "badge_award", new String[]{"user_id"}, BadgeAward.class);
                 dropColumns(database, connectionSource, "badge_progress", new String[]{"user_id"}, BadgeProgress.class);
+                oldVersion = 6;
             } catch (SQLException e) {
                 Crashlytics.logException(e);
                 log.error("Error upgrading a database from version 5!", e);
                 throw new RuntimeException("Error upgrading a database from version 5!");
+            }
+        }
+
+        if (oldVersion == 6) {
+            try {
+                TableUtils.createTable(connectionSource, PlayRecord.class);
+            } catch (SQLException e) {
+                Crashlytics.logException(e);
+                log.error("Error upgrading a database from version 6!", e);
+                throw new RuntimeException("Error upgrading a database from version 3!");
             }
         }
 

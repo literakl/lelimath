@@ -13,6 +13,7 @@ import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Test;
 import lelisoft.com.lelimath.data.Campaign;
+import lelisoft.com.lelimath.data.TestRecord;
 import lelisoft.com.lelimath.fragment.LeliGameFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
@@ -33,7 +34,8 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     LeliGameFragment fragment;
     Campaign campaign;
     Test test;
-    int position;
+    int position, errors;
+    boolean newGame;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -56,9 +58,20 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     }
 
     @Override
-    public void gameFinished() {
+    public void gameFinished(Play play) {
         log.debug("puzzleFinished()");
         new BadgeEvaluationTask(this).execute();
+
+        TestRecord testRecord = new TestRecord();
+        testRecord.setPlay(play);
+        testRecord.setTestId(test.getId());
+        testRecord.setCampaignId(campaign.getId());
+        testRecord.setScore(100 * (1 - errors / play.getCount()));
+
+        for (int i=0;i<25;i++) {
+            log.debug("{}", 100 * (1 - i / 25));
+        }
+
         Toast.makeText(this, "Finished", Toast.LENGTH_LONG).show();
 
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -69,6 +82,15 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
 
     @Override
     public void savePlayRecord(Play play, PlayRecord record) {
+        if (record.isCorrect()) {
+            newGame = true;
+        } else {
+            if (newGame) {
+                newGame = false;
+                errors++;
+            }
+        }
+
         // todo in background bug #42
         storePlay(play);
         storePlayRecord(record);
