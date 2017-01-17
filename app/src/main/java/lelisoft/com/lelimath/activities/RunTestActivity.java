@@ -35,7 +35,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     Campaign campaign;
     Test test;
     int position, errors;
-    boolean newGame;
+    boolean newGame = true;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -66,11 +66,8 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         testRecord.setPlay(play);
         testRecord.setTestId(test.getId());
         testRecord.setCampaignId(campaign.getId());
-        testRecord.setScore(100 * (1 - errors / play.getCount()));
-
-        for (int i=0;i<25;i++) {
-            log.debug("{}", 100 * (1 - i / 25));
-        }
+        testRecord.setScore((int) (100 * (1f - ((float)errors) / play.getCount())));
+        log.debug("{}",testRecord);
 
         Toast.makeText(this, "Finished", Toast.LENGTH_LONG).show();
 
