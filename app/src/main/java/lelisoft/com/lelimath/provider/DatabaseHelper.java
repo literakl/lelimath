@@ -81,8 +81,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 TableUtils.createTable(connectionSource, BadgeProgress.class);
                 oldVersion = 4;
             } catch (SQLException e) {
-                Crashlytics.logException(e);
                 log.error("Error upgrading a database from version 3!", e);
+                Crashlytics.logException(e);
                 throw new RuntimeException("Error upgrading a database from version 3!");
             }
         }
@@ -94,8 +94,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 dao.updateRaw("UPDATE `play_record` SET points = length(first || second || result) - 2 WHERE correct > 0");
                 oldVersion = 5;
             } catch (SQLException e) {
-                Crashlytics.logException(e);
                 log.error("Error upgrading a database from version 4!", e);
+                Crashlytics.logException(e);
                 throw new RuntimeException("Error upgrading a database from version 4!");
             }
         }
@@ -110,18 +110,18 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 dropColumns(database, connectionSource, "badge_progress", new String[]{"user_id"}, BadgeProgress.class);
                 oldVersion = 6;
             } catch (SQLException e) {
-                Crashlytics.logException(e);
                 log.error("Error upgrading a database from version 5!", e);
+                Crashlytics.logException(e);
                 throw new RuntimeException("Error upgrading a database from version 5!");
             }
         }
 
         if (oldVersion == 6) {
             try {
-                TableUtils.createTable(connectionSource, PlayRecord.class);
+                TableUtils.createTable(connectionSource, TestRecord.class);
             } catch (SQLException e) {
-                Crashlytics.logException(e);
                 log.error("Error upgrading a database from version 6!", e);
+                Crashlytics.logException(e);
                 throw new RuntimeException("Error upgrading a database from version 3!");
             }
         }
