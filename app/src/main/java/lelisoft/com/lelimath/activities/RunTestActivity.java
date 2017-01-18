@@ -7,16 +7,24 @@ import android.widget.Toast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.FormulaDefinition;
+import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Test;
 import lelisoft.com.lelimath.data.Campaign;
 import lelisoft.com.lelimath.data.TestRecord;
+import lelisoft.com.lelimath.fragment.CalcFragment;
 import lelisoft.com.lelimath.fragment.LeliGameFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
+import lelisoft.com.lelimath.logic.CalcLogic;
+import lelisoft.com.lelimath.logic.CalcLogicImpl;
 import lelisoft.com.lelimath.logic.Level;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
@@ -30,6 +38,14 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     private static final Logger log = LoggerFactory.getLogger(RunTestActivity.class);
 
     public static final String KEY_POSITION = "POSITION";
+    public static final String KEY_ERRORS = "ERRORS";
+    public static final String KEY_NEW_GAME = "NEW_GAME";
+
+    private static List<Game> DEFAULT_GAMES = new ArrayList<>(2);
+    static {
+        DEFAULT_GAMES.add(Game.FAST_CALC);
+        DEFAULT_GAMES.add(Game.PUZZLE);
+    }
 
     LeliGameFragment fragment;
     Campaign campaign;
@@ -49,11 +65,19 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         position = intent.getIntExtra(KEY_POSITION, 0);
         test = campaign.getItems().get(position);
 
-        setGameLogic(new PuzzleLogicImpl());
-        initializeGameLogic();
-
-        fragment = new PuzzleFragment();
-        ((PuzzleFragment)fragment).setLogic((PuzzleLogic) gameLogic);
+        Game game = selectGame(test);
+        if (game == Game.PUZZLE) {
+            setGameLogic(new PuzzleLogicImpl());
+            initializeGameLogic();
+            fragment = new PuzzleFragment();
+            ((PuzzleFragment) fragment).setLogic((PuzzleLogic) gameLogic);
+        } else {
+            // todo progress bar
+            setGameLogic(new CalcLogicImpl());
+            initializeGameLogic();
+            fragment = new CalcFragment();
+            ((CalcFragment) fragment).setLogic((CalcLogic) gameLogic);
+        }
         displayFragment(R.id.fragment_container, fragment, true);
     }
 
@@ -101,10 +125,22 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         log.debug(definition.toString());
     }
 
+    private Game selectGame(Test test) {
+        List<Game> games = test.getGames();
+        if (games == null || games.isEmpty()) {
+            games = DEFAULT_GAMES;
+        }
+        int position = Misc.getRandom().nextInt(games.size());
+        return games.get(position);
+//        return Game.FAST_CALC;
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
         state.putInt(KEY_POSITION, position);
+        state.putInt(KEY_ERRORS, errors);
+        state.putBoolean(KEY_NEW_GAME, newGame);
         state.putSerializable(CampaignListActivity.KEY_CAMPAIGN, campaign);
     }
 

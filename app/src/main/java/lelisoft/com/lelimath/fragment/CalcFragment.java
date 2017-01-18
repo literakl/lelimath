@@ -82,8 +82,10 @@ public class CalcFragment extends LeliGameFragment {
 
         clickHandler = new HandleClick();
         attachClickListener();
-        mProgress.setMax(formulas.size());
-        mProgress.setProgress(0);
+        if (mProgress != null) {
+            mProgress.setMax(formulas.size());
+            mProgress.setProgress(0);
+        }
     }
 
     public class HandleClick implements View.OnClickListener {
@@ -141,7 +143,9 @@ public class CalcFragment extends LeliGameFragment {
             PlayRecord record = getPlayRecord(true);
             setPoints(record);
             updateSpentTime(record);
-            mProgress.setProgress(formulaPosition);
+            if (mProgress != null) {
+                mProgress.setProgress(formulaPosition);
+            }
 
             if (formulaPosition == formulas.size()) {
                 play.setFinished(true);

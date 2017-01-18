@@ -13,7 +13,7 @@ public class TestRecord {
     @DatabaseField(generatedId = true, columnName = Columns.ID)
     Integer id;
 
-    @DatabaseField(foreign = true, columnName= Columns.PLAY_ID)
+    @DatabaseField(foreign = true, columnName = Columns.PLAY_ID)
     private Play play;
 
     @DatabaseField(canBeNull = false, columnName = Columns.SCORE)
