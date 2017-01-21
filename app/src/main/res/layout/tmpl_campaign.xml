@@ -67,7 +67,7 @@
             android:id="@+id/star1"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@drawable/star_off" />
+            android:src="@drawable/ic_star_off" />
 
         <Space
             android:layout_width="10dp"
@@ -77,7 +77,7 @@
             android:id="@+id/star2"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@drawable/star_off" />
+            android:src="@drawable/ic_star_off" />
 
         <Space
             android:layout_width="12dp"
@@ -87,7 +87,7 @@
             android:id="@+id/star3"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@drawable/star_off" />
+            android:src="@drawable/ic_star_off" />
     </LinearLayout>
 
     <lelisoft.com.lelimath.gui.OutlineTextView

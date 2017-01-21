@@ -1,8 +1,15 @@
 package lelisoft.com.lelimath.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +57,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
 
     TestRecordProvider provider;
     LeliGameFragment fragment;
+    PopupWindow dialog;
     Campaign campaign;
     Test test;
     int position, errors;
@@ -96,7 +104,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         testRecord.setScore((int) (100 * (1f - ((float)errors) / play.getCount())));
         provider.create(testRecord);
 
-        Toast.makeText(this, "Finished", Toast.LENGTH_LONG).show();
+        showGameCompletedDialog(testRecord.getScore());
 
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -118,6 +126,36 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         // todo in background bug #42
         storePlay(play);
         storePlayRecord(record);
+    }
+
+    private void showGameCompletedDialog(int score) {
+        try {
+            Point size = new Point();
+            getWindowManager().getDefaultDisplay().getSize(size);
+            int width = size.x;
+            int height = size.y;
+
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            @SuppressLint("InflateParams")
+            View view = inflater.inflate(R.layout.dlg_game_completed, null);
+            Misc.setRating(view, score);
+            TextView caption = (TextView) view.findViewById(R.id.caption);
+            if (score >= 60) {
+                if (score >= 90) {
+                    caption.setText(R.string.caption_game_completed_great);
+                } else {
+                    caption.setText(R.string.caption_game_completed_good);
+                }
+            } else {
+                caption.setText(R.string.caption_game_completed);
+            }
+
+            dialog = new PopupWindow(view, (int) (width / 1.5), height / 2, true);
+            dialog.showAtLocation(view, Gravity.CENTER, 0, 0);
+            dialog.setOutsideTouchable(true);
+        } catch (Exception e) {
+            log.debug("Error", e);
+        }
     }
 
     @Override

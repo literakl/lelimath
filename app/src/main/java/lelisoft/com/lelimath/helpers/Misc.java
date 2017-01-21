@@ -6,7 +6,9 @@ import android.graphics.Rect;
 import android.os.Environment;
 import android.support.annotation.LayoutRes;
 import android.text.format.DateUtils;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -281,6 +283,33 @@ public class Misc {
                 return R.drawable.ic_silver_circle;
             default:
                 return R.drawable.ic_bronze_circle;
+        }
+    }
+
+    /**
+     * Sets stars by given score value.
+     * no progress - 0 stars
+     * 0 - 59:   1 star
+     * 60 - 89:  2 stars
+     * 90 - 100: 3 stars
+     * @param view container holding three ImageViews
+     * @param score score to be displayed as stars
+     */
+    public static void setRating(View view, int score) {
+        ImageView star1 = (ImageView) view.findViewById(R.id.star1);
+        ImageView star2 = (ImageView) view.findViewById(R.id.star2);
+        ImageView star3 = (ImageView) view.findViewById(R.id.star3);
+        star1.setImageResource(R.drawable.ic_star_on);
+        if (score >= 60) {
+            star2.setImageResource(R.drawable.ic_star_on);
+            if (score >= 90) {
+                star3.setImageResource(R.drawable.ic_star_on);
+            } else {
+                star3.setImageResource(R.drawable.ic_star_off);
+            }
+        } else {
+            star2.setImageResource(R.drawable.ic_star_off);
+            star3.setImageResource(R.drawable.ic_star_off);
         }
     }
 

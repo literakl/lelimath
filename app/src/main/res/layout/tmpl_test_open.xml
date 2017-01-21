@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="120dp"
     android:layout_height="120dp"
     app:layout_gravity="center"
@@ -28,7 +29,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        />
+        tools:ignore="HardcodedText" />
 
     <LinearLayout
         android:id="@+id/stars"
@@ -47,7 +48,8 @@
             android:id="@+id/star1"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@drawable/star_off" />
+            android:src="@drawable/ic_star_off"
+            tools:ignore="ContentDescription" />
 
         <Space
             android:layout_width="10dp"
@@ -57,7 +59,8 @@
             android:id="@+id/star2"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@drawable/star_off" />
+            android:src="@drawable/ic_star_off"
+            tools:ignore="ContentDescription" />
 
         <Space
             android:layout_width="12dp"
@@ -67,6 +70,7 @@
             android:id="@+id/star3"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:src="@drawable/star_off" />
+            android:src="@drawable/ic_star_off"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

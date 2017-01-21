@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import java.util.Map;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Test;
 import lelisoft.com.lelimath.data.Campaign;
+import lelisoft.com.lelimath.helpers.Misc;
 
 /**
  * Provides TestItem data
@@ -86,27 +86,7 @@ public class CampaignAdapter extends BaseAdapter {
         }
 
         if (score != null) {
-        /*
-            no progress - 0 stars
-            0 - 59:   1 star
-            60 - 89:  2 stars
-            90 - 100: 3 stars
-        */
-            ImageView star1 = (ImageView) view.findViewById(R.id.star1);
-            ImageView star2 = (ImageView) view.findViewById(R.id.star2);
-            ImageView star3 = (ImageView) view.findViewById(R.id.star3);
-            star1.setImageResource(R.drawable.star_on);
-            if (score >= 60) {
-                star2.setImageResource(R.drawable.star_on);
-                if (score >= 90) {
-                    star3.setImageResource(R.drawable.star_on);
-                } else {
-                    star3.setImageResource(R.drawable.star_off);
-                }
-            } else {
-                star2.setImageResource(R.drawable.star_off);
-                star3.setImageResource(R.drawable.star_off);
-            }
+            Misc.setRating(view, score);
         }
 
 

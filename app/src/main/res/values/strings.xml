@@ -47,6 +47,9 @@
     <string name="caption_progress">Progress</string>
     <string name="caption_awarded">Awarded</string>
     <string name="caption_new">New</string>
+    <string name="caption_game_completed">Finished!</string>
+    <string name="caption_game_completed_good">Well done!</string>
+    <string name="caption_game_completed_great">Excellent job!</string>
     <string name="message_badge_progress"><xliff:g id="current" example="1" >%d</xliff:g> of <xliff:g id="total" example="5" >%d</xliff:g></string>
     <string name="message_badge_not_awarded">Not yet</string>
     <string name="script_progress"><xliff:g id="current" example="1" >%d</xliff:g> / <xliff:g id="total" example="5" >%d</xliff:g></string>
