@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.CampaignAdapter;
 import lelisoft.com.lelimath.data.Campaign;
+import lelisoft.com.lelimath.provider.TestRecordProvider;
 
 /**
  * Lists TestItems of selected TestScript
@@ -38,7 +39,8 @@ public class CampaignActivity extends LeliBaseActivity {
             campaign = (Campaign) getIntent().getSerializableExtra(CampaignListActivity.KEY_CAMPAIGN);
         }
 
-        CampaignAdapter adapter = new CampaignAdapter(campaign);
+        TestRecordProvider provider = new TestRecordProvider(this);
+        CampaignAdapter adapter = new CampaignAdapter(campaign, provider.getTestScores(campaign));
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

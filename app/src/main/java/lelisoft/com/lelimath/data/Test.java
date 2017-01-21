@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * One item of campaign holding single FormulaDefinition.
- * Created by leos.literak on 26.2.2015.
+ * Created by leos.literak on 9.12.2016.
  */
 public class Test implements Serializable {
     /** Key that shall never change */
@@ -15,8 +15,6 @@ public class Test implements Serializable {
     private FormulaDefinition definition;
     /** list of allowed games */
     private List<Game> games;
-    /** record of finished execution of this item. it must be singleton - overwritten if this test is played again */
-    private TestRecord record;
 
     public String getId() {
         return id;
@@ -45,20 +43,9 @@ public class Test implements Serializable {
         games.add(value);
     }
 
+    @SuppressWarnings("unused")
     public void setGames(List<Game> games) {
         this.games = games;
-    }
-
-    public TestRecord getRecord() {
-        return record;
-    }
-
-    public void setRecord(TestRecord record) {
-        this.record = record;
-    }
-
-    public boolean isFinished() {
-        return record != null;
     }
 
     @Override

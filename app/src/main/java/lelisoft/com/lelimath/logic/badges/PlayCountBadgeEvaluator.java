@@ -124,8 +124,8 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             log.debug("evaluate finished: {}", badgesCount);
             return badgesCount;
         } catch (SQLException e) {
-            Crashlytics.logException(e);
             log.error("Evaluation failed", e);
+            Crashlytics.logException(e);
             return new AwardedBadgesCount();
         }
     }
@@ -150,8 +150,8 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
             }
             throw new RuntimeException("Unhandled badge " + badge);
         } catch (SQLException e) {
-            Crashlytics.logException(e);
             log.error("calculateProgress failed!", e);
+            Crashlytics.logException(e);
             return null;
         }
     }
@@ -175,7 +175,7 @@ public class PlayCountBadgeEvaluator extends BadgeEvaluator {
         return progress;
     }
 
-    public QueryBuilder<Play, Integer> setPlayConditions(PlayProvider provider, boolean easy) throws SQLException {
+    private QueryBuilder<Play, Integer> setPlayConditions(PlayProvider provider, boolean easy) throws SQLException {
         QueryBuilder<Play, Integer> builder = provider.queryBuilder();
         Where<Play, Integer> where = builder.where();
         if (easy) {

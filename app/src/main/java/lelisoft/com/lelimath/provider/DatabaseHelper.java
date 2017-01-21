@@ -199,6 +199,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         log.debug("Recover finished with {}", result);
     }
 
+    @SuppressWarnings("all")
     public Dao<User, Integer> getUserDao() throws SQLException {
         return getDao(User.class);
     }
@@ -211,6 +212,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return getDao(Play.class);
     }
 
+    @SuppressWarnings("all")
+    public Dao<TestRecord, Integer> getTestRecordDao() throws SQLException {
+        return getDao(TestRecord.class);
+    }
+
+    @SuppressWarnings("all")
     public Dao<BadgeAward, Integer> getBadgeAwardDao() throws SQLException {
         return getDao(BadgeAward.class);
     }
@@ -219,6 +226,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return getDao(BadgeEvaluation.class);
     }
 
+    @SuppressWarnings("all")
     public Dao<BadgeProgress, String> getBadgeProgressDao() throws SQLException {
         return getDao(BadgeProgress.class);
     }

@@ -28,6 +28,7 @@ import lelisoft.com.lelimath.logic.CalcLogicImpl;
 import lelisoft.com.lelimath.logic.Level;
 import lelisoft.com.lelimath.logic.PuzzleLogic;
 import lelisoft.com.lelimath.logic.PuzzleLogicImpl;
+import lelisoft.com.lelimath.provider.TestRecordProvider;
 
 /**
  * Responsible for starting tests.
@@ -47,6 +48,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         DEFAULT_GAMES.add(Game.PUZZLE);
     }
 
+    TestRecordProvider provider;
     LeliGameFragment fragment;
     Campaign campaign;
     Test test;
@@ -57,6 +59,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     protected void onCreate(Bundle state) {
         log.debug("onCreate()");
         super.onCreate(state);
+        provider = new TestRecordProvider(this);
 
         setContentView(R.layout.act_with_fragment);
 
@@ -91,7 +94,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         testRecord.setTestId(test.getId());
         testRecord.setCampaignId(campaign.getId());
         testRecord.setScore((int) (100 * (1f - ((float)errors) / play.getCount())));
-        log.debug("{}",testRecord);
+        provider.create(testRecord);
 
         Toast.makeText(this, "Finished", Toast.LENGTH_LONG).show();
 
@@ -129,6 +132,9 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         List<Game> games = test.getGames();
         if (games == null || games.isEmpty()) {
             games = DEFAULT_GAMES;
+        }
+        if (games.size() == 1) {
+            return games.get(0);
         }
         int position = Misc.getRandom().nextInt(games.size());
         return games.get(position);

@@ -1,5 +1,6 @@
 package lelisoft.com.lelimath.logic.badges;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
@@ -39,10 +40,11 @@ import static lelisoft.com.lelimath.data.Badge.RETURNER;
 public class StaminaBadgeEvaluator extends BadgeEvaluator {
     private static final Logger log = LoggerFactory.getLogger(StaminaBadgeEvaluator.class);
 
-    static final String sql = "select strftime('%Y-%m-%d', date), count(*) from play_record where correct=1 " +
+    private static final String sql = "select strftime('%Y-%m-%d', date), count(*) from play_record where correct=1 " +
             "and date > ? group by strftime('%Y%m%d', date) order by 1 desc";
 
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    @SuppressLint("SimpleDateFormat")
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     public AwardedBadgesCount evaluate(Context ctx) {

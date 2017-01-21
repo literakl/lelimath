@@ -22,7 +22,7 @@ public class TestRecord {
     @DatabaseField(canBeNull = false, columnName = Columns.TEST_ID)
     private String testId;
 
-    @DatabaseField(canBeNull = false, columnName = Columns.SCRIPT_ID)
+    @DatabaseField(canBeNull = false, columnName = Columns.CAMPAIGN_ID)
     private String campaignId;
 
     public Integer getId() {
@@ -45,6 +45,7 @@ public class TestRecord {
         return score;
     }
 
+    /** Value betweeb 0-100 */
     public void setScore(Integer score) {
         this.score = score;
     }

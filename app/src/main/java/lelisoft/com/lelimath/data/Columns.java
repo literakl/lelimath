@@ -9,7 +9,7 @@ public class Columns {
     public static final String ID = "id";
     public static final String PLAY_ID = "play_id";
     public static final String TEST_ID = "test_id";
-    public static final String SCRIPT_ID = "script_id";
+    public static final String CAMPAIGN_ID = "campaign_id";
     public static final String DATE = "date";
     public static final String TYPE = "type";
     public static final String DATA = "data";

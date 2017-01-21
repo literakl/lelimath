@@ -23,7 +23,7 @@ import lelisoft.com.lelimath.view.AwardedBadgesCount;
 public class BadgeEvaluationTask extends AsyncTask<Void, Void, BadgeEvaluationTask.Holder> {
     private static final Logger log = LoggerFactory.getLogger(BadgeEvaluationTask.class);
 
-    WeakReference<Context> context;
+    private WeakReference<Context> context;
 
     public BadgeEvaluationTask(Context context) {
         this.context = new WeakReference<>(context);

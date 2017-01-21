@@ -48,7 +48,7 @@ import static lelisoft.com.lelimath.data.Operator.*;
 public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
     private static final Logger log = LoggerFactory.getLogger(CorrectnessBadgeEvaluator.class);
 
-    static final String sql = "select count(*) from (select distinct first || second from play_record " +
+    private static final String sql = "select count(*) from (select distinct first || second from play_record " +
             "where id > ? and operator=?)";
 
     @Override
@@ -116,8 +116,8 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
             }
             throw new RuntimeException("Unhandled badge " + badge);
         } catch (SQLException e) {
-            Crashlytics.logException(e);
             log.error("calculateProgress failed!", e);
+            Crashlytics.logException(e);
             return null;
         }
     }
