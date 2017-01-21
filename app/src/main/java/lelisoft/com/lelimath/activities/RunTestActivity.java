@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -89,7 +90,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
             fragment = new CalcFragment();
             ((CalcFragment) fragment).setLogic((CalcLogic) gameLogic);
         }
-        displayFragment(R.id.fragment_container, fragment, true);
+        displayFragment(R.id.fragment_container, fragment, true, false);
     }
 
     @Override
@@ -105,11 +106,6 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         provider.create(testRecord);
 
         showGameCompletedDialog(testRecord.getScore());
-
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-//        transaction.replace(R.id.puzzle_content, pictureFragment);
-//        transaction.commit();
     }
 
     @Override
@@ -150,9 +146,13 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
                 caption.setText(R.string.caption_game_completed);
             }
 
+            ImageView button = (ImageView) view.findViewById(R.id.buttonNext);
+            button.setOnClickListener(nextListener);
+            button = (ImageView) view.findViewById(R.id.buttonList);
+            button.setOnClickListener(listListener);
+
             dialog = new PopupWindow(view, (int) (width / 1.5), height / 2, true);
             dialog.showAtLocation(view, Gravity.CENTER, 0, 0);
-            dialog.setOutsideTouchable(true);
         } catch (Exception e) {
             log.debug("Error", e);
         }
@@ -184,6 +184,20 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         setResult(RESULT_OK);
         finish();
     }
+
+    View.OnClickListener nextListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+        }
+    };
+
+    View.OnClickListener listListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            setResult(RESULT_OK);
+            finish();
+        }
+    };
 
     @Override
     protected void onSaveInstanceState(Bundle state) {

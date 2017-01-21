@@ -3,7 +3,6 @@ package lelisoft.com.lelimath.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -56,7 +55,7 @@ public class PuzzleActivity extends BaseGameActivity implements LeliGameFragment
 
         puzzleFragment = new PuzzleFragment();
         puzzleFragment.setLogic((PuzzleLogic) gameLogic);
-        displayFragment(R.id.puzzle_content, puzzleFragment, false);
+        displayFragment(R.id.puzzle_content, puzzleFragment, false, false);
     }
 
     @Override
@@ -69,11 +68,7 @@ public class PuzzleActivity extends BaseGameActivity implements LeliGameFragment
         args.putInt(PictureFragment.ARG_PICTURE, selectRandomPicture());
         pictureFragment.setArguments(args);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        transaction.replace(R.id.puzzle_content, pictureFragment);
-        transaction.commit();
-
+        displayFragment(R.id.puzzle_content, pictureFragment, true, true);
         puzzleFragment = null;
     }
 
@@ -92,7 +87,7 @@ public class PuzzleActivity extends BaseGameActivity implements LeliGameFragment
         log.debug("restartGame(), puzzleFragment " + ((puzzleFragment == null) ? "is not null" : "is null"));
         puzzleFragment = new PuzzleFragment();
         puzzleFragment.setLogic((PuzzleLogic) gameLogic);
-        displayFragment(R.id.puzzle_content, puzzleFragment, true);
+        displayFragment(R.id.puzzle_content, puzzleFragment, true, false);
     }
 
     @Override

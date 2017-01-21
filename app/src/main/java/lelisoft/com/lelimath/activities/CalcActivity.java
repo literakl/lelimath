@@ -3,7 +3,6 @@ package lelisoft.com.lelimath.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -58,7 +57,7 @@ public class CalcActivity extends BaseGameActivity implements LeliGameFragment.G
 
         calcFragment = new CalcFragment();
         calcFragment.setLogic((CalcLogic) gameLogic);
-        displayFragment(R.id.calc_content, calcFragment, false);
+        displayFragment(R.id.calc_content, calcFragment, false, false);
     }
 
     @Override
@@ -70,11 +69,8 @@ public class CalcActivity extends BaseGameActivity implements LeliGameFragment.G
         Bundle args = new Bundle();
         args.putInt(PictureFragment.ARG_PICTURE, selectRandomPicture());
         pictureFragment.setArguments(args);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        transaction.replace(R.id.calc_content, pictureFragment);
-        transaction.commit();
+        displayFragment(R.id.calc_content, pictureFragment, true, true);
+        calcFragment = null;
     }
 
     @Override
@@ -104,7 +100,7 @@ public class CalcActivity extends BaseGameActivity implements LeliGameFragment.G
         log.debug("restartGame()");
         calcFragment = new CalcFragment();
         calcFragment.setLogic((CalcLogic) gameLogic);
-        displayFragment(R.id.calc_content, calcFragment, true);
+        displayFragment(R.id.calc_content, calcFragment, true, false);
     }
 
     @Override

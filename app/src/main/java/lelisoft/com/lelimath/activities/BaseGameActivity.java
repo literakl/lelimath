@@ -3,6 +3,7 @@ package lelisoft.com.lelimath.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import com.crashlytics.android.Crashlytics;
@@ -24,7 +25,6 @@ import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
-import lelisoft.com.lelimath.fragment.LeliGameFragment;
 import lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
@@ -69,8 +69,11 @@ public class BaseGameActivity extends LeliBaseActivity {
             R.drawable.pic_treasure
     };
 
-    protected void displayFragment(int containerViewId, LeliGameFragment fragment, boolean replace) {
+    protected void displayFragment(int containerViewId, Fragment fragment, boolean replace, boolean animation) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (animation) {
+            transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        }
         if (replace) {
             transaction.replace(containerViewId, fragment);
         } else {

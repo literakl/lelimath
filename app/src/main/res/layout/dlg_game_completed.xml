@@ -105,7 +105,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/im1"
+                    android:id="@+id/buttonList"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_action_list"
@@ -120,7 +120,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/im11"
+                    android:id="@+id/buttonNext"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_action_next"
