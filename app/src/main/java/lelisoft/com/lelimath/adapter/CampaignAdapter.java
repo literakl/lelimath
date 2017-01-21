@@ -28,6 +28,15 @@ public class CampaignAdapter extends BaseAdapter {
     private Map<String, Integer> scores;
     private int firstIncomplete;
 
+    public CampaignAdapter(Campaign script, Map<String, Integer> scores) {
+        log.debug("CampaignAdapter()");
+        this.records = script.getItems();
+        if (records == null) {
+            records = new ArrayList<>();
+        }
+        updateScores(scores);
+    }
+
     @Override
     public int getCount() {
         return records.size();
@@ -84,14 +93,19 @@ public class CampaignAdapter extends BaseAdapter {
             90 - 100: 3 stars
         */
             ImageView star1 = (ImageView) view.findViewById(R.id.star1);
+            ImageView star2 = (ImageView) view.findViewById(R.id.star2);
+            ImageView star3 = (ImageView) view.findViewById(R.id.star3);
             star1.setImageResource(R.drawable.star_on);
             if (score >= 60) {
-                ImageView star2 = (ImageView) view.findViewById(R.id.star2);
                 star2.setImageResource(R.drawable.star_on);
                 if (score >= 90) {
-                    ImageView star3 = (ImageView) view.findViewById(R.id.star3);
                     star3.setImageResource(R.drawable.star_on);
+                } else {
+                    star3.setImageResource(R.drawable.star_off);
                 }
+            } else {
+                star2.setImageResource(R.drawable.star_off);
+                star3.setImageResource(R.drawable.star_off);
             }
         }
 
@@ -104,20 +118,20 @@ public class CampaignAdapter extends BaseAdapter {
         return position <= firstIncomplete;
     }
 
-    public CampaignAdapter(Campaign script, Map<String, Integer> scores) {
-        log.debug("CampaignAdapter()");
+    public void updateScores(Map<String, Integer> scores) {
+        log.debug("updateScores()");
         this.scores = scores;
-        this.records = script.getItems();
-        if (records == null) {
-            records = new ArrayList<>();
-        }
-
         // find the first unfinished item
-        for (int i = 0; i < records.size(); i++) {
-            Test item = records.get(i);
-            if (scores.get(item.getId()) == null) {
-                firstIncomplete = i;
-                break;
+        if (records.isEmpty()) {
+            firstIncomplete = 0;
+        } else {
+            firstIncomplete = 10000;
+            for (int i = 0; i < records.size(); i++) {
+                Test item = records.get(i);
+                if (scores.get(item.getId()) == null) {
+                    firstIncomplete = i;
+                    break;
+                }
             }
         }
     }

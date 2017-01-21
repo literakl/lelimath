@@ -32,6 +32,10 @@ public class CampaignListActivity extends LeliBaseActivity {
 
     protected static final String KEY_CAMPAIGN = "CAMPAIGN_ID";
 
+    GridView gridView;
+    CampaignListAdapter adapter;
+    TestRecordProvider provider;
+
     @Override
     protected void onCreate(Bundle state) {
         log.debug("onCreate()");
@@ -64,19 +68,27 @@ public class CampaignListActivity extends LeliBaseActivity {
         records.add(new Campaign("bgt_squares", "bgt_squares"));
         records.add(new Campaign("bgt_triangles", "bgt_triangles"));
 
-        TestRecordProvider provider = new TestRecordProvider(this);
+        provider = new TestRecordProvider(this);
         provider.setCampaignsData(records);
-        CampaignListAdapter adapter = new CampaignListAdapter(records);
+        adapter = new CampaignListAdapter(records);
 
-        GridView gridView = (GridView) findViewById(R.id.gridview);
+        gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(CampaignListActivity.this, CampaignActivity.class);
                 intent.putExtra(KEY_CAMPAIGN, records.get(position));
-                CampaignListActivity.this.startActivity(intent);
+                CampaignListActivity.this.startActivityForResult(intent, 0);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        provider.setCampaignsData(adapter.getRecords());
+        adapter.notifyDataSetChanged();
+        gridView.invalidateViews();
     }
 
     public static void start(Context c) {

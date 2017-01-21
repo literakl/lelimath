@@ -23,6 +23,9 @@ public class CampaignActivity extends LeliBaseActivity {
     private static final Logger log = LoggerFactory.getLogger(CampaignActivity.class);
 
     Campaign campaign;
+    GridView gridView;
+    CampaignAdapter adapter;
+    TestRecordProvider provider;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -30,7 +33,7 @@ public class CampaignActivity extends LeliBaseActivity {
         super.onCreate(state);
 
         setContentView(R.layout.act_campaign);
-        GridView gridView = (GridView) findViewById(R.id.gridview);
+        gridView = (GridView) findViewById(R.id.gridview);
 
         if (state != null) {
             log.debug("load state");
@@ -39,19 +42,32 @@ public class CampaignActivity extends LeliBaseActivity {
             campaign = (Campaign) getIntent().getSerializableExtra(CampaignListActivity.KEY_CAMPAIGN);
         }
 
-        TestRecordProvider provider = new TestRecordProvider(this);
-        CampaignAdapter adapter = new CampaignAdapter(campaign, provider.getTestScores(campaign));
+        provider = new TestRecordProvider(this);
+        adapter = new CampaignAdapter(campaign, provider.getTestScores(campaign));
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(CampaignActivity.this, RunTestActivity.class);
                 intent.putExtra(RunTestActivity.KEY_POSITION, position);
                 intent.putExtra(CampaignListActivity.KEY_CAMPAIGN, campaign);
-                CampaignActivity.this.startActivity(intent);
+                CampaignActivity.this.startActivityForResult(intent, 0);
             }
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        adapter.updateScores(provider.getTestScores(campaign));
+        adapter.notifyDataSetChanged();
+        gridView.invalidateViews();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        finish();
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle state) {

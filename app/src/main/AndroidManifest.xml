@@ -77,17 +77,17 @@
         <activity
             android:name=".activities.CampaignListActivity"
             android:label="@string/action_academy"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".activities.DashboardActivity">
         </activity>
         <activity
             android:name=".activities.CampaignActivity"
             android:label="@string/action_academy"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".activities.CampaignListActivity">
         </activity>
         <activity
             android:name=".activities.RunTestActivity"
             android:label="@string/action_academy"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".activities.CampaignActivity">
         </activity>
         <meta-data
             android:name="io.fabric.ApiKey"

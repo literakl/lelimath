@@ -1,6 +1,7 @@
 package lelisoft.com.lelimath.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -129,5 +130,11 @@ public class LeliBaseActivity extends AppCompatActivity {
     protected void onRestart() {
         log.debug("{}.onRestart()", this.getClass().getSimpleName());
         super.onRestart();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        log.debug("{}.onRestart({}, {})", this.getClass().getSimpleName(), requestCode, resultCode);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

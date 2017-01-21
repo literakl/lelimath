@@ -142,6 +142,12 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     }
 
     @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle state) {
         super.onSaveInstanceState(state);
         state.putInt(KEY_POSITION, position);

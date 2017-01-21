@@ -26,6 +26,11 @@ public class CampaignListAdapter extends BaseAdapter {
 
     private List<Campaign> records;
 
+    public CampaignListAdapter(List<Campaign> records) {
+        log.debug("CampaignListAdapter()");
+        this.records = records;
+    }
+
     @Override
     public int getCount() {
         return records.size();
@@ -39,11 +44,6 @@ public class CampaignListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return 0;
-    }
-
-    public CampaignListAdapter(List<Campaign> records) {
-        log.debug("CampaignListAdapter()");
-        this.records = records;
     }
 
     @Override
@@ -84,17 +84,26 @@ public class CampaignListAdapter extends BaseAdapter {
             90 - 100: 3 stars
         */
             ImageView star1 = (ImageView) view.findViewById(R.id.star1);
+            ImageView star2 = (ImageView) view.findViewById(R.id.star2);
+            ImageView star3 = (ImageView) view.findViewById(R.id.star3);
             star1.setImageResource(R.drawable.star_on);
             if (score >= 60) {
-                ImageView star2 = (ImageView) view.findViewById(R.id.star2);
                 star2.setImageResource(R.drawable.star_on);
                 if (score >= 90) {
-                    ImageView star3 = (ImageView) view.findViewById(R.id.star3);
                     star3.setImageResource(R.drawable.star_on);
+                } else {
+                    star3.setImageResource(R.drawable.star_off);
                 }
+            } else {
+                star2.setImageResource(R.drawable.star_off);
+                star3.setImageResource(R.drawable.star_off);
             }
         }
 
         return view;
+    }
+
+    public List<Campaign> getRecords() {
+        return records;
     }
 }
