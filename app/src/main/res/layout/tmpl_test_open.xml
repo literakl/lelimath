@@ -44,33 +44,6 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/star1"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:src="@drawable/ic_star_off"
-            tools:ignore="ContentDescription" />
-
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"/>
-
-        <ImageView
-            android:id="@+id/star2"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:src="@drawable/ic_star_off"
-            tools:ignore="ContentDescription" />
-
-        <Space
-            android:layout_width="12dp"
-            android:layout_height="wrap_content"/>
-
-        <ImageView
-            android:id="@+id/star3"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:src="@drawable/ic_star_off"
-            tools:ignore="ContentDescription" />
+        <include layout="@layout/tmpl_stars22" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

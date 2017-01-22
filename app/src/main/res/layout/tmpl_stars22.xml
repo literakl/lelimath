@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:id="@+id/star1"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_star_off"
+        tools:ignore="ContentDescription" />
+
+    <Space
+        android:layout_width="10dp"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/star2"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_star_off"
+        tools:ignore="ContentDescription" />
+
+    <Space
+        android:layout_width="12dp"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/star3"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_star_off"
+        tools:ignore="ContentDescription" />
+</merge>
