@@ -2,14 +2,12 @@ package lelisoft.com.lelimath.logic;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.ref.WeakReference;
 
-import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.logic.badges.CorrectnessBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.PlayCountBadgeEvaluator;
 import lelisoft.com.lelimath.logic.badges.StaminaBadgeEvaluator;
@@ -52,10 +50,12 @@ public class BadgeEvaluationTask extends AsyncTask<Void, Void, BadgeEvaluationTa
 
     @Override
     protected void onPostExecute(Holder holder) {
+/*
         AwardedBadgesCount badgesCount = holder.badgesCount;
         int badges = badgesCount.bronze + badgesCount.silver + badgesCount.gold;
         String string = context.get().getString(R.string.message_badge_received, badges, holder.points);
         Toast.makeText(context.get(), string, Toast.LENGTH_SHORT).show();
+*/
     }
 
     public static class Holder {
