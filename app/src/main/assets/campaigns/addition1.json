@@ -1,7 +1,7 @@
 [
 {
   "id": "ADD10",
-  "title": "První sčítání",
+  "title": "První počty",
   "picture": "bgt_bed_linen",
   "items": [
     {
@@ -13,26 +13,26 @@
         "operatorDefinitions": [
           {
             "operators": ["+"],
-            "first": "1-5",
-            "second": "1-5",
-            "result": "2-5"
+            "first": "0-5",
+            "second": "0-5",
+            "result": "1-5"
           }
         ]
       }
     },
     {
       "id": "20",
-      "games": ["PZ","FC"],
+      "games": ["FC"],
       "definition":
       {
-        "count": 10,
+        "count": 5,
         "unknowns": ["RS"],
         "operatorDefinitions": [
           {
             "operators": ["+"],
-            "first": "1-5",
-            "second": "1-5",
-            "result": "2-5"
+            "first": "0-5",
+            "second": "0-5",
+            "result": "5-10"
           },
           {
             "operators": ["-"],
@@ -52,7 +52,7 @@
   "items": [
     {
       "id": "10",
-      "games": ["FC"],
+      "games": ["PZ","FC"],
       "definition":
       {
         "count": 10,

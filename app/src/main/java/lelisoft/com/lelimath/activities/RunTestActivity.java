@@ -3,7 +3,6 @@ package lelisoft.com.lelimath.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -59,6 +58,8 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     TestRecordProvider provider;
     LeliGameFragment fragment;
     AlertDialog dialog;
+    Toolbar toolbar;
+
     Campaign campaign;
     Test test;
     int position, errors;
@@ -71,7 +72,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         provider = new TestRecordProvider(this);
 
         setContentView(R.layout.act_with_fragment_toolbar);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
 
@@ -87,24 +88,8 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         campaign = (Campaign) intent.getSerializableExtra(CampaignListActivity.KEY_CAMPAIGN);
         position = intent.getIntExtra(KEY_POSITION, 0);
         test = campaign.getItems().get(position);
-
-        Game game = selectGame(test);
-        if (game == Game.PUZZLE) {
-            setGameLogic(new PuzzleLogicImpl());
-            initializeGameLogic();
-            fragment = new PuzzleFragment();
-            ((PuzzleFragment) fragment).setLogic((PuzzleLogic) gameLogic);
-        } else {
-            setGameLogic(new CalcLogicImpl());
-            initializeGameLogic();
-            fragment = new CalcFragment();
-            ((CalcFragment) fragment).setLogic((CalcLogic) gameLogic);
-
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            inflater.inflate(R.layout.tmpl_progressbar, toolbar, true);
-
-        }
-        displayFragment(R.id.fragment_container, fragment, true, false);
+        generateTest();
+        displayFragment(R.id.fragment_container, fragment, false, false);
     }
 
     @Override
@@ -140,11 +125,6 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
 
     private void showGameCompletedDialog(int score) {
         try {
-            Point size = new Point();
-            getWindowManager().getDefaultDisplay().getSize(size);
-            int width = size.x;
-            int height = size.y;
-
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             @SuppressLint("InflateParams")
             View view = inflater.inflate(R.layout.dlg_game_completed, null);
@@ -161,14 +141,37 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
                 caption.setText(R.string.caption_game_completed);
             }
 
-            ImageView button = (ImageView) view.findViewById(R.id.buttonNext);
-            button.setOnClickListener(nextListener);
-            button = (ImageView) view.findViewById(R.id.buttonList);
+            ImageView button = (ImageView) view.findViewById(R.id.buttonList);
             button.setOnClickListener(listListener);
+
+            button = (ImageView) view.findViewById(R.id.buttonNext);
+            if (position + 1 < campaign.getCount()) {
+                button.setOnClickListener(nextListener);
+            } else {
+                button.setImageResource(R.drawable.ic_action_next_disabled);
+            }
 
             dialog = new AlertDialog.Builder(RunTestActivity.this).setView(view).show();
         } catch (Exception e) {
             log.debug("Error", e);
+        }
+    }
+
+    private void generateTest() {
+        Game game = selectGame(test);
+        if (game == Game.PUZZLE) {
+            setGameLogic(new PuzzleLogicImpl());
+            initializeGameLogic();
+            fragment = new PuzzleFragment();
+            ((PuzzleFragment) fragment).setLogic((PuzzleLogic) gameLogic);
+        } else {
+            setGameLogic(new CalcLogicImpl());
+            initializeGameLogic();
+            fragment = new CalcFragment();
+            ((CalcFragment) fragment).setLogic((CalcLogic) gameLogic);
+
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater.inflate(R.layout.tmpl_progressbar, toolbar, true);
         }
     }
 
@@ -204,6 +207,10 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
             if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
+
+            test = campaign.getItems().get(++position);
+            generateTest();
+            displayFragment(R.id.fragment_container, fragment, true, true);
         }
     };
 
