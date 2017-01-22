@@ -5,12 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import org.slf4j.Logger;
@@ -59,7 +58,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
 
     TestRecordProvider provider;
     LeliGameFragment fragment;
-    PopupWindow dialog;
+    AlertDialog dialog;
     Campaign campaign;
     Test test;
     int position, errors;
@@ -150,6 +149,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
             @SuppressLint("InflateParams")
             View view = inflater.inflate(R.layout.dlg_game_completed, null);
             Misc.setRating(view, score);
+
             TextView caption = (TextView) view.findViewById(R.id.caption);
             if (score >= 60) {
                 if (score >= 90) {
@@ -166,8 +166,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
             button = (ImageView) view.findViewById(R.id.buttonList);
             button.setOnClickListener(listListener);
 
-            dialog = new PopupWindow(view, (int) (width / 1.5), height / 2, true);
-            dialog.showAtLocation(view, Gravity.CENTER, 0, 0);
+            dialog = new AlertDialog.Builder(RunTestActivity.this).setView(view).show();
         } catch (Exception e) {
             log.debug("Error", e);
         }
@@ -201,14 +200,19 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     }
 
     View.OnClickListener nextListener = new View.OnClickListener() {
-        @Override
         public void onClick(View view) {
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     };
 
     View.OnClickListener listListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
             setResult(RESULT_OK);
             finish();
         }

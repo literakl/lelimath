@@ -5,7 +5,7 @@
     android:layout_width="120dp"
     android:layout_height="120dp"
     app:layout_gravity="center"
-    android:background="@drawable/game_border"
+    android:background="@drawable/bg_game_border"
     >
 
     <LinearLayout
