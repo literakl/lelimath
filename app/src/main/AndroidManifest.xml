@@ -87,7 +87,8 @@
         <activity
             android:name=".activities.RunTestActivity"
             android:label="@string/action_academy"
-            android:parentActivityName=".activities.CampaignActivity">
+            android:parentActivityName=".activities.CampaignActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <meta-data
             android:name="io.fabric.ApiKey"

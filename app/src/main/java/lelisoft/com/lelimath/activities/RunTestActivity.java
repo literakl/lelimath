@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +71,18 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         super.onCreate(state);
         provider = new TestRecordProvider(this);
 
-        setContentView(R.layout.act_with_fragment);
+        setContentView(R.layout.act_with_fragment_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
 
         Intent intent = getIntent();
         campaign = (Campaign) intent.getSerializableExtra(CampaignListActivity.KEY_CAMPAIGN);
@@ -84,11 +96,14 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
             fragment = new PuzzleFragment();
             ((PuzzleFragment) fragment).setLogic((PuzzleLogic) gameLogic);
         } else {
-            // todo progress bar
             setGameLogic(new CalcLogicImpl());
             initializeGameLogic();
             fragment = new CalcFragment();
             ((CalcFragment) fragment).setLogic((CalcLogic) gameLogic);
+
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater.inflate(R.layout.tmpl_progressbar, toolbar, true);
+
         }
         displayFragment(R.id.fragment_container, fragment, true, false);
     }

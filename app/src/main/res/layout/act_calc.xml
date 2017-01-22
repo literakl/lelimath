@@ -27,11 +27,7 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context="lelisoft.com.lelimath.activities.CalcActivity"
-        android:id="@+id/calc_content"
+    <RelativeLayout android:id="@+id/calc_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="0dp"
