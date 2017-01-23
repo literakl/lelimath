@@ -11,11 +11,11 @@ public class Level implements Serializable {
     /** maximum is 3x3 */
     EASY = new Level(3, 3, 5),
     /** maximum is 4x4 */
-    NORMAL = new Level(4, 4, 10),
+    NORMAL = new Level(4, 4, 8),
     /** maximum is 5x5 */
-    HARD = new Level(5, 5, 20),
+    HARD = new Level(5, 5, 12),
     /** maximum is 6x6 */
-    GENIUS = new Level(6, 6, 30);
+    GENIUS = new Level(6, 6, 16);
 
     /** puzzle dimensions */
     public int x, y;
