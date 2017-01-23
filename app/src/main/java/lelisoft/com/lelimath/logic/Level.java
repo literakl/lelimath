@@ -1,9 +1,11 @@
 package lelisoft.com.lelimath.logic;
 
+import java.io.Serializable;
+
 /**
  * Game complexity
  */
-public class Level {
+public class Level implements Serializable {
     /** maximum is 2x2 */
     public static final Level TRIVIAL = new Level(2, 2, 3),
     /** maximum is 3x3 */
