@@ -9,7 +9,7 @@
       "games": ["PZ"],
       "definition":
       {
-        "count": 10,
+        "count": 6,
         "operators": [
           {
             "operator": ["+"],
@@ -55,7 +55,7 @@
       "games": ["PZ","FC"],
       "definition":
       {
-        "count": 10,
+        "count": 8,
         "operators": [
           {
             "operator": ["-"],

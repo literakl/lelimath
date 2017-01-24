@@ -29,15 +29,16 @@ public class Level implements Serializable {
     }
 
     public static Level getCustom(int count) {
-        double sqrt = Math.sqrt(count);
+        int tiles = 2 * count;
+        double sqrt = Math.sqrt(tiles);
         int cSqrt = (int) Math.ceil(sqrt), fSqrt = (int) Math.floor(sqrt);
         if (cSqrt == fSqrt) {
             return new Level(cSqrt, cSqrt, count);
         }
 
-        int diffA = Math.abs(count - cSqrt * cSqrt);
-        int diffB = Math.abs(count - cSqrt * fSqrt);
-        int diffC = Math.abs(count - fSqrt * fSqrt);
+        int diffA = Math.abs(tiles - cSqrt * cSqrt);
+        int diffB = Math.abs(tiles - cSqrt * fSqrt);
+        int diffC = Math.abs(tiles - fSqrt * fSqrt);
         if (diffA < diffB) {
             if (diffA < diffC) {
                 return new Level(cSqrt, cSqrt, count);
@@ -46,7 +47,7 @@ public class Level implements Serializable {
             }
         } else {
             if (diffB < diffC) {
-                return new Level(cSqrt, fSqrt, count);
+                return new Level(fSqrt, cSqrt, count);
             } else {
                 return new Level(fSqrt, fSqrt, count);
             }
