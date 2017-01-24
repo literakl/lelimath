@@ -19,7 +19,7 @@ import java.util.List;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.CampaignListAdapter;
 import lelisoft.com.lelimath.data.Campaign;
-import lelisoft.com.lelimath.logic.ScriptParser;
+import lelisoft.com.lelimath.logic.CampaignParser;
 import lelisoft.com.lelimath.provider.TestRecordProvider;
 
 /**
@@ -46,7 +46,7 @@ public class CampaignListActivity extends LeliBaseActivity {
 
         try {
             InputStream is = getAssets().open("campaigns/addition1.json");
-            Campaign[] scripts = ScriptParser.parse(is);
+            Campaign[] scripts = CampaignParser.parse(is);
             Collections.addAll(records, scripts);
         } catch (IOException e) {
             log.error("chyba", e);

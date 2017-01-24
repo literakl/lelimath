@@ -47,9 +47,9 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             }
         }
 
-        array = jsonObject.getAsJsonArray("operatorDefinitions");
+        array = jsonObject.getAsJsonArray("operators");
         if (array == null || array.size() == 0) {
-            throw new JsonParseException("Element 'operatorDefinitions' is missing!");
+            throw new JsonParseException("Element 'operators' is missing!");
         }
 
         for (JsonElement jsonElement : array) {
@@ -67,7 +67,7 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             sValues = p.getAsString();
             Values resultValues = Values.parse(sValues);
 
-            JsonArray opArray = jsonObject.getAsJsonArray("operators");
+            JsonArray opArray = jsonObject.getAsJsonArray("operator");
             for (JsonElement element : opArray) {
                 Operator operator = Operator.getValue(element.getAsString());
                 OperatorDefinition operatorDefinition = new OperatorDefinition(operator);

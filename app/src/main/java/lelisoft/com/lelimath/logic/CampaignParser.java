@@ -14,12 +14,12 @@ import lelisoft.com.lelimath.data.Campaign;
 import lelisoft.com.lelimath.helpers.FormulaDefinitionGsonAdapter;
 
 /**
- * Parser for JSON containing test script
+ * Parser for JSON containing campaigns
  * Created by Leoš on 21.12.2016.
  */
 
-public class ScriptParser {
-    private static final Logger log = LoggerFactory.getLogger(ScriptParser.class);
+public class CampaignParser {
+    private static final Logger log = LoggerFactory.getLogger(CampaignParser.class);
 
     public static Campaign[] parse(InputStream is) {
         log.debug("Starting to parse");
