@@ -2,6 +2,7 @@
 <android.support.v7.widget.GridLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/calc_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,43 +28,48 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:singleLine="true"
             android:text="50"
-            style="@style/FormulaValue" />
+            style="@style/FormulaValue"
+            android:maxLines="1"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/operator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:singleLine="true"
             android:text="+"
-            style="@style/FormulaValue" />
+            style="@style/FormulaValue"
+            android:maxLines="1"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/operandSecond"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:singleLine="true"
             android:text="51"
-            style="@style/FormulaValue" />
+            style="@style/FormulaValue"
+            android:maxLines="1"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="="
-            style="@style/FormulaEqualSign" />
+            style="@style/FormulaEqualSign"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/result"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:singleLine="true"
             android:text="101"
-            style="@style/FormulaUnknownValue" />
+            style="@style/FormulaUnknownValue"
+            android:maxLines="1"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <Button
@@ -73,7 +79,8 @@
         android:layout_height="wrap_content"
         android:text="+"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"/>
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/buttonMinus"
@@ -82,7 +89,8 @@
         android:layout_height="wrap_content"
         android:text="-"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"/>
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/buttonBackspace"
@@ -93,7 +101,8 @@
         app:layout_gravity="fill_vertical"
         app:layout_rowSpan="2"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"/>
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/buttonMultiply"
@@ -102,7 +111,8 @@
         android:layout_height="wrap_content"
         android:text="\u22C5"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/buttonDivide"
@@ -111,7 +121,8 @@
         android:layout_height="wrap_content"
         android:text=":"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"/>
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/digit7"
@@ -121,7 +132,8 @@
         android:layout_weight="1"
         style="@style/KeypadButton"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText"  />
 
     <Button
         android:id="@+id/digit8"
@@ -131,7 +143,8 @@
         android:layout_weight="1"
         style="@style/KeypadButton"
         app:layout_rowWeight="1"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText"  />
 
     <Button
         android:id="@+id/digit9"
@@ -141,7 +154,8 @@
         android:layout_weight="1"
         style="@style/KeypadButton"
         app:layout_rowWeight="1"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/digit4"
@@ -151,7 +165,8 @@
         android:layout_weight="1"
         style="@style/KeypadButton"
         app:layout_rowWeight="1"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/digit5"
@@ -161,7 +176,8 @@
         android:layout_weight="1"
         style="@style/KeypadButton"
         app:layout_rowWeight="1"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/digit6"
@@ -171,7 +187,8 @@
         android:layout_weight="1"
         style="@style/KeypadButton"
         app:layout_rowWeight="1"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText"  />
 
     <Button
         android:id="@+id/digit1"
@@ -181,7 +198,8 @@
         android:layout_weight="1"
         style="@style/KeypadButton"
         app:layout_rowWeight="1"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText"  />
 
     <Button
         android:id="@+id/digit2"
@@ -191,7 +209,8 @@
         android:layout_weight="1"
         style="@style/KeypadButton"
         app:layout_rowWeight="1"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText"  />
 
     <Button
         android:id="@+id/digit3"
@@ -201,7 +220,8 @@
         android:layout_weight="1"
         style="@style/KeypadButton"
         app:layout_rowWeight="1"
-        app:layout_columnWeight="1" />
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/digit0"
@@ -212,7 +232,8 @@
         style="@style/KeypadButton"
         app:layout_gravity="fill_horizontal"
         app:layout_rowWeight="1"
-        app:layout_columnSpan="3" />
+        app:layout_columnSpan="3"
+        tools:ignore="HardcodedText"  />
 
     <Button
         android:id="@+id/buttonSubmit"
