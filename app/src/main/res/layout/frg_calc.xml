@@ -6,12 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:columnCount="3"
-    app:rowCount="8"
+    app:columnCount="4"
+    app:rowCount="6"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <!--Display row-->
 
     <LinearLayout
         android:id="@+id/assignment"
@@ -19,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_columnSpan="3"
+        app:layout_columnSpan="4"
         app:layout_rowWeight="2"
         android:weightSum="4"
         >
@@ -73,57 +75,7 @@
             tools:ignore="HardcodedText" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonPlus"
-        android:text="+"
-        style="@style/KeypadFunctionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
-
-    <Button
-        android:id="@+id/buttonMinus"
-        android:text="-"
-        style="@style/KeypadFunctionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
-
-    <Button
-        android:id="@+id/buttonBackspace"
-        android:text="←"
-        style="@style/KeypadFunctionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_gravity="fill_vertical"
-        app:layout_rowSpan="2"
-        app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
-
-    <Button
-        android:id="@+id/buttonMultiply"
-        android:text="\u22C5"
-        style="@style/KeypadFunctionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
-
-    <Button
-        android:id="@+id/buttonDivide"
-        android:text=":"
-        style="@style/KeypadFunctionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
+    <!-- row with 7-9,+ -->
 
     <Button
         android:id="@+id/digit7"
@@ -159,6 +111,18 @@
         tools:ignore="HardcodedText" />
 
     <Button
+        android:id="@+id/buttonPlus"
+        android:text="+"
+        style="@style/KeypadFunctionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_rowWeight="0.5"
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
+
+    <!--row with 4-6, - -->
+
+    <Button
         android:id="@+id/digit4"
         android:text="4"
         style="@style/KeypadButton"
@@ -190,6 +154,18 @@
         app:layout_rowWeight="1"
         app:layout_columnWeight="1"
         tools:ignore="HardcodedText"  />
+
+    <Button
+        android:id="@+id/buttonMinus"
+        android:text="-"
+        style="@style/KeypadFunctionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_rowWeight="0.5"
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
+
+    <!--row with 1-3, * -->
 
     <Button
         android:id="@+id/digit1"
@@ -225,6 +201,18 @@
         tools:ignore="HardcodedText" />
 
     <Button
+        android:id="@+id/buttonMultiply"
+        android:text="\u22C5"
+        style="@style/KeypadFunctionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_rowWeight="0.5"
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
+
+    <!--row with 0, backspace and / -->
+
+    <Button
         android:id="@+id/digit0"
         android:text="0"
         style="@style/KeypadButton"
@@ -233,8 +221,31 @@
         app:layout_columnWeight="1"
         app:layout_gravity="fill_horizontal"
         app:layout_rowWeight="1"
-        app:layout_columnSpan="3"
         tools:ignore="HardcodedText"  />
+
+    <Button
+        android:id="@+id/buttonBackspace"
+        android:text="←"
+        style="@style/KeypadFunctionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_gravity="fill_vertical"
+        app:layout_columnSpan="2"
+        app:layout_rowWeight="0.5"
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/buttonDivide"
+        android:text=":"
+        style="@style/KeypadFunctionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_rowWeight="0.5"
+        app:layout_columnWeight="1"
+        tools:ignore="HardcodedText" />
+
+    <!--row with button submit -->
 
     <Button
         android:id="@+id/buttonSubmit"
@@ -245,5 +256,5 @@
         app:layout_rowWeight="2"
         app:layout_columnWeight="1"
         app:layout_gravity="fill_horizontal"
-        app:layout_columnSpan="3"/>
+        app:layout_columnSpan="4"/>
 </android.support.v7.widget.GridLayout>
