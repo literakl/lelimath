@@ -45,15 +45,20 @@
         <item name="android:textColor">@color/gray_79</item>
     </style>
 
-    <style name="KeypadButton" parent="@style/Widget.AppCompat.Button.Borderless">
+    <style name="KeypadButton" parent="@style/Widget.AppCompat.Button">
         <item name="android:textSize">@dimen/keypad_button_text</item>
         <item name="android:textColor">@color/gray_79</item>
-        <!--<item name="android:padding">10.0dip</item>-->
+        <item name="android:background">@drawable/tl</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
     </style>
 
-    <style name="KeypadFunctionButton" parent="@style/KeypadButton">
-        <item name="android:textSize">@dimen/text_size_xlarge</item>
-        <item name="android:textColor">@color/gray_79</item>
+    <style name="KeypadLeftButton" parent="@style/KeypadButton">
+        <item name="android:layout_marginLeft">16dp</item>
+    </style>
+
+    <style name="KeypadRightButton" parent="@style/KeypadButton">
+        <item name="android:layout_marginRight">16dp</item>
     </style>
 
     <style name="FormulaValue" parent="TextAppearance.AppCompat">
