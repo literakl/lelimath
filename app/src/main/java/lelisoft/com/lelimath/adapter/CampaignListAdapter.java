@@ -56,7 +56,12 @@ public class CampaignListAdapter extends BaseAdapter {
 
         Campaign item = records.get(position);
         TextView caption = (TextView) view.findViewById(R.id.caption);
-        caption.setText(item.getTitle());
+
+        String title = item.getTitle();
+        if (title == null) {
+            title = Misc.getResource("acdm_" + item.getId());
+        }
+        caption.setText(title);
 
         String pictureName = item.getPicture();
         RoundedImageView roundedPicture = (RoundedImageView) view.findViewById(R.id.picture);

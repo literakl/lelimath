@@ -37,9 +37,9 @@ import lelisoft.com.lelimath.data.Badge;
 public class Misc {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(LeliMathApp.class);
 
-    static Float density = null;
-    static Random random = new Random(System.currentTimeMillis());
-    static long today, tomorrow;
+    private static Float density = null;
+    private static Random random = new Random(System.currentTimeMillis());
+    private static long today, tomorrow;
 
     static {
         Calendar calendar = Calendar.getInstance();
@@ -60,6 +60,7 @@ public class Misc {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
     }
 
+    @SuppressWarnings("unused")
     public static float dpFromPx(final Context context, final float px) {
         if (density == null) {
             density = context.getResources().getDisplayMetrics().density;
@@ -74,6 +75,7 @@ public class Misc {
         return dp * density;
     }
 
+    @SuppressWarnings("unused")
     public static String getDensityName(Context context) {
         float density = context.getResources().getDisplayMetrics().density;
         if (density >= 4.0) {
@@ -103,6 +105,7 @@ public class Misc {
      * @param ih image height
      * @param out Rect that is provided to receive the result
      */
+    @SuppressWarnings("unused")
     public static void calcCenter(int vw, int vh, int iw, int ih, Rect out) {
         double scale = Math.min((double) vw / (double) iw, (double) vh / (double) ih);
         int h = (int) (scale * ih);
@@ -121,6 +124,7 @@ public class Misc {
      * @param ih image height
      * @return  that is provided to receive the result
      */
+    @SuppressWarnings("unused")
     public static Rect centerHorizontally(int vw, int vh, int iw, int ih) {
         Rect out = new Rect();
         double scale = Math.min((double) vw / (double) iw, (double) vh / (double) ih);
@@ -131,6 +135,7 @@ public class Misc {
         return out;
     }
 
+    @SuppressWarnings("all")
     public static boolean isNullOrEmpty(CharSequence text) {
         return text == null || text.length() == 0;
     }
@@ -218,21 +223,16 @@ public class Misc {
      */
     public static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     /**
      *  Checks if external storage is available to at least read
      */
+    @SuppressWarnings("unused")
     public static boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
     public static String getResource(String key) {
@@ -261,6 +261,7 @@ public class Misc {
      * @param params layout to be parsed
      * @return LayoutParams
      */
+    @SuppressWarnings("unused")
     public static ViewGroup.LayoutParams generateLayoutParams(ViewGroup viewGroup, @LayoutRes int params) {
         try {
             XmlResourceParser parser = LeliMathApp.resources.getLayout(params);
