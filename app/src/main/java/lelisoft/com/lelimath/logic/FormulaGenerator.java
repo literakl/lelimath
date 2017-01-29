@@ -18,12 +18,12 @@ import lelisoft.com.lelimath.data.Values;
  * This class is responsible for generating a Formula that matches assignment in a FormulaDefinition.
  * Created by leos.literak on 26.2.2015.
  */
-public class FormulaGenerator {
+class FormulaGenerator {
     private static final Logger log = LoggerFactory.getLogger(FormulaGenerator.class);
 
-    static Random random = new Random(System.currentTimeMillis());
+    private static Random random = new Random(System.currentTimeMillis());
 
-    public static Formula generateRandomFormula(FormulaDefinition definition) {
+    static Formula generateRandomFormula(FormulaDefinition definition) {
         log.trace("Starting search for formula using " + definition);
         OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
 
@@ -137,7 +137,7 @@ public class FormulaGenerator {
         return parts;
     }
 
-    static OperatorDefinition getOperator(List<OperatorDefinition> operators) {
+    private static OperatorDefinition getOperator(List<OperatorDefinition> operators) {
         if (operators == null || operators.isEmpty()) {
             return new OperatorDefinition(Operator.PLUS, Values.DEMO, Values.DEMO, Values.DEMO);
         }
@@ -147,7 +147,7 @@ public class FormulaGenerator {
         return operators.get(random.nextInt(operators.size()));
     }
 
-    static FormulaPart getUnknown(List<FormulaPart> unknowns) {
+    private static FormulaPart getUnknown(List<FormulaPart> unknowns) {
         if (unknowns == null || unknowns.isEmpty()) {
             return FormulaPart.RESULT;
         }
@@ -157,7 +157,7 @@ public class FormulaGenerator {
         return unknowns.get(random.nextInt(unknowns.size()));
     }
 
-    static Values getValues(OperatorDefinition definition, FormulaPart part) {
+    private static Values getValues(OperatorDefinition definition, FormulaPart part) {
         switch (part) {
             case FIRST_OPERAND:
                 return definition.getFirstOperand();

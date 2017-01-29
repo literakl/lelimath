@@ -23,6 +23,24 @@ import lelisoft.com.lelimath.helpers.Misc;
 public class CampaignListAdapter extends BaseAdapter {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(CampaignListAdapter.class);
 
+    private static int[] backgrounds = new int[] {
+            R.drawable.bgt_bed_linen,
+            R.drawable.bgt_bell_flower,
+            R.drawable.bgt_blue_flower,
+            R.drawable.bgt_gradient_chantilly,
+            R.drawable.bgt_gradient_ice,
+            R.drawable.bgt_gradient_pink,
+            R.drawable.bgt_gradient_salmon,
+            R.drawable.bgt_gray_blocks,
+            R.drawable.bgt_gray_hexagons,
+            R.drawable.bgt_orange_o,
+            R.drawable.bgt_pyramids,
+            R.drawable.bgt_red_rosa,
+            R.drawable.bgt_sea_weed,
+            R.drawable.bgt_squares,
+            R.drawable.bgt_triangles
+    };
+
     private List<Campaign> records;
 
     public CampaignListAdapter(List<Campaign> records) {
@@ -69,7 +87,8 @@ public class CampaignListAdapter extends BaseAdapter {
             int resourceId = Misc.getResourceId(pictureName);
             roundedPicture.setImageResource(resourceId);
         } else {
-            roundedPicture.setImageResource(R.drawable.bgt_gradient_salmon);
+            int bgPosition = Misc.getRandom().nextInt(backgrounds.length);
+            roundedPicture.setImageResource(backgrounds[bgPosition]);
         }
 
         TextView stats = (TextView) view.findViewById(R.id.stats);

@@ -35,9 +35,10 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
         JsonObject jsonObject = json.getAsJsonObject();
         JsonPrimitive p = jsonObject.getAsJsonPrimitive("count");
         if (p == null) {
-            throw new JsonParseException("Element 'count' is missing!");
+            definition.setCount(6); // default
+        } else {
+            definition.setCount(p.getAsInt());
         }
-        definition.setCount(p.getAsInt());
 
         JsonArray array = jsonObject.getAsJsonArray("unknowns");
         if (array != null && array.size() > 0) {

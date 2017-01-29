@@ -1,14 +1,11 @@
 [
 {
   "id": "ADD10",
-  "picture": "bgt_bed_linen",
   "items": [
     {
       "id": "10",
-      "games": ["PZ"],
       "definition":
       {
-        "count": 6,
         "operators": [
           {
             "operator": ["+"],
