@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -13,6 +14,7 @@ import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.Values;
+import lelisoft.com.lelimath.helpers.Misc;
 
 /**
  * This class is responsible for generating a Formula that matches assignment in a FormulaDefinition.
@@ -68,6 +70,36 @@ class FormulaGenerator {
 
         log.warn("No formula found for " + definition + " using operatorDefinition " + operatorDefinition.getOperator());
         return null;
+    }
+
+    /**
+     * Generates a list of Formulas.
+     * @param definition definition
+     * @param count requested number of formulas
+     * @return list with at most *count* formulas
+     */
+    static ArrayList<Formula> generateFormulas(FormulaDefinition definition, int count) {
+        ArrayList<Formula> list = new ArrayList<>(count);
+        Formula formula, previous = null;
+
+        // todo check infinite loop
+        for (int i = 0; i < count; i++) {
+            formula = generateRandomFormula(definition);
+            if (formula == null) {
+                continue;
+            }
+
+            if (previous != null && formula.equals(previous)) {
+                i--;
+                continue;
+            }
+
+            list.add(formula);
+            previous = formula;
+        }
+
+        Collections.shuffle(list, Misc.getRandom());
+        return list;
     }
 
     /**
