@@ -10,10 +10,10 @@ import lelisoft.com.lelimath.logic.Solver;
  * Created by Leoš on 4. 2. 2015.
  */
 public class Formula implements Parcelable {
-    Integer firstOperand, secondOperand, result;
-    Operator operator;
-    FormulaPart unknown;
-    StringBuilder sb = new StringBuilder(5);
+    private Integer firstOperand, secondOperand, result;
+    private Operator operator;
+    private FormulaPart unknown;
+    private StringBuilder sb = new StringBuilder(5);
 
     public Formula(Integer firstOperand, Integer secondOperand, Integer result, Operator operator, FormulaPart unknown) {
         this.firstOperand = firstOperand;
@@ -74,7 +74,7 @@ public class Formula implements Parcelable {
     /**
      * @return value of unknown formula part
      */
-    public String getUnknownValue() {
+    private String getUnknownValue() {
         switch (unknown){
             case OPERATOR:
                 return operator.toString();
@@ -91,6 +91,7 @@ public class Formula implements Parcelable {
     /**
      * @return true if user solved the formula correctly
      */
+    @SuppressWarnings("all")
     public boolean isEntryCorrect() {
         String userInput = sb.toString();
         if (secondOperand == 0) {
@@ -119,7 +120,8 @@ public class Formula implements Parcelable {
         return getUnknownValue().equals(userInput);
     }
 
-    public String solve() {
+    @SuppressWarnings("all")
+    String solve() {
         switch (unknown){
             case OPERATOR: {
                 if (result.equals(firstOperand + secondOperand)) {
@@ -201,6 +203,31 @@ public class Formula implements Parcelable {
 
     public void setUnknown(FormulaPart unknown) {
         this.unknown = unknown;
+    }
+
+    @Override
+    @SuppressWarnings("all")
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Formula formula = (Formula) o;
+        if (!firstOperand.equals(formula.firstOperand)) return false;
+        if (!secondOperand.equals(formula.secondOperand)) return false;
+        if (!result.equals(formula.result)) return false;
+        if (operator != formula.operator) return false;
+        return unknown == formula.unknown;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result1 = firstOperand.hashCode();
+        result1 = 31 * result1 + secondOperand.hashCode();
+        result1 = 31 * result1 + result.hashCode();
+        result1 = 31 * result1 + operator.hashCode();
+        result1 = 31 * result1 + unknown.hashCode();
+        return result1;
     }
 
     @Override
