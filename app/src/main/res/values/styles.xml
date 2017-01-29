@@ -61,6 +61,11 @@
         <item name="android:layout_marginRight">16dp</item>
     </style>
 
+    <style name="KeypadNextButton" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/tl</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+
     <style name="FormulaValue" parent="TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/keypad_button_text</item>
         <item name="android:textColor">@color/gray_79</item>

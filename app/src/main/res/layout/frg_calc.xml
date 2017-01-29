@@ -254,7 +254,7 @@
     <Button
         android:id="@+id/buttonSubmit"
         android:text="@string/action_next_formula"
-        style="@style/Widget.AppCompat.Button.Colored"
+        style="@style/KeypadNextButton"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         app:layout_gravity="fill_horizontal"/>
