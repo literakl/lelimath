@@ -11,11 +11,13 @@ import java.util.List;
  */
 public class FormulaDefinition implements Serializable {
     /** Number of questions */
-    int count;
+    private int count;
     /** Allowed formula's operators and their definition. If unset a demo PLUS 0-9 will be used */
-    List<OperatorDefinition> operatorDefinitions;
+    private List<OperatorDefinition> operatorDefinitions;
     /** allowed formula's unknowns. If unset the RESULT will be used */
-    List<FormulaPart> unknowns;
+    private List<FormulaPart> unknowns;
+    /** order for values from OperatorDefinitions */
+    private SequenceOrder order;
 
     public int getCount() {
         return count;
@@ -59,7 +61,7 @@ public class FormulaDefinition implements Serializable {
             return this;
         }
         if (unknowns.size() == 1) {
-            List<FormulaPart> list = new ArrayList<FormulaPart>(3);
+            List<FormulaPart> list = new ArrayList<>(3);
             list.add(unknowns.get(0));
             list.add(unknown);
             unknowns = list;
@@ -71,6 +73,14 @@ public class FormulaDefinition implements Serializable {
 
     public void setUnknowns(List<FormulaPart> unknowns) {
         this.unknowns = unknowns;
+    }
+
+    public SequenceOrder getOrder() {
+        return order;
+    }
+
+    public void setOrder(SequenceOrder order) {
+        this.order = order;
     }
 
     public String toString() {

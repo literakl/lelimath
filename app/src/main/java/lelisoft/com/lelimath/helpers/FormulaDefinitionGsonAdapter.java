@@ -18,6 +18,7 @@ import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
+import lelisoft.com.lelimath.data.SequenceOrder;
 import lelisoft.com.lelimath.data.Values;
 
 /**
@@ -33,11 +34,19 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
         log.debug("deserialize starts");
         FormulaDefinition definition = new FormulaDefinition();
         JsonObject jsonObject = json.getAsJsonObject();
+
         JsonPrimitive p = jsonObject.getAsJsonPrimitive("count");
         if (p == null) {
             definition.setCount(6); // default
         } else {
             definition.setCount(p.getAsInt());
+        }
+
+        p = jsonObject.getAsJsonPrimitive("order");
+        if (p == null) {
+            definition.setOrder(SequenceOrder.RANDOM); // default
+        } else {
+            definition.setOrder(SequenceOrder.valueOf(p.getAsString()));
         }
 
         JsonArray array = jsonObject.getAsJsonArray("unknowns");

@@ -4,14 +4,15 @@
   "items": [
     {
       "id": "10",
+      "order": "ASCENDING",
       "definition":
       {
         "operators": [
           {
             "operator": ["+"],
-            "first": "0-5",
-            "second": "0-5",
-            "result": "1-5"
+            "first": "1-9",
+            "second": "1",
+            "result": "2-10"
           }
         ]
       }
