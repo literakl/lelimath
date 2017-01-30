@@ -59,6 +59,7 @@ class FormulaGenerator {
                         found.getFirstOperand() +  " " + found.getOperator() + " " +
                         found.getSecondOperand() + " = " + found.getResult());
                     }
+
                     if (valid) {
                         found.setUnknown(getUnknown(definition.getUnknowns()));
                         log.debug("Generated formula " + found);

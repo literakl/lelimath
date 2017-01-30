@@ -8,15 +8,15 @@ import java.io.Serializable;
  */
 public class OperatorDefinition implements Serializable {
     /** the Operator */
-    Operator operator;
+    private Operator operator;
     /** allowed values for operator's left operand */
-    Values firstOperand;
+    private Values firstOperand;
     /** allowed values for operator's right operand */
-    Values secondOperand;
+    private Values secondOperand;
     /** allowed values for difference between operators's operands */
-    Values operandDifference;
+    private Values operandDifference;
     /** allowed values for operator's result */
-    Values result;
+    private Values result;
 
     public OperatorDefinition() {
     }
@@ -56,10 +56,12 @@ public class OperatorDefinition implements Serializable {
         this.secondOperand = secondOperand;
     }
 
+    @SuppressWarnings("unused")
     public Values getOperandDifference() {
         return operandDifference;
     }
 
+    @SuppressWarnings("unused")
     public void setOperandDifference(Values operandDifference) {
         this.operandDifference = operandDifference;
     }

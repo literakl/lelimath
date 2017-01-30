@@ -16,8 +16,10 @@ public class FormulaDefinition implements Serializable {
     private List<OperatorDefinition> operatorDefinitions;
     /** allowed formula's unknowns. If unset the RESULT will be used */
     private List<FormulaPart> unknowns;
-    /** order for values from OperatorDefinitions */
+    /** order for values from OperatorDefinition defined in *sequence* */
     private SequenceOrder order;
+    /** formula part which will be used as sequence. Null when order is Random */
+    private FormulaPart sequence;
 
     public int getCount() {
         return count;
@@ -81,6 +83,14 @@ public class FormulaDefinition implements Serializable {
 
     public void setOrder(SequenceOrder order) {
         this.order = order;
+    }
+
+    public FormulaPart getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(FormulaPart sequence) {
+        this.sequence = sequence;
     }
 
     public String toString() {

@@ -5,6 +5,7 @@
     {
       "id": "10",
       "order": "ASCENDING",
+      "sequence": "FO",
       "definition":
       {
         "operators": [

@@ -49,6 +49,13 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             definition.setOrder(SequenceOrder.valueOf(p.getAsString()));
         }
 
+        p = jsonObject.getAsJsonPrimitive("sequence");
+        if (p == null) {
+            definition.setSequence(FormulaPart.FIRST_OPERAND); // default
+        } else {
+            definition.setSequence(FormulaPart.getValue(p.getAsString()));
+        }
+
         JsonArray array = jsonObject.getAsJsonArray("unknowns");
         if (array != null && array.size() > 0) {
             for (JsonElement jsonElement : array) {
