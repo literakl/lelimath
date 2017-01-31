@@ -29,24 +29,25 @@ class FormulaGenerator {
         log.trace("Starting search for formula using " + definition);
         OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
 
-        // TODO defect #6 - handle undefined values - before the loop
+        // TODO defect #6 - handle unknown values - before the loop
+        FormulaPart unknown = getUnknown(definition.getUnknowns());
         List<FormulaPart> parts = sortFormulaParts(operatorDefinition);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 FormulaPart partA = parts.get(j);
                 FormulaPart partB = parts.get((j < 2) ? j + 1 : 0);
                 Values valuesA = getValues(operatorDefinition, partA);
-                int valueA = valuesA.getRandomValue(random);
                 if (valuesA == Values.UNDEFINED) {
                     log.warn(parts.toString() + "\ni = " + i + ", j = " + j);
                 }
+                int valueA = valuesA.getRandomValue(random);
 
                 for (int k = 0; k < 10; k++) {
                     Values valuesB = getValues(operatorDefinition, partB);
-                    int valueB = valuesB.getRandomValue(random);
                     if (valuesB == Values.UNDEFINED) {
                         log.warn(parts.toString() + "\ni = " + i + ", j = " + j + ", k = " + k);
                     }
+                    int valueB = valuesB.getRandomValue(random);
 
                     Formula found = Solver.solve(operatorDefinition.getOperator(), partA, valueA, partB, valueB);
                     if (found == null) {
@@ -55,13 +56,11 @@ class FormulaGenerator {
 
                     boolean valid = checkSolution(found, partA, partB, operatorDefinition);
                     if (log.isTraceEnabled()) {
-                        log.trace(valid + " " +
-                        found.getFirstOperand() +  " " + found.getOperator() + " " +
-                        found.getSecondOperand() + " = " + found.getResult());
+                        log.trace(valid + " " + found.getFirstOperand() +  " " + found.getOperator() + " " + found.getSecondOperand() + " = " + found.getResult());
                     }
 
                     if (valid) {
-                        found.setUnknown(getUnknown(definition.getUnknowns()));
+                        found.setUnknown(unknown);
                         log.debug("Generated formula " + found);
                         return found;
                     }
@@ -151,7 +150,7 @@ class FormulaGenerator {
      * @param definition formula definition
      * @return ordered set of left, right operand and result
      */
-    static List<FormulaPart> sortFormulaParts(OperatorDefinition definition) {
+    private static List<FormulaPart> sortFormulaParts(OperatorDefinition definition) {
         int a = definition.getFirstOperand().getRange();
         int b = definition.getSecondOperand().getRange();
         int c = definition.getResult().getRange();
