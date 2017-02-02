@@ -16,17 +16,11 @@
         </encoder>
     </appender>
 
-    <logger name="lelisoft" level="INFO">
-        <appender-ref ref="FILE" />
-    </logger>
-
     <logger name="lelisoft" level="DEBUG">
         <appender-ref ref="LOGCAT" />
     </logger>
-<!--
 
     <root level="WARNING">
-        <appender-ref ref="LOGCAT" />
+        <appender-ref ref="FILE" />
     </root>
--->
 </configuration>
