@@ -80,16 +80,20 @@ class FormulaGenerator {
         ArrayList<Formula> list = new ArrayList<>(count);
         Formula formula, previous = null;
 
-        // todo check infinite loop
-        for (int i = 0; i < count; i++) {
+        for (int i = 0, stop = 0; i < count; i++) {
             formula = generateRandomFormula(definition);
             if (formula == null) {
                 continue;
             }
 
             if (previous != null && formula.equals(previous)) {
-                i--;
-                continue;
+                if (stop < 3) {
+                    i--;
+                    stop++;
+                    continue;
+                } else {
+                    stop = 0;
+                }
             }
 
             list.add(formula);
