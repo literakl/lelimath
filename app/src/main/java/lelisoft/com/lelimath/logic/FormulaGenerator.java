@@ -1,5 +1,7 @@
 package lelisoft.com.lelimath.logic;
 
+import android.util.Pair;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,41 +31,37 @@ class FormulaGenerator {
         log.trace("Starting search for formula using " + definition);
         OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
 
-        // TODO defect #6 - handle unknown values - before the loop
         FormulaPart unknown = getUnknown(definition.getUnknowns());
-        List<FormulaPart> parts = sortFormulaParts(operatorDefinition);
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                FormulaPart partA = parts.get(j);
-                FormulaPart partB = parts.get((j < 2) ? j + 1 : 0);
-                Values valuesA = getValues(operatorDefinition, partA);
-                if (valuesA == Values.UNDEFINED) {
-                    log.warn(parts.toString() + "\ni = " + i + ", j = " + j);
+        Pair<FormulaPart, FormulaPart> parts = findRemainingFormulaParts(unknown);
+
+        for (int i = 0; i < 100; i++) {
+            Values valuesA = getValues(operatorDefinition, parts.first);
+            if (valuesA == Values.UNDEFINED) {
+                log.warn(parts.toString() + "\ni = {}", i);
+            }
+            int valueA = valuesA.getRandomValue(random);
+
+            for (int j = 0; j < 10; j++) {
+                Values valuesB = getValues(operatorDefinition, parts.second);
+                if (valuesB == Values.UNDEFINED) {
+                    log.warn(parts.toString() + "\ni = {}, j = {}", i, j);
                 }
-                int valueA = valuesA.getRandomValue(random);
+                int valueB = valuesB.getRandomValue(random);
 
-                for (int k = 0; k < 10; k++) {
-                    Values valuesB = getValues(operatorDefinition, partB);
-                    if (valuesB == Values.UNDEFINED) {
-                        log.warn(parts.toString() + "\ni = " + i + ", j = " + j + ", k = " + k);
-                    }
-                    int valueB = valuesB.getRandomValue(random);
+                Formula found = Solver.solve(operatorDefinition.getOperator(), parts.first, valueA, parts.second, valueB);
+                if (found == null) {
+                    continue;
+                }
 
-                    Formula found = Solver.solve(operatorDefinition.getOperator(), partA, valueA, partB, valueB);
-                    if (found == null) {
-                        continue;
-                    }
+                boolean valid = checkSolution(found, parts.first, parts.second, operatorDefinition);
+                if (log.isTraceEnabled()) {
+                    log.trace("{}: {} {} {} = {}", valid, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getResult());
+                }
 
-                    boolean valid = checkSolution(found, partA, partB, operatorDefinition);
-                    if (log.isTraceEnabled()) {
-                        log.trace(valid + " " + found.getFirstOperand() +  " " + found.getOperator() + " " + found.getSecondOperand() + " = " + found.getResult());
-                    }
-
-                    if (valid) {
-                        found.setUnknown(unknown);
-                        log.debug("Generated formula " + found);
-                        return found;
-                    }
+                if (valid) {
+                    found.setUnknown(unknown);
+                    log.debug("Generated formula " + found);
+                    return found;
                 }
             }
         }
@@ -142,31 +140,20 @@ class FormulaGenerator {
     }
 
     /**
-     * Creates list of formula parts in ascending order by number of potential values.
-     * The idea is that it is easier to find a complement from bigger set than from smaller set.
-     * E.g. if there are 3 values for result and 10 values for both operands then you will
-     * sooner find second operand for random result and operand (3 : 100)
-     * than finding result for both random operands (10 : 30) /for multiply operator/.
-     * @param definition formula definition
-     * @return ordered set of left, right operand and result
+     * Finds complements to unknown formula part
+     * @param unknown formula part to be calculated
+     * @return two remaning formula parts
      */
-    private static List<FormulaPart> sortFormulaParts(OperatorDefinition definition) {
-        int a = definition.getFirstOperand().getRange();
-        int b = definition.getSecondOperand().getRange();
-        int c = definition.getResult().getRange();
-
-        List<FormulaPart> parts = new ArrayList<>(3);
-        parts.add(FormulaPart.FIRST_OPERAND);
-        parts.add((b < a) ? 0 : 1, FormulaPart.SECOND_OPERAND);
-
-        if (c < b && c < a) {
-            parts.add(0, FormulaPart.RESULT);
-        } else if (c > a && c > b) {
-            parts.add(2, FormulaPart.RESULT);
-        } else {
-            parts.add(1, FormulaPart.RESULT);
+    private static Pair<FormulaPart, FormulaPart> findRemainingFormulaParts(FormulaPart unknown) {
+        if (unknown == FormulaPart.RESULT) {
+            return new Pair<>(FormulaPart.FIRST_OPERAND, FormulaPart.SECOND_OPERAND);
         }
-        return parts;
+
+        if (unknown == FormulaPart.FIRST_OPERAND){
+            return new Pair<>(FormulaPart.RESULT, FormulaPart.SECOND_OPERAND);
+        }
+
+        return new Pair<>(FormulaPart.FIRST_OPERAND, FormulaPart.RESULT);
     }
 
     private static OperatorDefinition getOperator(List<OperatorDefinition> operators) {

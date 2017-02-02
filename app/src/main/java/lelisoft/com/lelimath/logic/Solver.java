@@ -47,11 +47,7 @@ public class Solver {
      * @param valueB value for second formula part
      * @return complete Formula or null
      */
-    public static Formula solve(Operator operator, FormulaPart partA, int valueA,
-                                FormulaPart partB, int valueB) {
-        if (log.isTraceEnabled()) {
-            log.trace("Operator " + operator + " " + partA + " = " + valueA + ", " + partB + " = " + valueB);
-        }
+    static Formula solve(Operator operator, FormulaPart partA, int valueA, FormulaPart partB, int valueB) {
         Integer first = null, second = null, result = null;
         if (partA == FormulaPart.FIRST_OPERAND) {
             first = valueA;

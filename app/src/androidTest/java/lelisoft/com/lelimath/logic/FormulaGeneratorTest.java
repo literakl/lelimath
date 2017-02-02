@@ -2,7 +2,10 @@ package lelisoft.com.lelimath.logic;
 
 import junit.framework.TestCase;
 
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
@@ -16,10 +19,11 @@ import lelisoft.com.lelimath.data.Values;
  * Created by leos.literak on 27.2.2015.
  */
 public class FormulaGeneratorTest extends TestCase {
+    private static final Logger log = LoggerFactory.getLogger(FormulaGeneratorTest.class);
 
     public void testRandomGenerator() {
-        Values left = Values.fromRange(0, 90);
-        Values right = Values.fromRange(3, 60);
+        Values left = Values.fromRange(0, 99);
+        Values right = Values.parse("0-9,20-40,50-90");
         Values result = Values.fromList(10, 11, 12);
 
         FormulaDefinition definition = new FormulaDefinition();
@@ -27,35 +31,18 @@ public class FormulaGeneratorTest extends TestCase {
         definition.addOperator(operatorDefinition);
         definition.addUnknown(FormulaPart.RESULT);
 
-        for (int i = 0; i < 10; i++) {
-            Formula formula = FormulaGenerator.generateRandomFormula(definition);
-            if (formula == null) {
-                continue;
-            }
+        long start = System.currentTimeMillis();
+        ArrayList<Formula> formulas = FormulaGenerator.generateFormulas(definition, 100);
+        long end = System.currentTimeMillis();
+        log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
+
+        for (Formula formula : formulas) {
             assertEquals(FormulaPart.RESULT, formula.getUnknown());
             assertEquals(Operator.PLUS, formula.getOperator());
             assertTrue(formula.getFirstOperand() + formula.getSecondOperand() == formula.getResult());
-            assertTrue(formula.getFirstOperand() >=0 && formula.getFirstOperand() <= 90);
-            assertTrue(formula.getSecondOperand() >=3 && formula.getSecondOperand() <= 60);
+            assertTrue(formula.getFirstOperand() >=0 && formula.getFirstOperand() <= 99);
+            assertTrue(formula.getSecondOperand() >=0 && formula.getSecondOperand() <= 90);
             assertTrue(formula.getResult() >=10 && formula.getResult() <= 12);
         }
-    }
-
-    public void testOrderingFormulaParts() {
-        Values left = Values.fromRange(0, 9);
-        Values right = Values.fromRange(3, 6);
-        Values result = Values.fromList(10, 11, 12);
-        assertEquals(10, left.getRange());
-        assertEquals(4, right.getRange());
-        assertEquals(3, result.getRange());
-
-        OperatorDefinition definition = new OperatorDefinition();
-        definition.setFirstOperand(left);
-        definition.setSecondOperand(right);
-        definition.setResult(result);
-        List<FormulaPart> parts = FormulaGenerator.sortFormulaParts(definition);
-        assertEquals(FormulaPart.RESULT, parts.get(0));
-        assertEquals(FormulaPart.SECOND_OPERAND, parts.get(1));
-        assertEquals(FormulaPart.FIRST_OPERAND, parts.get(2));
     }
 }
