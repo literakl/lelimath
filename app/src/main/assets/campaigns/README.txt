@@ -1,3 +1,11 @@
+Notes:
+
+* argument values (first, second, result) are defined by list of values or ranges in ascending order.
+
+* FIXED_PAIRS - values from first and second arguments are taken sequentially, range is not allowed.
+Ascending order rule is not applied to the first and second argument. Number of tests must be smaller
+than number of values. Same unknown is used for all formulas.
+
 One campaign structure:
 
 {
@@ -49,9 +57,3 @@ One campaign structure:
     }
   ]
 }
-
-Notes:
-
-* FIXED_PAIRS - values from first and second arguments are taken sequentially,
-number of tests must be smaller than number of values. Same unknown is used for all formulas.
-

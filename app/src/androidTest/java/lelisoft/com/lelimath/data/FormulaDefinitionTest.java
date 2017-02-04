@@ -13,46 +13,46 @@ public class FormulaDefinitionTest extends TestCase {
     public void testValues() {
         Values values;
         try {
-            values = Values.parse("");
+            values = Values.parse("", true);
             fail("Empty is forbidden");
         } catch (IllegalArgumentException e) { /* ok */ }
 
         try {
-            values = Values.parse("-");
+            values = Values.parse("-", true);
             fail("Incomplete range is forbidden");
         } catch (IllegalArgumentException e) { /* ok */ }
 
         try {
-            values = Values.parse("-3");
+            values = Values.parse("-3", true);
             fail("Incomplete range is forbidden");
         } catch (IllegalArgumentException e) { /* ok */ }
 
         try {
-            values = Values.parse("3-");
+            values = Values.parse("3-", true);
             fail("Incomplete range is forbidden");
         } catch (IllegalArgumentException e) { /* ok */ }
 
         try {
-            values = Values.parse("3-1");
+            values = Values.parse("3-1", true);
             fail("Decreasing is forbidden");
         } catch (IllegalArgumentException e) { /* ok */ }
 
         try {
-            values = Values.parse("2,1-3");
+            values = Values.parse("2,1-3", true);
             fail("Decreasing is forbidden");
         } catch (IllegalArgumentException e) { /* ok */ }
 
         try {
-            values = Values.parse("1-3,2");
+            values = Values.parse("1-3,2", true);
             fail("Decreasing is forbidden");
         } catch (IllegalArgumentException e) { /* ok */ }
 
         try {
-            values = Values.parse("x");
+            values = Values.parse("x", true);
             fail("Must be numbers");
         } catch (IllegalArgumentException e) { /* ok */ }
 
-        values = Values.parse("1,2,4-5,7,8-10");
+        values = Values.parse("1,2,4-5,7,8-10", true);
         assertEquals("size", 8, values.getSize());
         assertTrue(values.belongs(1));
         assertTrue(values.belongs(2));

@@ -105,6 +105,7 @@
     <string name="error_values_not_number">Chybné číslo: \'%s\'</string>
     <string name="error_values_undefined_first">Chybí první číslo rozsahu</string>
     <string name="error_values_undefined_second">Chybí druhé číslo rozsahu</string>
+    <string name="error_values_range_no_ascending_order">Rozsah je zakázán</string>
     <string name="error_no_formula_generated">Nebyla vygenerována žádná rovnice. Ověřte nastavení.</string>
     <string name="permission_fs_rationale">Aplikace vyžaduje přístup k disku</string>
     <string name="button_allow">Povolit</string>

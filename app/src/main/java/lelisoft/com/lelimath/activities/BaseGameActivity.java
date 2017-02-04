@@ -280,7 +280,7 @@ public class BaseGameActivity extends LeliBaseActivity {
         String sValues = sharedPref.getString(key, null);
         if (sValues != null && sValues.trim().length() > 0) {
             try {
-                return Values.parse(sValues);
+                return Values.parse(sValues, true);
             } catch (IllegalArgumentException e) {
                 Crashlytics.logException(e);
                 log.warn("Wrong input for key " + key + ", was: " + sValues);

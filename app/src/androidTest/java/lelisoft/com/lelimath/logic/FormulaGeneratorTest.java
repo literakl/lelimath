@@ -24,7 +24,7 @@ public class FormulaGeneratorTest extends TestCase {
 
     public void testRandomGenerator() {
         Values left = Values.fromRange(0, 99);
-        Values right = Values.parse("0-9,20-40,50-90");
+        Values right = Values.parse("0-9,20-40,50-90", true);
         Values result = Values.fromList(10, 11, 12);
 
         FormulaDefinition definition = new FormulaDefinition();
@@ -49,7 +49,7 @@ public class FormulaGeneratorTest extends TestCase {
 
     public void testAscendingOrderGenerator() {
         Values left = Values.fromRange(0, 9);
-        Values right = Values.parse("1");
+        Values right = Values.parse("1", true);
         Values result = Values.fromRange(0, 10);
 
         FormulaDefinition definition = new FormulaDefinition();
@@ -72,7 +72,7 @@ public class FormulaGeneratorTest extends TestCase {
 
     public void testDescendingOrderGenerator() {
         Values left = Values.fromList(10);
-        Values right = Values.parse("1,2,3,4,5,6,7,8,9");
+        Values right = Values.parse("1,2,3,4,5,6,7,8,9", true);
         Values result = Values.fromRange(0, 10);
 
         FormulaDefinition definition = new FormulaDefinition();
@@ -95,7 +95,7 @@ public class FormulaGeneratorTest extends TestCase {
 
     public void testFixedPairsGenerator() {
         Values left = Values.fromList(1,2,3,4,5,6,7,8,9,10);
-        Values right = Values.parse("1,2,3,4,5,6,7,8,9,10");
+        Values right = Values.parse("1,2,3,4,5,6,7,8,9,10", true);
         Values result = Values.fromRange(2, 20);
 
         FormulaDefinition definition = new FormulaDefinition();

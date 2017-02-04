@@ -1,7 +1,6 @@
 package lelisoft.com.lelimath.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -141,7 +140,7 @@ public class PracticeAdvancedSettingsFragment extends PreferenceFragment impleme
 
         @Override
         public void isValid(CharSequence s) throws Exception {
-            Values.parse(s);
+            Values.parse(s, true);
         }
     }
 

@@ -46,10 +46,11 @@ public class Values implements Serializable {
     /**
      * Parses string containing requested numbers. It can be either range (0-9) or list (1,2,3)
      * @param sequence string
+     * @param forceAscendingOrder if true every number must be bigger than the previous one
      * @return Values initialized using given parameter
      * @throws IllegalArgumentException parsing error
      */
-    public static Values parse(CharSequence sequence) throws IllegalArgumentException {
+    public static Values parse(CharSequence sequence, boolean forceAscendingOrder) throws IllegalArgumentException {
         if (sequence == null) {
             throw new IllegalArgumentException(resources.getString(R.string.error_empty_argument));
         }
@@ -69,7 +70,9 @@ public class Values implements Serializable {
         while (stk.hasMoreTokens()) {
             String part = stk.nextToken();
             if ("-".equals(part)) {
-                if (rangeStarted) {
+                if (! forceAscendingOrder) {
+                    throw new IllegalArgumentException(resources.getString(R.string.error_values_range_no_ascending_order));
+                } else if (rangeStarted) {
                     throw new IllegalArgumentException(resources.getString(R.string.error_values_undefined_second));
                 } else if (unassignedNumber == null) {
                     throw new IllegalArgumentException(resources.getString(R.string.error_values_undefined_first));
@@ -96,7 +99,7 @@ public class Values implements Serializable {
             }
 
             int value = parseNumber(part);
-            if (previousNumber != null && previousNumber >= value) {
+            if (previousNumber != null && previousNumber >= value && forceAscendingOrder) {
                 throw new IllegalArgumentException(resources.getString(R.string.error_values_must_be_bigger));
             }
             previousNumber = value;
