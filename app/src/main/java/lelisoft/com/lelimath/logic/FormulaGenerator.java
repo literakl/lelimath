@@ -15,6 +15,7 @@ import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.OperatorDefinition;
+import lelisoft.com.lelimath.data.SequenceOrder;
 import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.helpers.Misc;
 
@@ -27,26 +28,44 @@ class FormulaGenerator {
 
     private static Random random = new Random(System.currentTimeMillis());
 
-    static Formula generateRandomFormula(FormulaDefinition definition) {
+    private SequenceOrder order;
+    private FormulaPart orderedPart;
+    private Integer position;
+
+    FormulaGenerator(SequenceOrder order, FormulaPart orderedPart) {
+        this.orderedPart = orderedPart;
+        if (order == null) {
+            this.order = SequenceOrder.RANDOM;
+        } else {
+            this.order = order;
+        }
+    }
+
+    FormulaGenerator() {
+        this.order = SequenceOrder.RANDOM;
+    }
+
+    Formula generateRandomFormula(FormulaDefinition definition) {
         log.trace("Starting search for formula using " + definition);
         OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
 
         FormulaPart unknown = getUnknown(definition.getUnknowns());
         Pair<FormulaPart, FormulaPart> parts = findRemainingFormulaParts(unknown);
 
-        for (int i = 0; i < 100; i++) {
-            Values valuesA = getValues(operatorDefinition, parts.first);
-            if (valuesA == Values.UNDEFINED) {
-                log.warn(parts.toString() + "\ni = {}", i);
-            }
-            int valueA = valuesA.getRandomValue(random);
+        Values valuesA = getValues(operatorDefinition, parts.first);
+        if (valuesA == Values.UNDEFINED) {
+            log.warn("Undefined first operand, parts {}", parts.toString());
+        }
 
+        Values valuesB = getValues(operatorDefinition, parts.second);
+        if (valuesB == Values.UNDEFINED) {
+            log.warn("Undefined second operand, parts {}", parts.toString());
+        }
+
+        for (int i = 0; i < 100; i++) {
+            int valueA = getValue(valuesA, parts.first);
             for (int j = 0; j < 10; j++) {
-                Values valuesB = getValues(operatorDefinition, parts.second);
-                if (valuesB == Values.UNDEFINED) {
-                    log.warn(parts.toString() + "\ni = {}, j = {}", i, j);
-                }
-                int valueB = valuesB.getRandomValue(random);
+                int valueB = getValue(valuesB, parts.second);
 
                 Formula found = Solver.solve(operatorDefinition.getOperator(), parts.first, valueA, parts.second, valueB);
                 if (found == null) {
@@ -60,13 +79,13 @@ class FormulaGenerator {
 
                 if (valid) {
                     found.setUnknown(unknown);
-                    log.debug("Generated formula " + found);
+                    log.debug("Generated formula {}", found);
                     return found;
                 }
             }
         }
 
-        log.warn("No formula found for " + definition + " using operatorDefinition " + operatorDefinition.getOperator());
+        log.warn("No formula found for {} using operatorDefinition {}", definition, operatorDefinition.getOperator());
         return null;
     }
 
@@ -76,7 +95,7 @@ class FormulaGenerator {
      * @param count requested number of formulas
      * @return list with at most *count* formulas
      */
-    static ArrayList<Formula> generateFormulas(FormulaDefinition definition, int count) {
+    ArrayList<Formula> generateFormulas(FormulaDefinition definition, int count) {
         ArrayList<Formula> list = new ArrayList<>(count);
         Formula formula, previous = null;
 
@@ -98,10 +117,41 @@ class FormulaGenerator {
 
             list.add(formula);
             previous = formula;
+            commitFormula();
         }
 
-        Collections.shuffle(list, Misc.getRandom());
+        if (order == SequenceOrder.RANDOM) {
+            Collections.shuffle(list, Misc.getRandom());
+        }
         return list;
+    }
+
+    private int getValue(Values values, FormulaPart part) {
+        if (order == SequenceOrder.RANDOM || orderedPart != part) {
+            return values.getRandomValue(random);
+        }
+
+        if (position == null) {
+            if (order == SequenceOrder.ASCENDING) {
+                position = 0;
+            } else {
+                position = values.getSize() - 1;
+            }
+        }
+
+        return values.getValueAt(position);
+    }
+
+    private void commitFormula() {
+        if (order == SequenceOrder.RANDOM) {
+            return;
+        }
+
+        if (order == SequenceOrder.ASCENDING) {
+            position++;
+        } else {
+            position--;
+        }
     }
 
     /**

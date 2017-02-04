@@ -12,6 +12,7 @@ import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
+import lelisoft.com.lelimath.data.SequenceOrder;
 import lelisoft.com.lelimath.data.Values;
 
 /**
@@ -32,7 +33,7 @@ public class FormulaGeneratorTest extends TestCase {
         definition.addUnknown(FormulaPart.RESULT);
 
         long start = System.currentTimeMillis();
-        ArrayList<Formula> formulas = FormulaGenerator.generateFormulas(definition, 100);
+        ArrayList<Formula> formulas = new FormulaGenerator().generateFormulas(definition, 100);
         long end = System.currentTimeMillis();
         log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
 
@@ -43,6 +44,52 @@ public class FormulaGeneratorTest extends TestCase {
             assertTrue(formula.getFirstOperand() >=0 && formula.getFirstOperand() <= 99);
             assertTrue(formula.getSecondOperand() >=0 && formula.getSecondOperand() <= 90);
             assertTrue(formula.getResult() >=10 && formula.getResult() <= 12);
+        }
+    }
+
+    public void testAscendingOrderGenerator() {
+        Values left = Values.fromRange(0, 9);
+        Values right = Values.parse("1");
+        Values result = Values.fromRange(0, 10);
+
+        FormulaDefinition definition = new FormulaDefinition();
+        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
+        definition.addOperator(operatorDefinition);
+        definition.addUnknown(FormulaPart.RESULT);
+
+        long start = System.currentTimeMillis();
+        FormulaGenerator generator = new FormulaGenerator(SequenceOrder.ASCENDING, FormulaPart.FIRST_OPERAND);
+        ArrayList<Formula> formulas = generator.generateFormulas(definition, 10);
+        long end = System.currentTimeMillis();
+        log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
+
+        for (int i = 0; i < 10; i++) {
+            Formula formula = formulas.get(i);
+            assertTrue(formula.getFirstOperand() + formula.getSecondOperand() == formula.getResult());
+            assertEquals(formula.getFirstOperand().intValue(), i);
+        }
+    }
+
+    public void testDescendingOrderGenerator() {
+        Values left = Values.fromList(10);
+        Values right = Values.parse("1,2,3,4,5,6,7,8,9");
+        Values result = Values.fromRange(0, 10);
+
+        FormulaDefinition definition = new FormulaDefinition();
+        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.MINUS, left, right, result);
+        definition.addOperator(operatorDefinition);
+        definition.addUnknown(FormulaPart.RESULT);
+
+        long start = System.currentTimeMillis();
+        FormulaGenerator generator = new FormulaGenerator(SequenceOrder.DESCENDING, FormulaPart.SECOND_OPERAND);
+        ArrayList<Formula> formulas = generator.generateFormulas(definition, 9);
+        long end = System.currentTimeMillis();
+        log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
+
+        for (int i = 0; i < 9; i++) {
+            Formula formula = formulas.get(i);
+            assertTrue(formula.getFirstOperand() - formula.getSecondOperand() == formula.getResult());
+            assertEquals(right.getValueAt(8 - i).intValue(), formula.getSecondOperand().intValue());
         }
     }
 }

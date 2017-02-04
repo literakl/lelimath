@@ -53,7 +53,7 @@ public class FormulaDefinitionTest extends TestCase {
         } catch (IllegalArgumentException e) { /* ok */ }
 
         values = Values.parse("1,2,4-5,7,8-10");
-        assertEquals("size", 8, values.getRange());
+        assertEquals("size", 8, values.getSize());
         assertTrue(values.belongs(1));
         assertTrue(values.belongs(2));
         assertFalse(values.belongs(3));

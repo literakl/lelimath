@@ -40,7 +40,7 @@ class GameLogicImpl implements GameLogic, Serializable {
     }
 
     public List<FormulaResultPair> generateFormulaResultPairs(int count) {
-        log.debug("generateFormulaResultPairs: " + definition + ", count = " + count);
+        log.debug("generateFormulaResultPairs: {}, count = {}", definition, count);
         List<FormulaResultPair> pairs;
         Formula formula;
 
@@ -52,7 +52,8 @@ class GameLogicImpl implements GameLogic, Serializable {
         }
 
         for (int i = 0; i < formulas; i++) {
-            formula = FormulaGenerator.generateRandomFormula(definition);
+            FormulaGenerator generator = new FormulaGenerator(definition.getOrder(), definition.getSequence());
+            formula = generator.generateRandomFormula(definition);
             if (formula == null) {
                 continue;
             }
@@ -66,7 +67,8 @@ class GameLogicImpl implements GameLogic, Serializable {
 
     public ArrayList<Formula> generateFormulas() {
         int count = level.count;
-        log.debug("generateFormulas: " + definition + ", count = " + count);
-        return FormulaGenerator.generateFormulas(definition, count);
+        log.debug("generateFormulas: {}, count = {}", definition, count);
+        FormulaGenerator generator = new FormulaGenerator(definition.getOrder(), definition.getSequence());
+        return generator.generateFormulas(definition, count);
     }
 }

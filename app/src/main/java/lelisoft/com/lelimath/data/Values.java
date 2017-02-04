@@ -25,19 +25,21 @@ public class Values implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(Values.class);
 
     public static final Values DEMO = Values.fromRange(0, 10);
+    @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Values UNDEFINED = new UndefinedValues();
 
-    List<NumbersHolder> values = new ArrayList<>(5);
+    private List<NumbersHolder> values;
+    private Integer size;
 
     public static Values fromRange(Integer minValue, Integer maxValue) {
         Values result = new Values();
-        result.values.add(new RangeValues(minValue, maxValue));
+        result.values = Collections.singletonList((NumbersHolder) new RangeValues(minValue, maxValue));
         return result;
     }
 
     public static Values fromList(Integer... args) {
         Values result = new Values();
-        result.values.add(new ListValues(args));
+        result.values = Collections.singletonList((NumbersHolder) new ListValues(args));
         return result;
     }
 
@@ -58,6 +60,7 @@ public class Values implements Serializable {
         }
 
         Values result = new Values();
+        result.values = new ArrayList<>(5);
         StringTokenizer stk = new StringTokenizer(data, ",-", true);
         boolean rangeStarted = false;
         Integer unassignedNumber = null, previousNumber = null;
@@ -149,7 +152,7 @@ public class Values implements Serializable {
      * Calculates number of potential values.
      * @return number of values belonging to this Values
      */
-    public int getRange() {
+    public int getSize() {
         int size = 0;
         for (NumbersHolder holder : values) {
             size += holder.size();
@@ -172,7 +175,10 @@ public class Values implements Serializable {
             return 1;
         }
 
-        int size = getRange();
+        if (size == null) {
+            size = getSize();
+        }
+
         int position = random.nextInt(size);
         int i = 0;
         for (NumbersHolder holder : values) {
@@ -188,14 +194,48 @@ public class Values implements Serializable {
         throw new RuntimeException("Failed to generate random value, position=" + position + " i = " + i + ", values=" + values);
     }
 
-    static class UndefinedValues extends Values {
+    /**
+     * Selects a number from given Values at given position. It returns 1 for Undefined Values or for position out of bounds.
+     * @param position cursor
+     * @return value at selected position
+     */
+    public Integer getValueAt(int position) {
+        if (this.equals(Values.UNDEFINED)) {
+            log.warn("Generating value from Values.Undefined!", new Exception("Stacktrace"));
+            return 1;
+        }
+
+        if (size == null) {
+            size = getSize();
+        }
+
+        if (position < 0 || position >= size) {
+            log.warn("Cannot get value at position {}, size = {}", position, size, new Exception("Stacktrace"));
+            return 1;
+        }
+
+        int i = 0;
+        for (NumbersHolder holder : values) {
+            int j = holder.size();
+            if (i + j <= position) {
+                i += j;
+                continue;
+            }
+
+            return holder.getValueAtPosition(position - i);
+        }
+
+        throw new RuntimeException("Failed to get value, position=" + position + " i = " + i + ", values=" + values);
+    }
+
+    private static class UndefinedValues extends Values {
         @Override
         public boolean belongs(Integer value) {
             return value >= 0;
         }
 
         @Override
-        public int getRange() {
+        public int getSize() {
             return Integer.MAX_VALUE;
         }
 
@@ -218,11 +258,11 @@ public class Values implements Serializable {
     /**
      * Defines a set of numbers
      */
-    public static class ListValues implements NumbersHolder, Serializable {
+    private static class ListValues implements NumbersHolder, Serializable {
         /** List of values */
         List<Integer> list;
 
-        public ListValues() {
+        ListValues() {
             this.list = new ArrayList<>();
         }
 
@@ -231,7 +271,7 @@ public class Values implements Serializable {
             this.list = new ArrayList<>(listing);
         }
 
-        public ListValues(Integer[] listing) {
+        ListValues(Integer[] listing) {
             this.list = new ArrayList<>(listing.length);
             Collections.addAll(this.list, listing);
         }
@@ -276,7 +316,7 @@ public class Values implements Serializable {
     /**
      * Defines a range value (min - max inclusive)
      */
-    public static class RangeValues implements NumbersHolder, Serializable {
+    private static class RangeValues implements NumbersHolder, Serializable {
         /** Smallest value */
         Integer minValue;
         /** Largest value */
@@ -286,7 +326,7 @@ public class Values implements Serializable {
         public RangeValues() {
         }
 
-        public RangeValues(Integer minValue, Integer maxValue) {
+        RangeValues(Integer minValue, Integer maxValue) {
             this.minValue = minValue;
             this.maxValue = maxValue;
         }
@@ -328,7 +368,7 @@ public class Values implements Serializable {
     /**
      * Interface for different number holders
      */
-    public interface NumbersHolder {
+    private interface NumbersHolder {
         /**
          * @return number of numbers
          */

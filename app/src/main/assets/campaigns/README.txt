@@ -7,8 +7,10 @@ One campaign structure:
   "items": [ // array of tests
     {
       "id": "10", // test id unique within a campaign.
-      "order": "ASCENDING", // defines if values will be selected randomly (default) or in ASCENDING/DESCENDING order from formula part defined in "sequence"
-      "sequence": "FO", // selects formula part to be used as sequence of values
+      "order": "ASCENDING", // defines if values will be selected randomly (default) or in ASCENDING/DESCENDING order
+                            // from formula part defined in "sequence". Number of tests must not be greater
+                            // than available values for selected formula part!
+      "sequence": "FO", // selects formula part to be used as sequence of values. Ignored if it equals to unknown.
       "definition": // formula definition specifies how formula is generated
       {
         "operators": [ // definition for formula operator values
