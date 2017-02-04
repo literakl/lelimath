@@ -147,6 +147,7 @@ public class PuzzleFragment extends LeliGameFragment {
             if (view == selectedButton) {
                 currentButton.setBackgroundResource((currentTile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
                 selectedButton = null;
+                LeliMathApp.getInstance().playSound(R.raw.tap);
             } else {
                 if (selectedButton != null) {
                     Tile selectedTile = (Tile) selectedButton.getTag(R.id.button_tile);
@@ -192,6 +193,7 @@ public class PuzzleFragment extends LeliGameFragment {
                 } else {
                     selectedButton = currentButton;
                     currentButton.setBackgroundResource(R.drawable.bg_tile_selected);
+                    LeliMathApp.getInstance().playSound(R.raw.tap);
                 }
             }
         }

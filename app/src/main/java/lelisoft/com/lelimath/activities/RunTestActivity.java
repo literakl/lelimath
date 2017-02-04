@@ -29,6 +29,7 @@ import lelisoft.com.lelimath.data.TestRecord;
 import lelisoft.com.lelimath.fragment.CalcFragment;
 import lelisoft.com.lelimath.fragment.LeliGameFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
+import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
 import lelisoft.com.lelimath.logic.CalcLogic;
@@ -103,6 +104,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         provider.create(testRecord);
 
         showGameCompletedDialog(testRecord.getScore());
+        LeliMathApp.getInstance().playSound(R.raw.level);
     }
 
     @Override

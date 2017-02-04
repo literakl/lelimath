@@ -91,6 +91,7 @@ public class CalcFragment extends LeliGameFragment {
     public class HandleClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            LeliMathApp.getInstance().playSound(R.raw.tap);
             switch (view.getId()) {
                 case R.id.digit0: digitClicked("0"); break;
                 case R.id.digit1: digitClicked("1"); break;

@@ -162,6 +162,8 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
             mSounds.put(R.raw.correct, this.mShortPlayer.load(this, R.raw.correct, 1));
             mSounds.put(R.raw.incorrect, this.mShortPlayer.load(this, R.raw.incorrect, 1));
             mSounds.put(R.raw.victory, this.mShortPlayer.load(this, R.raw.victory, 1));
+            mSounds.put(R.raw.tap, this.mShortPlayer.load(this, R.raw.tap, 1));
+            mSounds.put(R.raw.level, this.mShortPlayer.load(this, R.raw.level, 1));
         }
     }
 
