@@ -92,4 +92,28 @@ public class FormulaGeneratorTest extends TestCase {
             assertEquals(right.getValueAt(8 - i).intValue(), formula.getSecondOperand().intValue());
         }
     }
+
+    public void testFixedPairsGenerator() {
+        Values left = Values.fromList(1,2,3,4,5,6,7,8,9,10);
+        Values right = Values.parse("1,2,3,4,5,6,7,8,9,10");
+        Values result = Values.fromRange(2, 20);
+
+        FormulaDefinition definition = new FormulaDefinition();
+        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
+        definition.addOperator(operatorDefinition);
+        definition.addUnknown(FormulaPart.RESULT);
+
+        long start = System.currentTimeMillis();
+        FormulaGenerator generator = new FormulaGenerator(SequenceOrder.FIXED_PAIRS, null);
+        ArrayList<Formula> formulas = generator.generateFormulas(definition, 10);
+        long end = System.currentTimeMillis();
+        log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
+
+        for (int i = 0; i < 10; i++) {
+            Formula formula = formulas.get(i);
+            assertTrue(formula.getFirstOperand() + formula.getSecondOperand() == formula.getResult());
+            assertEquals(left.getValueAt(i).intValue(), formula.getFirstOperand().intValue());
+            assertEquals(right.getValueAt(i).intValue(), formula.getSecondOperand().intValue());
+        }
+    }
 }

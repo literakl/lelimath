@@ -49,3 +49,9 @@ One campaign structure:
     }
   ]
 }
+
+Notes:
+
+* FIXED_PAIRS - values from first and second arguments are taken sequentially,
+number of tests must be smaller than number of values. Same unknown is used for all formulas.
+

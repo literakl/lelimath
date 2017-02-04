@@ -47,22 +47,14 @@ class FormulaGenerator {
     }
 
     private Formula generateRandomFormula(FormulaDefinition definition) {
-        log.trace("Starting search for formula using " + definition);
+        log.trace("Starting search for formula using {}", definition);
         OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
 
         FormulaPart unknown = getUnknown(definition.getUnknowns());
         Pair<FormulaPart, FormulaPart> parts = findRemainingFormulaParts(unknown);
 
         Values valuesA = getValues(operatorDefinition, parts.first);
-        if (valuesA == Values.UNDEFINED) {
-            log.warn("Undefined first operand, parts {}", parts.toString());
-        }
-
         Values valuesB = getValues(operatorDefinition, parts.second);
-        if (valuesB == Values.UNDEFINED) {
-            log.warn("Undefined second operand, parts {}", parts.toString());
-        }
-
         for (int i = 0; i < 100; i++) {
             int valueA = getValue(valuesA, parts.first);
             for (int j = 0; j < 10; j++) {
@@ -103,6 +95,10 @@ class FormulaGenerator {
         ArrayList<Formula> list = new ArrayList<>(count);
         Formula formula, previous = null;
 
+        if (order == SequenceOrder.FIXED_PAIRS) {
+            return generateFixedPairsFormulas(definition, count);
+        }
+
         for (int i = 0, stop = 0; i < count; i++) {
             formula = generateRandomFormula(definition);
             if (formula == null) {
@@ -130,6 +126,39 @@ class FormulaGenerator {
         if (order == SequenceOrder.RANDOM) {
             Collections.shuffle(list, Misc.getRandom());
         }
+        return list;
+    }
+
+    private ArrayList<Formula> generateFixedPairsFormulas(FormulaDefinition definition, int count) {
+        log.trace("Starting search for formulas using {}", definition);
+        OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
+        FormulaPart unknown = getUnknown(definition.getUnknowns());
+        Pair<FormulaPart, FormulaPart> parts = findRemainingFormulaParts(unknown);
+        ArrayList<Formula> list = new ArrayList<>(count);
+
+        Values valuesA = getValues(operatorDefinition, parts.first);
+        Values valuesB = getValues(operatorDefinition, parts.second);
+        for (int i = 0; i < count; i++) {
+            int valueA = valuesA.getValueAt(i);
+            int valueB = valuesB.getValueAt(i);
+            Formula found = Solver.solve(operatorDefinition.getOperator(), parts.first, valueA, parts.second, valueB);
+            if (found == null) {
+                log.warn("Failed to generate formula for {} {} {} {} {}!", operatorDefinition.getOperator(), parts.first, valueA, parts.second, valueB);
+                continue;
+            }
+
+            boolean valid = checkSolution(found, parts.first, parts.second, operatorDefinition);
+            if (log.isTraceEnabled()) {
+                log.trace("{}: {} {} {} = {}", valid, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getResult());
+            }
+
+            if (valid) {
+                found.setUnknown(unknown);
+                log.debug("Generated formula {}", found);
+                list.add(found);
+            }
+        }
+
         return list;
     }
 
@@ -238,14 +267,23 @@ class FormulaGenerator {
     }
 
     private static Values getValues(OperatorDefinition definition, FormulaPart part) {
+        Values values;
         switch (part) {
             case FIRST_OPERAND:
-                return definition.getFirstOperand();
+                values = definition.getFirstOperand();
+                break;
             case SECOND_OPERAND:
-                return definition.getSecondOperand();
+                values = definition.getSecondOperand();
+                break;
             default:
-                return definition.getResult();
+                values = definition.getResult();
         }
+
+        if (values == Values.UNDEFINED) {
+            log.warn("Undefined values for {}", part);
+        }
+
+        return values;
     }
 
     /**

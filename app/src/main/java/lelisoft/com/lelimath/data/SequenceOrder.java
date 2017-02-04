@@ -6,10 +6,12 @@ package lelisoft.com.lelimath.data;
  */
 
 public enum SequenceOrder {
-    /** values are taken in asceonding order */
+    /** values are taken in ascending order from selected formula part */
     ASCENDING,
-    /** values are taken in descending order */
+    /** values are taken in descending order from selected formula part */
     DESCENDING,
     /** default, values are taken randomly */
-    RANDOM
+    RANDOM,
+    /** values are taken from first and second argument sequentially */
+    FIXED_PAIRS
 }
