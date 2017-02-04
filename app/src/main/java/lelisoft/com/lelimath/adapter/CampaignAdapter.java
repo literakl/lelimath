@@ -55,6 +55,7 @@ public class CampaignAdapter extends BaseAdapter {
     @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        log.debug("Position {}, convertView {}", position, convertView);
         Test item = records.get(position);
         View view;
         TextView caption = null;
@@ -83,10 +84,14 @@ public class CampaignAdapter extends BaseAdapter {
 
         if (caption != null) {
             caption.setText(Integer.toString(position + 1));
+        } else {
+            log.warn("caption is null, position {}", position);
         }
 
         if (score != null) {
             Misc.setRating(view, score);
+        } else {
+            log.warn("score is null, position {}", position);
         }
 
 
