@@ -114,8 +114,8 @@ public class FormulaDefinition implements Serializable {
     @Override
     public String toString() {
         return "FormulaDefinition{" +
-                ", games=" + games +
-                "unknowns=" + unknowns +
+                "games=" + games +
+                ", unknowns=" + unknowns +
                 ", count=" + count +
                 ", operatorDefinitions=" + operatorDefinitions +
                 ", order=" + order +
