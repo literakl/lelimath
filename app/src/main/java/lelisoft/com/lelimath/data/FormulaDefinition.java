@@ -16,6 +16,8 @@ public class FormulaDefinition implements Serializable {
     private List<OperatorDefinition> operatorDefinitions;
     /** allowed formula's unknowns. If unset the RESULT will be used */
     private List<FormulaPart> unknowns;
+    /** list of allowed games */
+    private List<Game> games;
     /** order for values from OperatorDefinition defined in *sequence* */
     private SequenceOrder order;
     /** formula part which will be used as sequence. Null when order is Random */
@@ -93,10 +95,31 @@ public class FormulaDefinition implements Serializable {
         this.sequence = sequence;
     }
 
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void addGame(Game value) {
+        if (games == null) {
+            games = new ArrayList<>(2);
+        }
+        games.add(value);
+    }
+
+    @SuppressWarnings("unused")
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
+
+    @Override
     public String toString() {
         return "FormulaDefinition{" +
+                ", games=" + games +
                 "unknowns=" + unknowns +
-                ", operators=" + operatorDefinitions +
-                "}";
+                ", count=" + count +
+                ", operatorDefinitions=" + operatorDefinitions +
+                ", order=" + order +
+                ", sequence=" + sequence +
+                '}';
     }
 }

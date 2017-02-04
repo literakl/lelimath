@@ -14,7 +14,7 @@ import android.widget.TextView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lelisoft.com.lelimath.R;
@@ -49,11 +49,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     public static final String KEY_ERRORS = "ERRORS";
     public static final String KEY_NEW_GAME = "NEW_GAME";
 
-    private static List<Game> DEFAULT_GAMES = new ArrayList<>(2);
-    static {
-        DEFAULT_GAMES.add(Game.FAST_CALC);
-        DEFAULT_GAMES.add(Game.PUZZLE);
-    }
+    private static List<Game> DEFAULT_GAMES = Collections.singletonList(Game.FAST_CALC);
 
     TestRecordProvider provider;
     LeliGameFragment fragment;
@@ -184,7 +180,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     }
 
     private Game selectGame(Test test) {
-        List<Game> games = test.getGames();
+        List<Game> games = test.getDefinition().getGames();
         if (games == null || games.isEmpty()) {
             games = DEFAULT_GAMES;
         }

@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
+import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.SequenceOrder;
@@ -61,6 +62,14 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             for (JsonElement jsonElement : array) {
                 FormulaPart part = FormulaPart.getValue(jsonElement.getAsString());
                 definition.addUnknown(part);
+            }
+        }
+
+        array = jsonObject.getAsJsonArray("games");
+        if (array != null && array.size() > 0) {
+            for (JsonElement jsonElement : array) {
+                Game game = Game.getValue(jsonElement.getAsString());
+                definition.addGame(game);
             }
         }
 

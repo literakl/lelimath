@@ -7,12 +7,13 @@ One campaign structure:
   "items": [ // array of tests
     {
       "id": "10", // test id unique within a campaign.
-      "order": "ASCENDING", // defines if values will be selected randomly (default) or in ASCENDING/DESCENDING order
-                            // from formula part defined in "sequence". Number of tests must not be greater
-                            // than available values for selected formula part!
-      "sequence": "FO", // selects formula part to be used as sequence of values. Ignored if it equals to unknown.
       "definition": // formula definition specifies how formula is generated
       {
+        "count": 9,
+        "order": "ASCENDING", // defines if values will be selected randomly (default) or in ASCENDING/DESCENDING order
+                              // from formula part defined in "sequence". Number of tests must not be greater
+                              // than available values for selected formula part!
+        "sequence": "FO", // selects formula part to be used as sequence of values. Ignored if it equals to unknown.
         "operators": [ // definition for formula operator values
           {
             "operator": ["+"], // operators which share this configuration
@@ -25,10 +26,10 @@ One campaign structure:
     },
     {
       "id": "20",
-      "games": ["FC"], // games to be used, FC fast calc (default), PZ puzzle
       "definition":
       {
         "count": 5,
+        "games": ["FC"], // games to be used, FC fast calc (default), PZ puzzle
         "unknowns": ["RS"], // formula parts that can be set as unknown. FO first operand, SO second operand, OP operator, RS result
         "operators": [
           {

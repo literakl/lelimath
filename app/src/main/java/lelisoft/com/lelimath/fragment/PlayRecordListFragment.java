@@ -87,7 +87,7 @@ public class PlayRecordListFragment extends LeliBaseFragment {
     // Append more data into the adapter
     public void customLoadMoreDataFromApi(int offset) {
         // This method probably sends out a network request and appends new data items to your adapter.
-        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+        // Use the offset value and addGame it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
     }
 */
