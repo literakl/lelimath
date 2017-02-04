@@ -155,5 +155,6 @@
     <string name="badge_desc_GREAT_DIVISION">25 correctly solved divisions in a row without a mistake. The same formula is counted just once. It can be awarded for multiple series.</string>
     <string name="badge_title_EXCELLENT_DIVISION">Excellent division</string>
     <string name="badge_desc_EXCELLENT_DIVISION">100 correctly solved divisions in a row without a mistake. The same formula is counted just once. It can be awarded for multiple series.</string>
-    <string name="acdm_ADD10">First summations</string>
+    <string name="acdm_1ST_REPEAT_10">Numbers</string>
+    <string name="acdm_1ST_7">Seven</string>
 </resources>

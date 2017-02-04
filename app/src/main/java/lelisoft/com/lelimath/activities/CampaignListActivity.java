@@ -52,22 +52,6 @@ public class CampaignListActivity extends LeliBaseActivity {
             log.error("chyba", e);
         }
 
-        records.add(new Campaign("bgt_bed_linen", "bgt_bed_linen"));
-        records.add(new Campaign("bgt_bell_flower", "bgt_bell_flower"));
-        records.add(new Campaign("bgt_blue_flower", "bgt_blue_flower"));
-        records.add(new Campaign("bgt_gradient_chantilly", "bgt_gradient_chantilly"));
-        records.add(new Campaign("bgt_gradient_ice", "bgt_gradient_ice"));
-        records.add(new Campaign("bgt_gradient_pink", "bgt_gradient_pink"));
-        records.add(new Campaign("bgt_gradient_salmon", "bgt_gradient_salmon"));
-        records.add(new Campaign("bgt_gray_blocks", "bgt_gray_blocks"));
-        records.add(new Campaign("bgt_gray_hexagons", "bgt_gray_hexagons"));
-        records.add(new Campaign("bgt_orange_o", "bgt_orange_o"));
-        records.add(new Campaign("bgt_pyramids", "bgt_pyramids"));
-        records.add(new Campaign("bgt_red_rosa", "bgt_red_rosa"));
-        records.add(new Campaign("bgt_sea_weed", "bgt_sea_weed"));
-        records.add(new Campaign("bgt_squares", "bgt_squares"));
-        records.add(new Campaign("bgt_triangles", "bgt_triangles"));
-
         provider = new TestRecordProvider(this);
         provider.setCampaignsData(records);
         adapter = new CampaignListAdapter(records);

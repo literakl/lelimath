@@ -243,8 +243,8 @@ public class Misc {
             result = field.getInt(null);
             return LeliMathApp.resources.getString(result);
         } catch (NoSuchFieldException e) {
-            Crashlytics.logException(e);
             log.warn("Key {} was not found in R.string!", key);
+            Crashlytics.logException(e);
             return key;
         } catch (IllegalAccessException e) {
             return key;
