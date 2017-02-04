@@ -114,7 +114,6 @@
       "id": "10",
       "definition": {
         "count": 7,
-        "games": ["PZ"],
         "order": "DESCENDING",
         "sequence": "FO",
         "operators": [
