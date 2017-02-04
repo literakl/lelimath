@@ -2,6 +2,7 @@ package lelisoft.com.lelimath.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -148,7 +149,16 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
                 button.setImageResource(R.drawable.ic_action_next_disabled);
             }
 
-            dialog = new AlertDialog.Builder(RunTestActivity.this).setView(view).show();
+            dialog = new AlertDialog.Builder(RunTestActivity.this).setView(view).create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            });
+            dialog.show();
         } catch (Exception e) {
             log.debug("Error", e);
         }
