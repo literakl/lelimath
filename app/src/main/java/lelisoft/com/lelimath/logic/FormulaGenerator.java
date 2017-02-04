@@ -26,11 +26,12 @@ import lelisoft.com.lelimath.helpers.Misc;
 class FormulaGenerator {
     private static final Logger log = LoggerFactory.getLogger(FormulaGenerator.class);
 
-    private static Random random = new Random(System.currentTimeMillis());
+    private static Random random = Misc.getRandom();
 
     private SequenceOrder order;
     private FormulaPart orderedPart;
     private Integer position;
+    private boolean superRandomMode;
 
     FormulaGenerator(SequenceOrder order, FormulaPart orderedPart) {
         this.orderedPart = orderedPart;
@@ -45,7 +46,7 @@ class FormulaGenerator {
         this.order = SequenceOrder.RANDOM;
     }
 
-    Formula generateRandomFormula(FormulaDefinition definition) {
+    private Formula generateRandomFormula(FormulaDefinition definition) {
         log.trace("Starting search for formula using " + definition);
         OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
 
@@ -65,6 +66,9 @@ class FormulaGenerator {
         for (int i = 0; i < 100; i++) {
             int valueA = getValue(valuesA, parts.first);
             for (int j = 0; j < 10; j++) {
+                if (j > 0 && superRandomMode) {
+                    valueA = getValue(valuesA, parts.first);
+                }
                 int valueB = getValue(valuesB, parts.second);
 
                 Formula found = Solver.solve(operatorDefinition.getOperator(), parts.first, valueA, parts.second, valueB);
@@ -106,12 +110,15 @@ class FormulaGenerator {
             }
 
             if (previous != null && formula.equals(previous)) {
-                if (stop < 3) {
+                if (stop < 5) {
+                    log.debug("Duplicate formula skipped");
+                    superRandomMode = true;
                     i--;
                     stop++;
                     continue;
                 } else {
                     stop = 0;
+                    superRandomMode = false;
                 }
             }
 
