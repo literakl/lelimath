@@ -54,6 +54,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     TestRecordProvider provider;
     LeliGameFragment fragment;
     AlertDialog dialog;
+    View progressbar;
     Toolbar toolbar;
 
     Campaign campaign;
@@ -160,14 +161,22 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
             initializeGameLogic();
             fragment = new PuzzleFragment();
             ((PuzzleFragment) fragment).setLogic((PuzzleLogic) gameLogic);
+
+            if (progressbar != null) {
+                toolbar.removeView(progressbar);
+                progressbar = null;
+            }
         } else {
             setGameLogic(new CalcLogicImpl());
             initializeGameLogic();
             fragment = new CalcFragment();
             ((CalcFragment) fragment).setLogic((CalcLogic) gameLogic);
 
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            inflater.inflate(R.layout.tmpl_progressbar, toolbar, true);
+            if (progressbar == null) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                inflater.inflate(R.layout.tmpl_progressbar, toolbar, true);
+                progressbar = toolbar.findViewById(R.id.progressBar);
+            }
         }
     }
 
