@@ -7,7 +7,7 @@
         <item>@string/level_HARD</item>
         <item>@string/level_GENIUS</item>
     </string-array>
-    <string-array name="pref_complexity_entries_values">
+    <string-array name="pref_complexity_entries_values" translatable="false">
         <item>TRIVIAL</item>
         <item>EASY</item>
         <item>NORMAL</item>
@@ -20,7 +20,7 @@
         <item>@string/operation_multiply</item>
         <item>@string/operation_divide</item>
     </string-array>
-    <string-array name="pref_operations_entries_values">
+    <string-array name="pref_operations_entries_values" translatable="false">
         <item>PLUS</item>
         <item>MINUS</item>
         <item>MULTIPLY</item>
@@ -35,7 +35,7 @@
         <item>@string/operation_divide</item>
         <item>@string/operation_multiply_divide</item>
     </string-array>
-    <string-array name="pref_practice_operations_entries_values">
+    <string-array name="pref_practice_operations_entries_values" translatable="false">
         <item>ALL</item>
         <item>PLUS</item>
         <item>MINUS</item>
@@ -50,7 +50,7 @@
         <item>@string/pref_title_second_arg</item>
         <item>@string/pref_title_result</item>
     </string-array>
-    <string-array name="pref_calc_unknown_entries_values">
+    <string-array name="pref_calc_unknown_entries_values" translatable="false">
         <item>FIRST_OPERAND</item>
         <item>OPERATOR</item>
         <item>SECOND_OPERAND</item>
@@ -63,7 +63,7 @@
         <item>@string/operation_multiply</item>
         <item>@string/operation_divide</item>
     </string-array>
-    <string-array name="pref_dependency_values">
+    <string-array name="pref_dependency_values" translatable="false">
         <item>NONE</item>
         <item>PLUS</item>
         <item>MINUS</item>
