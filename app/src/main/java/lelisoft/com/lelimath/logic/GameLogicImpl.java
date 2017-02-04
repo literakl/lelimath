@@ -41,22 +41,9 @@ class GameLogicImpl implements GameLogic, Serializable {
 
     public List<FormulaResultPair> generateFormulaResultPairs(int count) {
         log.debug("generateFormulaResultPairs: {}, count = {}", definition, count);
-        List<FormulaResultPair> pairs;
-        Formula formula;
-
-        int formulas = count / 2;
-        if (count % 2 > 0) {
-            pairs = new ArrayList<>(count - 1);
-        } else {
-            pairs = new ArrayList<>(count);
-        }
-
-        for (int i = 0; i < formulas; i++) {
-            FormulaGenerator generator = new FormulaGenerator(definition.getOrder(), definition.getSequence());
-            formula = generator.generateRandomFormula(definition);
-            if (formula == null) {
-                continue;
-            }
+        ArrayList<Formula> formulas = generateFormulas(count / 2);
+        List<FormulaResultPair> pairs = new ArrayList<>(formulas.size() * 2);
+        for (Formula formula : formulas) {
             pairs.add(new FormulaResultPair(formula));
             pairs.add(new FormulaResultPair(formula.getResult()));
         }
@@ -66,7 +53,10 @@ class GameLogicImpl implements GameLogic, Serializable {
     }
 
     public ArrayList<Formula> generateFormulas() {
-        int count = level.count;
+        return generateFormulas(level.count);
+    }
+
+    private ArrayList<Formula> generateFormulas(int count) {
         log.debug("generateFormulas: {}, count = {}", definition, count);
         FormulaGenerator generator = new FormulaGenerator(definition.getOrder(), definition.getSequence());
         return generator.generateFormulas(definition, count);
