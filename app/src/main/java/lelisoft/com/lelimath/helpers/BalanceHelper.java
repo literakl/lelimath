@@ -16,13 +16,13 @@ import lelisoft.com.lelimath.provider.PlayRecordProvider;
 public class BalanceHelper {
     private static final Logger log = LoggerFactory.getLogger(BalanceHelper.class);
 
-    public static final String KEY_POINTS_BALANCE = "points.balance";
+    private static final String KEY_POINTS_BALANCE = "points.balance";
 
-    SharedPreferences sharedPref;
-    boolean readOnly;
-    int balance;
+    private SharedPreferences sharedPref;
+    private boolean readOnly;
+    private int balance;
 
-    public BalanceHelper(Context context) {
+    BalanceHelper(Context context) {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         balance = sharedPref.getInt(KEY_POINTS_BALANCE, -1);
         if (balance < 0) {

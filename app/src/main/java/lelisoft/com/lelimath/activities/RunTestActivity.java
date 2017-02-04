@@ -56,6 +56,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     TestRecordProvider provider;
     LeliGameFragment fragment;
     AlertDialog dialog;
+    TextView points;
     View progressbar;
     Toolbar toolbar;
 
@@ -72,16 +73,12 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
 
         setContentView(R.layout.act_with_fragment_toolbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(listListener);
 
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
-        }
+        points = new TextView(this);
+        toolbar.addView(points);
+        setPoints();
 
         Intent intent = getIntent();
         campaign = (Campaign) intent.getSerializableExtra(CampaignListActivity.KEY_CAMPAIGN);
@@ -111,6 +108,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     public void savePlayRecord(Play play, PlayRecord record) {
         if (record.isCorrect()) {
             newGame = true;
+            setPoints();
         } else {
             if (newGame) {
                 newGame = false;
@@ -211,6 +209,12 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         int position = Misc.getRandom().nextInt(games.size());
         return games.get(position);
 //        return Game.FAST_CALC;
+    }
+
+    private void setPoints() {
+        int balance = LeliMathApp.getBalanceHelper().getBalance();
+        points.setText(LeliMathApp.resources.getString(R.string.caption_points, balance));
+
     }
 
     @Override
