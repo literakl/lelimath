@@ -19,6 +19,7 @@ import java.util.List;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.CampaignListAdapter;
 import lelisoft.com.lelimath.data.Campaign;
+import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.logic.CampaignParser;
 import lelisoft.com.lelimath.provider.TestRecordProvider;
 
@@ -65,6 +66,8 @@ public class CampaignListActivity extends LeliBaseActivity {
                 CampaignListActivity.this.startActivityForResult(intent, 0);
             }
         });
+
+        Metrics.saveCampaignsDisplayed();
     }
 
     @Override

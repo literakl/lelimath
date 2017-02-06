@@ -48,4 +48,18 @@ public class Metrics {
                 .putCustomAttribute("part", part);
         Answers.getInstance().logCustom(event);
     }
+
+    public static void saveCampaignsDisplayed() {
+        if (BuildConfig.DEBUG)
+            return;
+        CustomEvent event = new CustomEvent("Campaign");
+        Answers.getInstance().logCustom(event);
+    }
+
+    public static void saveCampaignPlayed(String  id) {
+        if (BuildConfig.DEBUG)
+            return;
+        CustomEvent event = new CustomEvent("Test").putCustomAttribute("id", id);
+        Answers.getInstance().logCustom(event);
+    }
 }

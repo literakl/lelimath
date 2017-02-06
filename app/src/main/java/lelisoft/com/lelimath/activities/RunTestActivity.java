@@ -30,6 +30,7 @@ import lelisoft.com.lelimath.fragment.CalcFragment;
 import lelisoft.com.lelimath.fragment.LeliGameFragment;
 import lelisoft.com.lelimath.fragment.PuzzleFragment;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
+import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.BadgeEvaluationTask;
 import lelisoft.com.lelimath.logic.CalcLogic;
@@ -82,6 +83,8 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
         test = campaign.getItems().get(position);
         generateTest();
         displayFragment(R.id.fragment_container, fragment, false, false);
+
+        Metrics.saveCampaignPlayed(test.getId());
     }
 
     @Override

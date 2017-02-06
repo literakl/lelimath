@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.adapter.CampaignAdapter;
 import lelisoft.com.lelimath.data.Campaign;
+import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.provider.TestRecordProvider;
 
 /**
@@ -53,6 +54,8 @@ public class CampaignActivity extends LeliBaseActivity {
                 CampaignActivity.this.startActivityForResult(intent, 0);
             }
         });
+
+        Metrics.saveCampaignsDisplayed();
     }
 
     @Override
