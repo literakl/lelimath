@@ -10,66 +10,15 @@
     android:orientation="vertical">
 
     <!--Display row-->
-
-    <LinearLayout
+    <TextView
         android:id="@+id/assignment"
+        android:text="50 + 40 = 90"
         style="@style/Formula"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:orientation="horizontal"
-        android:weightSum="4"
+        android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        >
-
-        <TextView
-            android:id="@+id/operandFirst"
-            android:text="50"
-            style="@style/FormulaValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="1"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/operator"
-            android:text="+"
-            style="@style/FormulaValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:maxLines="1"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/operandSecond"
-            android:text="51"
-            style="@style/FormulaValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="1"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            style="@style/FormulaEqualSign"
-            android:text="="
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/result"
-            android:text="101"
-            style="@style/FormulaUnknownValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="1"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
+        tools:ignore="HardcodedText" />
 
     <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
@@ -256,7 +205,7 @@
         android:text="@string/action_next_formula"
         style="@style/KeypadNextButton"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="80dp"
         app:layout_gravity="fill_horizontal"/>
 
 </LinearLayout>

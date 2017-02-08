@@ -37,7 +37,10 @@
     </style>
 
     <style name="Formula">
-        <!--<item name="android:background">@color/gray_215</item>-->
+        <item name="android:textSize">@dimen/keypad_button_text</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/tl_2</item>
     </style>
 
     <style name="PuzzleTile" parent="@style/Widget.AppCompat.Button.Colored">
@@ -47,8 +50,8 @@
 
     <style name="KeypadButton" parent="@style/Widget.AppCompat.Button">
         <item name="android:textSize">@dimen/keypad_button_text</item>
-        <item name="android:textColor">@color/gray_79</item>
-        <item name="android:background">@drawable/tl</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/tl_2</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
     </style>
@@ -62,21 +65,9 @@
     </style>
 
     <style name="KeypadNextButton" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:background">@drawable/tl</item>
-        <item name="android:layout_marginTop">16dp</item>
-    </style>
-
-    <style name="FormulaValue" parent="TextAppearance.AppCompat">
+        <item name="android:background">@drawable/tl_next</item>
         <item name="android:textSize">@dimen/keypad_button_text</item>
-        <item name="android:textColor">@color/gray_79</item>
-        <item name="android:gravity">center</item>
-    </style>
-
-    <style name="FormulaUnknownValue" parent="@style/FormulaValue">
-        <item name="android:background">@drawable/bg_unknown_box</item>
-    </style>
-
-    <style name="FormulaEqualSign" parent="FormulaValue">
+        <item name="android:layout_marginTop">16dp</item>
     </style>
 
     <style name="PlayRecordHeader" parent="@style/Base.TextAppearance.AppCompat.Caption">
