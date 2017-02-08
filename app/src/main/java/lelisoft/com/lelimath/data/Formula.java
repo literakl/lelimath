@@ -3,6 +3,7 @@ package lelisoft.com.lelimath.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.Solver;
 
 /**
@@ -86,6 +87,22 @@ public class Formula implements Parcelable {
                 return secondOperand.toString();
         }
         return "";
+    }
+
+    /**
+     * @return number of characters to display unknown
+     */
+    public int getUnknownLength() {
+        switch (unknown){
+            case FIRST_OPERAND:
+                return Misc.getNumberLength(firstOperand);
+            case OPERATOR:
+                return 1;
+            case SECOND_OPERAND:
+                return Misc.getNumberLength(secondOperand);
+            default:
+                return Misc.getNumberLength(result);
+        }
     }
 
     /**

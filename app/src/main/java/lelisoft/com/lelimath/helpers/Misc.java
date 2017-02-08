@@ -37,9 +37,9 @@ import lelisoft.com.lelimath.data.Badge;
 public class Misc {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(LeliMathApp.class);
 
-    static Float density = null;
-    static Random random = new Random(System.currentTimeMillis());
-    static long today, tomorrow;
+    private static Float density = null;
+    private static Random random = new Random(System.currentTimeMillis());
+    private static long today, tomorrow;
 
     static {
         Calendar calendar = Calendar.getInstance();
@@ -320,6 +320,20 @@ public class Misc {
         }
 
         return time > today && time < tomorrow;
+    }
+
+    // todo handle number formatting according current locale
+    public static int getNumberLength(int number) {
+        if (number == 0) {
+            return 1;
+        }
+        int size = 0;
+        if (number < 0) {
+            size += 1;
+            number *= -1;
+        }
+        size += (int)(Math.log10(number) + 1);
+        return size;
     }
 
     public static Random getRandom() {

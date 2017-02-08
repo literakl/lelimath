@@ -2,8 +2,15 @@ package lelisoft.com.lelimath.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +57,7 @@ public class CalcFragment extends LeliGameFragment {
     int formulaPosition = 0;
     CalcLogic logic;
     Play play;
+    int unknownMaxLength;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         log.debug("onCreateView()");
@@ -201,8 +209,48 @@ public class CalcFragment extends LeliGameFragment {
 
     @SuppressLint("SetTextI18n")
     protected void displayFormula() {
-        // todo
-        unknown.setText(formula.toString());
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        if (formula.getUnknown() == FormulaPart.FIRST_OPERAND) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getFirstOperand().toString());
+        }
+        sb.append(" ");
+
+        if (formula.getUnknown() == FormulaPart.OPERATOR) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getOperator().toString());
+        }
+        sb.append(" ");
+
+        if (formula.getUnknown() == FormulaPart.SECOND_OPERAND) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getSecondOperand().toString());
+        }
+        sb.append(" = ");
+
+        if (formula.getUnknown() == FormulaPart.RESULT) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getResult().toString());
+        }
+
+        unknown.setText(sb);
+        unknown.setSelection(3);
+    }
+
+    private void appendUnknown(SpannableStringBuilder sb) {
+        StringBuilder input =  new StringBuilder(formula.getUserInput());
+        for (int i = input.length(); i < unknownMaxLength; i++) {
+            input.append(' ');
+        }
+        SpannableString styledString = new SpannableString(input);
+        styledString.setSpan(new UnderlineSpan(), 0, input.length(), 0);
+        styledString.setSpan(new ForegroundColorSpan(Color.GREEN), 0, input.length(), 0);
+        styledString.setSpan(new StyleSpan(Typeface.BOLD), 0, input.length(), 0);
+        sb.append(styledString);
     }
 
     private void setupPlay() {
@@ -224,6 +272,7 @@ public class CalcFragment extends LeliGameFragment {
 
     private void prepareNewFormula() {
         formula = formulas.get(formulaPosition++);
+        unknownMaxLength = formula.getUnknownLength();
     }
 
     @Override
