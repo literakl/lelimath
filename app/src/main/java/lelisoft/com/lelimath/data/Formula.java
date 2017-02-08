@@ -10,10 +10,10 @@ import lelisoft.com.lelimath.logic.Solver;
  * Created by Leoš on 4. 2. 2015.
  */
 public class Formula implements Parcelable {
-    Integer firstOperand, secondOperand, result;
-    Operator operator;
-    FormulaPart unknown;
-    StringBuilder sb = new StringBuilder(5);
+    private Integer firstOperand, secondOperand, result;
+    private Operator operator;
+    private FormulaPart unknown;
+    private StringBuilder sb = new StringBuilder(5);
 
     public Formula(Integer firstOperand, Integer secondOperand, Integer result, Operator operator, FormulaPart unknown) {
         this.firstOperand = firstOperand;
@@ -74,7 +74,7 @@ public class Formula implements Parcelable {
     /**
      * @return value of unknown formula part
      */
-    public String getUnknownValue() {
+    private String getUnknownValue() {
         switch (unknown){
             case OPERATOR:
                 return operator.toString();
@@ -119,7 +119,7 @@ public class Formula implements Parcelable {
         return getUnknownValue().equals(userInput);
     }
 
-    public String solve() {
+    String solve() {
         switch (unknown){
             case OPERATOR: {
                 if (result.equals(firstOperand + secondOperand)) {
