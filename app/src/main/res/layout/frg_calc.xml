@@ -10,15 +10,13 @@
     android:orientation="vertical">
 
     <!--Display row-->
-    <EditText
+    <TextView
         android:id="@+id/assignment"
         android:text="50 + 40 = 90"
         style="@style/Formula"
         android:focusable="false"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         tools:ignore="HardcodedText" />
 
     <android.support.v7.widget.GridLayout
@@ -30,59 +28,43 @@
 
         <!-- row with 7-9,+ -->
 
-        <com.andexert.library.RippleView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:layout_rowWeight="0.5"
-            app:layout_columnWeight="1"
-            app:rv_centered="true"
-            >
         <Button
             android:id="@+id/digit7"
             android:text="7"
             style="@style/KeypadLeftButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:ignore="HardcodedText"  />
-        </com.andexert.library.RippleView>
-
-        <com.andexert.library.RippleView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
             app:layout_rowWeight="1"
             app:layout_columnWeight="1"
-            app:rv_centered="true"
-            >
+            tools:ignore="HardcodedText"  />
+
         <Button
             android:id="@+id/digit8"
             android:text="8"
             style="@style/KeypadButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:ignore="HardcodedText"  />
-        </com.andexert.library.RippleView>
-
-        <com.andexert.library.RippleView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
             app:layout_rowWeight="1"
             app:layout_columnWeight="1"
-            app:rv_centered="true">
+            tools:ignore="HardcodedText"  />
+
         <Button
             android:id="@+id/digit9"
             android:text="9"
             style="@style/KeypadButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:layout_rowWeight="1"
+            app:layout_columnWeight="1"
             tools:ignore="HardcodedText" />
-        </com.andexert.library.RippleView>
 
         <Button
             android:id="@+id/buttonPlus"
             android:text="+"
+            style="@style/KeypadRightButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_rowWeight="0.5"
@@ -94,6 +76,7 @@
         <Button
             android:id="@+id/digit4"
             android:text="4"
+            style="@style/KeypadButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

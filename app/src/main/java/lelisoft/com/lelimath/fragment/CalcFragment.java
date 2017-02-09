@@ -2,21 +2,16 @@ package lelisoft.com.lelimath.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -34,6 +29,7 @@ import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Operator;
+import lelisoft.com.lelimath.gui.ColoredUnderlineSpan;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.logic.CalcLogic;
@@ -51,7 +47,7 @@ public class CalcFragment extends LeliGameFragment {
     HandleClick clickHandler;
     ArrayList<Formula> formulas;
     Formula formula;
-    EditText unknown;
+    TextView unknown;
     Animation shake;
     DonutProgress mProgress;
     int formulaPosition = 0;
@@ -86,7 +82,7 @@ public class CalcFragment extends LeliGameFragment {
         activity = getActivity();
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
         mProgress = (DonutProgress) activity.findViewById(R.id.progressBar);
-        unknown = (EditText) activity.findViewById(R.id.assignment);
+        unknown = (TextView) activity.findViewById(R.id.assignment);
 
         clickHandler = new HandleClick();
         attachClickListener();
@@ -238,19 +234,19 @@ public class CalcFragment extends LeliGameFragment {
         }
 
         unknown.setText(sb);
-        unknown.setSelection(3);
     }
 
     private void appendUnknown(SpannableStringBuilder sb) {
-        StringBuilder input =  new StringBuilder(formula.getUserInput());
-        for (int i = input.length(); i < unknownMaxLength; i++) {
-            input.append(' ');
+        String input = formula.getUserInput();
+        if (input.length() == 0) {
+            SpannableString styledString = new SpannableString("   ");
+            @SuppressWarnings("deprecation")
+            int color = getResources().getColor(R.color.colorAccent);
+            styledString.setSpan(new ColoredUnderlineSpan(color), 0, 3, 0);
+            sb.append(styledString);
+        } else {
+            sb.append(input);
         }
-        SpannableString styledString = new SpannableString(input);
-        styledString.setSpan(new UnderlineSpan(), 0, input.length(), 0);
-        styledString.setSpan(new ForegroundColorSpan(Color.GREEN), 0, input.length(), 0);
-        styledString.setSpan(new StyleSpan(Typeface.BOLD), 0, input.length(), 0);
-        sb.append(styledString);
     }
 
     private void setupPlay() {
