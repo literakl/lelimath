@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,6 @@ import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Game;
 import lelisoft.com.lelimath.data.Operator;
-import lelisoft.com.lelimath.gui.ColoredUnderlineSpan;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
 import lelisoft.com.lelimath.helpers.Metrics;
 import lelisoft.com.lelimath.logic.CalcLogic;
@@ -239,14 +239,14 @@ public class CalcFragment extends LeliGameFragment {
     private void appendUnknown(SpannableStringBuilder sb) {
         String input = formula.getUserInput();
         if (input.length() == 0) {
-            SpannableString styledString = new SpannableString("   ");
-            @SuppressWarnings("deprecation")
-            int color = getResources().getColor(R.color.colorAccent);
-            styledString.setSpan(new ColoredUnderlineSpan(color), 0, 3, 0);
-            sb.append(styledString);
-        } else {
-            sb.append(input);
+            input = "?";
         }
+
+        SpannableString styledString = new SpannableString(input);
+        @SuppressWarnings("deprecation")
+        int color = getResources().getColor(R.color.green_215);
+        styledString.setSpan(new BackgroundColorSpan(color), 0, input.length(), 0);
+        sb.append(styledString);
     }
 
     private void setupPlay() {
