@@ -74,8 +74,7 @@ public class Misc {
         return dp * density;
     }
 
-    public static String getDensityName(Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
+    public static String getDensityName(float density) {
         if (density >= 4.0) {
             return "xxxhdpi";
         }

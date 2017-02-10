@@ -9,6 +9,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
@@ -85,6 +86,11 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
         soundEnabled = sharedPref.getBoolean(GamePreferenceActivity.KEY_SOUND_ENABLED, true);
         setVolume(sharedPref.getInt(GamePreferenceActivity.KEY_SOUND_LEVEL, 50));
         toggleSound(soundEnabled);
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        log.debug("Current display density: {}", Misc.getDensityName(metrics.density));
+        log.debug("Current display dimensions: {} x {} px", metrics.widthPixels, metrics.heightPixels);
+
         log.debug("onCreate() finished");
     }
 
