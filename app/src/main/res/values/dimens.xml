@@ -7,7 +7,12 @@
     <dimen name="activity_vertical_margin">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="keypad_button_text">44sp</dimen>
+    <dimen name="calc_button_text">44sp</dimen>
+    <dimen name="calc_superbig_margin">24dp</dimen>
+    <dimen name="calc_big_margin">16dp</dimen>
+    <dimen name="calc_small_margin">8dp</dimen>
+
+
     <dimen name="text_size_xxsmall">8sp</dimen>
     <dimen name="text_size_xsmall">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>

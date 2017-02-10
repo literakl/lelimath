@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -239,14 +239,18 @@ public class CalcFragment extends LeliGameFragment {
     private void appendUnknown(SpannableStringBuilder sb) {
         String input = formula.getUserInput();
         if (input.length() == 0) {
-            input = "?";
+            SpannableString styledString = new SpannableString("?");
+            @SuppressWarnings("deprecation")
+            int color = getResources().getColor(R.color.colorAccent);
+            styledString.setSpan(new ForegroundColorSpan(color), 0, 1, 0);
+            sb.append(styledString);
+        } else {
+            SpannableString styledString = new SpannableString(input);
+            @SuppressWarnings("deprecation")
+            int color = getResources().getColor(R.color.colorPrimary);
+            styledString.setSpan(new ForegroundColorSpan(color), 0, input.length(), 0);
+            sb.append(styledString);
         }
-
-        SpannableString styledString = new SpannableString(input);
-        @SuppressWarnings("deprecation")
-        int color = getResources().getColor(R.color.green_215);
-        styledString.setSpan(new BackgroundColorSpan(color), 0, input.length(), 0);
-        sb.append(styledString);
     }
 
     private void setupPlay() {
