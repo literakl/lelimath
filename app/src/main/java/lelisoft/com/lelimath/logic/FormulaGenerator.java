@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -122,9 +121,6 @@ class FormulaGenerator {
             commitFormula();
         }
 
-        if (order == SequenceOrder.RANDOM) {
-            Collections.shuffle(list, Misc.getRandom());
-        }
         return list;
     }
 
