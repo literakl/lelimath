@@ -74,6 +74,7 @@ public class CampaignAdapter extends BaseAdapter {
             if (score != null || position <= firstIncomplete) {
                 if (caption == null) { // recycling wrong view, we must replace it anyway
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmpl_test_open, parent, false);
+                    caption = (TextView) view.findViewById(R.id.caption);
                 }
             } else {
                 if (caption != null) { // recycling wrong view, we must replace it anyway
@@ -90,8 +91,6 @@ public class CampaignAdapter extends BaseAdapter {
 
         if (score != null) {
             Misc.setRating(view, score);
-        } else {
-            log.warn("score is null, position {}", position);
         }
 
 
