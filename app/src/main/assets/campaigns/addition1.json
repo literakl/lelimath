@@ -1,5 +1,151 @@
 [
  {
+    "id": "1ST_START_5_PLUS",
+    "items": [
+      {
+        "id": "10",
+        "definition": {
+          "count": 4,
+          "order": "ASCENDING",
+          "sequence": "FO",
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "1-4",
+              "second": "1",
+              "result": "2-5"
+            }
+          ]
+        }
+      },
+      {
+        "id": "20",
+        "definition": {
+          "count": 5,
+          "games": ["PZ"],
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "1-3",
+              "second": "1-3",
+              "result": "2-4"
+            }
+          ]
+        }
+      },
+      {
+        "id": "30",
+        "definition": {
+          "count": 2,
+          "order": "DESCENDING",
+          "sequence": "FO",
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "1,2",
+              "second": "1-2",
+              "result": "3"
+            }
+          ]
+        }
+      },
+      {
+        "id": "40",
+        "definition": {
+          "count": 3,
+          "order": "DESCENDING",
+          "sequence": "FO",
+          "games": ["PZ"],
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "1,2,3",
+              "second": "1,2,3",
+              "result": "4"
+            }
+          ]
+        }
+      },
+      {
+        "id": "50",
+        "definition": {
+          "count": 5,
+          "order": "FIXED_PAIRS",
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "4,3,3,2,1",
+              "second": "1,2,1,3,3",
+              "result": "4,5"
+            }
+          ]
+        }
+      },
+      {
+        "id": "60",
+        "definition": {
+          "count": 4,
+          "order": "DESCENDING",
+          "sequence": "FO",
+          "games": ["PZ"],
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "1-4",
+              "second": "1-4",
+              "result": "5"
+            }
+          ]
+        }
+      },
+      {
+        "id": "70",
+        "definition": {
+          "count": 4,
+          "order": "FIXED_PAIRS",
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "3,4,3,2",
+              "second": "1,1,2,2",
+              "result": "4,5"
+            }
+          ]
+        }
+      },
+      {
+        "id": "80",
+        "definition": {
+          "count": 6,
+          "order": "FIXED_PAIRS",
+          "games": ["PZ"],
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "1,3,2,3,1,4",
+              "second": "3,1,3,2,4,1",
+              "result": "4,5"
+            }
+          ]
+        }
+      },
+      {
+        "id": "90",
+        "definition": {
+          "count": 8,
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "1-4",
+              "second": "1-4",
+              "result": "2-5"
+            }
+          ]
+        }
+      }
+    ]
+ },
+ {
   "id": "1ST_REPEAT_10",
   "items": [
     {

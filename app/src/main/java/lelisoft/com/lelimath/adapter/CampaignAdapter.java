@@ -55,7 +55,7 @@ public class CampaignAdapter extends BaseAdapter {
     @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        log.debug("Position {}, convertView {}", position, convertView);
+//        log.debug("Position {}, convertView {}", position, convertView);
         Test item = records.get(position);
         View view;
         TextView caption = null;

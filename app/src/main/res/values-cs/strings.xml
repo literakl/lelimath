@@ -156,6 +156,7 @@
     <string name="badge_desc_GREAT_DIVISION">Dvacet pět správně vyřešených dělení v řadě bez chyby. Stejná rovnice se započte jen jednou. Je možné získat opakovaně pro novou řadu.</string>
     <string name="badge_title_EXCELLENT_DIVISION">Dokonalé dělení</string>
     <string name="badge_desc_EXCELLENT_DIVISION">Sto správně vyřešených dělení v řadě bez chyby. Stejná rovnice se započte jen jednou. Je možné získat opakovaně pro novou řadu.</string>
-    <string name="acdm_1ST_REPEAT_10">Číslice</string>
+    <string name="acdm_1ST_START_5_PLUS">Sčítání do 5</string>
+    <string name="acdm_1ST_REPEAT_10">Opakování číslic</string>
     <string name="acdm_1ST_7">Sedmička</string>
 </resources>
