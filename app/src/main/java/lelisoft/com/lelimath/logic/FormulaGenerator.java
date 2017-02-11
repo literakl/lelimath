@@ -112,14 +112,13 @@ class FormulaGenerator {
                     i--;
                     stop++;
                     continue;
-                } else {
-                    stop = 0;
-                    superRandomMode = false;
                 }
             }
 
             list.add(formula);
             previous = formula;
+            stop = 0;
+            superRandomMode = false;
             commitFormula();
         }
 
