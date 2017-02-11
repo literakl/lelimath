@@ -228,7 +228,12 @@ class FormulaGenerator {
      * @param unknown formula part to be calculated
      * @return two remaning formula parts
      */
-    private static Pair<FormulaPart, FormulaPart> findRemainingFormulaParts(FormulaPart unknown) {
+    private Pair<FormulaPart, FormulaPart> findRemainingFormulaParts(FormulaPart unknown) {
+        if (order != SequenceOrder.RANDOM && unknown == orderedPart) {
+            FormulaPart otherPart = (unknown == FormulaPart.RESULT) ? FormulaPart.FIRST_OPERAND : FormulaPart.RESULT;
+            return new Pair<>(unknown, otherPart);
+        }
+
         if (unknown == FormulaPart.RESULT) {
             return new Pair<>(FormulaPart.FIRST_OPERAND, FormulaPart.SECOND_OPERAND);
         }

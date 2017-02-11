@@ -162,5 +162,6 @@
     <string name="acdm_1ST_7">Seven</string>
     <string name="acdm_1ST_8">Eight</string>
     <string name="acdm_1ST_9">Nine</string>
+    <string name="acdm_1ST_10">Ten</string>
     <string name="acdm_1ST_REPEAT_10">Repeat</string>
 </resources>
