@@ -16,7 +16,7 @@
         style="@style/Formula"
         android:focusable="false"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/calc_display_height"
         tools:ignore="HardcodedText" />
 
     <android.support.v7.widget.GridLayout
@@ -204,7 +204,7 @@
         android:text="@string/action_next_formula"
         style="@style/KeypadNextButton"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/calc_next_height"
         app:layout_gravity="fill_horizontal"/>
 
 </LinearLayout>
