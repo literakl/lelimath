@@ -128,21 +128,20 @@ class FormulaGenerator {
         log.trace("Starting search for formulas using {}", definition);
         OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
         FormulaPart unknown = getUnknown(definition.getUnknowns());
-        Pair<FormulaPart, FormulaPart> parts = findRemainingFormulaParts(unknown);
         ArrayList<Formula> list = new ArrayList<>(count);
 
-        Values valuesA = getValues(operatorDefinition, parts.first);
-        Values valuesB = getValues(operatorDefinition, parts.second);
+        Values valuesA = getValues(operatorDefinition, FormulaPart.FIRST_OPERAND);
+        Values valuesB = getValues(operatorDefinition, FormulaPart.SECOND_OPERAND);
         for (int i = 0; i < count; i++) {
             int valueA = valuesA.getValueAt(i);
             int valueB = valuesB.getValueAt(i);
-            Formula found = Solver.solve(operatorDefinition.getOperator(), parts.first, valueA, parts.second, valueB);
+            Formula found = Solver.solve(operatorDefinition.getOperator(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
             if (found == null) {
-                log.warn("Failed to generate formula for {} {} {} {} {}!", operatorDefinition.getOperator(), parts.first, valueA, parts.second, valueB);
+                log.warn("Failed to generate formula for {} {} {} {} {}!", operatorDefinition.getOperator(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
                 continue;
             }
 
-            boolean valid = checkSolution(found, parts.first, parts.second, operatorDefinition);
+            boolean valid = checkSolution(found, FormulaPart.FIRST_OPERAND, FormulaPart.SECOND_OPERAND, operatorDefinition);
             if (log.isTraceEnabled()) {
                 log.trace("{}: {} {} {} = {}", valid, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getResult());
             }

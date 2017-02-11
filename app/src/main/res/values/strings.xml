@@ -160,5 +160,6 @@
     <string name="acdm_1ST_5_MINUS">Subtraction to 5</string>
     <string name="acdm_1ST_5_6">Five and Six</string>
     <string name="acdm_1ST_7">Seven</string>
+    <string name="acdm_1ST_8">Eight</string>
     <string name="acdm_1ST_REPEAT_10">Repeat</string>
 </resources>
