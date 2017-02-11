@@ -27,8 +27,8 @@ android {
         resValue 'string', 'app_name', 'LeliMath'
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 301
-        versionName '3.0.1'
+        versionCode 310
+        versionName '3.1.0'
         resValue "string", "app_build_number", getDate();
         resValue "string", "app_version", versionName;
 //        vectorDrawables.useSupportLibrary = true
