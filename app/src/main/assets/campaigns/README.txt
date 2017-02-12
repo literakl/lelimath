@@ -1,33 +1,61 @@
 Notes:
 
-* argument values (first, second, result) are defined by list of values or ranges in ascending order.
+"id" - identifier stored with results in a database. It must be unique between
+campaigns / items of certain campaign.
 
-* FIXED_PAIRS - values from first and second arguments are taken sequentially, range is not allowed.
-Ascending order rule is not applied to the first and second argument. Number of tests must be smaller
-than number of values. Same unknown is used for all formulas.
+"title" - campaign title. If empty, a key "acdm_"+id from strings.xml will be used.
+
+"picture" - optional drawable name. If empty random picture will be used.
+
+"items" - array of tests
+
+"definition" - formula definition specifies how formula is generated
+
+"count" - number of formulas generated in this test
+
+"unknowns" - array of formula parts that can be set as unknown. FO first operand,
+SO second operand, OP operator, RS result.
+
+"games" - array of games to be used, FC stands for fast calc (default), PZ for puzzle
+
+"order" - can have following values: RANDOM (default), ASCENDING, DESCENDING, FIXED_PAIRS
+
+* FIXED_PAIRS - values from first and second operands are taken sequentially, range is not allowed.
+Ascending order is not enforced for the values. Number of tests must not be greater than number
+of values. All formulas will have same unknown.
+
+* ASCENDING, DESCENDING - values from formula part defined in "sequence" are taken sequentially in
+requested order. Number of tests must not be greater than number of values.
+
+"sequence" - selects formula part to be used as sequence of values. Ignored if set
+to the same value as unknown.
+
+"operator" - array of operators sharing this configuration. It can be +, -, *, /.
+
+"first", "second", "result" - argument values are defined by list of values or ranges
+in ascending order. E.g. 1-3,5,6,7-10
+
 
 One campaign structure:
 
 {
-  "id": "ADD10", // unique id, it is stored in a database
-  "title": "První odečítání", // campaign title. It can be externalized in strings.xml under key "acdm_"+id
-  "picture": "bgt_gradient_salmon", // optional drawable name
-  "items": [ // array of tests
+  "id": "ADD10",
+  "title": "First summation",
+  "picture": "bgt_gradient_salmon",
+  "items": [
     {
-      "id": "10", // test id unique within a campaign.
-      "definition": // formula definition specifies how formula is generated
+      "id": "10",
+      "definition":
       {
         "count": 9,
-        "order": "ASCENDING", // defines if values will be selected randomly (default) or in ASCENDING/DESCENDING order
-                              // from formula part defined in "sequence". Number of tests must not be greater
-                              // than available values for selected formula part!
-        "sequence": "FO", // selects formula part to be used as sequence of values. Ignored if it equals to unknown.
-        "operators": [ // definition for formula operator values
+        "order": "ASCENDING",
+        "sequence": "FO",
+        "operators": [
           {
-            "operator": ["+"], // operators which share this configuration
-            "first": "1-9", // first operand values
-            "second": "1", // second operand values
-            "result": "2-10" // result values
+            "operator": ["+"],
+            "first": "1-9",
+            "second": "1",
+            "result": "2-10"
           }
         ]
       }
@@ -37,8 +65,8 @@ One campaign structure:
       "definition":
       {
         "count": 5,
-        "games": ["FC"], // games to be used, FC fast calc (default), PZ puzzle
-        "unknowns": ["RS"], // formula parts that can be set as unknown. FO first operand, SO second operand, OP operator, RS result
+        "games": ["FC"],
+        "unknowns": ["RS"],
         "operators": [
           {
             "operator": ["+"],

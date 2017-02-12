@@ -164,5 +164,6 @@
     <string name="acdm_1ST_9">Nine</string>
     <string name="acdm_1ST_10">Ten</string>
     <string name="acdm_1ST_REPEAT_10">Repeat</string>
-    <string name="acdm_1ST_15">Ten to fifteen</string>
+    <string name="acdm_1ST_15">To fifteen</string>
+    <string name="acdm_1ST_20">To twenty</string>
 </resources>
