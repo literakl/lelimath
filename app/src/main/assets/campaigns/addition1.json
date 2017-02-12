@@ -1,6 +1,7 @@
 [
   {
     "id": "1ST_5_PLUS",
+    "picture": "bgt_squares",
     "items": [
       {
         "id": "10",
@@ -147,6 +148,7 @@
   },
   {
     "id": "1ST_5_MINUS",
+    "picture": "bgt_orange_o",
     "items": [
       {
         "id": "10",
@@ -271,6 +273,7 @@
   },
   {
     "id": "1ST_5_6",
+    "picture": "bgt_gray_blocks",
     "items": [
       {
         "id": "10",
@@ -447,6 +450,7 @@
   },
   {
     "id": "1ST_7",
+    "picture": "bgt_bed_linen",
     "items": [
       {
         "id": "10",
@@ -569,6 +573,7 @@
   },
   {
     "id": "1ST_8",
+    "picture": "bgt_red_rosa",
     "items": [
       {
         "id": "10",
@@ -705,6 +710,7 @@
   },
   {
     "id": "1ST_9",
+    "picture": "bgt_bell_flower",
     "items": [
       {
         "id": "10",
@@ -825,6 +831,7 @@
   },
   {
     "id": "1ST_10",
+    "picture": "bgt_gray_hexagons",
     "items": [
       {
         "id": "10",
@@ -982,6 +989,7 @@
   },
   {
     "id": "1ST_REPEAT_10",
+    "picture": "bgt_sea_weed",
     "items": [
       {
         "id": "10",
@@ -1087,6 +1095,7 @@
   },
   {
     "id": "1ST_15",
+    "picture": "bgt_triangles",
     "items": [
       {
         "id": "10",
@@ -1233,6 +1242,7 @@
   },
   {
     "id": "1ST_20",
+    "picture": "bgt_gradient_ice",
     "items": [
       {
         "id": "10",
