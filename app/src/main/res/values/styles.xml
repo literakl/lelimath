@@ -80,6 +80,7 @@
     <style name="PuzzleTile" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:textSize">@dimen/text_size_xlarge</item>
         <item name="android:textColor">@color/gray_79</item>
+        <!--<item name="android:background">@drawable/blue_button</item>-->
     </style>
 
     <style name="PlayRecordHeader" parent="@style/Base.TextAppearance.AppCompat.Caption">
