@@ -1,1 +1,83 @@
-[]
+[
+  {
+    "id": "3RD_REPEAT",
+    "items": [
+      {
+        "id": "10",
+        "definition": {
+          "count": 12,
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "10-95",
+              "second": "3-8",
+              "result": "50-100"
+            },
+            {
+              "operator": ["+"],
+              "first": "3-9",
+              "second": "30-90",
+              "result": "40-100"
+            }
+          ]
+        }
+      },
+      {
+        "id": "20",
+        "definition": {
+          "count": 12,
+          "operators": [
+            {
+              "operator": ["-"],
+              "first": "15-99",
+              "second": "2-9",
+              "result": "10-97"
+            },
+            {
+              "operator": ["-"],
+              "first": "20,30,40,50,60,70,80,90",
+              "second": "10,20,30,40,50",
+              "result": "10-80"
+            }
+          ]
+        }
+      },
+      {
+        "id": "30",
+        "definition": {
+          "count": 12,
+          "games": ["PZ"],
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "20,30,40,50,60,70,80,90",
+              "second": "10,20,30,40,50,60,70,80,90",
+              "result": "30-90"
+            },
+            {
+              "operator": ["-"],
+              "first": "20,30,40,50,60,70,80,90",
+              "second": "10,20,30,40,50",
+              "result": "10-80"
+            }
+          ]
+        }
+      },
+      {
+        "id": "40",
+        "definition": {
+          "count": 12,
+          "games": ["PZ"],
+          "operators": [
+            {
+              "operator": ["-"],
+              "first": "25-95",
+              "second": "10,20,30,40,50",
+              "result": "15-85"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
