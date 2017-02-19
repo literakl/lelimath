@@ -89,39 +89,6 @@ public class PuzzleFragment extends LeliGameFragment {
         state.putLong("stoped", stopped);
     }
 
-    @NonNull
-    private AppCompatButton inflateButton(Tile tile, LayoutInflater inflater) {
-        AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.tmpl_puzzle_tile, puzzleGrid, false);
-        button.setBackgroundResource((tile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
-        button.setOnClickListener(clickHandler);
-        button.setText(tile.getText());
-        button.setTag(R.id.button_tile, tile);
-        return button;
-    }
-
-    private void generateTiles() {
-        log.debug("generateTiles(horizontal = {}, vertical = {})", maxHorizontalTiles, maxVerticalTiles);
-        List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
-        if (tilesValues.isEmpty()) {
-            tilesValues.add(new FormulaResultPair(new Formula(1, 1, 2, Operator.PLUS, FormulaPart.RESULT)));
-            tilesValues.add(new FormulaResultPair(2));
-            Toast.makeText(getContext(), R.string.error_no_formula_generated, Toast.LENGTH_LONG).show();
-        }
-        tilesToBeSolved = tilesValues.size();
-        setupPlay();
-
-        Iterator<FormulaResultPair> iterator = tilesValues.iterator();
-        for (int i = 0; i < maxVerticalTiles; i++) {
-            for (int j = 0; j < maxHorizontalTiles; j++) {
-                if (iterator.hasNext()) {
-                    Tile tile = new Tile(iterator.next());
-                    AppCompatButton button = inflateButton(tile, getActivity().getLayoutInflater());
-                    puzzleGrid.addView(button);
-                }
-            }
-        }
-    }
-
     private void setupPlay() {
         play = new Play();
         play.setGame(Game.PUZZLE);
@@ -145,54 +112,64 @@ public class PuzzleFragment extends LeliGameFragment {
             startRecordingSpentTime();
 
             if (view == selectedButton) {
+//                selectedButton.setSelected(false);
                 currentButton.setBackgroundResource((currentTile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
                 selectedButton = null;
             } else {
                 if (selectedButton != null) {
                     Tile selectedTile = (Tile) selectedButton.getTag(R.id.button_tile);
                     if (selectedTile.matches(currentTile)) {
-                        log.debug("{} matches {}", currentTile, selectedTile);
-                        PlayRecord record = getPlayRecord(true, selectedTile, currentTile);
-                        setPoints(record, play);
-                        updateSpentTime(record);
-
-                        tilesToBeSolved -= 2;
-                        if (tilesToBeSolved <= 0) {
-                            play.setFinished(true);
-                            callback.savePlayRecord(play, record);
-                            callback.gameFinished(play);
-                            Metrics.saveGameFinished(Game.PUZZLE);
-                        } else {
-                            callback.savePlayRecord(play, record);
-                            LeliMathApp.getInstance().playSound(R.raw.correct);
-
-                            currentButton.setText("");
-                            currentButton.setBackgroundResource(R.drawable.bg_tile_solved);
-                            currentButton.setClickable(false);
-
-                            selectedButton.setText("");
-                            selectedButton.setBackgroundResource(R.drawable.bg_tile_solved);
-                            selectedButton.setClickable(false);
-                            selectedButton = null;
-                        }
+                        handleCorrectAnswer(currentTile, currentButton, selectedTile);
                     } else {
-                        log.debug(currentTile + " does not match " + selectedTile);
-                        PlayRecord record = getPlayRecord(false, selectedTile, currentTile);
-                        if (record != null) {
-                            updateSpentTime(record);
-                            callback.savePlayRecord(play, record);
-                        }
-                        LeliMathApp.getInstance().playSound(R.raw.incorrect);
-
-                        selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
-                        selectedButton.startAnimation(shake);
-                        selectedButton = null;
-                        currentButton.startAnimation(shake);
+                        handleWrongAnswer(currentTile, currentButton, selectedTile);
                     }
                 } else {
                     selectedButton = currentButton;
+//                    selectedButton.setSelected(true);
                     currentButton.setBackgroundResource(R.drawable.bg_tile_selected);
                 }
+            }
+        }
+
+        private void handleWrongAnswer(Tile currentTile, AppCompatButton currentButton, Tile selectedTile) {
+            log.debug(currentTile + " does not match " + selectedTile);
+            PlayRecord record = getPlayRecord(false, selectedTile, currentTile);
+            if (record != null) {
+                updateSpentTime(record);
+                callback.savePlayRecord(play, record);
+            }
+            LeliMathApp.getInstance().playSound(R.raw.incorrect);
+
+            selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
+            selectedButton.startAnimation(shake);
+            selectedButton = null;
+            currentButton.startAnimation(shake);
+        }
+
+        private void handleCorrectAnswer(Tile currentTile, AppCompatButton currentButton, Tile selectedTile) {
+            log.debug("{} matches {}", currentTile, selectedTile);
+            PlayRecord record = getPlayRecord(true, selectedTile, currentTile);
+            setPoints(record, play);
+            updateSpentTime(record);
+
+            tilesToBeSolved -= 2;
+            if (tilesToBeSolved <= 0) {
+                play.setFinished(true);
+                callback.savePlayRecord(play, record);
+                callback.gameFinished(play);
+                Metrics.saveGameFinished(Game.PUZZLE);
+            } else {
+                callback.savePlayRecord(play, record);
+                LeliMathApp.getInstance().playSound(R.raw.correct);
+
+                currentButton.setText("");
+                currentButton.setBackgroundResource(R.drawable.bg_tile_solved);
+                currentButton.setClickable(false);
+
+                selectedButton.setText("");
+                selectedButton.setBackgroundResource(R.drawable.bg_tile_solved);
+                selectedButton.setClickable(false);
+                selectedButton = null;
             }
         }
     }
@@ -263,6 +240,39 @@ public class PuzzleFragment extends LeliGameFragment {
             puzzleGrid.setColumnCount(maxHorizontalTiles);
             generateTiles();
         }
+    }
+
+    private void generateTiles() {
+        log.debug("generateTiles(horizontal = {}, vertical = {})", maxHorizontalTiles, maxVerticalTiles);
+        List<FormulaResultPair> tilesValues = logic.generateFormulaResultPairs(maxHorizontalTiles * maxVerticalTiles);
+        if (tilesValues.isEmpty()) {
+            tilesValues.add(new FormulaResultPair(new Formula(1, 1, 2, Operator.PLUS, FormulaPart.RESULT)));
+            tilesValues.add(new FormulaResultPair(2));
+            Toast.makeText(getContext(), R.string.error_no_formula_generated, Toast.LENGTH_LONG).show();
+        }
+        tilesToBeSolved = tilesValues.size();
+        setupPlay();
+
+        Iterator<FormulaResultPair> iterator = tilesValues.iterator();
+        for (int i = 0; i < maxVerticalTiles; i++) {
+            for (int j = 0; j < maxHorizontalTiles; j++) {
+                if (iterator.hasNext()) {
+                    Tile tile = new Tile(iterator.next());
+                    AppCompatButton button = inflateButton(tile, getActivity().getLayoutInflater());
+                    puzzleGrid.addView(button);
+                }
+            }
+        }
+    }
+
+    @NonNull
+    private AppCompatButton inflateButton(Tile tile, LayoutInflater inflater) {
+        AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.tmpl_puzzle_tile, puzzleGrid, false);
+        button.setBackgroundResource((tile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
+        button.setOnClickListener(clickHandler);
+        button.setText(tile.getText());
+        button.setTag(R.id.button_tile, tile);
+        return button;
     }
 
     public void setLogic(PuzzleLogic logic) {
