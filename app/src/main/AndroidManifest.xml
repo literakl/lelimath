@@ -76,17 +76,17 @@
         </activity>
         <activity
             android:name=".activities.CampaignListActivity"
-            android:label="@string/action_academy"
+            android:label="@string/title_academy"
             android:parentActivityName=".activities.DashboardActivity">
         </activity>
         <activity
             android:name=".activities.CampaignActivity"
-            android:label="@string/action_academy"
+            android:label="@string/title_academy"
             android:parentActivityName=".activities.CampaignListActivity">
         </activity>
         <activity
             android:name=".activities.RunTestActivity"
-            android:label="@string/action_academy"
+            android:label="@string/title_academy"
             android:parentActivityName=".activities.CampaignActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

@@ -31,6 +31,7 @@ import lelisoft.com.lelimath.provider.TestRecordProvider;
 public class CampaignListActivity extends LeliBaseActivity {
     private static final Logger log = LoggerFactory.getLogger(CalcActivity.class);
 
+    public static final String KEY_CAMPAIGNS_PATH = "CAMPAIGN_LIST_PATH";
     protected static final String KEY_CAMPAIGN = "CAMPAIGN_ID";
 
     GridView gridView;
@@ -43,10 +44,18 @@ public class CampaignListActivity extends LeliBaseActivity {
         super.onCreate(state);
         setContentView(R.layout.act_campaign_list);
 
+        String path;
+        if (state != null) {
+            log.debug("load state");
+            path = state.getString(KEY_CAMPAIGNS_PATH);
+        } else {
+            path = getIntent().getStringExtra(KEY_CAMPAIGNS_PATH);
+        }
+
         final List<Campaign> records = new ArrayList<>();
 
         try {
-            InputStream is = getAssets().open("campaigns/addition1.json");
+            InputStream is = getAssets().open(path);
             Campaign[] scripts = CampaignParser.parse(is);
             Collections.addAll(records, scripts);
         } catch (IOException e) {

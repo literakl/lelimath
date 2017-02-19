@@ -83,7 +83,11 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         setBadgeProgress();
         displayNextAward();
 
-        TextView button = (TextView) activity.findViewById(R.id.main_button_academy);
+        TextView button = (TextView) activity.findViewById(R.id.main_button_academy_first);
+        button.setOnClickListener(this);
+        button = (TextView) activity.findViewById(R.id.main_button_academy_second);
+        button.setOnClickListener(this);
+        button = (TextView) activity.findViewById(R.id.main_button_academy_third);
         button.setOnClickListener(this);
         button = (TextView) activity.findViewById(R.id.main_button_puzzle);
         button.setOnClickListener(this);
@@ -121,9 +125,26 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
                 PuzzleActivity.start(activity);
                 break;
 
-            case R.id.main_button_academy:
-                CampaignListActivity.start(activity);
+            case R.id.main_button_academy_first: {
+                Intent intent = new Intent(activity, CampaignListActivity.class);
+                intent.putExtra(CampaignListActivity.KEY_CAMPAIGNS_PATH, "campaigns/first_grade.json");
+                activity.startActivity(intent);
                 break;
+            }
+
+            case R.id.main_button_academy_second: {
+                Intent intent = new Intent(activity, CampaignListActivity.class);
+                intent.putExtra(CampaignListActivity.KEY_CAMPAIGNS_PATH, "campaigns/second_grade.json");
+                activity.startActivity(intent);
+                break;
+            }
+
+            case R.id.main_button_academy_third: {
+                Intent intent = new Intent(activity, CampaignListActivity.class);
+                intent.putExtra(CampaignListActivity.KEY_CAMPAIGNS_PATH, "campaigns/third_grade.json");
+                activity.startActivity(intent);
+                break;
+            }
 
             case R.id.main_button_calc:
                 CalcActivity.start(activity);

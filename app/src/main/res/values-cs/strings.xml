@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources  xmlns:xliff="rn:oasis:names:tc:xliff:document:1.2">
-    <string name="action_academy">Akademie</string>
+    <string name="action_first_grade">První třída</string>
+    <string name="action_second_grade">Druhá třída</string>
+    <string name="action_third_grade">Třetí třída</string>
     <string name="action_settings">Nastavení</string>
     <string name="action_game_fast_calc">Rychlé počty</string>
     <string name="action_game_puzzle">Najdi výsledek</string>
@@ -36,6 +38,7 @@
     <string name="tab_home">Úvod</string>
     <string name="tab_badges">Odznáčky</string>
     <string name="tab_log">Záznam</string>
+    <string name="title_academy">Akademie</string>
     <string name="title_score">Skóre</string>
     <string name="title_practice">Procvičování</string>
     <string name="title_other">Ostatní</string>
