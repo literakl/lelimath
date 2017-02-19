@@ -22,37 +22,46 @@ public class PlayRecord {
     @DatabaseField(foreign = true, columnName=Columns.PLAY_ID)
     private Play play;
 
-    @DatabaseField(columnName=Columns.FIRST_OPERAND)
+    @DatabaseField(columnName = Columns.FIRST_OPERAND)
     private Integer firstOperand;
 
-    @DatabaseField(columnName=Columns.SECOND_OPERAND)
+    @DatabaseField(columnName = Columns.SECOND_OPERAND)
     private Integer secondOperand;
 
-    @DatabaseField(columnName=Columns.RESULT)
+    @DatabaseField(columnName = Columns.THIRD_OPERAND)
+    private Integer thirdOperand;
+
+    @DatabaseField(columnName = Columns.RESULT)
     private Integer result;
 
     @DatabaseField(persisted = false)
     private Operator operator;
 
-    @DatabaseField(columnName= Columns.OPERATOR, width = 1)
+    @DatabaseField(columnName = Columns.OPERATOR, width = 1)
     private String operatorStr;
+
+    @DatabaseField(persisted = false)
+    private Operator operator2;
+
+    @DatabaseField(columnName = Columns.OPERATOR2, width = 1)
+    private String operator2Str;
 
     @DatabaseField(persisted = false)
     private FormulaPart unknown;
 
-    @DatabaseField(columnName=Columns.UNKNOWN, width = 2)
+    @DatabaseField(columnName = Columns.UNKNOWN, width = 2)
     private String unknownStr;
 
-    @DatabaseField(columnName= Columns.CORRECT)
+    @DatabaseField(columnName = Columns.CORRECT)
     private boolean correct;
 
-    @DatabaseField(columnName=Columns.WRONG_VALUE)
+    @DatabaseField(columnName = Columns.WRONG_VALUE)
     private String wrongValue;
 
-    @DatabaseField(columnName=Columns.SPENT)
+    @DatabaseField(columnName = Columns.SPENT)
     private Long timeSpent;
 
-    @DatabaseField(canBeNull=false, defaultValue = "0", columnName= Columns.POINTS)
+    @DatabaseField(canBeNull = false, defaultValue = "0", columnName = Columns.POINTS)
     private Integer points;
 
     public PlayRecord() {
@@ -127,6 +136,16 @@ public class PlayRecord {
         this.secondOperand = secondOperand;
     }
 
+    @SuppressWarnings("unused")
+    public Integer getThirdOperand() {
+        return thirdOperand;
+    }
+
+    @SuppressWarnings("unused")
+    public void setThirdOperand(Integer thirdOperand) {
+        this.thirdOperand = thirdOperand;
+    }
+
     public Integer getResult() {
         return result;
     }
@@ -151,6 +170,27 @@ public class PlayRecord {
         } else {
             this.operator = null;
             operatorStr = null;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public Operator getOperator2() {
+        if (operator2 != null) {
+            return operator2;
+        } else if (operator2Str != null) {
+            operator2 = Operator.getValue(operator2Str);
+        }
+        return operator2;
+    }
+
+    @SuppressWarnings("unused")
+    public void setOperator2(Operator operator2) {
+        if (operator2 != null) {
+            this.operator2 = operator2;
+            operator2Str = operator2.value;
+        } else {
+            this.operator2 = null;
+            operator2Str = null;
         }
     }
 
@@ -231,8 +271,10 @@ public class PlayRecord {
                 ", play=" + getPlay() +
                 ", firstOperand=" + firstOperand +
                 ", secondOperand=" + secondOperand +
+                ", thirdOperand=" + thirdOperand +
                 ", result=" + result +
                 ", operator=" + getOperator() +
+                ", operator2=" + getOperator2() +
                 ", unknown=" + getUnknown() +
                 ", wrongValue" + getWrongValue() +
                 ", correct=" + correct +

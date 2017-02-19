@@ -14,6 +14,8 @@ public class FormulaDefinition implements Serializable {
     private int count;
     /** Allowed formula's operators and their definition. If unset a demo PLUS 0-9 will be used */
     private List<OperatorDefinition> operatorDefinitions;
+    /** Allowed expressions. Alternative configuration to operatorDefinitions */
+    private List<Expression> expressions;
     /** allowed formula's unknowns. If unset the RESULT will be used */
     private List<FormulaPart> unknowns;
     /** list of allowed games */
@@ -53,6 +55,33 @@ public class FormulaDefinition implements Serializable {
 
     public List<OperatorDefinition> getOperatorDefinitions() {
         return operatorDefinitions;
+    }
+
+    @SuppressWarnings("unused")
+    public List<Expression> getExpressions() {
+        return expressions;
+    }
+
+    @SuppressWarnings("unused")
+    public FormulaDefinition addExpression(Expression expression) {
+        if (expressions == null) {
+            expressions = Collections.singletonList(expression);
+            return this;
+        }
+        if (expressions.size() == 1) {
+            List<Expression> list = new ArrayList<>(3);
+            list.add(expressions.get(0));
+            list.add(expression);
+            expressions = list;
+            return this;
+        }
+        expressions.add(expression);
+        return this;
+    }
+
+    @SuppressWarnings("unused")
+    public void setExpressions(List<Expression> expressions) {
+        this.expressions = expressions;
     }
 
     public List<FormulaPart> getUnknowns() {
@@ -118,6 +147,7 @@ public class FormulaDefinition implements Serializable {
                 ", unknowns=" + unknowns +
                 ", count=" + count +
                 ", operatorDefinitions=" + operatorDefinitions +
+                ", expressions=" + expressions +
                 ", order=" + order +
                 ", sequence=" + sequence +
                 '}';

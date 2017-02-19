@@ -66,13 +66,29 @@
       {
         "id": "40",
         "definition": {
-          "count": 12,
+          "count": 10,
           "games": ["PZ"],
           "operators": [
             {
               "operator": ["-"],
               "first": "25-95",
               "second": "10,20,30,40,50",
+              "result": "15-85"
+            }
+          ]
+        }
+      },
+      {
+        "id": "50",
+        "definition": {
+          "count": 12,
+          "expressions": [
+            {
+              "first": {"values": "4-9", "order": "ASCENDING"},
+              "operator1": "+",
+              "second": "1-6",
+              "operator2": "+",
+              "third": "4-7",
               "result": "15-85"
             }
           ]

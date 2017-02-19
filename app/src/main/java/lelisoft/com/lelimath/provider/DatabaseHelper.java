@@ -41,7 +41,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(DatabaseHelper.class);
 
     private static final String DEFAULT_DATABASE_NAME = "lelimath.sqlite";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static File path;
     private static String databaseName = DEFAULT_DATABASE_NAME;
 
@@ -119,10 +119,23 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         if (oldVersion == 6) {
             try {
                 TableUtils.createTable(connectionSource, TestRecord.class);
+                oldVersion = 7;
             } catch (SQLException e) {
                 log.error("Error upgrading a database from version 6!", e);
                 Crashlytics.logException(e);
-                throw new RuntimeException("Error upgrading a database from version 3!");
+                throw new RuntimeException("Error upgrading a database from version 6!");
+            }
+        }
+
+        if (oldVersion == 7) {
+            try {
+                Dao<PlayRecord, Integer> dao = getPlayRecordDao();
+                dao.executeRaw("ALTER TABLE `play_record` ADD COLUMN third INTEGER");
+                dao.executeRaw("ALTER TABLE `play_record` ADD COLUMN operator2 VARCHAR");
+            } catch (SQLException e) {
+                log.error("Error upgrading a database from version 7!", e);
+                Crashlytics.logException(e);
+                throw new RuntimeException("Error upgrading a database from version 7!");
             }
         }
 

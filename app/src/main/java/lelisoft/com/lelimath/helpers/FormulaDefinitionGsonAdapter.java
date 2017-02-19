@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 
+import lelisoft.com.lelimath.data.Expression;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Game;
@@ -75,38 +76,74 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             }
         }
 
-        array = jsonObject.getAsJsonArray("operators");
-        if (array == null || array.size() == 0) {
-            throw new JsonParseException("Element 'operators' is missing!");
+        array = jsonObject.getAsJsonArray("expressions");
+        if (array != null && array.size() > 0) {
+            for (JsonElement jsonElement : array) {
+                jsonObject = (JsonObject) jsonElement;
+
+                Values firstArg = getExpressionValues(jsonObject, "first");
+                Values secondArg = getExpressionValues(jsonObject, "second");
+                Values thirdArg = getExpressionValues(jsonObject, "third");
+                Values result = getExpressionValues(jsonObject, "result");
+                p = jsonObject.getAsJsonPrimitive("operator1");
+                Operator operator1 = Operator.getValue(p.getAsString());
+                p = jsonObject.getAsJsonPrimitive("operator2");
+                Operator operator2 = Operator.getValue(p.getAsString());
+
+                Expression expression = new Expression(firstArg, operator1, secondArg, result);
+                expression.setOperator2(operator2);
+                expression.setThirdOperand(thirdArg);
+                definition.addExpression(expression);
+            }
         }
 
-        for (JsonElement jsonElement : array) {
-            jsonObject = (JsonObject) jsonElement;
+        array = jsonObject.getAsJsonArray("operators");
+        if ((array == null || array.size() == 0)) {
+            if (definition.getExpressions() == null) {
+                throw new JsonParseException("Element 'operators' is missing!");
+            }
+        } else {
+            for (JsonElement jsonElement : array) {
+                jsonObject = (JsonObject) jsonElement;
 
-            p = jsonObject.getAsJsonPrimitive("first");
-            String sValues = p.getAsString();
-            Values firstArgValues = Values.parse(sValues, ascendingOrder);
+                Values firstArg = getValues(jsonObject, "first", ascendingOrder);
+                Values secondArg = getValues(jsonObject, "second", ascendingOrder);
+                Values result = getValues(jsonObject, "result", ascendingOrder);
 
-            p = jsonObject.getAsJsonPrimitive("second");
-            sValues = p.getAsString();
-            Values secondArgValues = Values.parse(sValues, ascendingOrder);
-
-            p = jsonObject.getAsJsonPrimitive("result");
-            sValues = p.getAsString();
-            Values resultValues = Values.parse(sValues, true);
-
-            JsonArray opArray = jsonObject.getAsJsonArray("operator");
-            for (JsonElement element : opArray) {
-                Operator operator = Operator.getValue(element.getAsString());
-                OperatorDefinition operatorDefinition = new OperatorDefinition(operator);
-                definition.addOperator(operatorDefinition);
-                operatorDefinition.setFirstOperand(firstArgValues);
-                operatorDefinition.setSecondOperand(secondArgValues);
-                operatorDefinition.setResult(resultValues);
+                JsonArray opArray = jsonObject.getAsJsonArray("operator");
+                for (JsonElement element : opArray) {
+                    Operator operator = Operator.getValue(element.getAsString());
+                    OperatorDefinition operatorDefinition = new OperatorDefinition(operator);
+                    definition.addOperator(operatorDefinition);
+                    operatorDefinition.setFirstOperand(firstArg);
+                    operatorDefinition.setSecondOperand(secondArg);
+                    operatorDefinition.setResult(result);
+                }
             }
         }
 
         log.debug("deserialize finishes");
         return definition;
+    }
+
+    private Values getValues(JsonObject jsonObject, String name, boolean checkOrder) {
+        JsonPrimitive p = jsonObject.getAsJsonPrimitive(name);
+        String sValues = p.getAsString();
+        return Values.parse(sValues, checkOrder);
+    }
+
+    private Values getExpressionValues(JsonObject parent, String name) {
+        JsonObject object = parent.getAsJsonObject(name);
+        JsonPrimitive p = object.getAsJsonPrimitive("values");
+        String sValues = p.getAsString();
+        Values values = Values.parse(sValues, false);
+
+        p = object.getAsJsonPrimitive("order");
+        if (p == null) {
+            values.setOrder(SequenceOrder.RANDOM); // default
+        } else {
+            values.setOrder(SequenceOrder.valueOf(p.getAsString()));
+        }
+        return values;
     }
 }

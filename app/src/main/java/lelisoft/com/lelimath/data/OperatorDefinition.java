@@ -13,11 +13,10 @@ public class OperatorDefinition implements Serializable {
     private Values firstOperand;
     /** allowed values for operator's right operand */
     private Values secondOperand;
-    /** allowed values for difference between operators's operands */
-    private Values operandDifference;
     /** allowed values for operator's result */
     private Values result;
 
+    @SuppressWarnings("unused")
     public OperatorDefinition() {
     }
 
@@ -56,16 +55,6 @@ public class OperatorDefinition implements Serializable {
         this.secondOperand = secondOperand;
     }
 
-    @SuppressWarnings("unused")
-    public Values getOperandDifference() {
-        return operandDifference;
-    }
-
-    @SuppressWarnings("unused")
-    public void setOperandDifference(Values operandDifference) {
-        this.operandDifference = operandDifference;
-    }
-
     public Values getResult() {
         return result;
     }
@@ -77,9 +66,7 @@ public class OperatorDefinition implements Serializable {
     @Override
     public String toString() {
         return "OperatorDefinition{" +
-                "operator=" + operator +
-                ", firstOperand=" + firstOperand +
-                ", secondOperand=" + secondOperand +
+                "first=" + firstOperand + operator + ", second=" + secondOperand +
                 ", result=" + result +
                 '}';
     }
