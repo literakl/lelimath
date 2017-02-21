@@ -5,6 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/bg_calc"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -64,7 +65,7 @@
         <Button
             android:id="@+id/buttonPlus"
             android:text="+"
-            style="@style/KeypadRightButton"
+            style="@style/KeypadFunctionRightButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_rowWeight="1"
@@ -109,7 +110,7 @@
         <Button
             android:id="@+id/buttonMinus"
             android:text="-"
-            style="@style/KeypadRightButton"
+            style="@style/KeypadFunctionRightButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_rowWeight="1"
@@ -154,7 +155,7 @@
         <Button
             android:id="@+id/buttonMultiply"
             android:text="\u22C5"
-            style="@style/KeypadRightButton"
+            style="@style/KeypadFunctionRightButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_rowWeight="1"
@@ -176,7 +177,7 @@
         <Button
             android:id="@+id/buttonBackspace"
             android:text="←"
-            style="@style/KeypadButton"
+            style="@style/KeypadFunctionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_columnSpan="2"
@@ -187,7 +188,7 @@
         <Button
             android:id="@+id/buttonDivide"
             android:text=":"
-            style="@style/KeypadRightButton"
+            style="@style/KeypadFunctionRightButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_rowWeight="1"

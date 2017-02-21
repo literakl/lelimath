@@ -49,8 +49,8 @@
 
     <style name="KeypadButton" parent="@style/Widget.AppCompat.Button">
         <item name="android:textSize">@dimen/calc_button_text</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:background">@drawable/blue_button</item>
+        <item name="android:textColor">@color/calc_digit</item>
+        <item name="android:background">@drawable/blue_button_light</item>
         <item name="android:layout_marginLeft">@dimen/calc_small_margin</item>
         <item name="android:layout_marginBottom">@dimen/calc_small_margin</item>
 <!--
@@ -64,7 +64,12 @@
         <item name="android:layout_marginLeft">@dimen/calc_big_margin</item>
     </style>
 
-    <style name="KeypadRightButton" parent="@style/KeypadButton">
+    <style name="KeypadFunctionButton" parent="@style/KeypadButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/blue_button_dark</item>
+    </style>
+
+    <style name="KeypadFunctionRightButton" parent="@style/KeypadFunctionButton">
         <item name="android:layout_marginRight">@dimen/calc_big_margin</item>
     </style>
 

@@ -7,6 +7,9 @@
     <color name="tile_solved">#00ff00</color>
 
     <color name="colorTitleText">#ffffffff</color>
+    <color name="calc_digit">#303F9F</color>
+
+    <color name="bg_calc">#ECEDF7</color>
 
     <color name="gray_35">#ff232323</color>
     <color name="gray_46">#ff2e2e2e</color>
