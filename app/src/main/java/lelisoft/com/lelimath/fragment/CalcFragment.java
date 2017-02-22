@@ -247,7 +247,7 @@ public class CalcFragment extends LeliGameFragment {
         } else {
             SpannableString styledString = new SpannableString(input);
             @SuppressWarnings("deprecation")
-            int color = getResources().getColor(R.color.colorPrimary);
+            int color = getResources().getColor(R.color.calc_digit);
             styledString.setSpan(new ForegroundColorSpan(color), 0, input.length(), 0);
             sb.append(styledString);
         }
