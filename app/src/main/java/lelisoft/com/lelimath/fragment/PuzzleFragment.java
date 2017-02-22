@@ -112,8 +112,7 @@ public class PuzzleFragment extends LeliGameFragment {
             startRecordingSpentTime();
 
             if (view == selectedButton) {
-//                selectedButton.setSelected(false);
-                currentButton.setBackgroundResource((currentTile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
+                selectedButton.setSelected(false);
                 selectedButton = null;
                 LeliMathApp.getInstance().playSound(R.raw.tap);
             } else {
@@ -126,8 +125,7 @@ public class PuzzleFragment extends LeliGameFragment {
                     }
                 } else {
                     selectedButton = currentButton;
-//                    selectedButton.setSelected(true);
-                    currentButton.setBackgroundResource(R.drawable.bg_tile_selected);
+                    selectedButton.setSelected(true);
                     LeliMathApp.getInstance().playSound(R.raw.tap);
                 }
             }
@@ -142,7 +140,7 @@ public class PuzzleFragment extends LeliGameFragment {
             }
             LeliMathApp.getInstance().playSound(R.raw.incorrect);
 
-            setTileStyle(selectedTile, selectedButton);
+            selectedButton.setSelected(false);
             selectedButton.startAnimation(shake);
             selectedButton = null;
             currentButton.startAnimation(shake);
@@ -267,7 +265,6 @@ public class PuzzleFragment extends LeliGameFragment {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @NonNull
     private AppCompatButton inflateButton(Tile tile, LayoutInflater inflater) {
         AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.tmpl_puzzle_tile, puzzleGrid, false);
@@ -278,6 +275,7 @@ public class PuzzleFragment extends LeliGameFragment {
         return button;
     }
 
+    @SuppressWarnings("deprecation")
     private void setTileStyle(Tile tile, AppCompatButton button) {
         if (tile.getFormula() != null) {
             button.setBackgroundResource(R.drawable.bg_dark_blue_button);

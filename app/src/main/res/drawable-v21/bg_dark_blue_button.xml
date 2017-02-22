@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ripple
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="?android:colorControlHighlight">
-    <item android:drawable="@drawable/ic_dark_blue_button_normal"/>
+
+    <item>
+        <selector>
+            <item android:state_selected="true" android:drawable="@drawable/ic_pink_button_normal"/>
+            <item android:drawable="@drawable/ic_dark_blue_button_normal"/>
+        </selector>
+    </item>
 </ripple>
