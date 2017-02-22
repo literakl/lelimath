@@ -142,7 +142,7 @@ public class PuzzleFragment extends LeliGameFragment {
             }
             LeliMathApp.getInstance().playSound(R.raw.incorrect);
 
-            selectedButton.setBackgroundResource((selectedTile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
+            setTileStyle(selectedTile, selectedButton);
             selectedButton.startAnimation(shake);
             selectedButton = null;
             currentButton.startAnimation(shake);
@@ -267,14 +267,28 @@ public class PuzzleFragment extends LeliGameFragment {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @NonNull
     private AppCompatButton inflateButton(Tile tile, LayoutInflater inflater) {
         AppCompatButton button = (AppCompatButton) inflater.inflate(R.layout.tmpl_puzzle_tile, puzzleGrid, false);
-        button.setBackgroundResource((tile.getFormula() != null) ? R.drawable.bg_tile_formula : R.drawable.bg_tile_result);
+        setTileStyle(tile, button);
         button.setOnClickListener(clickHandler);
         button.setText(tile.getText());
         button.setTag(R.id.button_tile, tile);
         return button;
+    }
+
+    private void setTileStyle(Tile tile, AppCompatButton button) {
+        if (tile.getFormula() != null) {
+            button.setBackgroundResource(R.drawable.bg_dark_blue_button);
+            int color  = getResources().getColor(R.color.white);
+            button.setTextColor(color);
+        }
+        else {
+            button.setBackgroundResource(R.drawable.bg_light_blue_button);
+            int color  = getResources().getColor(R.color.calc_digit);
+            button.setTextColor(color);
+        }
     }
 
     public void setLogic(PuzzleLogic logic) {

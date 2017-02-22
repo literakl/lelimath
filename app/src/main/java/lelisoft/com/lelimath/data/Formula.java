@@ -3,6 +3,7 @@ package lelisoft.com.lelimath.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.Solver;
 
 /**
