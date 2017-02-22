@@ -37,36 +37,55 @@
     </style>
 
     <style name="Formula">
-        <!--<item name="android:background">@color/gray_215</item>-->
+        <item name="android:textSize">@dimen/calc_button_text</item>
+        <item name="android:textColor">@color/calc_digit</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/ic_lcd_display</item>
+        <item name="android:layout_marginTop">@dimen/calc_big_margin</item>
+        <item name="android:layout_marginBottom">@dimen/calc_superbig_margin</item>
+        <item name="android:layout_marginLeft">@dimen/calc_big_margin</item>
+        <item name="android:layout_marginRight">@dimen/calc_big_margin</item>
+    </style>
+
+    <style name="KeypadButton" parent="@style/Widget.AppCompat.Button">
+        <item name="android:textSize">@dimen/calc_button_text</item>
+        <item name="android:textColor">@color/calc_digit</item>
+        <item name="android:background">@drawable/bg_light_blue_button</item>
+        <item name="android:layout_marginLeft">@dimen/calc_small_margin</item>
+        <item name="android:layout_marginBottom">@dimen/calc_small_margin</item>
+<!--
+        <item name="android:padding">0dp</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:minWidth">44dp</item>
+-->
+    </style>
+
+    <style name="KeypadLeftButton" parent="@style/KeypadButton">
+        <item name="android:layout_marginLeft">@dimen/calc_big_margin</item>
+    </style>
+
+    <style name="KeypadFunctionButton" parent="@style/KeypadButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/bg_dark_blue_button</item>
+    </style>
+
+    <style name="KeypadFunctionRightButton" parent="@style/KeypadFunctionButton">
+        <item name="android:layout_marginRight">@dimen/calc_big_margin</item>
+    </style>
+
+    <style name="KeypadNextButton" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/ic_pink_button_normal</item>
+        <item name="android:textSize">@dimen/calc_button_text</item>
+        <item name="android:layout_marginTop">@dimen/calc_big_margin</item>
+        <item name="android:layout_marginBottom">@dimen/calc_big_margin</item>
+        <item name="android:layout_marginLeft">@dimen/calc_big_margin</item>
+        <item name="android:layout_marginRight">@dimen/calc_big_margin</item>
     </style>
 
     <style name="PuzzleTile" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:textSize">@dimen/text_size_xlarge</item>
         <item name="android:textColor">@color/gray_79</item>
-    </style>
-
-    <style name="KeypadButton" parent="@style/Widget.AppCompat.Button.Borderless">
-        <item name="android:textSize">@dimen/keypad_button_text</item>
-        <item name="android:textColor">@color/gray_79</item>
-        <!--<item name="android:padding">10.0dip</item>-->
-    </style>
-
-    <style name="KeypadFunctionButton" parent="@style/KeypadButton">
-        <item name="android:textSize">@dimen/text_size_xlarge</item>
-        <item name="android:textColor">@color/gray_79</item>
-    </style>
-
-    <style name="FormulaValue" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">@dimen/keypad_button_text</item>
-        <item name="android:textColor">@color/gray_79</item>
-        <item name="android:gravity">center</item>
-    </style>
-
-    <style name="FormulaUnknownValue" parent="@style/FormulaValue">
-        <item name="android:background">@drawable/bg_unknown_box</item>
-    </style>
-
-    <style name="FormulaEqualSign" parent="FormulaValue">
+        <!--<item name="android:background">@drawable/blue_button</item>-->
     </style>
 
     <style name="PlayRecordHeader" parent="@style/Base.TextAppearance.AppCompat.Caption">

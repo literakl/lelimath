@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +53,7 @@ public class CalcFragment extends LeliGameFragment {
     int formulaPosition = 0;
     CalcLogic logic;
     Play play;
+    int unknownMaxLength;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         log.debug("onCreateView()");
@@ -79,6 +82,7 @@ public class CalcFragment extends LeliGameFragment {
         activity = getActivity();
         shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake_anim);
         mProgress = (DonutProgress) activity.findViewById(R.id.progressBar);
+        unknown = (TextView) activity.findViewById(R.id.assignment);
 
         clickHandler = new HandleClick();
         attachClickListener();
@@ -118,22 +122,22 @@ public class CalcFragment extends LeliGameFragment {
         startRecordingSpentTime();
         if (formula.getUnknown() != FormulaPart.OPERATOR) {
             formula.append(digit);
-            unknown.append(digit);
+            displayFormula();
         }
     }
 
     void deleteClicked() {
         log.debug("deleteClicked()");
         formula.undoAppend();
-        unknown.setText(formula.getUserInput());
+        displayFormula();
     }
 
     void operatorClicked(Operator operator) {
         if (formula.getUnknown() == FormulaPart.OPERATOR) {
             log.debug("operatorClicked(" + operator + ")");
-            formula.setUserEntry(operator.toString());
-            unknown.setText(operator.toString());
             startRecordingSpentTime();
+            formula.setUserEntry(operator.toString());
+            displayFormula();
         }
     }
 
@@ -167,8 +171,8 @@ public class CalcFragment extends LeliGameFragment {
             LeliMathApp.getInstance().playSound(R.raw.incorrect);
 
             unknown.startAnimation(shake);
-            unknown.setText("");
             formula.clear();
+            displayFormula();
         }
     }
 
@@ -202,28 +206,51 @@ public class CalcFragment extends LeliGameFragment {
 
     @SuppressLint("SetTextI18n")
     protected void displayFormula() {
-        TextView view = getUnknownWidget(formula);
-        LinearLayout parent = (LinearLayout) view.getParent();
-        if (unknown == null) {
-            replaceView((TextView) parent.getChildAt(4), R.layout.tmpl_value, parent);
-        } else if (unknown.getId() != view.getId()) {
-            replaceView(unknown, R.layout.tmpl_value, parent);
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        if (formula.getUnknown() == FormulaPart.FIRST_OPERAND) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getFirstOperand().toString());
+        }
+        sb.append(" ");
+
+        if (formula.getUnknown() == FormulaPart.OPERATOR) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getOperator().toString());
+        }
+        sb.append(" ");
+
+        if (formula.getUnknown() == FormulaPart.SECOND_OPERAND) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getSecondOperand().toString());
+        }
+        sb.append(" = ");
+
+        if (formula.getUnknown() == FormulaPart.RESULT) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getResult().toString());
         }
 
-        unknown = replaceView(view, R.layout.tmpl_unknown_value, parent);
-        unknown.setText(formula.getUserInput());
+        unknown.setText(sb);
+    }
 
-        if (unknown.getId() != R.id.operandFirst) {
-            ((TextView) activity.findViewById(R.id.operandFirst)).setText(formula.getFirstOperand().toString());
-        }
-        if (unknown.getId() != R.id.operator) {
-            ((TextView) activity.findViewById(R.id.operator)).setText(formula.getOperator().toString());
-        }
-        if (unknown.getId() != R.id.operandSecond) {
-            ((TextView) activity.findViewById(R.id.operandSecond)).setText(formula.getSecondOperand().toString());
-        }
-        if (unknown.getId() != R.id.result) {
-            ((TextView) activity.findViewById(R.id.result)).setText(formula.getResult().toString());
+    private void appendUnknown(SpannableStringBuilder sb) {
+        String input = formula.getUserInput();
+        if (input.length() == 0) {
+            SpannableString styledString = new SpannableString("?");
+            @SuppressWarnings("deprecation")
+            int color = getResources().getColor(R.color.colorAccent);
+            styledString.setSpan(new ForegroundColorSpan(color), 0, 1, 0);
+            sb.append(styledString);
+        } else {
+            SpannableString styledString = new SpannableString(input);
+            @SuppressWarnings("deprecation")
+            int color = getResources().getColor(R.color.calc_digit);
+            styledString.setSpan(new ForegroundColorSpan(color), 0, input.length(), 0);
+            sb.append(styledString);
         }
     }
 
@@ -246,43 +273,7 @@ public class CalcFragment extends LeliGameFragment {
 
     private void prepareNewFormula() {
         formula = formulas.get(formulaPosition++);
-    }
-
-    private TextView replaceView(TextView view, int template, LinearLayout parent) {
-        parent.removeView(view);
-        TextView textView = (TextView) activity.getLayoutInflater().inflate(template, null);
-        textView.setId(view.getId());
-        int index = getWidgetPosition(view.getId());
-        parent.addView(textView, index, view.getLayoutParams());
-        return textView;
-    }
-
-    private int getWidgetPosition(int rid) {
-        switch (rid) {
-            case R.id.operandFirst:
-                return 0;
-            case R.id.operator:
-                return 1;
-            case R.id.operandSecond:
-                return 2;
-            case R.id.result:
-                return 4;
-            default:
-                return -1;
-        }
-    }
-
-    private TextView getUnknownWidget(Formula formula) {
-        switch (formula.getUnknown()) {
-            case FIRST_OPERAND:
-                return (TextView) activity.findViewById(R.id.operandFirst);
-            case OPERATOR:
-                return (TextView) activity.findViewById(R.id.operator);
-            case SECOND_OPERAND:
-                return (TextView) activity.findViewById(R.id.operandSecond);
-            default:
-                return (TextView) activity.findViewById(R.id.result);
-        }
+        unknownMaxLength = formula.getUnknownLength();
     }
 
     @Override

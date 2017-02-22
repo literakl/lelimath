@@ -89,6 +89,22 @@ public class Formula implements Parcelable {
     }
 
     /**
+     * @return number of characters to display unknown
+     */
+    public int getUnknownLength() {
+        switch (unknown){
+            case FIRST_OPERAND:
+                return Misc.getNumberLength(firstOperand);
+            case OPERATOR:
+                return 1;
+            case SECOND_OPERAND:
+                return Misc.getNumberLength(secondOperand);
+            default:
+                return Misc.getNumberLength(result);
+        }
+    }
+
+    /**
      * @return true if user solved the formula correctly
      */
     @SuppressWarnings("all")
@@ -120,7 +136,6 @@ public class Formula implements Parcelable {
         return getUnknownValue().equals(userInput);
     }
 
-    @SuppressWarnings("all")
     String solve() {
         switch (unknown){
             case OPERATOR: {

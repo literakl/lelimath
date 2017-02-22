@@ -76,8 +76,7 @@ public class Misc {
     }
 
     @SuppressWarnings("unused")
-    public static String getDensityName(Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
+    public static String getDensityName(float density) {
         if (density >= 4.0) {
             return "xxxhdpi";
         }
@@ -321,6 +320,20 @@ public class Misc {
         }
 
         return time > today && time < tomorrow;
+    }
+
+    // todo handle number formatting according current locale
+    public static int getNumberLength(int number) {
+        if (number == 0) {
+            return 1;
+        }
+        int size = 0;
+        if (number < 0) {
+            size += 1;
+            number *= -1;
+        }
+        size += (int)(Math.log10(number) + 1);
+        return size;
     }
 
     public static Random getRandom() {
