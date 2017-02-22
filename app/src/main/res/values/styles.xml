@@ -40,7 +40,7 @@
         <item name="android:textSize">@dimen/calc_button_text</item>
         <item name="android:textColor">@color/calc_digit</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/lcd</item>
+        <item name="android:background">@drawable/ic_lcd_display</item>
         <item name="android:layout_marginTop">@dimen/calc_big_margin</item>
         <item name="android:layout_marginBottom">@dimen/calc_superbig_margin</item>
         <item name="android:layout_marginLeft">@dimen/calc_big_margin</item>
@@ -50,7 +50,7 @@
     <style name="KeypadButton" parent="@style/Widget.AppCompat.Button">
         <item name="android:textSize">@dimen/calc_button_text</item>
         <item name="android:textColor">@color/calc_digit</item>
-        <item name="android:background">@drawable/blue_button_light</item>
+        <item name="android:background">@drawable/bg_light_blue_button</item>
         <item name="android:layout_marginLeft">@dimen/calc_small_margin</item>
         <item name="android:layout_marginBottom">@dimen/calc_small_margin</item>
 <!--
@@ -66,7 +66,7 @@
 
     <style name="KeypadFunctionButton" parent="@style/KeypadButton">
         <item name="android:textColor">@color/white</item>
-        <item name="android:background">@drawable/blue_button_dark</item>
+        <item name="android:background">@drawable/bg_dark_blue_button</item>
     </style>
 
     <style name="KeypadFunctionRightButton" parent="@style/KeypadFunctionButton">
@@ -74,7 +74,7 @@
     </style>
 
     <style name="KeypadNextButton" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:background">@drawable/tl_next</item>
+        <item name="android:background">@drawable/ic_pink_button_normal</item>
         <item name="android:textSize">@dimen/calc_button_text</item>
         <item name="android:layout_marginTop">@dimen/calc_big_margin</item>
         <item name="android:layout_marginBottom">@dimen/calc_big_margin</item>
