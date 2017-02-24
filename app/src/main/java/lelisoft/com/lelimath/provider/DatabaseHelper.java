@@ -132,6 +132,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 Dao<PlayRecord, Integer> dao = getPlayRecordDao();
                 dao.executeRaw("ALTER TABLE `play_record` ADD COLUMN third INTEGER");
                 dao.executeRaw("ALTER TABLE `play_record` ADD COLUMN operator2 VARCHAR");
+                dao.updateRaw("UPDATE `play_record` SET operator = '*' WHERE operator = '⋅'");
             } catch (SQLException e) {
                 log.error("Error upgrading a database from version 7!", e);
                 Crashlytics.logException(e);

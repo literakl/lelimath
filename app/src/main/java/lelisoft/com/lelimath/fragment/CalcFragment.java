@@ -131,8 +131,9 @@ public class CalcFragment extends LeliGameFragment {
     void operatorClicked(Operator operator) {
         if (formula.getUnknown() == FormulaPart.OPERATOR) {
             log.debug("operatorClicked(" + operator + ")");
-            formula.setUserEntry(operator.toString());
-            unknown.setText(operator.toString());
+            String s = operator.toString();
+            formula.setUserEntry(s);
+            unknown.setText(s);
             startRecordingSpentTime();
         }
     }

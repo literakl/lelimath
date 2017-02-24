@@ -75,55 +75,50 @@
 
     <Button
         android:id="@+id/buttonPlus"
-        android:text="+"
+        android:text="@string/symbol_PLUS"
         style="@style/KeypadFunctionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
+        app:layout_columnWeight="1"/>
 
     <Button
         android:id="@+id/buttonMinus"
-        android:text="-"
+        android:text="@string/symbol_MINUS"
         style="@style/KeypadFunctionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
+        app:layout_columnWeight="1"/>
 
     <Button
         android:id="@+id/buttonBackspace"
-        android:text="←"
+        android:text="@string/symbol_Backspace"
         style="@style/KeypadFunctionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_gravity="fill_vertical"
         app:layout_rowSpan="2"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
+        app:layout_columnWeight="1" />
 
     <Button
         android:id="@+id/buttonMultiply"
-        android:text="\u22C5"
+        android:text="@string/symbol_MULTIPLY"
         style="@style/KeypadFunctionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
+        app:layout_columnWeight="1" />
 
     <Button
         android:id="@+id/buttonDivide"
-        android:text=":"
+        android:text="@string/symbol_DIVIDE"
         style="@style/KeypadFunctionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_rowWeight="0.5"
-        app:layout_columnWeight="1"
-        tools:ignore="HardcodedText" />
+        app:layout_columnWeight="1" />
 
     <Button
         android:id="@+id/digit7"
