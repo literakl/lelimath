@@ -36,7 +36,7 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
         log.debug("deserialize starts");
         FormulaDefinition definition = new FormulaDefinition();
         JsonObject jsonObject = json.getAsJsonObject();
-        boolean ascendingOrder = true;
+        boolean checkAscendingOrder = true;
 
         JsonPrimitive p = jsonObject.getAsJsonPrimitive("count");
         if (p == null) {
@@ -50,7 +50,7 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             definition.setOrder(SequenceOrder.RANDOM); // default
         } else {
             definition.setOrder(SequenceOrder.valueOf(p.getAsString()));
-            ascendingOrder = definition.getOrder() != SequenceOrder.FIXED_PAIRS;
+            checkAscendingOrder = definition.getOrder() != SequenceOrder.FIXED_PAIRS;
         }
 
         p = jsonObject.getAsJsonPrimitive("sequence");
@@ -106,9 +106,9 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             for (JsonElement jsonElement : array) {
                 jsonObject = (JsonObject) jsonElement;
 
-                Values firstArg = getValues(jsonObject, "first", ascendingOrder);
-                Values secondArg = getValues(jsonObject, "second", ascendingOrder);
-                Values result = getValues(jsonObject, "result", ascendingOrder);
+                Values firstArg = getValues(jsonObject, "first", checkAscendingOrder);
+                Values secondArg = getValues(jsonObject, "second", checkAscendingOrder);
+                Values result = getValues(jsonObject, "result", checkAscendingOrder);
 
                 JsonArray opArray = jsonObject.getAsJsonArray("operator");
                 for (JsonElement element : opArray) {
