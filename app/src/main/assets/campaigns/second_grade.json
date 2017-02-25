@@ -1,3 +1,24 @@
 [
-
+  {
+    "id": "2ND_XXX",
+    "picture": "bgt_squares",
+    "items": [
+      {
+        "id": "10",
+        "definition": {
+          "count": 4,
+          "order": "ASCENDING",
+          "sequence": "FO",
+          "operators": [
+            {
+              "operator": ["+"],
+              "first": "1-4",
+              "second": "1",
+              "result": "2-5"
+            }
+          ]
+        }
+      }
+    ]
+  }
 ]

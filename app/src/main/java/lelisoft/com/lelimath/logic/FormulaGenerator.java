@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import lelisoft.com.lelimath.data.Expression;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.FormulaPart;
-import lelisoft.com.lelimath.data.OperatorDefinition;
 import lelisoft.com.lelimath.data.SequenceOrder;
 import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.helpers.Misc;
@@ -47,13 +47,55 @@ class FormulaGenerator {
 
     private Formula generateRandomFormula(FormulaDefinition definition) {
         log.trace("Starting search for formula using {}", definition);
-        OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
+
+        Expression expression = getExpression(definition.getExpressions());
+        if (expression.getOperator2() != null) {
+            return generateComplexRandomFormula(definition);
+        }
 
         FormulaPart unknown = getUnknown(definition.getUnknowns());
         Pair<FormulaPart, FormulaPart> parts = findRemainingFormulaParts(unknown);
 
-        Values valuesA = getValues(operatorDefinition, parts.first);
-        Values valuesB = getValues(operatorDefinition, parts.second);
+        Values valuesA = getValues(expression, parts.first);
+        Values valuesB = getValues(expression, parts.second);
+        for (int i = 0; i < 100; i++) {
+            int valueA = getValue(valuesA, parts.first);
+            for (int j = 0; j < 10; j++) {
+                if (j > 0 && superRandomMode) {
+                    valueA = getValue(valuesA, parts.first);
+                }
+                int valueB = getValue(valuesB, parts.second);
+
+                Formula found = Solver.solve(expression.getOperator1(), parts.first, valueA, parts.second, valueB);
+                if (found == null) {
+                    continue;
+                }
+
+                boolean valid = checkSolution(found, parts.first, parts.second, expression);
+                if (log.isTraceEnabled()) {
+                    log.trace("{}: {} {} {} = {}", valid, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getResult());
+                }
+
+                if (valid) {
+                    found.setUnknown(unknown);
+                    log.debug("Generated formula {}", found);
+                    return found;
+                }
+            }
+        }
+
+        log.warn("No formula found for {} using operatorDefinition {}", definition, expression.getOperator1());
+        return null;
+    }
+
+    private Formula generateComplexRandomFormula(FormulaDefinition definition) {
+        Expression expression = getExpression(definition.getExpressions());
+        FormulaPart unknown = getUnknown(definition.getUnknowns());
+        Values valuesA = expression.getFirstOperand();
+        Values valuesB = expression.getSecondOperand();
+        Values valuesC = expression.getThirdOperand();
+        Values result = expression.getResult();
+/*
         for (int i = 0; i < 100; i++) {
             int valueA = getValue(valuesA, parts.first);
             for (int j = 0; j < 10; j++) {
@@ -79,8 +121,7 @@ class FormulaGenerator {
                 }
             }
         }
-
-        log.warn("No formula found for {} using operatorDefinition {}", definition, operatorDefinition.getOperator());
+*/
         return null;
     }
 
@@ -126,22 +167,22 @@ class FormulaGenerator {
 
     private ArrayList<Formula> generateFixedPairsFormulas(FormulaDefinition definition, int count) {
         log.trace("Starting search for formulas using {}", definition);
-        OperatorDefinition operatorDefinition = getOperator(definition.getOperatorDefinitions());
+        Expression expression = getExpression(definition.getExpressions());
         FormulaPart unknown = getUnknown(definition.getUnknowns());
         ArrayList<Formula> list = new ArrayList<>(count);
 
-        Values valuesA = getValues(operatorDefinition, FormulaPart.FIRST_OPERAND);
-        Values valuesB = getValues(operatorDefinition, FormulaPart.SECOND_OPERAND);
+        Values valuesA = getValues(expression, FormulaPart.FIRST_OPERAND);
+        Values valuesB = getValues(expression, FormulaPart.SECOND_OPERAND);
         for (int i = 0; i < count; i++) {
             int valueA = valuesA.getValueAt(i);
             int valueB = valuesB.getValueAt(i);
-            Formula found = Solver.solve(operatorDefinition.getOperator(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
+            Formula found = Solver.solve(expression.getOperator1(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
             if (found == null) {
-                log.warn("Failed to generate formula for {} {} {} {} {}!", operatorDefinition.getOperator(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
+                log.warn("Failed to generate formula for {} {} {} {} {}!", expression.getOperator1(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
                 continue;
             }
 
-            boolean valid = checkSolution(found, FormulaPart.FIRST_OPERAND, FormulaPart.SECOND_OPERAND, operatorDefinition);
+            boolean valid = checkSolution(found, FormulaPart.FIRST_OPERAND, FormulaPart.SECOND_OPERAND, expression);
             if (log.isTraceEnabled()) {
                 log.trace("{}: {} {} {} = {}", valid, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getResult());
             }
@@ -189,34 +230,34 @@ class FormulaGenerator {
      * @param formula calculated Formula
      * @param partA first part of formula
      * @param partB second part of formula
-     * @param definition formula definition
+     * @param expression formula definition
      * @return true if formula is valid
      */
-    private static boolean checkSolution(Formula formula, FormulaPart partA, FormulaPart partB, OperatorDefinition definition) {
+    private static boolean checkSolution(Formula formula, FormulaPart partA, FormulaPart partB, Expression expression) {
         Values values;
         int value;
         if (partA == FormulaPart.FIRST_OPERAND) {
             if (partB == FormulaPart.SECOND_OPERAND) {
-                values = definition.getResult();
+                values = expression.getResult();
                 value = formula.getResult();
             } else {
-                values = definition.getSecondOperand();
+                values = expression.getSecondOperand();
                 value = formula.getSecondOperand();
             }
         } else if (partA == FormulaPart.SECOND_OPERAND) {
             if (partB == FormulaPart.FIRST_OPERAND) {
-                values = definition.getResult();
+                values = expression.getResult();
                 value = formula.getResult();
             } else {
-                values = definition.getFirstOperand();
+                values = expression.getFirstOperand();
                 value = formula.getFirstOperand();
             }
         } else {
             if (partB == FormulaPart.FIRST_OPERAND) {
-                values = definition.getSecondOperand();
+                values = expression.getSecondOperand();
                 value = formula.getSecondOperand();
             } else {
-                values = definition.getFirstOperand();
+                values = expression.getFirstOperand();
                 value = formula.getFirstOperand();
             }
         }
@@ -245,14 +286,21 @@ class FormulaGenerator {
         return new Pair<>(FormulaPart.FIRST_OPERAND, FormulaPart.RESULT);
     }
 
-    private static OperatorDefinition getOperator(List<OperatorDefinition> operators) {
-        if (operators == null || operators.isEmpty()) {
-            return new OperatorDefinition(Operator.PLUS, Values.DEMO, Values.DEMO, Values.DEMO);
+    private static Expression getOperator(List<Expression> expressions) {
+        if (expressions == null || expressions.isEmpty()) {
+            return new Expression(Values.DEMO, Operator.PLUS, Values.DEMO, Values.DEMO);
         }
-        if (operators.size() == 1) {
-            return operators.get(0);
+        if (expressions.size() == 1) {
+            return expressions.get(0);
         }
-        return operators.get(random.nextInt(operators.size()));
+        return expressions.get(random.nextInt(expressions.size()));
+    }
+
+    private static Expression getExpression(List<Expression> expressions) {
+        if (expressions.size() == 1) {
+            return expressions.get(0);
+        }
+        return expressions.get(random.nextInt(expressions.size()));
     }
 
     private static FormulaPart getUnknown(List<FormulaPart> unknowns) {
@@ -265,17 +313,20 @@ class FormulaGenerator {
         return unknowns.get(random.nextInt(unknowns.size()));
     }
 
-    private static Values getValues(OperatorDefinition definition, FormulaPart part) {
+    private static Values getValues(Expression expression, FormulaPart part) {
         Values values;
         switch (part) {
             case FIRST_OPERAND:
-                values = definition.getFirstOperand();
+                values = expression.getFirstOperand();
                 break;
             case SECOND_OPERAND:
-                values = definition.getSecondOperand();
+                values = expression.getSecondOperand();
+                break;
+            case THIRD_OPERAND:
+                values = expression.getThirdOperand();
                 break;
             default:
-                values = definition.getResult();
+                values = expression.getResult();
         }
 
         if (values == Values.UNDEFINED) {

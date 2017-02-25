@@ -12,9 +12,7 @@ import java.util.List;
 public class FormulaDefinition implements Serializable {
     /** Number of questions */
     private int count;
-    /** Allowed formula's operators and their definition. If unset a demo PLUS 0-9 will be used */
-    private List<OperatorDefinition> operatorDefinitions;
-    /** Allowed expressions. Alternative configuration to operatorDefinitions */
+    /** Allowed expressions and their definition. If unset a demo PLUS 0-9 will be used */
     private List<Expression> expressions;
     /** allowed formula's unknowns. If unset the RESULT will be used */
     private List<FormulaPart> unknowns;
@@ -31,30 +29,6 @@ public class FormulaDefinition implements Serializable {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public void setOperatorDefinitions(List<OperatorDefinition> operatorDefinitions) {
-        this.operatorDefinitions = operatorDefinitions;
-    }
-
-    public FormulaDefinition addOperator(OperatorDefinition operator) {
-        if (operatorDefinitions == null) {
-            operatorDefinitions = Collections.singletonList(operator);
-            return this;
-        }
-        if (operatorDefinitions.size() == 1) {
-            List<OperatorDefinition> list = new ArrayList<>(3);
-            list.add(operatorDefinitions.get(0));
-            list.add(operator);
-            operatorDefinitions = list;
-            return this;
-        }
-        operatorDefinitions.add(operator);
-        return this;
-    }
-
-    public List<OperatorDefinition> getOperatorDefinitions() {
-        return operatorDefinitions;
     }
 
     @SuppressWarnings("unused")
@@ -146,7 +120,6 @@ public class FormulaDefinition implements Serializable {
                 "games=" + games +
                 ", unknowns=" + unknowns +
                 ", count=" + count +
-                ", operatorDefinitions=" + operatorDefinitions +
                 ", expressions=" + expressions +
                 ", order=" + order +
                 ", sequence=" + sequence +
