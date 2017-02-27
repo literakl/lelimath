@@ -25,6 +25,11 @@ public class Expression implements Serializable {
     }
 
     @SuppressWarnings("unused")
+    public Expression(Operator operator) {
+        this.operator1 = operator;
+    }
+
+    @SuppressWarnings("unused")
     public Expression(Values firstOperand, Operator operator, Values secondOperand, Values result) {
         this.operator1 = operator;
         this.firstOperand = firstOperand;
@@ -47,7 +52,17 @@ public class Expression implements Serializable {
     }
 
     @SuppressWarnings("unused")
+    public Operator getOperator() {
+        return operator1;
+    }
+
+    @SuppressWarnings("unused")
     public void setOperator1(Operator operator) {
+        this.operator1 = operator;
+    }
+
+    @SuppressWarnings("unused")
+    public void setOperator(Operator operator) {
         this.operator1 = operator;
     }
 

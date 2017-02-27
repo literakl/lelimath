@@ -9,7 +9,7 @@
           "count": 4,
           "order": "ASCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "1-4",

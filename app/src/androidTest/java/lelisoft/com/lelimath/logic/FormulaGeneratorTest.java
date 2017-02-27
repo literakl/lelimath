@@ -11,7 +11,7 @@ import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Operator;
-import lelisoft.com.lelimath.data.OperatorDefinition;
+import lelisoft.com.lelimath.data.Expression;
 import lelisoft.com.lelimath.data.SequenceOrder;
 import lelisoft.com.lelimath.data.Values;
 
@@ -28,8 +28,8 @@ public class FormulaGeneratorTest extends TestCase {
         Values result = Values.fromList(10, 11, 12);
 
         FormulaDefinition definition = new FormulaDefinition();
-        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
-        definition.addOperator(operatorDefinition);
+        Expression expression = new Expression(left, Operator.PLUS, right, result);
+        definition.addExpression(expression);
         definition.addUnknown(FormulaPart.RESULT);
 
         long start = System.currentTimeMillis();
@@ -53,8 +53,8 @@ public class FormulaGeneratorTest extends TestCase {
         Values result = Values.fromRange(0, 10);
 
         FormulaDefinition definition = new FormulaDefinition();
-        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
-        definition.addOperator(operatorDefinition);
+        Expression expression = new Expression(left,Operator.PLUS,  right, result);
+        definition.addExpression(expression);
         definition.addUnknown(FormulaPart.RESULT);
 
         long start = System.currentTimeMillis();
@@ -76,8 +76,8 @@ public class FormulaGeneratorTest extends TestCase {
         Values result = Values.fromRange(0, 10);
 
         FormulaDefinition definition = new FormulaDefinition();
-        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.MINUS, left, right, result);
-        definition.addOperator(operatorDefinition);
+        Expression expression = new Expression(left, Operator.MINUS, right, result);
+        definition.addExpression(expression);
         definition.addUnknown(FormulaPart.RESULT);
 
         long start = System.currentTimeMillis();
@@ -99,8 +99,8 @@ public class FormulaGeneratorTest extends TestCase {
         Values result = Values.fromRange(2, 20);
 
         FormulaDefinition definition = new FormulaDefinition();
-        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
-        definition.addOperator(operatorDefinition);
+        Expression expression = new Expression(left, Operator.PLUS, right, result);
+        definition.addExpression(expression);
         definition.addUnknown(FormulaPart.RESULT);
 
         long start = System.currentTimeMillis();

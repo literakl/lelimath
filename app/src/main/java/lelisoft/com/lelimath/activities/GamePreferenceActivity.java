@@ -136,7 +136,7 @@ public class GamePreferenceActivity extends PreferenceActivity implements
         Metrics.saveContentDisplayed("preferences", null);
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "ConstantConditions"})
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         log.debug("onPreferenceTreeClick(" + preference.getKey() + ")");

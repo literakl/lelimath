@@ -85,11 +85,14 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             Values thirdArg = getValues(jsonObject, "third");
             Values result = getValues(jsonObject, "result");
             p = jsonObject.getAsJsonPrimitive("operator1");
+            if (p == null) {
+                p = jsonObject.getAsJsonPrimitive("operator");
+            }
             Operator operator1 = Operator.getValue(p.getAsString());
+            Expression expression = new Expression(firstArg, operator1, secondArg, result);
+
             p = jsonObject.getAsJsonPrimitive("operator2");
             Operator operator2 = Operator.getValue(p.getAsString());
-
-            Expression expression = new Expression(firstArg, operator1, secondArg, result);
             expression.setOperator2(operator2);
             expression.setThirdOperand(thirdArg);
             definition.addExpression(expression);
@@ -100,17 +103,24 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
     }
 
     private Values getValues(JsonObject parent, String name) {
-        JsonObject object = parent.getAsJsonObject(name);
-        JsonPrimitive p = object.getAsJsonPrimitive("values");
-        String sValues = p.getAsString();
-        Values values = Values.parse(sValues, false);
-
-        p = object.getAsJsonPrimitive("order");
-        if (p == null) {
-            values.setOrder(SequenceOrder.RANDOM); // default
+        JsonElement element = parent.get(name);
+        if (element.isJsonPrimitive()) {
+            JsonPrimitive p = element.getAsJsonPrimitive();
+            String sValues = p.getAsString();
+            return Values.parse(sValues, false);
         } else {
-            values.setOrder(SequenceOrder.valueOf(p.getAsString()));
+            JsonObject object = element.getAsJsonObject();
+            JsonPrimitive p = object.getAsJsonPrimitive("values");
+            String sValues = p.getAsString();
+            Values values = Values.parse(sValues, false);
+
+            p = object.getAsJsonPrimitive("order");
+            if (p == null) {
+                values.setOrder(SequenceOrder.RANDOM); // default
+            } else {
+                values.setOrder(SequenceOrder.valueOf(p.getAsString()));
+            }
+            return values;
         }
-        return values;
     }
 }

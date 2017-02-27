@@ -9,7 +9,7 @@
           "count": 4,
           "order": "ASCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "1-4",
@@ -24,7 +24,7 @@
         "definition": {
           "count": 5,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "1-3",
@@ -40,7 +40,7 @@
           "count": 2,
           "order": "DESCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "1,2",
@@ -57,7 +57,7 @@
           "order": "DESCENDING",
           "sequence": "FO",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "1,2,3",
@@ -72,7 +72,7 @@
         "definition": {
           "count": 5,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "4,3,3,2,1",
@@ -89,7 +89,7 @@
           "order": "DESCENDING",
           "sequence": "FO",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "1-4",
@@ -104,7 +104,7 @@
         "definition": {
           "count": 4,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "3,4,3,2",
@@ -120,7 +120,7 @@
           "count": 6,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "1,3,2,3,1,4",
@@ -134,7 +134,7 @@
         "id": "90",
         "definition": {
           "count": 8,
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "1-4",
@@ -156,7 +156,7 @@
           "count": 5,
           "order": "DESCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "1-5",
@@ -171,7 +171,7 @@
         "definition": {
           "count": 6,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+", "-"],
               "first": "1-5",
@@ -187,7 +187,7 @@
           "count": 4,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "3",
@@ -202,7 +202,7 @@
         "definition": {
           "count": 6,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "3",
@@ -224,7 +224,7 @@
           "count": 5,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "4",
@@ -239,7 +239,7 @@
         "definition": {
           "count": 6,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "3,4",
@@ -253,7 +253,7 @@
         "id": "70",
         "definition": {
           "count": 6,
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "4",
@@ -281,7 +281,7 @@
           "count": 6,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "5",
@@ -297,7 +297,7 @@
           "count": 6,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "5,5,5,4,4,4",
@@ -311,7 +311,7 @@
         "id": "30",
         "definition": {
           "count": 4,
-          "operators": [
+          "expressions": [
             {
               "operator": ["+","-"],
               "first": "2,3",
@@ -326,7 +326,7 @@
         "definition": {
           "count": 6,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "3,4",
@@ -347,7 +347,7 @@
         "definition": {
           "count": 8,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "4,5",
@@ -369,7 +369,7 @@
           "count": 7,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "6",
@@ -385,7 +385,7 @@
           "count": 5,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "5,4,3,1,1",
@@ -399,7 +399,7 @@
         "id": "80",
         "definition": {
           "count": 6,
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "0-6",
@@ -422,7 +422,7 @@
           "order": "ASCENDING",
           "sequence": "SO",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "6",
@@ -436,7 +436,7 @@
         "id": "100",
         "definition": {
           "count": 10,
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "3-6",
@@ -458,7 +458,7 @@
           "count": 7,
           "order": "DESCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "0-6",
@@ -472,7 +472,7 @@
         "id": "20",
         "definition": {
           "count": 5,
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "4-6",
@@ -487,7 +487,7 @@
         "definition": {
           "count": 5,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "4-6",
@@ -502,7 +502,7 @@
         "definition": {
           "count": 9,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "7,6,5,7,6,5,7,6,5",
@@ -519,7 +519,7 @@
           "games": ["PZ"],
           "order": "DESCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "7",
@@ -533,7 +533,7 @@
         "id": "60",
         "definition": {
           "count": 12,
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "4-6",
@@ -553,7 +553,7 @@
         "id": "70",
         "definition": {
           "count": 8,
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "3-6",
@@ -581,7 +581,7 @@
           "count": 8,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "0-7",
@@ -596,7 +596,7 @@
         "definition": {
           "count": 6,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "4-8",
@@ -611,7 +611,7 @@
         "definition": {
           "count": 9,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "8,7,6,8,7,6,8,7,6",
@@ -627,7 +627,7 @@
           "count": 7,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "8",
@@ -643,7 +643,7 @@
           "count": 6,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "8,8,8,7,7,7",
@@ -659,7 +659,7 @@
           "count": 8,
           "order": "FIXED_PAIRS",
           "unknowns": ["SO"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "6,5,4,3,7,6,5,4",
@@ -674,7 +674,7 @@
         "definition": {
           "count": 8,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "3-6",
@@ -696,7 +696,7 @@
           "count": 6,
           "order": "FIXED_PAIRS",
           "unknowns": ["SO"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "5,6,7,4,5,4",
@@ -718,7 +718,7 @@
           "count": 9,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "0-8",
@@ -734,7 +734,7 @@
           "count": 9,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "9,8,7,9,8,7,9,8,7",
@@ -748,7 +748,7 @@
         "id": "30",
         "definition": {
           "count": 6,
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "6-9",
@@ -764,7 +764,7 @@
           "count": 6,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "9,9,9,8,8,8",
@@ -780,7 +780,7 @@
           "count": 8,
           "order": "FIXED_PAIRS",
           "unknowns": ["SO"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "8,7,6,5,9,8,9,8",
@@ -795,7 +795,7 @@
         "definition": {
           "count": 6,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "4-8",
@@ -817,7 +817,7 @@
           "count": 4,
           "order": "FIXED_PAIRS",
           "unknowns": ["SO"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "7,8,5,6",
@@ -839,7 +839,7 @@
           "count": 10,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "0-9",
@@ -855,7 +855,7 @@
           "count": 6,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "5,7,6,9,4,8",
@@ -870,7 +870,7 @@
         "definition": {
           "count": 12,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "10,9,8,10,9,8,10,9,8,10,9,8",
@@ -885,7 +885,7 @@
         "definition": {
           "count": 6,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "4-8",
@@ -908,7 +908,7 @@
           "order": "ASCENDING",
           "sequence": "FO",
           "unknowns": ["SO"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "6-9",
@@ -925,7 +925,7 @@
           "order": "ASCENDING",
           "sequence": "SO",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "10",
@@ -942,7 +942,7 @@
           "order": "DESCENDING",
           "sequence": "FO",
           "unknowns": ["SO"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "6-9",
@@ -959,7 +959,7 @@
           "order": "ASCENDING",
           "sequence": "SO",
           "unknowns": ["SO"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "10",
@@ -975,7 +975,7 @@
           "count": 10,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "10",
@@ -997,7 +997,7 @@
           "count": 5,
           "order": "ASCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "0-4",
@@ -1013,7 +1013,7 @@
           "count": 5,
           "order": "DESCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "1-5",
@@ -1032,7 +1032,7 @@
           ],
           "order": "ASCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "5-9",
@@ -1048,7 +1048,7 @@
           "count": 5,
           "order": "DESCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "6-10",
@@ -1065,7 +1065,7 @@
           "games": ["PZ"],
           "order": "DESCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "2-10",
@@ -1081,7 +1081,7 @@
           "count": 5,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "5",
@@ -1103,7 +1103,7 @@
           "count": 6,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "10",
@@ -1120,7 +1120,7 @@
           "order": "ASCENDING",
           "sequence": "FO",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "10-15",
@@ -1136,7 +1136,7 @@
           "count": 4,
           "order": "ASCENDING",
           "sequence": "FO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "10-13",
@@ -1153,7 +1153,7 @@
           "order": "DESCENDING",
           "sequence": "FO",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "10-14",
@@ -1168,7 +1168,7 @@
         "definition": {
           "count": 12,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "5,15,4,14,5,15,5,15,5,15,5,15",
@@ -1183,7 +1183,7 @@
         "definition": {
           "count": 12,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "3,13,1,11,2,12,1,11,4,14,1,11",
@@ -1199,7 +1199,7 @@
           "count": 8,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "15,14,14,13,15,14,15,14",
@@ -1213,7 +1213,7 @@
         "id": "80",
         "definition": {
           "count": 8,
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "11-15",
@@ -1228,7 +1228,7 @@
         "definition": {
           "count": 8,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "10-15",
@@ -1250,7 +1250,7 @@
           "count": 5,
           "order": "ASCENDING",
           "sequence": "SO",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "10",
@@ -1266,7 +1266,7 @@
           "count": 10,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "5,15,6,16,7,17,8,18,9,19",
@@ -1282,7 +1282,7 @@
           "count": 10,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "6,16,7,17,8,18,9,19,10,20",
@@ -1297,7 +1297,7 @@
         "definition": {
           "count": 6,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "6,16,7,17,8,18",
@@ -1312,7 +1312,7 @@
         "definition": {
           "count": 10,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "6,16,7,17,8,18,9,19,10,20",
@@ -1327,7 +1327,7 @@
         "definition": {
           "count": 4,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "9,10,15,18",
@@ -1342,7 +1342,7 @@
         "definition": {
           "count": 8,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "12-18",
@@ -1362,7 +1362,7 @@
         "id": "80",
         "definition": {
           "count": 8,
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "10-15",
@@ -1383,7 +1383,7 @@
         "definition": {
           "count": 8,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "8,18,7,17,8,18,10,20",
@@ -1399,7 +1399,7 @@
           "count": 8,
           "order": "FIXED_PAIRS",
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "5,15,9,19,5,15,9,19",
@@ -1414,7 +1414,7 @@
         "definition": {
           "count": 8,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "20",
@@ -1429,7 +1429,7 @@
         "definition": {
           "count": 6,
           "order": "FIXED_PAIRS",
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "10,20,10,20,10,20",
@@ -1444,7 +1444,7 @@
         "definition": {
           "count": 8,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["-"],
               "first": "20",
@@ -1459,7 +1459,7 @@
         "definition": {
           "count": 6,
           "unknowns": ["SO"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "12-18",
@@ -1474,7 +1474,7 @@
         "definition": {
           "count": 10,
           "games": ["PZ"],
-          "operators": [
+          "expressions": [
             {
               "operator": ["+"],
               "first": "10-15",
