@@ -7,8 +7,6 @@
         "id": "10",
         "definition": {
           "count": 4,
-          "order": "ASCENDING",
-          "sequence": "FO",
           "expressions": [
             {
               "operator": ["+"],

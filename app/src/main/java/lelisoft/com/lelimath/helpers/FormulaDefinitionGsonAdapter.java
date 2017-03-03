@@ -43,20 +43,6 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             definition.setCount(p.getAsInt());
         }
 
-        p = jsonObject.getAsJsonPrimitive("order");
-        if (p == null) {
-            definition.setOrder(SequenceOrder.RANDOM); // default
-        } else {
-            definition.setOrder(SequenceOrder.valueOf(p.getAsString()));
-        }
-
-        p = jsonObject.getAsJsonPrimitive("sequence");
-        if (p == null) {
-            definition.setSequence(FormulaPart.FIRST_OPERAND); // default
-        } else {
-            definition.setSequence(FormulaPart.getValue(p.getAsString()));
-        }
-
         JsonArray array = jsonObject.getAsJsonArray("unknowns");
         if (array != null && array.size() > 0) {
             for (JsonElement jsonElement : array) {
@@ -77,24 +63,27 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
         if ((array == null || array.size() == 0)) {
             throw new JsonParseException("Element 'operators' is missing!");
         }
+
         for (JsonElement jsonElement : array) {
             jsonObject = (JsonObject) jsonElement;
 
             Values firstArg = getValues(jsonObject, "first");
             Values secondArg = getValues(jsonObject, "second");
-            Values thirdArg = getValues(jsonObject, "third");
             Values result = getValues(jsonObject, "result");
-            p = jsonObject.getAsJsonPrimitive("operator1");
-            if (p == null) {
-                p = jsonObject.getAsJsonPrimitive("operator");
-            }
+
+            p = jsonObject.getAsJsonPrimitive("operator");
             Operator operator1 = Operator.getValue(p.getAsString());
+
             Expression expression = new Expression(firstArg, operator1, secondArg, result);
 
             p = jsonObject.getAsJsonPrimitive("operator2");
-            Operator operator2 = Operator.getValue(p.getAsString());
-            expression.setOperator2(operator2);
-            expression.setThirdOperand(thirdArg);
+            if (p != null) {
+                Operator operator2 = Operator.getValue(p.getAsString());
+                expression.setOperator2(operator2);
+                Values thirdArg = getValues(jsonObject, "third");
+                expression.setThirdOperand(thirdArg);
+            }
+
             definition.addExpression(expression);
         }
 
@@ -103,16 +92,18 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
     }
 
     private Values getValues(JsonObject parent, String name) {
+        Values values;
         JsonElement element = parent.get(name);
         if (element.isJsonPrimitive()) {
             JsonPrimitive p = element.getAsJsonPrimitive();
             String sValues = p.getAsString();
-            return Values.parse(sValues, false);
+            values = Values.parse(sValues, false);
+            values.setOrder(SequenceOrder.RANDOM); // default
         } else {
             JsonObject object = element.getAsJsonObject();
             JsonPrimitive p = object.getAsJsonPrimitive("values");
             String sValues = p.getAsString();
-            Values values = Values.parse(sValues, false);
+            values = Values.parse(sValues, false);
 
             p = object.getAsJsonPrimitive("order");
             if (p == null) {
@@ -120,7 +111,7 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
             } else {
                 values.setOrder(SequenceOrder.valueOf(p.getAsString()));
             }
-            return values;
         }
+        return values;
     }
 }

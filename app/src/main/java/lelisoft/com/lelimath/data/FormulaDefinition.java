@@ -18,10 +18,6 @@ public class FormulaDefinition implements Serializable {
     private List<FormulaPart> unknowns;
     /** list of allowed games */
     private List<Game> games;
-    /** order for values from OperatorDefinition defined in *sequence* */
-    private SequenceOrder order;
-    /** formula part which will be used as sequence. Null when order is Random */
-    private FormulaPart sequence;
 
     public int getCount() {
         return count;
@@ -82,22 +78,6 @@ public class FormulaDefinition implements Serializable {
         this.unknowns = unknowns;
     }
 
-    public SequenceOrder getOrder() {
-        return order;
-    }
-
-    public void setOrder(SequenceOrder order) {
-        this.order = order;
-    }
-
-    public FormulaPart getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(FormulaPart sequence) {
-        this.sequence = sequence;
-    }
-
     public List<Game> getGames() {
         return games;
     }
@@ -121,8 +101,6 @@ public class FormulaDefinition implements Serializable {
                 ", unknowns=" + unknowns +
                 ", count=" + count +
                 ", expressions=" + expressions +
-                ", order=" + order +
-                ", sequence=" + sequence +
                 '}';
     }
 }

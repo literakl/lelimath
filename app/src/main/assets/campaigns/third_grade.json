@@ -85,7 +85,7 @@
           "expressions": [
             {
               "first": {"values": "4-9", "order": "ASCENDING"},
-              "operator1": "+",
+              "operator": "+",
               "second": "1-6",
               "operator2": "+",
               "third": "4-7",
