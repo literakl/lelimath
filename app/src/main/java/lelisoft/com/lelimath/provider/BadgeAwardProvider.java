@@ -27,7 +27,7 @@ import lelisoft.com.lelimath.view.AwardedBadgesCount;
  */
 public class BadgeAwardProvider {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(BadgeAwardProvider.class);
-    Dao<BadgeAward, Integer> dao;
+    private Dao<BadgeAward, Integer> dao;
 
     public BadgeAwardProvider(Context ctx) {
         try {

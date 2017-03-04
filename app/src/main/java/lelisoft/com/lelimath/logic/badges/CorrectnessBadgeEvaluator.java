@@ -71,8 +71,7 @@ public class CorrectnessBadgeEvaluator extends BadgeEvaluator {
 
             for (int i = 0; i < bsgBadges.length; i++) {
                 Badge[] searchedBadges = bsgBadges[i];
-                performEvaluation(searchedBadges, operators[i], badgesCount, awardProvider,
-                        evaluationDao, playRecordDao, context);
+                performEvaluation(searchedBadges, operators[i], badgesCount, awardProvider, evaluationDao, playRecordDao, context);
             }
 
             log.debug("evaluate finished: {}", badgesCount);
