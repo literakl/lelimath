@@ -2,11 +2,13 @@ package lelisoft.com.lelimath.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +93,7 @@ public class CalcFragment extends LeliGameFragment {
         }
     }
 
-    public class HandleClick implements View.OnClickListener {
+    private class HandleClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             LeliMathApp.getInstance().playSound(R.raw.tap);
@@ -236,19 +238,17 @@ public class CalcFragment extends LeliGameFragment {
         unknown.setText(sb);
     }
 
+    @SuppressWarnings("deprecation")
     private void appendUnknown(SpannableStringBuilder sb) {
         String input = formula.getUserInput();
         if (input.length() == 0) {
             SpannableString styledString = new SpannableString("?");
-            @SuppressWarnings("deprecation")
             int color = getResources().getColor(R.color.colorAccent);
             styledString.setSpan(new ForegroundColorSpan(color), 0, 1, 0);
             sb.append(styledString);
         } else {
             SpannableString styledString = new SpannableString(input);
-            @SuppressWarnings("deprecation")
-            int color = getResources().getColor(R.color.calc_digit);
-            styledString.setSpan(new ForegroundColorSpan(color), 0, input.length(), 0);
+            styledString.setSpan(new StyleSpan(Typeface.BOLD), 0, input.length(), 0);
             sb.append(styledString);
         }
     }
