@@ -51,7 +51,7 @@ class FormulaGenerator {
 
                 if (expression.getOperator2() != null) {
                     int valueC = getValue(valuesC);
-                    Formula combined = Solver.solve(expression.getOperator2(), FormulaPart.SECOND_OPERAND, found.getResult(), FormulaPart.THIRD_OPERAND, valueC);
+                    Formula combined = Solver.solve(expression.getOperator2(), FormulaPart.FIRST_OPERAND, found.getResult(), FormulaPart.SECOND_OPERAND, valueC);
                     if (combined == null) {
                         continue;
                     }

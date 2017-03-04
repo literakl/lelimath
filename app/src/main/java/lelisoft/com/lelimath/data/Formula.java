@@ -157,6 +157,13 @@ public class Formula implements Parcelable {
         sb.append(" ");
         sb.append(secondOperand);
         if (unknown == FormulaPart.SECOND_OPERAND) sb.append("(?)");
+        if (operator2 != null) {
+            sb.append(" ").append(operator2);
+            if (unknown == FormulaPart.OPERATOR2) sb.append("(?)");
+            sb.append(" ");
+            sb.append(thirdOperand);
+            if (unknown == FormulaPart.THIRD_OPERAND) sb.append("(?)");
+        }
         sb.append(" = ");
         sb.append(result);
         if (unknown == FormulaPart.RESULT) sb.append("(?)");

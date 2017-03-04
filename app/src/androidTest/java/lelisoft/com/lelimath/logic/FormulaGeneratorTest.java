@@ -118,7 +118,7 @@ public class FormulaGeneratorTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             Formula f = formulas.get(i);
-            assertEquals((int)f.getResult(), f.getFirstOperand() * f.getSecondOperand() * f.getThirdOperand());
+            assertEquals(f.getFirstOperand() * f.getSecondOperand() * f.getThirdOperand(), (int) f.getResult());
             assertEquals(first.getValueAt(i).intValue(), f.getFirstOperand().intValue());
             assertEquals(second.getValueAt(9 - i).intValue(), f.getSecondOperand().intValue());
         }
