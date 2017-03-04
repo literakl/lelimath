@@ -24,24 +24,8 @@ class FormulaGenerator {
     private static final Logger log = LoggerFactory.getLogger(FormulaGenerator.class);
 
     private static Random random = Misc.getRandom();
-
-    private SequenceOrder order;
-    private FormulaPart orderedPart;
-    private Integer position;
+    private Integer ascendingPosition, descendingPosition;
     private boolean superRandomMode;
-
-    FormulaGenerator(SequenceOrder order, FormulaPart orderedPart) {
-        this.orderedPart = orderedPart;
-        if (order == null) {
-            this.order = SequenceOrder.RANDOM;
-        } else {
-            this.order = order;
-        }
-    }
-
-    FormulaGenerator() {
-        this.order = SequenceOrder.RANDOM;
-    }
 
     private Formula generateRandomFormula(FormulaDefinition definition) {
         log.trace("Starting search for formula using {}", definition);
@@ -53,12 +37,12 @@ class FormulaGenerator {
         Values valuesB = expression.getSecondOperand();
         Values valuesC = expression.getThirdOperand();
         for (int i = 0; i < 100; i++) {
-            int valueA = getValue(valuesA, FormulaPart.FIRST_OPERAND);
+            int valueA = getValue(valuesA);
             for (int j = 0; j < 10; j++) {
                 if (j > 0 && superRandomMode) {
-                    valueA = getValue(valuesA, FormulaPart.FIRST_OPERAND);
+                    valueA = getValue(valuesA);
                 }
-                int valueB = getValue(valuesB, FormulaPart.SECOND_OPERAND);
+                int valueB = getValue(valuesB);
 
                 Formula found = Solver.solve(expression.getOperator1(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
                 if (found == null) {
@@ -66,7 +50,7 @@ class FormulaGenerator {
                 }
 
                 if (expression.getOperator2() != null) {
-                    int valueC = getValue(valuesC, FormulaPart.THIRD_OPERAND);
+                    int valueC = getValue(valuesC);
                     Formula combined = Solver.solve(expression.getOperator2(), FormulaPart.SECOND_OPERAND, found.getResult(), FormulaPart.THIRD_OPERAND, valueC);
                     if (combined == null) {
                         continue;
@@ -97,45 +81,6 @@ class FormulaGenerator {
         log.warn("No formula found for {} using operatorDefinition {}", definition, expression.getOperator1());
         return null;
     }
-/*
-
-    private Formula generateComplexRandomFormula(FormulaDefinition definition) {
-        Expression expression = getExpression(definition.getExpressions());
-        FormulaPart unknown = getUnknown(definition.getUnknowns());
-        Values valuesA = expression.getFirstOperand();
-        Values valuesB = expression.getSecondOperand();
-        Values valuesC = expression.getThirdOperand();
-        for (int i = 0; i < 100; i++) {
-            int valueA = getValue(valuesA, parts.first);
-            for (int j = 0; j < 10; j++) {
-                if (j > 0 && superRandomMode) {
-                    valueA = getValue(valuesA, parts.first);
-                }
-                int valueB = getValue(valuesB, parts.second);
-                for (int k = 0; k < 10; k++) {
-                    int valueC = getValue(valuesB, parts.second);
-
-                    Formula found = Solver.solve(definition.getOperator(), parts.first, valueA, parts.second, valueB);
-                    if (found == null) {
-                        continue;
-                    }
-
-                    boolean valid = checkSolution(found, parts.first, parts.second, operatorDefinition);
-                    if (log.isTraceEnabled()) {
-                        log.trace("{}: {} {} {} = {}", valid, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getResult());
-                    }
-
-                    if (valid) {
-                        found.setUnknown(unknown);
-                        log.debug("Generated formula {}", found);
-                        return found;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-*/
 
     /**
      * Generates a list of Formulas.
@@ -146,10 +91,6 @@ class FormulaGenerator {
     ArrayList<Formula> generateFormulas(FormulaDefinition definition, int count) {
         ArrayList<Formula> list = new ArrayList<>(count);
         Formula formula, previous = null;
-
-        if (order == SequenceOrder.FIXED_PAIRS) {
-            return generateFixedPairsFormulas(definition, count);
-        }
 
         for (int i = 0, stop = 0; i < count; i++) {
             formula = generateRandomFormula(definition);
@@ -177,63 +118,34 @@ class FormulaGenerator {
         return list;
     }
 
-    private ArrayList<Formula> generateFixedPairsFormulas(FormulaDefinition definition, int count) {
-        log.trace("Starting search for formulas using {}", definition);
-        Expression expression = getExpression(definition.getExpressions());
-        FormulaPart unknown = getUnknown(definition.getUnknowns());
-        ArrayList<Formula> list = new ArrayList<>(count);
-
-        Values valuesA = getValues(expression, FormulaPart.FIRST_OPERAND);
-        Values valuesB = getValues(expression, FormulaPart.SECOND_OPERAND);
-        for (int i = 0; i < count; i++) {
-            int valueA = valuesA.getValueAt(i);
-            int valueB = valuesB.getValueAt(i);
-            Formula found = Solver.solve(expression.getOperator1(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
-            if (found == null) {
-                log.warn("Failed to generate formula for {} {} {} {} {}!", expression.getOperator1(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
-                continue;
-            }
-
-            boolean valid = expression.getResult().belongs(found.getResult());
-            if (log.isTraceEnabled()) {
-                log.trace("{}: {} {} {} = {}", valid, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getResult());
-            }
-
-            if (valid) {
-                found.setUnknown(unknown);
-                log.debug("Generated formula {}", found);
-                list.add(found);
-            }
-        }
-
-        return list;
-    }
-
-    private int getValue(Values values, FormulaPart part) {
-        if (order == SequenceOrder.RANDOM || orderedPart != part) {
+    private int getValue(Values values) {
+        SequenceOrder order = values.getOrder();
+        if (order == null || order == SequenceOrder.RANDOM) {
             return values.getRandomValue(random);
         }
 
-        if (position == null) {
-            if (order == SequenceOrder.ASCENDING) {
-                position = 0;
-            } else {
-                position = values.getSize() - 1;
+        // we assume that all Values have same size
+        if (order == SequenceOrder.ASCENDING) {
+            if (ascendingPosition == null) {
+                ascendingPosition = 0;
             }
+            // if contract is not honored an exception will be raised here
+            return values.getValueAt(ascendingPosition);
+        } else {
+            if (descendingPosition == null){
+                descendingPosition = values.getSize() - 1;
+            }
+            // if contract is not honored an exception will be raised here
+            return values.getValueAt(descendingPosition);
         }
-
-        return values.getValueAt(position);
     }
 
     private void commitFormula() {
-        if (order == SequenceOrder.RANDOM) {
-            return;
+        if (ascendingPosition != null) {
+            ascendingPosition++;
         }
-
-        if (order == SequenceOrder.ASCENDING) {
-            position++;
-        } else {
-            position--;
+        if (descendingPosition != null) {
+            descendingPosition--;
         }
     }
 
@@ -255,29 +167,6 @@ class FormulaGenerator {
             return unknowns.get(0);
         }
         return unknowns.get(random.nextInt(unknowns.size()));
-    }
-
-    private static Values getValues(Expression expression, FormulaPart part) {
-        Values values;
-        switch (part) {
-            case FIRST_OPERAND:
-                values = expression.getFirstOperand();
-                break;
-            case SECOND_OPERAND:
-                values = expression.getSecondOperand();
-                break;
-            case THIRD_OPERAND:
-                values = expression.getThirdOperand();
-                break;
-            default:
-                values = expression.getResult();
-        }
-
-        if (values == Values.UNDEFINED) {
-            log.warn("Undefined values for {}", part);
-        }
-
-        return values;
     }
 
     /**

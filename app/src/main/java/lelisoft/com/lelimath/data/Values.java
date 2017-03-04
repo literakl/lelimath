@@ -236,8 +236,9 @@ public class Values implements Serializable {
         return order;
     }
 
-    public void setOrder(SequenceOrder order) {
+    public Values setOrder(SequenceOrder order) {
         this.order = order;
+        return this;
     }
 
     private static class UndefinedValues extends Values {

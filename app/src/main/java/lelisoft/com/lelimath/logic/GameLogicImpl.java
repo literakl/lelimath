@@ -58,7 +58,7 @@ class GameLogicImpl implements GameLogic, Serializable {
 
     private ArrayList<Formula> generateFormulas(int count) {
         log.debug("generateFormulas: {}, count = {}", definition, count);
-        FormulaGenerator generator = new FormulaGenerator(definition.getOrder(), definition.getSequence());
+        FormulaGenerator generator = new FormulaGenerator();
         return generator.generateFormulas(definition, count);
     }
 }
