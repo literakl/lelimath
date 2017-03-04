@@ -53,7 +53,6 @@ public class CalcFragment extends LeliGameFragment {
     int formulaPosition = 0;
     CalcLogic logic;
     Play play;
-    int unknownMaxLength;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         log.debug("onCreateView()");
@@ -135,9 +134,6 @@ public class CalcFragment extends LeliGameFragment {
     void operatorClicked(Operator operator) {
         if (formula.getUnknown() == FormulaPart.OPERATOR) {
             log.debug("operatorClicked(" + operator + ")");
-            String s = operator.toString();
-            formula.setUserEntry(s);
-            unknown.setText(s);
             startRecordingSpentTime();
             formula.setUserEntry(operator.toString());
             displayFormula();
@@ -276,7 +272,6 @@ public class CalcFragment extends LeliGameFragment {
 
     private void prepareNewFormula() {
         formula = formulas.get(formulaPosition++);
-        unknownMaxLength = formula.getUnknownLength();
     }
 
     @Override

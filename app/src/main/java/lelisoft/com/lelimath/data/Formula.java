@@ -3,8 +3,14 @@ package lelisoft.com.lelimath.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import lelisoft.com.lelimath.helpers.Misc;
 import lelisoft.com.lelimath.logic.Solver;
+
+import static lelisoft.com.lelimath.data.FormulaPart.FIRST_OPERAND;
+import static lelisoft.com.lelimath.data.FormulaPart.OPERATOR;
+import static lelisoft.com.lelimath.data.Operator.DIVIDE;
+import static lelisoft.com.lelimath.data.Operator.MINUS;
+import static lelisoft.com.lelimath.data.Operator.MULTIPLY;
+import static lelisoft.com.lelimath.data.Operator.PLUS;
 
 /**
  * Data holder for one equation
@@ -77,32 +83,20 @@ public class Formula implements Parcelable {
      */
     private String getUnknownValue() {
         switch (unknown){
-            case OPERATOR:
-                return operator.toString();
-            case RESULT:
-                return result.toString();
             case FIRST_OPERAND:
                 return firstOperand.toString();
+            case OPERATOR:
+                return operator.toString();
             case SECOND_OPERAND:
                 return secondOperand.toString();
+            case OPERATOR2:
+                return operator2.toString();
+            case THIRD_OPERAND:
+                return thirdOperand.toString();
+            case RESULT:
+                return result.toString();
         }
         return "";
-    }
-
-    /**
-     * @return number of characters to display unknown
-     */
-    public int getUnknownLength() {
-        switch (unknown){
-            case FIRST_OPERAND:
-                return Misc.getNumberLength(firstOperand);
-            case OPERATOR:
-                return 1;
-            case SECOND_OPERAND:
-                return Misc.getNumberLength(secondOperand);
-            default:
-                return Misc.getNumberLength(result);
-        }
     }
 
     /**
@@ -112,13 +106,13 @@ public class Formula implements Parcelable {
     public boolean isEntryCorrect() {
         String userInput = sb.toString();
         if (secondOperand == 0) {
-            if (unknown == FormulaPart.FIRST_OPERAND && result == 0) {
+            if (unknown == FIRST_OPERAND && result == 0) {
                 return true; // x * 0 = 0
             }
-            if (unknown == FormulaPart.OPERATOR) {
-                if (Operator.PLUS.equals(userInput) || Operator.MINUS.equals(userInput)) {
+            if (unknown == OPERATOR) {
+                if (PLUS.equals(userInput) || MINUS.equals(userInput)) {
                     return result.equals(firstOperand); // x + 0 = x  && y - 0 = y
-                } else if (Operator.MULTIPLY.equals(userInput)) {
+                } else if (MULTIPLY.equals(userInput)) {
                     return result == 0; // x * 0 = 0
                 } else {
                     return false; // x : 0 = UNDEF
@@ -127,8 +121,8 @@ public class Formula implements Parcelable {
         }
 
         if (secondOperand == 1) {
-            if (unknown == FormulaPart.OPERATOR) {
-                if (Operator.MULTIPLY.equals(userInput)|| Operator.DIVIDE.equals(userInput)) {
+            if (unknown == OPERATOR) {
+                if (MULTIPLY.equals(userInput)|| DIVIDE.equals(userInput)) {
                     return result.equals(firstOperand); // x * 1 = x && x : 1 = x
                 }
             }
@@ -141,16 +135,16 @@ public class Formula implements Parcelable {
         switch (unknown){
             case OPERATOR: {
                 if (result.equals(firstOperand + secondOperand)) {
-                    return Operator.PLUS.toString();
+                    return PLUS.toString();
                 }
                 if (result.equals(firstOperand / secondOperand)) {
-                    return Operator.DIVIDE.toString();
+                    return DIVIDE.toString();
                 }
                 if (result.equals(firstOperand * secondOperand)) {
-                    return Operator.MULTIPLY.toString();
+                    return MULTIPLY.toString();
                 }
                 if (result.equals(firstOperand - secondOperand)) {
-                    return Operator.MINUS.toString();
+                    return MINUS.toString();
                 }
             }
             case RESULT:
@@ -167,9 +161,9 @@ public class Formula implements Parcelable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(firstOperand);
-        if (unknown == FormulaPart.FIRST_OPERAND) sb.append("(?)");
+        if (unknown == FIRST_OPERAND) sb.append("(?)");
         sb.append(" ").append(operator);
-        if (unknown == FormulaPart.OPERATOR) sb.append("(?)");
+        if (unknown == OPERATOR) sb.append("(?)");
         sb.append(" ");
         sb.append(secondOperand);
         if (unknown == FormulaPart.SECOND_OPERAND) sb.append("(?)");

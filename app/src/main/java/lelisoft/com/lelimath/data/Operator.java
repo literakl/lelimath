@@ -30,7 +30,7 @@ public enum Operator {
     }
 
     public boolean equals(String another) {
-        return value.equals(another);
+        return value.equals(another) || toString().equals(another);
     }
 
     public static Operator getValue(String s) {
