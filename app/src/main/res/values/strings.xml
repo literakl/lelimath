@@ -114,7 +114,6 @@
     <string name="error_values_not_number">Illegal number: \'%s\'</string>
     <string name="error_values_undefined_first">Range is missing the first number</string>
     <string name="error_values_undefined_second">Range is missing the second number</string>
-    <string name="error_values_range_no_ascending_order">Range is forbidden</string>
     <string name="error_no_formula_generated">No formula generated. Check settings.</string>
     <string name="permission_fs_rationale">App requires disk access</string>
     <string name="button_allow">Enable</string>

@@ -99,8 +99,8 @@ public class FormulaGeneratorTest extends TestCase {
 
     public void testComplexFormula() {
         Values first = Values.fromList(1,2,3,4,5,6,7,8,9,10).setOrder(ASCENDING);
-        Values second = Values.parse("1,2,3,4,5,6,7,8,9,10", true).setOrder(DESCENDING);
-        Values third = Values.fromRange(20,22);
+        Values second = Values.parse("1,2,3,4,5,6,7,8,9,10", false).setOrder(DESCENDING);
+        Values third = Values.parse("20-22", false);
         Values result = Values.fromRange(20, 2200);
 
         FormulaDefinition definition = new FormulaDefinition();

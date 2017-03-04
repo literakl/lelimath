@@ -71,9 +71,7 @@ public class Values implements Serializable {
         while (stk.hasMoreTokens()) {
             String part = stk.nextToken();
             if ("-".equals(part)) {
-                if (! forceAscendingOrder) {
-                    throw new IllegalArgumentException(resources.getString(R.string.error_values_range_no_ascending_order));
-                } else if (rangeStarted) {
+                if (rangeStarted) {
                     throw new IllegalArgumentException(resources.getString(R.string.error_values_undefined_second));
                 } else if (unassignedNumber == null) {
                     throw new IllegalArgumentException(resources.getString(R.string.error_values_undefined_first));
@@ -86,9 +84,7 @@ public class Values implements Serializable {
                     rangeStarted = true;
                     continue;
                 }
-            }
-
-            if (",".equals(part)) {
+            } else if (",".equals(part)) {
                 if (rangeStarted) {
                     throw new IllegalArgumentException(resources.getString(R.string.error_values_undefined_second));
                 }
