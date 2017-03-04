@@ -8,14 +8,14 @@
           "count": 12,
           "expressions": [
             {
-              "operator": ["+"],
               "first": "10-95",
+              "operator": "+",
               "second": "3-8",
               "result": "50-100"
             },
             {
-              "operator": ["+"],
               "first": "3-9",
+              "operator": "+",
               "second": "30-90",
               "result": "40-100"
             }
@@ -28,14 +28,14 @@
           "count": 12,
           "expressions": [
             {
-              "operator": ["-"],
               "first": "15-99",
+              "operator": "-",
               "second": "2-9",
               "result": "10-97"
             },
             {
-              "operator": ["-"],
               "first": "20,30,40,50,60,70,80,90",
+              "operator": "-",
               "second": "10,20,30,40,50",
               "result": "10-80"
             }
@@ -49,14 +49,14 @@
           "games": ["PZ"],
           "expressions": [
             {
-              "operator": ["+"],
               "first": "20,30,40,50,60,70,80,90",
+              "operator": "+",
               "second": "10,20,30,40,50,60,70,80,90",
               "result": "30-90"
             },
             {
-              "operator": ["-"],
               "first": "20,30,40,50,60,70,80,90",
+              "operator": "-",
               "second": "10,20,30,40,50",
               "result": "10-80"
             }
@@ -70,8 +70,8 @@
           "games": ["PZ"],
           "expressions": [
             {
-              "operator": ["-"],
               "first": "25-95",
+              "operator": "-",
               "second": "10,20,30,40,50",
               "result": "15-85"
             }

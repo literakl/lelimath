@@ -9,8 +9,8 @@
           "count": 4,
           "expressions": [
             {
-              "operator": ["+"],
               "first": "1-4",
+              "operator": "+",
               "second": "1",
               "result": "2-5"
             }
