@@ -9,11 +9,15 @@ import java.util.ArrayList;
 
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
-import lelisoft.com.lelimath.data.FormulaPart;
-import lelisoft.com.lelimath.data.Operator;
-import lelisoft.com.lelimath.data.OperatorDefinition;
-import lelisoft.com.lelimath.data.SequenceOrder;
+import lelisoft.com.lelimath.data.Expression;
 import lelisoft.com.lelimath.data.Values;
+
+import static lelisoft.com.lelimath.data.FormulaPart.RESULT;
+import static lelisoft.com.lelimath.data.FormulaPart.THIRD_OPERAND;
+import static lelisoft.com.lelimath.data.Operator.MINUS;
+import static lelisoft.com.lelimath.data.Operator.MULTIPLY;
+import static lelisoft.com.lelimath.data.Operator.PLUS;
+import static lelisoft.com.lelimath.data.SequenceOrder.*;
 
 /**
  * Logic test
@@ -28,9 +32,9 @@ public class FormulaGeneratorTest extends TestCase {
         Values result = Values.fromList(10, 11, 12);
 
         FormulaDefinition definition = new FormulaDefinition();
-        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
-        definition.addOperator(operatorDefinition);
-        definition.addUnknown(FormulaPart.RESULT);
+        Expression expression = new Expression(left, PLUS, right, result);
+        definition.addExpression(expression);
+        definition.addUnknown(RESULT);
 
         long start = System.currentTimeMillis();
         ArrayList<Formula> formulas = new FormulaGenerator().generateFormulas(definition, 100);
@@ -38,8 +42,8 @@ public class FormulaGeneratorTest extends TestCase {
         log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
 
         for (Formula formula : formulas) {
-            assertEquals(FormulaPart.RESULT, formula.getUnknown());
-            assertEquals(Operator.PLUS, formula.getOperator());
+            assertEquals(RESULT, formula.getUnknown());
+            assertEquals(PLUS, formula.getOperator());
             assertTrue(formula.getFirstOperand() + formula.getSecondOperand() == formula.getResult());
             assertTrue(formula.getFirstOperand() >=0 && formula.getFirstOperand() <= 99);
             assertTrue(formula.getSecondOperand() >=0 && formula.getSecondOperand() <= 90);
@@ -48,17 +52,17 @@ public class FormulaGeneratorTest extends TestCase {
     }
 
     public void testAscendingOrderGenerator() {
-        Values left = Values.fromRange(0, 9);
+        Values left = Values.fromRange(0, 9).setOrder(ASCENDING);
         Values right = Values.parse("1", true);
         Values result = Values.fromRange(0, 10);
 
         FormulaDefinition definition = new FormulaDefinition();
-        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
-        definition.addOperator(operatorDefinition);
-        definition.addUnknown(FormulaPart.RESULT);
+        Expression expression = new Expression(left, PLUS,  right, result);
+        definition.addExpression(expression);
+        definition.addUnknown(RESULT);
 
         long start = System.currentTimeMillis();
-        FormulaGenerator generator = new FormulaGenerator(SequenceOrder.ASCENDING, FormulaPart.FIRST_OPERAND);
+        FormulaGenerator generator = new FormulaGenerator();
         ArrayList<Formula> formulas = generator.generateFormulas(definition, 10);
         long end = System.currentTimeMillis();
         log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
@@ -72,16 +76,16 @@ public class FormulaGeneratorTest extends TestCase {
 
     public void testDescendingOrderGenerator() {
         Values left = Values.fromList(10);
-        Values right = Values.parse("1,2,3,4,5,6,7,8,9", true);
+        Values right = Values.parse("1,2,3,4,5,6,7,8,9", true).setOrder(DESCENDING);
         Values result = Values.fromRange(0, 10);
 
         FormulaDefinition definition = new FormulaDefinition();
-        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.MINUS, left, right, result);
-        definition.addOperator(operatorDefinition);
-        definition.addUnknown(FormulaPart.RESULT);
+        Expression expression = new Expression(left, MINUS, right, result);
+        definition.addExpression(expression);
+        definition.addUnknown(RESULT);
 
         long start = System.currentTimeMillis();
-        FormulaGenerator generator = new FormulaGenerator(SequenceOrder.DESCENDING, FormulaPart.SECOND_OPERAND);
+        FormulaGenerator generator = new FormulaGenerator();
         ArrayList<Formula> formulas = generator.generateFormulas(definition, 9);
         long end = System.currentTimeMillis();
         log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
@@ -93,27 +97,30 @@ public class FormulaGeneratorTest extends TestCase {
         }
     }
 
-    public void testFixedPairsGenerator() {
-        Values left = Values.fromList(1,2,3,4,5,6,7,8,9,10);
-        Values right = Values.parse("1,2,3,4,5,6,7,8,9,10", true);
-        Values result = Values.fromRange(2, 20);
+    public void testComplexFormula() {
+        Values first = Values.fromList(1,2,3,4,5,6,7,8,9,10).setOrder(ASCENDING);
+        Values second = Values.parse("1,2,3,4,5,6,7,8,9,10", true).setOrder(DESCENDING);
+        Values third = Values.fromRange(20,22);
+        Values result = Values.fromRange(20, 2200);
 
         FormulaDefinition definition = new FormulaDefinition();
-        OperatorDefinition operatorDefinition = new OperatorDefinition(Operator.PLUS, left, right, result);
-        definition.addOperator(operatorDefinition);
-        definition.addUnknown(FormulaPart.RESULT);
+        Expression expression = new Expression(first, MULTIPLY, second, result);
+        expression.setOperator2(MULTIPLY);
+        expression.setThirdOperand(third);
+        definition.addExpression(expression);
+        definition.addUnknown(THIRD_OPERAND);
 
         long start = System.currentTimeMillis();
-        FormulaGenerator generator = new FormulaGenerator(SequenceOrder.FIXED_PAIRS, null);
+        FormulaGenerator generator = new FormulaGenerator();
         ArrayList<Formula> formulas = generator.generateFormulas(definition, 10);
         long end = System.currentTimeMillis();
         log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
 
         for (int i = 0; i < 10; i++) {
-            Formula formula = formulas.get(i);
-            assertTrue(formula.getFirstOperand() + formula.getSecondOperand() == formula.getResult());
-            assertEquals(left.getValueAt(i).intValue(), formula.getFirstOperand().intValue());
-            assertEquals(right.getValueAt(i).intValue(), formula.getSecondOperand().intValue());
+            Formula f = formulas.get(i);
+            assertEquals(f.getFirstOperand() * f.getSecondOperand() * f.getThirdOperand(), (int) f.getResult());
+            assertEquals(first.getValueAt(i).intValue(), f.getFirstOperand().intValue());
+            assertEquals(second.getValueAt(9 - i).intValue(), f.getSecondOperand().intValue());
         }
     }
 }

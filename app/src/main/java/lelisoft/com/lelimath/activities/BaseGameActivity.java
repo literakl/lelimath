@@ -23,7 +23,7 @@ import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Play;
 import lelisoft.com.lelimath.data.PlayRecord;
 import lelisoft.com.lelimath.data.Operator;
-import lelisoft.com.lelimath.data.OperatorDefinition;
+import lelisoft.com.lelimath.data.Expression;
 import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.fragment.PracticeSimpleSettingsFragment;
 import lelisoft.com.lelimath.helpers.LeliMathApp;
@@ -150,35 +150,23 @@ public class BaseGameActivity extends LeliBaseActivity {
         boolean[] allowedOperators = readAllowedOperators();
 
         if (allowedOperators[0]) {
-            OperatorDefinition operatorPlus = new OperatorDefinition(Operator.PLUS);
-            definition.addOperator(operatorPlus);
-            operatorPlus.setFirstOperand(firstArgValues);
-            operatorPlus.setSecondOperand(secondArgValues);
-            operatorPlus.setResult(resultValues);
+            Expression operatorPlus = new Expression(firstArgValues, Operator.PLUS, secondArgValues, resultValues);
+            definition.addExpression(operatorPlus);
         }
 
         if (allowedOperators[1]) {
-            OperatorDefinition operatorMinus = new OperatorDefinition(Operator.MINUS);
-            definition.addOperator(operatorMinus);
-            operatorMinus.setFirstOperand(resultValues);
-            operatorMinus.setSecondOperand(secondArgValues);
-            operatorMinus.setResult(firstArgValues);
+            Expression operatorMinus = new Expression(resultValues, Operator.MINUS, secondArgValues, firstArgValues);
+            definition.addExpression(operatorMinus);
         }
 
         if (allowedOperators[2]) {
-            OperatorDefinition operatorMultiply = new OperatorDefinition(Operator.MULTIPLY);
-            definition.addOperator(operatorMultiply);
-            operatorMultiply.setFirstOperand(firstArgValues);
-            operatorMultiply.setSecondOperand(secondArgValues);
-            operatorMultiply.setResult(resultValues);
+            Expression operatorMultiply = new Expression(firstArgValues, Operator.PLUS, secondArgValues, resultValues);
+            definition.addExpression(operatorMultiply);
         }
 
         if (allowedOperators[3]) {
-            OperatorDefinition operatorDivide = new OperatorDefinition(Operator.DIVIDE);
-            definition.addOperator(operatorDivide);
-            operatorDivide.setFirstOperand(resultValues);
-            operatorDivide.setSecondOperand(secondArgValues);
-            operatorDivide.setResult(firstArgValues);
+            Expression operatorDivide = new Expression(resultValues, Operator.DIVIDE, secondArgValues, firstArgValues);
+            definition.addExpression(operatorDivide);
         }
     }
 
@@ -204,12 +192,12 @@ public class BaseGameActivity extends LeliBaseActivity {
     }
 
     private void initializeFromAdvancedSettings(FormulaDefinition definition) {
-        Map<String,OperatorDefinition> definitions = new HashMap<>();
+        Map<String,Expression> definitions = new HashMap<>();
         Map<String, String> dependencies = new HashMap<>();
 
         String[] operations = new String[]{"plus", "minus", "multiply", "divide"};
         for (String operation : operations) {
-            OperatorDefinition operator = new OperatorDefinition(Operator.valueOf(operation.toUpperCase()));
+            Expression operator = new Expression(Operator.valueOf(operation.toUpperCase()));
             definitions.put(operation, operator);
 
             String dependsOn = sharedPref.getString("pref_game_" + operation + "_depends", "NONE");
@@ -235,9 +223,9 @@ public class BaseGameActivity extends LeliBaseActivity {
  */
 
         for (String operation : dependencies.keySet()) {
-            OperatorDefinition dependingOperatorDef = definitions.get(operation);
+            Expression dependingOperatorDef = definitions.get(operation);
             String targetKey = dependencies.get(operation);
-            OperatorDefinition targetOperatorDef = definitions.get(targetKey);
+            Expression targetOperatorDef = definitions.get(targetKey);
             if (targetOperatorDef == null) {
                 log.error("Dependency <" + operation + "," + targetKey + "> is missing!");
                 continue;
@@ -273,7 +261,7 @@ public class BaseGameActivity extends LeliBaseActivity {
             }
         }
 
-        definition.setOperatorDefinitions(new ArrayList<>(definitions.values()));
+        definition.setExpressions(new ArrayList<>(definitions.values()));
     }
 
     protected Values readValues(String key) {

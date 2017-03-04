@@ -12,16 +12,12 @@ import java.util.List;
 public class FormulaDefinition implements Serializable {
     /** Number of questions */
     private int count;
-    /** Allowed formula's operators and their definition. If unset a demo PLUS 0-9 will be used */
-    private List<OperatorDefinition> operatorDefinitions;
+    /** Allowed expressions and their definition. If unset a demo PLUS 0-9 will be used */
+    private List<Expression> expressions;
     /** allowed formula's unknowns. If unset the RESULT will be used */
     private List<FormulaPart> unknowns;
     /** list of allowed games */
     private List<Game> games;
-    /** order for values from OperatorDefinition defined in *sequence* */
-    private SequenceOrder order;
-    /** formula part which will be used as sequence. Null when order is Random */
-    private FormulaPart sequence;
 
     public int getCount() {
         return count;
@@ -31,28 +27,31 @@ public class FormulaDefinition implements Serializable {
         this.count = count;
     }
 
-    public void setOperatorDefinitions(List<OperatorDefinition> operatorDefinitions) {
-        this.operatorDefinitions = operatorDefinitions;
+    @SuppressWarnings("unused")
+    public List<Expression> getExpressions() {
+        return expressions;
     }
 
-    public FormulaDefinition addOperator(OperatorDefinition operator) {
-        if (operatorDefinitions == null) {
-            operatorDefinitions = Collections.singletonList(operator);
+    @SuppressWarnings("unused")
+    public FormulaDefinition addExpression(Expression expression) {
+        if (expressions == null) {
+            expressions = Collections.singletonList(expression);
             return this;
         }
-        if (operatorDefinitions.size() == 1) {
-            List<OperatorDefinition> list = new ArrayList<>(3);
-            list.add(operatorDefinitions.get(0));
-            list.add(operator);
-            operatorDefinitions = list;
+        if (expressions.size() == 1) {
+            List<Expression> list = new ArrayList<>(3);
+            list.add(expressions.get(0));
+            list.add(expression);
+            expressions = list;
             return this;
         }
-        operatorDefinitions.add(operator);
+        expressions.add(expression);
         return this;
     }
 
-    public List<OperatorDefinition> getOperatorDefinitions() {
-        return operatorDefinitions;
+    @SuppressWarnings("unused")
+    public void setExpressions(List<Expression> expressions) {
+        this.expressions = expressions;
     }
 
     public List<FormulaPart> getUnknowns() {
@@ -79,22 +78,6 @@ public class FormulaDefinition implements Serializable {
         this.unknowns = unknowns;
     }
 
-    public SequenceOrder getOrder() {
-        return order;
-    }
-
-    public void setOrder(SequenceOrder order) {
-        this.order = order;
-    }
-
-    public FormulaPart getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(FormulaPart sequence) {
-        this.sequence = sequence;
-    }
-
     public List<Game> getGames() {
         return games;
     }
@@ -117,9 +100,7 @@ public class FormulaDefinition implements Serializable {
                 "games=" + games +
                 ", unknowns=" + unknowns +
                 ", count=" + count +
-                ", operatorDefinitions=" + operatorDefinitions +
-                ", order=" + order +
-                ", sequence=" + sequence +
+                ", expressions=" + expressions +
                 '}';
     }
 }

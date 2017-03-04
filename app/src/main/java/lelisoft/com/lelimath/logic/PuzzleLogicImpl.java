@@ -2,7 +2,7 @@ package lelisoft.com.lelimath.logic;
 
 import java.io.Serializable;
 
-import lelisoft.com.lelimath.data.OperatorDefinition;
+import lelisoft.com.lelimath.data.Expression;
 import lelisoft.com.lelimath.helpers.Misc;
 
 /**
@@ -14,10 +14,10 @@ public class PuzzleLogicImpl extends GameLogicImpl implements PuzzleLogic, Seria
     @Override
     public String getSampleFormula() {
         int i, j, k, maxFirst = 2, maxSecond = 2;
-        for (OperatorDefinition operator : definition.getOperatorDefinitions()) {
-            i = Misc.getNumberLength(operator.getFirstOperand().getMaximumValue());
-            j = Misc.getNumberLength(operator.getSecondOperand().getMaximumValue());
-            k = Misc.getNumberLength(operator.getResult().getMaximumValue());
+        for (Expression expression : definition.getExpressions()) {
+            i = Misc.getNumberLength(expression.getFirstOperand().getMaximumValue());
+            j = Misc.getNumberLength(expression.getSecondOperand().getMaximumValue());
+            k = Misc.getNumberLength(expression.getResult().getMaximumValue());
 
             if (i == 0) {
                 i = Math.max(j, k);

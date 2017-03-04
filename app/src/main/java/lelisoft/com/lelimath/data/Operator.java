@@ -1,12 +1,14 @@
 package lelisoft.com.lelimath.data;
 
+import lelisoft.com.lelimath.helpers.Misc;
+
 /**
  * Operators
  * Created by Leoš on 4. 2. 2015.
  */
 public enum Operator {
 
-    PLUS("+"), MINUS("-"), MULTIPLY("\u22C5"), DIVIDE(":");
+    PLUS("+"), MINUS("-"), MULTIPLY("*"), DIVIDE(":");
 
     public final String value;
 
@@ -50,7 +52,7 @@ public enum Operator {
 
     @Override
     public String toString() {
-        return value;
+        return Misc.getResource("symbol_" + name());
     }
 
 }

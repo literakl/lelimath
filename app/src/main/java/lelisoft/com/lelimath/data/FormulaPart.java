@@ -9,8 +9,10 @@ import com.google.gson.annotations.SerializedName;
 public enum FormulaPart {
     @SerializedName("FO") FIRST_OPERAND("FO"),
     @SerializedName("SO") SECOND_OPERAND("SO"),
+    @SerializedName("TO") THIRD_OPERAND("TO"),
     @SerializedName("RS") RESULT("RS"),
     @SerializedName("OP") OPERATOR("OP"),
+    @SerializedName("O2") OPERATOR2("O2"),
     @SerializedName("EX") EXPRESSION("EX");
 
     String key;
@@ -25,10 +27,14 @@ public enum FormulaPart {
                 return FIRST_OPERAND;
             case "SO":
                 return SECOND_OPERAND;
+            case "TO":
+                return THIRD_OPERAND;
             case "RS":
                 return RESULT;
             case "OP":
                 return OPERATOR;
+            case "O2":
+                return OPERATOR2;
             case "EX":
                 return EXPRESSION;
             default:

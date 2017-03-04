@@ -16,11 +16,13 @@ public class Columns {
     public static final String FINISHED = "finished";
     public static final String FIRST_OPERAND = "first";
     public static final String SECOND_OPERAND = "second";
+    public static final String THIRD_OPERAND = "third";
     public static final String RESULT = "result";
     public static final String WRONG_VALUE = "wrong_value";
     public static final String UNKNOWN = "unknown";
     public static final String LEVEL = "level";
     public static final String OPERATOR = "operator";
+    public static final String OPERATOR2 = "operator2";
     public static final String CORRECT = "correct";
     public static final String POINTS = "points";
     public static final String SCORE = "score";

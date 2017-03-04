@@ -30,6 +30,7 @@ public class Values implements Serializable {
 
     private List<NumbersHolder> values;
     private Integer size;
+    private SequenceOrder order;
 
     public static Values fromRange(Integer minValue, Integer maxValue) {
         Values result = new Values();
@@ -229,6 +230,15 @@ public class Values implements Serializable {
         }
 
         throw new RuntimeException("Failed to get value, position=" + position + " i = " + i + ", values=" + values);
+    }
+
+    public SequenceOrder getOrder() {
+        return order;
+    }
+
+    public Values setOrder(SequenceOrder order) {
+        this.order = order;
+        return this;
     }
 
     private static class UndefinedValues extends Values {

@@ -23,6 +23,11 @@
     <string name="action_blog">LeliMath blog</string>
     <string name="action_project">Nápady a chyby</string>
     <string name="action_next_formula">Další</string>
+    <string name="symbol_PLUS">+</string>
+    <string name="symbol_MINUS">-</string>
+    <string name="symbol_MULTIPLY">×</string>
+    <string name="symbol_DIVIDE">÷</string>
+    <string name="symbol_Backspace">←</string>
     <string name="operation_all">Všechny</string>
     <string name="operation_plus">Sčítání</string>
     <string name="operation_minus">Odečítání</string>

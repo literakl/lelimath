@@ -11,8 +11,8 @@ import lelisoft.com.lelimath.logic.Solver;
  * Created by Leoš on 4. 2. 2015.
  */
 public class Formula implements Parcelable {
-    private Integer firstOperand, secondOperand, result;
-    private Operator operator;
+    private Integer firstOperand, secondOperand, thirdOperand, result;
+    private Operator operator, operator2;
     private FormulaPart unknown;
     private StringBuilder sb = new StringBuilder(5);
 
@@ -173,6 +173,13 @@ public class Formula implements Parcelable {
         sb.append(" ");
         sb.append(secondOperand);
         if (unknown == FormulaPart.SECOND_OPERAND) sb.append("(?)");
+        if (operator2 != null) {
+            sb.append(" ").append(operator2);
+            if (unknown == FormulaPart.OPERATOR2) sb.append("(?)");
+            sb.append(" ");
+            sb.append(thirdOperand);
+            if (unknown == FormulaPart.THIRD_OPERAND) sb.append("(?)");
+        }
         sb.append(" = ");
         sb.append(result);
         if (unknown == FormulaPart.RESULT) sb.append("(?)");
@@ -197,6 +204,16 @@ public class Formula implements Parcelable {
         this.secondOperand = secondOperand;
     }
 
+    @SuppressWarnings("unused")
+    public Integer getThirdOperand() {
+        return thirdOperand;
+    }
+
+    @SuppressWarnings("unused")
+    public void setThirdOperand(Integer thirdOperand) {
+        this.thirdOperand = thirdOperand;
+    }
+
     public Integer getResult() {
         return result;
     }
@@ -211,6 +228,16 @@ public class Formula implements Parcelable {
 
     public void setOperator(Operator operator) {
         this.operator = operator;
+    }
+
+    @SuppressWarnings("unused")
+    public Operator getOperator2() {
+        return operator2;
+    }
+
+    @SuppressWarnings("unused")
+    public void setOperator2(Operator operator2) {
+        this.operator2 = operator2;
     }
 
     public FormulaPart getUnknown() {
@@ -255,8 +282,10 @@ public class Formula implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.firstOperand);
         dest.writeValue(this.secondOperand);
+        dest.writeValue(this.thirdOperand);
         dest.writeValue(this.result);
         dest.writeInt(this.operator == null ? -1 : this.operator.ordinal());
+        dest.writeInt(this.operator2 == null ? -1 : this.operator2.ordinal());
         dest.writeInt(this.unknown == null ? -1 : this.unknown.ordinal());
         dest.writeSerializable(this.sb);
     }
@@ -264,9 +293,12 @@ public class Formula implements Parcelable {
     private Formula(Parcel in) {
         this.firstOperand = (Integer) in.readValue(Integer.class.getClassLoader());
         this.secondOperand = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.thirdOperand = (Integer) in.readValue(Integer.class.getClassLoader());
         this.result = (Integer) in.readValue(Integer.class.getClassLoader());
         int tmpOperator = in.readInt();
         this.operator = tmpOperator == -1 ? null : Operator.values()[tmpOperator];
+        tmpOperator = in.readInt();
+        this.operator2 = tmpOperator == -1 ? null : Operator.values()[tmpOperator];
         int tmpUnknown = in.readInt();
         this.unknown = tmpUnknown == -1 ? null : FormulaPart.values()[tmpUnknown];
         this.sb = (StringBuilder) in.readSerializable();

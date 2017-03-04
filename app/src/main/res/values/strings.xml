@@ -23,6 +23,11 @@
     <string name="action_blog">LeliMath blog</string>
     <string name="action_project">Bugs &amp; improvements</string>
     <string name="action_next_formula">Next</string>
+    <string name="symbol_PLUS">+</string>
+    <string name="symbol_MINUS">-</string>
+    <string name="symbol_MULTIPLY">×</string>
+    <string name="symbol_DIVIDE">÷</string>
+    <string name="symbol_Backspace">←</string>
     <string name="operation_all">All</string>
     <string name="operation_plus">Addition</string>
     <string name="operation_minus">Subtraction</string>
