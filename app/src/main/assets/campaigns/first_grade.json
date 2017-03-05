@@ -591,12 +591,7 @@
         "definition": {
           "count": 9,
           "expressions": [
-            {
-              "first": {"values": "8,7,6,8,7,6,8,7,6", "order": "ASCENDING"},
-              "operator": "-",
-              "second": {"values": "1,1,1,2,2,2,3,3,3", "order": "ASCENDING"},
-              "result": "3-7"
-            }
+            "8-1", "7-1", "6-1", "8-2", "7-2", "6-2", "8-3", "7-3", "6-3"
           ]
         }
       },
