@@ -100,7 +100,7 @@ public class PuzzleFragment extends LeliGameFragment {
         provider.create(play);
     }
 
-    public class HandleClick implements View.OnClickListener {
+    private class HandleClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             Tile currentTile = (Tile) view.getTag(R.id.button_tile);
@@ -222,7 +222,7 @@ public class PuzzleFragment extends LeliGameFragment {
         play.addTimeSpent(playRecord.getTimeSpent());
     }
 
-    public class CalculateDimensions implements ViewTreeObserver.OnGlobalLayoutListener {
+    private class CalculateDimensions implements ViewTreeObserver.OnGlobalLayoutListener {
         @Override
         public void onGlobalLayout() {
             puzzleGrid.getViewTreeObserver().removeOnGlobalLayoutListener(this);

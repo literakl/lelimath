@@ -122,6 +122,9 @@ public class CalcFragment extends LeliGameFragment {
         log.debug("digitClicked(" + digit + ")");
         startRecordingSpentTime();
         if (formula.getUnknown() != FormulaPart.OPERATOR) {
+            if ("0".equals(formula.getUserInput())) {
+                formula.clear();
+            }
             formula.append(digit);
             displayFormula();
         }
