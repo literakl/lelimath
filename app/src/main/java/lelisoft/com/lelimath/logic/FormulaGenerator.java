@@ -66,6 +66,7 @@ class FormulaGenerator {
                 found.setResult(combined.getResult());
             }
 
+            found.setUnknown(unknown);
             logFormula(found, expression, true);
             return found;
         }
