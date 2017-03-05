@@ -174,5 +174,6 @@
     <string name="acdm_1ST_15">Do patnácti</string>
     <string name="acdm_1ST_20">Do dvaceti</string>
     <string name="acdm_2ND_REPEAT_LESS_20">Opakování</string>
+    <string name="acdm_2ND_OVER_10">Počítání přes 10</string>
     <string name="acdm_3RD_REPEAT">Opakování</string>
 </resources>

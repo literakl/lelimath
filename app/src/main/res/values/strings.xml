@@ -174,5 +174,6 @@
     <string name="acdm_1ST_15">To fifteen</string>
     <string name="acdm_1ST_20">To twenty</string>
     <string name="acdm_2ND_REPEAT_LESS_20">Repeat</string>
+    <string name="acdm_2ND_OVER_10">Counting over 10</string>
     <string name="acdm_3RD_REPEAT">Repeat</string>
 </resources>

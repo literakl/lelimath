@@ -190,5 +190,87 @@
         }
       }
     ]
+  },
+  {
+    "id": "2ND_OVER_10",
+    "picture": "bgt_squares",
+    "items": [
+      {
+        "id": "10",
+        "definition": {
+          "count": 5,
+          "expressions": [
+            "9+1", "9+2", "9+3", "9+4", "9+5"
+          ]
+        }
+      },
+      {
+        "id": "20",
+        "definition": {
+          "count": 12,
+          "games": ["PZ"],
+          "expressions": [
+            {
+              "first": "9",
+              "operator": "+",
+              "second": {"values": "0-11", "order": "ASCENDING"},
+              "result": "9-20"
+            }
+          ]
+        }
+      },
+      {
+        "id": "30",
+        "definition": {
+          "count": 6,
+          "expressions": [
+            "7+3", "9+2", "8+4", "12+6", "8+3", "9+4"
+          ]
+        }
+      },
+      {
+        "id": "40",
+        "definition": {
+          "count": 6,
+          "games": ["PZ"],
+          "expressions": [
+            {
+              "first": "9",
+              "operator": "+",
+              "second": {"values": "3-5,7-9", "order": "ASCENDING"},
+              "result": "12-18"
+            }
+          ]
+        }
+      },
+      {
+        "id": "50",
+        "definition": {
+          "count": 5,
+          "expressions": [
+            "8+2",
+            "8+3",
+            "8+4",
+            "8+5",
+            "8+6"
+          ]
+        }
+      },
+      {
+        "id": "60",
+        "definition": {
+          "count": 12,
+          "games": ["PZ"],
+          "expressions": [
+            {
+              "first": "8",
+              "operator": "+",
+              "second": {"values": "0-10,12", "order": "ASCENDING"},
+              "result": "8-20"
+            }
+          ]
+        }
+      }
+    ]
   }
 ]
