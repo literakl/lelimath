@@ -1,6 +1,6 @@
 [
   {
-    "id": "2ND_XXX",
+    "id": "2ND_REPEAT_LESS_20",
     "picture": "bgt_squares",
     "items": [
       {
@@ -8,12 +8,7 @@
         "definition": {
           "count": 4,
           "expressions": [
-            {
-              "first": "1-4",
-              "operator": "+",
-              "second": "1",
-              "result": "2-5"
-            }
+            "1+1", "2-1", "2-2", "2-0"
           ]
         }
       }

@@ -30,6 +30,8 @@ import java.util.Random;
 import lelisoft.com.lelimath.R;
 import lelisoft.com.lelimath.data.Badge;
 
+import static lelisoft.com.lelimath.helpers.LeliMathApp.resources;
+
 /**
  * Various view methods
  * Created by leos.literak on 31.10.2015.
@@ -75,7 +77,7 @@ public class Misc {
         return dp * density;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("WeakerAccess")
     public static String getDensityName(float density) {
         if (density >= 4.0) {
             return "xxxhdpi";
@@ -338,5 +340,13 @@ public class Misc {
 
     public static Random getRandom() {
         return random;
+    }
+
+    public static int parseNumber(String s) {
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(resources.getString(R.string.error_values_not_number, s));
+        }
     }
 }

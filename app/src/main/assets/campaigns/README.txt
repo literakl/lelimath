@@ -29,6 +29,8 @@ If multiple values use defined order than all values must have same size.
 "first", "second", "third", "result" - argument values are defined by list of values or ranges
 in ascending order. E.g. 1-3,5,6,7-10.
 
+If expressions are defined in simple form then count of formulas must be same as number of expressions.
+They will be used sequentially.
 
 One campaign structure:
 
@@ -74,6 +76,16 @@ One campaign structure:
             "second": "1,2",
             "result": "1-3"
           }
+        ]
+      }
+    },
+    {
+      "id": "30",
+      "definition":
+      {
+        "count": 4,
+        "expressions": [
+            "1+1", "2-1", "2-2", "2-0"
         ]
       }
     }

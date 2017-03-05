@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import lelisoft.com.lelimath.data.Expression;
+import lelisoft.com.lelimath.data.FixedExpression;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
@@ -36,12 +37,39 @@ class FormulaGenerator {
     private Formula generateRandomFormula(FormulaDefinition definition) {
         log.trace("Starting search for formula using {}", definition);
 
-        Expression expression = getExpression(definition.getExpressions());
+        Expression expression = getExpression(definition);
         FormulaPart unknown = getUnknown(definition.getUnknowns());
 
         Values valuesA = expression.getFirstOperand();
         Values valuesB = expression.getSecondOperand();
         Values valuesC = expression.getThirdOperand();
+
+        if (expression instanceof FixedExpression) {
+            int valueA = getValue(valuesA);
+            int valueB = getValue(valuesB);
+            Formula found = Solver.solve(expression.getOperator1(), FIRST_OPERAND, valueA, SECOND_OPERAND, valueB);
+            if (found == null) {
+                log.warn("No formula found for {} using {}", definition, expression);
+                return null;
+            }
+
+            if (expression.getOperator2() != null) {
+                int valueC = getValue(valuesC);
+                Formula combined = Solver.solve(expression.getOperator2(), FIRST_OPERAND, found.getResult(), SECOND_OPERAND, valueC);
+                if (combined == null) {
+                    log.warn("No formula found for {} using {}", definition, expression);
+                    return null;
+                }
+
+                found.setOperator2(expression.getOperator2());
+                found.setThirdOperand(valueC);
+                found.setResult(combined.getResult());
+            }
+
+            logFormula(found, expression, true);
+            return found;
+        }
+
         for (int i = 0; i < 100; i++) {
             int valueA = getValue(valuesA);
             for (int j = 0; j < 10; j++) {
@@ -67,14 +95,7 @@ class FormulaGenerator {
                 }
 
                 boolean valid = expression.getResult().belongs(found.getResult());
-                if (log.isTraceEnabled()) {
-                    String s = valid ? "valid" : "invalid";
-                    if (expression.getOperator2() != null) {
-                        log.trace("{}: {} {} {} {} {} = {}", s, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getOperator2(), found.getThirdOperand(), found.getResult());
-                    } else {
-                        log.trace("{}: {} {} {} = {}", s, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getResult());
-                    }
-                }
+                logFormula(found, expression, valid);
 
                 if (valid) {
                     found.setUnknown(unknown);
@@ -84,7 +105,7 @@ class FormulaGenerator {
             }
         }
 
-        log.warn("No formula found for {} using operatorDefinition {}", definition, expression.getOperator1());
+        log.warn("No formula found for {} using {}", definition, expression);
         return null;
     }
 
@@ -155,13 +176,24 @@ class FormulaGenerator {
         }
     }
 
-    private static Expression getExpression(List<Expression> expressions) {
+    private Expression getExpression(FormulaDefinition definition) {
+        List<Expression> expressions = definition.getExpressions();
         if (expressions == null || expressions.isEmpty()) {
             return new Expression(Values.DEMO, PLUS, Values.DEMO, Values.DEMO);
         }
-        if (expressions.size() == 1) {
-            return expressions.get(0);
+
+        Expression firstExpression = expressions.get(0);
+        if (firstExpression instanceof FixedExpression) {
+            if (ascendingPosition == null) {
+                ascendingPosition = 0;
+            }
+            return expressions.get(ascendingPosition);
         }
+
+        if (expressions.size() == 1) {
+            return firstExpression;
+        }
+
         return expressions.get(random.nextInt(expressions.size()));
     }
 
@@ -173,6 +205,17 @@ class FormulaGenerator {
             return unknowns.get(0);
         }
         return unknowns.get(random.nextInt(unknowns.size()));
+    }
+
+    private void logFormula(Formula found, Expression expression, boolean valid) {
+        if (log.isTraceEnabled()) {
+            String s = valid ? "valid" : "invalid";
+            if (expression.getOperator2() != null) {
+                log.trace("{}: {} {} {} {} {} = {}", s, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getOperator2(), found.getThirdOperand(), found.getResult());
+            } else {
+                log.trace("{}: {} {} {} = {}", s, found.getFirstOperand(), found.getOperator(), found.getSecondOperand(), found.getResult());
+            }
+        }
     }
 
     /**

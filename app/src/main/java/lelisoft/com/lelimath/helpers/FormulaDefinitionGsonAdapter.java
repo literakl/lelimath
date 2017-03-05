@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Type;
 
 import lelisoft.com.lelimath.data.Expression;
+import lelisoft.com.lelimath.data.FixedExpression;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.Game;
@@ -65,23 +66,26 @@ public class FormulaDefinitionGsonAdapter implements JsonDeserializer<FormulaDef
         }
 
         for (JsonElement jsonElement : array) {
-            jsonObject = (JsonObject) jsonElement;
+            Expression expression;
+            if (jsonElement.isJsonPrimitive()) {
+                expression = FixedExpression.parse(jsonElement.getAsString());
+            } else {
+                jsonObject = (JsonObject) jsonElement;
+                Values firstArg = getValues(jsonObject, "first");
+                Values secondArg = getValues(jsonObject, "second");
+                Values result = getValues(jsonObject, "result");
 
-            Values firstArg = getValues(jsonObject, "first");
-            Values secondArg = getValues(jsonObject, "second");
-            Values result = getValues(jsonObject, "result");
+                p = jsonObject.getAsJsonPrimitive("operator");
+                Operator operator1 = Operator.getValue(p.getAsString());
+                expression = new Expression(firstArg, operator1, secondArg, result);
 
-            p = jsonObject.getAsJsonPrimitive("operator");
-            Operator operator1 = Operator.getValue(p.getAsString());
-
-            Expression expression = new Expression(firstArg, operator1, secondArg, result);
-
-            p = jsonObject.getAsJsonPrimitive("operator2");
-            if (p != null) {
-                Operator operator2 = Operator.getValue(p.getAsString());
-                expression.setOperator2(operator2);
-                Values thirdArg = getValues(jsonObject, "third");
-                expression.setThirdOperand(thirdArg);
+                p = jsonObject.getAsJsonPrimitive("operator2");
+                if (p != null) {
+                    Operator operator2 = Operator.getValue(p.getAsString());
+                    expression.setOperator2(operator2);
+                    Values thirdArg = getValues(jsonObject, "third");
+                    expression.setThirdOperand(thirdArg);
+                }
             }
 
             definition.addExpression(expression);

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
+import lelisoft.com.lelimath.data.FixedExpression;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
 import lelisoft.com.lelimath.data.Expression;
@@ -122,5 +123,24 @@ public class FormulaGeneratorTest extends TestCase {
             assertEquals(first.getValueAt(i).intValue(), f.getFirstOperand().intValue());
             assertEquals(second.getValueAt(9 - i).intValue(), f.getSecondOperand().intValue());
         }
+    }
+
+    public void testFixedExpressions() {
+        FormulaDefinition definition = new FormulaDefinition();
+        definition.addExpression(FixedExpression.parse("1+1"));
+        definition.addExpression(FixedExpression.parse("2-1"));
+        definition.addExpression(FixedExpression.parse("3*1"));
+        definition.addExpression(FixedExpression.parse("4/1"));
+
+        long start = System.currentTimeMillis();
+        FormulaGenerator generator = new FormulaGenerator();
+        ArrayList<Formula> formulas = generator.generateFormulas(definition, 4);
+        long end = System.currentTimeMillis();
+        log.debug("Generating {} formulas took {} ms", formulas.size(), end - start);
+
+        assertEquals(2, (int)formulas.get(0).getResult());
+        assertEquals(1, (int)formulas.get(1).getResult());
+        assertEquals(3, (int)formulas.get(2).getResult());
+        assertEquals(4, (int)formulas.get(3).getResult());
     }
 }

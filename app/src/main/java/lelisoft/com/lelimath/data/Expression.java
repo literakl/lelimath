@@ -8,20 +8,20 @@ import java.io.Serializable;
  */
 public class Expression implements Serializable {
     /** allowed values for operator's first operand */
-    private Values firstOperand;
+    Values firstOperand;
     /** first operator */
-    private Operator operator1;
+    Operator operator1;
     /** allowed values for operator's second operand */
-    private Values secondOperand;
+    Values secondOperand;
     /** second operator */
-    private Operator operator2;
+    Operator operator2;
     /** allowed values for operator's third operand */
-    private Values thirdOperand;
+    Values thirdOperand;
     /** allowed values for operator's result */
-    private Values result;
+    Values result;
 
     @SuppressWarnings("unused")
-    public Expression() {
+    Expression() {
     }
 
     @SuppressWarnings("unused")
@@ -106,8 +106,8 @@ public class Expression implements Serializable {
     @Override
     public String toString() {
         return "Expression{" +
-                "first=" + firstOperand + operator1 +
-                ", second=" + secondOperand + operator2 +
+                "first=" + firstOperand + ", operator=" + operator1 +
+                ", second=" + secondOperand + ", operator=" + operator2 +
                 ", third=" + thirdOperand +
                 ", result=" + result +
                 '}';

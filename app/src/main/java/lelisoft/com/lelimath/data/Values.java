@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 import lelisoft.com.lelimath.R;
+import lelisoft.com.lelimath.helpers.Misc;
 
 import static lelisoft.com.lelimath.helpers.LeliMathApp.resources;
 
@@ -27,6 +28,8 @@ public class Values implements Serializable {
     public static final Values DEMO = Values.fromRange(0, 10);
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Values UNDEFINED = new UndefinedValues();
+    @SuppressWarnings("StaticInitializerReferencesSubClass")
+    static final Values INFINITE = new InfiniteValues();
 
     private List<NumbersHolder> values;
     private Integer size;
@@ -95,7 +98,7 @@ public class Values implements Serializable {
                 continue;
             }
 
-            int value = parseNumber(part);
+            int value = Misc.parseNumber(part);
             if (previousNumber != null && previousNumber >= value && forceAscendingOrder) {
                 throw new IllegalArgumentException(resources.getString(R.string.error_values_must_be_bigger));
             }
@@ -126,14 +129,6 @@ public class Values implements Serializable {
         }
 
         return result;
-    }
-
-    private static int parseNumber(String s) {
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(resources.getString(R.string.error_values_not_number, s));
-        }
     }
 
     /**
@@ -261,6 +256,24 @@ public class Values implements Serializable {
         @Override
         public String toString() {
             return "UndefinedValues";
+        }
+    }
+
+    private static class InfiniteValues extends UndefinedValues {
+
+        @Override
+        public int getMaximumValue() {
+            return Integer.MAX_VALUE;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof InfiniteValues;
+        }
+
+        @Override
+        public String toString() {
+            return "InfiniteValues";
         }
     }
 
