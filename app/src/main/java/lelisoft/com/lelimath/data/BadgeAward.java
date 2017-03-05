@@ -15,19 +15,26 @@ public class BadgeAward {
     Integer id;
 
     @DatabaseField(canBeNull = false)
-    Date date;
+    private Date date;
 
     @DatabaseField(persisted = false)
-    Badge badge;
+    private Badge badge;
 
     @DatabaseField(canBeNull=false, columnName= Columns.BADGE)
-    String badgeStr;
+    private String badgeStr;
 
     @DatabaseField(canBeNull=false, columnName=Columns.TYPE, width = 1)
-    String type;
+    private String type;
 
-    @DatabaseField(canBeNull=true, columnName=Columns.DATA)
-    String data;
+    @DatabaseField(columnName=Columns.DATA)
+    private String data;
+
+    public BadgeAward() {
+    }
+
+    public BadgeAward(Badge badge) {
+        setBadge(badge);
+    }
 
     public Integer getId() {
         return id;

@@ -229,4 +229,11 @@ public class LeliMathApp extends Application implements Thread.UncaughtException
             editor.apply();
         }
     }
+
+    /**
+     * for tests only
+     */
+    public void clearBadges() {
+        badges.clear();
+    }
 }

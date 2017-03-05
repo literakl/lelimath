@@ -12,11 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import lelisoft.com.lelimath.data.Badge;
 import lelisoft.com.lelimath.data.BadgeAward;
 import lelisoft.com.lelimath.data.BadgeEvaluation;
 import lelisoft.com.lelimath.data.Game;
@@ -38,13 +34,12 @@ import static lelisoft.com.lelimath.data.Operator.*;
 public class CorrectnessBadgeTest extends AndroidTestCase {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(LeliMathApp.class);
 
-    DatabaseHelper helper;
+    private DatabaseHelper helper;
 
     public void testPlus() throws Exception {
         Dao<Play, Integer> playDao = helper.getPlayDao();
         Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
         BadgeEvaluator evaluator = new CorrectnessBadgeEvaluator();
-        Map<Badge, List<BadgeAward>> badges = new HashMap<>();
 
         Calendar time = Calendar.getInstance();
         time.set(Calendar.HOUR_OF_DAY, 16);
@@ -110,7 +105,6 @@ public class CorrectnessBadgeTest extends AndroidTestCase {
         Dao<Play, Integer> playDao = helper.getPlayDao();
         Dao<PlayRecord, Integer> recordDao = helper.getPlayRecordDao();
         BadgeEvaluator evaluator = new CorrectnessBadgeEvaluator();
-        Map<Badge, List<BadgeAward>> badges = new HashMap<>();
 
         Calendar time = Calendar.getInstance();
         time.set(Calendar.HOUR_OF_DAY, 16);
