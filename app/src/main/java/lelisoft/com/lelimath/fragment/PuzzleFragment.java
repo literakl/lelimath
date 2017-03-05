@@ -163,11 +163,11 @@ public class PuzzleFragment extends LeliGameFragment {
                 LeliMathApp.getInstance().playSound(R.raw.correct);
 
                 currentButton.setText("");
-                currentButton.setBackgroundResource(R.drawable.bg_tile_solved);
+                currentButton.setBackgroundResource(R.drawable.ic_green_button);
                 currentButton.setClickable(false);
 
                 selectedButton.setText("");
-                selectedButton.setBackgroundResource(R.drawable.bg_tile_solved);
+                selectedButton.setBackgroundResource(R.drawable.ic_green_button);
                 selectedButton.setClickable(false);
                 selectedButton = null;
             }
