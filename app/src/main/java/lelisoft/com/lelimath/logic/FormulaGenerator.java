@@ -10,7 +10,6 @@ import java.util.Random;
 import lelisoft.com.lelimath.data.Expression;
 import lelisoft.com.lelimath.data.Formula;
 import lelisoft.com.lelimath.data.FormulaDefinition;
-import lelisoft.com.lelimath.data.Operator;
 import lelisoft.com.lelimath.data.FormulaPart;
 import lelisoft.com.lelimath.data.SequenceOrder;
 import lelisoft.com.lelimath.data.Values;
