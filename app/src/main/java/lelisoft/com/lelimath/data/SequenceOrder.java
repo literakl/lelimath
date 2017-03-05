@@ -11,7 +11,5 @@ public enum SequenceOrder {
     /** values are taken in descending order from selected formula part */
     DESCENDING,
     /** default, values are taken randomly */
-    RANDOM,
-    /** values are taken from first and second argument sequentially */
-    FIXED_PAIRS
+    RANDOM
 }

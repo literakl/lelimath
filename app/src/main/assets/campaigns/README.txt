@@ -14,26 +14,20 @@ campaigns / items of certain campaign.
 "count" - number of formulas generated in this test
 
 "unknowns" - array of formula parts that can be set as unknown. FO first operand,
-SO second operand, OP operator, RS result.
+SO second operand, OP first operator, OP2 second operator, TO third operand and RS result.
 
 "games" - array of games to be used, FC stands for fast calc (default), PZ for puzzle
 
-"order" - can have following values: RANDOM (default), ASCENDING, DESCENDING, FIXED_PAIRS
+"order" - can have following values: RANDOM (default), ASCENDING, DESCENDING
 
-* FIXED_PAIRS - values from first and second operands are taken sequentially, range is not allowed.
-Ascending order is not enforced for the values. Number of tests must not be greater than number
-of values. All formulas will have same unknown.
-
-* ASCENDING, DESCENDING - values from formula part defined in "sequence" are taken sequentially in
-requested order. Number of tests must not be greater than number of values.
-
-"sequence" - selects formula part to be used as sequence of values. Ignored if set
-to the same value as unknown.
+* ASCENDING, DESCENDING - values are taken sequentially in requested order.
+Number of tests must not be greater than number of values.
+If multiple values use defined order than all values must have same size.
 
 "operator" - array of operators sharing this configuration. It can be +, -, *, /.
 
-"first", "second", "result" - argument values are defined by list of values or ranges
-in ascending order. E.g. 1-3,5,6,7-10
+"first", "second", "third", "result" - argument values are defined by list of values or ranges
+in ascending order. E.g. 1-3,5,6,7-10.
 
 
 One campaign structure:
@@ -48,15 +42,15 @@ One campaign structure:
       "definition":
       {
         "count": 9,
-        "order": "ASCENDING",
-        "sequence": "FO",
-        "operators": [
-          {
-            "operator": ["+"],
-            "first": "1-9",
-            "second": "1",
-            "result": "2-10"
-          }
+        "expressions": [
+        {
+          "first": {"values": "4-9", "order": "ASCENDING"},
+          "operator": "+",
+          "second": "1-6",
+          "operator2": "+",
+          "third": "4-7",
+          "result": "15-85"
+        }
         ]
       }
     },
@@ -67,16 +61,16 @@ One campaign structure:
         "count": 5,
         "games": ["FC"],
         "unknowns": ["RS"],
-        "operators": [
+        "expressions": [
           {
-            "operator": ["+"],
             "first": "0-5",
+            "operator": ["+"],
             "second": "0-5",
             "result": "5-10"
           },
           {
-            "operator": ["-"],
             "first": "3-5",
+            "operator": ["-"],
             "second": "1,2",
             "result": "1-3"
           }
