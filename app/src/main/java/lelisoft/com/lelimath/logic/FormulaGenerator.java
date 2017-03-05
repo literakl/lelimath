@@ -16,6 +16,13 @@ import lelisoft.com.lelimath.data.SequenceOrder;
 import lelisoft.com.lelimath.data.Values;
 import lelisoft.com.lelimath.helpers.Misc;
 
+import static lelisoft.com.lelimath.data.FormulaPart.FIRST_OPERAND;
+import static lelisoft.com.lelimath.data.FormulaPart.RESULT;
+import static lelisoft.com.lelimath.data.FormulaPart.SECOND_OPERAND;
+import static lelisoft.com.lelimath.data.Operator.PLUS;
+import static lelisoft.com.lelimath.data.SequenceOrder.ASCENDING;
+import static lelisoft.com.lelimath.data.SequenceOrder.RANDOM;
+
 /**
  * This class is responsible for generating a Formula that matches assignment in a FormulaDefinition.
  * Created by leos.literak on 26.2.2015.
@@ -44,14 +51,14 @@ class FormulaGenerator {
                 }
                 int valueB = getValue(valuesB);
 
-                Formula found = Solver.solve(expression.getOperator1(), FormulaPart.FIRST_OPERAND, valueA, FormulaPart.SECOND_OPERAND, valueB);
+                Formula found = Solver.solve(expression.getOperator1(), FIRST_OPERAND, valueA, SECOND_OPERAND, valueB);
                 if (found == null) {
                     continue;
                 }
 
                 if (expression.getOperator2() != null) {
                     int valueC = getValue(valuesC);
-                    Formula combined = Solver.solve(expression.getOperator2(), FormulaPart.FIRST_OPERAND, found.getResult(), FormulaPart.SECOND_OPERAND, valueC);
+                    Formula combined = Solver.solve(expression.getOperator2(), FIRST_OPERAND, found.getResult(), SECOND_OPERAND, valueC);
                     if (combined == null) {
                         continue;
                     }
@@ -120,12 +127,12 @@ class FormulaGenerator {
 
     private int getValue(Values values) {
         SequenceOrder order = values.getOrder();
-        if (order == null || order == SequenceOrder.RANDOM) {
+        if (order == null || order == RANDOM) {
             return values.getRandomValue(random);
         }
 
         // we assume that all Values have same size
-        if (order == SequenceOrder.ASCENDING) {
+        if (order == ASCENDING) {
             if (ascendingPosition == null) {
                 ascendingPosition = 0;
             }
@@ -151,7 +158,7 @@ class FormulaGenerator {
 
     private static Expression getExpression(List<Expression> expressions) {
         if (expressions == null || expressions.isEmpty()) {
-            return new Expression(Values.DEMO, Operator.PLUS, Values.DEMO, Values.DEMO);
+            return new Expression(Values.DEMO, PLUS, Values.DEMO, Values.DEMO);
         }
         if (expressions.size() == 1) {
             return expressions.get(0);
@@ -161,7 +168,7 @@ class FormulaGenerator {
 
     private static FormulaPart getUnknown(List<FormulaPart> unknowns) {
         if (unknowns == null || unknowns.isEmpty()) {
-            return FormulaPart.RESULT;
+            return RESULT;
         }
         if (unknowns.size() == 1) {
             return unknowns.get(0);
