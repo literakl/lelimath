@@ -1,7 +1,7 @@
 [
   {
     "id": "2ND_REPEAT_LESS_20",
-    "picture": "bgt_squares",
+    "picture": "bgt_red_rosa",
     "items": [
       {
         "id": "10",
@@ -193,7 +193,7 @@
   },
   {
     "id": "2ND_OVER_10",
-    "picture": "bgt_squares",
+    "picture": "bgt_sea_weed",
     "items": [
       {
         "id": "10",
@@ -248,11 +248,7 @@
         "definition": {
           "count": 5,
           "expressions": [
-            "8+2",
-            "8+3",
-            "8+4",
-            "8+5",
-            "8+6"
+            "8+2", "8+3", "8+4", "8+5", "8+6"
           ]
         }
       },
@@ -268,6 +264,112 @@
               "second": {"values": "0-10,12", "order": "ASCENDING"},
               "result": "8-20"
             }
+          ]
+        }
+      },
+      {
+        "id": "70",
+        "definition": {
+          "count": 4,
+          "expressions": [
+            {
+              "first": "8",
+              "operator": "+",
+              "second": "1,2",
+              "operator2": "+",
+              "third": {"values": "1-4", "order": "ASCENDING"},
+              "result": "10-14"
+            }
+          ]
+        }
+      },
+      {
+        "id": "80",
+        "definition": {
+          "count": 5,
+          "expressions": [
+            "7+3", "7+4", "7+5", "7+6", "7+7"
+          ]
+        }
+      },
+      {
+        "id": "90",
+        "definition": {
+          "count": 12,
+          "games": ["PZ"],
+          "expressions": [
+            {
+              "first": "7",
+              "operator": "+",
+              "second": {"values": "0-10,13", "order": "ASCENDING"},
+              "result": "7-20"
+            }
+          ]
+        }
+      },
+      {
+        "id": "100",
+        "definition": {
+          "count": 4,
+          "expressions": [
+            {
+              "first": "7",
+              "operator": "+",
+              "second": "1,2",
+              "operator2": "+",
+              "third": {"values": "1-4", "order": "ASCENDING"},
+              "result": "9-13"
+            }
+          ]
+        }
+      },
+      {
+        "id": "110",
+        "definition": {
+          "count": 5,
+          "expressions": [
+            "6+4", "6+5", "6+6", "6+7", "6+8"
+          ]
+        }
+      },
+      {
+        "id": "120",
+        "definition": {
+          "count": 12,
+          "games": ["PZ"],
+          "expressions": [
+            {
+              "first": "6",
+              "operator": "+",
+              "second": {"values": "0-10,14", "order": "ASCENDING"},
+              "result": "6-20"
+            }
+          ]
+        }
+      },
+      {
+        "id": "130",
+        "definition": {
+          "count": 4,
+          "expressions": [
+            {
+              "first": "6",
+              "operator": "+",
+              "second": "1,2",
+              "operator2": "+",
+              "third": {"values": "1-4", "order": "ASCENDING"},
+              "result": "8-12"
+            }
+          ]
+        }
+      },
+      {
+        "id": "140",
+        "definition": {
+          "count": 5,
+          "unknowns": ["SO"],
+          "expressions": [
+            "6+6", "6+9", "8+3", "14+0", "6+10", "7+4", "9+3", "10+5"
           ]
         }
       }
