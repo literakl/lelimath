@@ -230,6 +230,19 @@ public class CalcFragment extends LeliGameFragment {
         } else {
             sb.append(formula.getSecondOperand().toString());
         }
+
+        if (formula.getUnknown() == FormulaPart.OPERATOR2) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getOperator2().toString());
+        }
+        sb.append(" ");
+
+        if (formula.getUnknown() == FormulaPart.THIRD_OPERAND) {
+            appendUnknown(sb);
+        } else {
+            sb.append(formula.getThirdOperand().toString());
+        }
         sb.append(" = ");
 
         if (formula.getUnknown() == FormulaPart.RESULT) {
