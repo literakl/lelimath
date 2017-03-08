@@ -141,12 +141,14 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
                 break;
             }
 
+/*
             case R.id.main_button_academy_third: {
                 Intent intent = new Intent(activity, CampaignListActivity.class);
                 intent.putExtra(CampaignListActivity.KEY_CAMPAIGNS_PATH, "campaigns/third_grade.json");
                 activity.startActivity(intent);
                 break;
             }
+*/
 
             case R.id.main_button_calc:
                 CalcActivity.start(activity);
