@@ -193,7 +193,7 @@
   },
   {
     "id": "2ND_OVER_10",
-    "picture": "bgt_sea_weed",
+    "picture": "bgt_gray_hexagons",
     "items": [
       {
         "id": "10",
@@ -370,6 +370,72 @@
           "unknowns": ["SO"],
           "expressions": [
             "6+6", "6+9", "8+3", "14+0", "6+10", "7+4", "9+3", "10+5"
+          ]
+        }
+      },
+      {
+        "id": "150",
+        "definition": {
+          "count": 5,
+          "expressions": [
+            "5+5", "5+6", "6+5", "5+7", "7+5"
+          ]
+        }
+      },
+      {
+        "id": "160",
+        "definition": {
+          "count": 10,
+          "games": ["PZ"],
+          "expressions": [
+            "5+5", "5+6", "5+7", "5+8", "5+9", "5+10", "4+10", "3+10", "6+10", "8+10"
+          ]
+        }
+      },
+      {
+        "id": "170",
+        "definition": {
+          "count": 6,
+          "expressions": [
+            "4+6", "6+4", "4+7", "7+4", "4+8", "8+4"
+          ]
+        }
+      },
+      {
+        "id": "180",
+        "definition": {
+          "count": 6,
+          "expressions": [
+            "3+7", "7+3", "3+8", "8+3", "3+9", "9+3"
+          ]
+        }
+      },
+      {
+        "id": "190",
+        "definition": {
+          "count": 8,
+          "games": ["PZ"],
+          "expressions": [
+            {
+              "first": "3,4,5,6,8,9",
+              "operator": "+",
+              "second": "3,6,7,8,9",
+              "result": "10,12"
+            }
+          ]
+        }
+      },
+      {
+        "id": "200",
+        "definition": {
+          "count": 12,
+          "expressions": [
+            {
+              "first": "7,8,9",
+              "operator": "+",
+              "second": "3,6,7,8,9",
+              "result": "10,14-18"
+            }
           ]
         }
       }

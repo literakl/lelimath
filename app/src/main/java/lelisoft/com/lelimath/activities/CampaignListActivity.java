@@ -58,8 +58,8 @@ public class CampaignListActivity extends LeliBaseActivity {
             InputStream is = getAssets().open(path);
             Campaign[] scripts = CampaignParser.parse(is);
             Collections.addAll(records, scripts);
-        } catch (IOException e) {
-            log.error("chyba", e);
+        } catch (Exception e) {
+            log.error("Error reading file {}", path, e);
         }
 
         provider = new TestRecordProvider(this);
