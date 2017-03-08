@@ -89,7 +89,7 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
 
     @Override
     public void gameFinished(Play play) {
-        log.debug("puzzleFinished()");
+        log.debug("puzzleFinished(errors: {}, count: {})", errors, play.getCount());
         new BadgeEvaluationTask(this).execute();
 
         TestRecord testRecord = new TestRecord();
@@ -106,10 +106,12 @@ public class RunTestActivity extends BaseGameActivity implements LeliGameFragmen
     @Override
     public void savePlayRecord(Play play, PlayRecord record) {
         if (record.isCorrect()) {
+            log.debug("savePlayRecord(correct)");
             newGame = true;
             setPoints();
         } else {
             if (newGame) {
+                log.debug("savePlayRecord(wrong)");
                 newGame = false;
                 errors++;
             }
