@@ -87,8 +87,10 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         button.setOnClickListener(this);
         button = (TextView) activity.findViewById(R.id.main_button_academy_second);
         button.setOnClickListener(this);
+/*
         button = (TextView) activity.findViewById(R.id.main_button_academy_third);
         button.setOnClickListener(this);
+*/
         button = (TextView) activity.findViewById(R.id.main_button_puzzle);
         button.setOnClickListener(this);
         button = (TextView) activity.findViewById(R.id.main_button_calc);
@@ -247,7 +249,7 @@ public class DashboardHomeFragment extends LeliBaseFragment implements View.OnCl
         return new DashboardHomeFragment();
     }
 
-    static class RefreshNextBadgeTask extends AsyncTask<Void, Void, Void> {
+    private static class RefreshNextBadgeTask extends AsyncTask<Void, Void, Void> {
         // Weak references will still allow the Activity to be garbage-collected
         private final WeakReference<DashboardHomeFragment> weakFragment;
 
