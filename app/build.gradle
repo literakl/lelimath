@@ -20,15 +20,15 @@ apply plugin: 'android-apt'
 android {
     signingConfigs {
     }
-    compileSdkVersion 24
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId "lelisoft.com.lelimath"
         resValue 'string', 'app_name', 'LeliMath'
         minSdkVersion 16
-        targetSdkVersion 24
-        versionCode 330
-        versionName '3.3.0'
+        targetSdkVersion 25
+        versionCode 340
+        versionName '3.4.0'
         resValue "string", "app_build_number", getDate();
         resValue "string", "app_version", versionName;
 //        vectorDrawables.useSupportLibrary = true
@@ -56,19 +56,19 @@ android {
     }
 }
 
-def getDate() {
+static def getDate() {
     def date = new Date()
     return date.toTimestamp().toString()
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:gridlayout-v7:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
-    compile 'com.android.support:cardview-v7:24.2.0'
-    compile 'com.android.support:design:24.2.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:gridlayout-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile('com.github.tony19:logback-android-classic:1.1.1-4') {
         exclude module: 'android'
